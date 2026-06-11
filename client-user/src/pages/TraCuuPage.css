@@ -1,0 +1,298 @@
+.tracuu-page {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+
+.tracuu-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tracuu-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tracuu-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: #e8f0fe;
+  color: #005bac;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.tracuu-header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.tracuu-header p {
+  font-size: 16px;
+  color: #64748b;
+}
+
+.tracuu-emergency {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fef3c7;
+  border: 2px solid #fbbf24;
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 40px;
+  font-size: 15px;
+}
+
+.tracuu-emergency span {
+  font-size: 28px;
+}
+
+.tracuu-emergency strong {
+  display: block;
+  color: #92400e;
+  margin-bottom: 4px;
+}
+
+.tracuu-emergency p {
+  color: #78350f;
+  margin: 0;
+}
+
+.tracuu-emergency a {
+  color: #005bac;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.huong-dan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.huong-dan-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.huong-dan-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 28px;
+  border-left: 6px solid;
+  background: #f8fafc;
+}
+
+.huong-dan-icon {
+  font-size: 28px;
+}
+
+.huong-dan-title h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.huong-dan-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 28px;
+}
+
+.huong-dan-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.step-num {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-item p {
+  font-size: 15px;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
+  padding-top: 4px;
+}
+
+.huong-dan-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 12px 24px;
+  color: white;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: 0.2s;
+  text-align: center;
+}
+
+.huong-dan-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.huong-dan-images {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.huong-dan-img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .huong-dan-body {
+    grid-template-columns: 1fr;
+  }
+  .tracuu-header h1 {
+    font-size: 24px;
+  }
+}
+.tts-indicator {
+  text-align: center;
+  color: #005bac;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 16px;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.huong-dan-media {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.huong-dan-videos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.huong-dan-video {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #000;
+  max-height: 280px;
+  object-fit: contain;
+}
+.video-section {
+  margin-top: 40px;
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.video-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.video-main {
+  width: 100%;
+  border-radius: 12px;
+  background: #000;
+  max-height: 400px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.tracuu-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f0fdf4;
+  border: 2px solid #86efac;
+  border-radius: 14px;
+  padding: 16px 24px;
+  margin-bottom: 28px;
+  font-size: 15px;
+  color: #166534;
+}
+
+.tracuu-notice span {
+  font-size: 24px;
+}
+
+.tab-wrapper {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  font-size: 16px;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tab-btn:hover {
+  border-color: #005bac;
+  color: #005bac;
+}
+
+.tab-active {
+  background: #005bac;
+  border-color: #005bac;
+  color: white;
+}
+
+.tab-desc {
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.huong-dan-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 400;
+}

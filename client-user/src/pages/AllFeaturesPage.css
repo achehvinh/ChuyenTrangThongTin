@@ -1,0 +1,194 @@
+/* --- Cấu trúc chính --- */
+.all-features-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f8fafc;
+}
+
+.feature-group-single {
+    padding: 60px 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-content {
+    max-width: 900px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.header-content h1 {
+    color: #005bac;
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.header-content p {
+    font-size: 18px;
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* --- Gallery ảnh --- */
+.gallery-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}
+
+.gallery-item {
+    width: 100%; 
+    height: auto; 
+    max-width: 1000px; 
+    margin: 0 auto;
+    object-fit: contain; 
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.01);
+}
+
+/* --- Phần Đề xuất chuyên mục (Mới) --- */
+.all-categories-footer {
+    margin-top: 80px;
+    padding: 40px 5%;
+    background-color: #ffffff;
+    border-top: 4px solid #005bac;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.footer-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-align: left;
+}
+
+.footer-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.15);
+}
+
+.footer-card.active {
+    border-color: #005bac;
+    box-shadow: 0 0 0 3px rgba(0,91,172,0.2);
+}
+
+.footer-card-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.footer-card-content {
+    padding: 16px;
+}
+
+.footer-card-content h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.footer-card.active .footer-card-content h3 {
+    color: #005bac;
+}
+
+.footer-card-content p {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* --- Responsive --- */
+@media (min-width: 1024px) {
+    /* Điều chỉnh lại nếu bạn muốn dùng grid cho ảnh trên desktop */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+    .gallery-item { height: 600px; }
+}
+.video-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 60px auto 0;
+}
+
+.video-section-title {
+  font-size: 28px;
+  color: #005bac;
+  font-weight: 800;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.video-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.video-item {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.video-frame {
+  width: 100%;
+  height: 260px;
+  border: none;
+  display: block;
+}
+
+.video-title {
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+@media (max-width: 768px) {
+  .video-list {
+    grid-template-columns: 1fr;
+  }
+  .video-frame {
+    height: 210px;
+  }
+}
+.speak-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 12px 24px;
+  background: #005bac;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 4px 12px rgba(0,91,172,0.3);
+}
+
+.speak-btn:hover {
+  background: #003f80;
+  transform: scale(1.05);
+}

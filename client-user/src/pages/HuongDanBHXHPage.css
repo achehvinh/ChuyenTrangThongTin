@@ -1,0 +1,383 @@
+.bhxh-page {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+
+.bhxh-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+.bhxh-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.bhxh-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: #e0f2fe;
+  color: #0369a1;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.bhxh-header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.bhxh-header p {
+  font-size: 16px;
+  color: #64748b;
+}
+
+.bhxh-tts {
+  text-align: center;
+  color: #0369a1;
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 12px;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Emergency */
+.bhxh-emergency {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fef3c7;
+  border: 2px solid #fbbf24;
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.bhxh-emergency span {
+  font-size: 28px;
+}
+
+.bhxh-emergency strong {
+  display: block;
+  color: #92400e;
+  margin-bottom: 4px;
+}
+
+.bhxh-emergency p {
+  color: #78350f;
+  margin: 0;
+}
+
+.bhxh-emergency a {
+  color: #1d4ed8;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Notice */
+.bhxh-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f0fdf4;
+  border: 2px solid #86efac;
+  border-radius: 14px;
+  padding: 16px 24px;
+  margin-bottom: 36px;
+  font-size: 15px;
+  color: #166534;
+}
+
+.bhxh-notice span {
+  font-size: 24px;
+}
+
+/* Dich vu grid */
+.bhxh-dich-vu-section {
+  margin-bottom: 36px;
+}
+
+.bhxh-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.bhxh-dich-vu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.bhxh-dich-vu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 2px solid;
+  border-radius: 14px;
+  padding: 16px 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.2s;
+}
+
+.bhxh-dich-vu-item:hover {
+  transform: translateY(-3px);
+}
+
+.bhxh-dich-vu-icon {
+  font-size: 28px;
+}
+
+.bhxh-dich-vu-label {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Tabs */
+.bhxh-tab-wrapper {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bhxh-tab-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  font-size: 16px;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.bhxh-tab-btn:hover {
+  border-color: #1d4ed8;
+  color: #1d4ed8;
+}
+
+.bhxh-tab-active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: white;
+}
+
+.bhxh-tab-desc {
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+/* Cards */
+.bhxh-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bhxh-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.bhxh-card-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 28px;
+  border-left: 6px solid;
+  background: #f8fafc;
+}
+
+.bhxh-card-icon {
+  font-size: 28px;
+}
+
+.bhxh-card-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bhxh-tag {
+  font-size: 12px;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.bhxh-card-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 2px;
+  display: block;
+}
+
+.bhxh-card-body {
+  padding: 28px;
+}
+
+.bhxh-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bhxh-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.bhxh-step-num {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bhxh-step-item p {
+  font-size: 15px;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
+  padding-top: 4px;
+}
+
+.bhxh-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 12px 28px;
+  color: white;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.bhxh-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+/* Video */
+.bhxh-video-section {
+  margin-top: 40px;
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.bhxh-video-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.bhxh-video {
+  width: 100%;
+  border-radius: 12px;
+  background: #000;
+  max-height: 400px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.bhxh-video-note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+/* Footer tip */
+.bhxh-footer-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #eff6ff;
+  border: 2px solid #bfdbfe;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-top: 32px;
+  font-size: 15px;
+}
+
+.bhxh-footer-tip span {
+  font-size: 28px;
+}
+
+.bhxh-footer-tip strong {
+  display: block;
+  color: #1e3a8a;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.bhxh-footer-tip p {
+  color: #1e40af;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.bhxh-footer-tip a {
+  color: #1d4ed8;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bhxh-header h1 {
+    font-size: 24px;
+  }
+
+  .bhxh-dich-vu-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .bhxh-tab-wrapper {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .bhxh-dich-vu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
