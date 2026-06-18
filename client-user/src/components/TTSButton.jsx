@@ -23,6 +23,13 @@ export default function TTSButton({ type = "child", label = "Nhấn để nghe",
       setProgress(0);
       return;
     }
+    <TTSButton
+      text={`
+      ${event.title}
+      ${event.description}
+      ${event.note}
+ `}
+/>
 
     window.speechSynthesis.cancel();
     const utt = new SpeechSynthesisUtterance(TTS_TEXTS[type]);
@@ -53,6 +60,7 @@ export default function TTSButton({ type = "child", label = "Nhấn để nghe",
   };
 
   return (
+    
     <div className="tts-card">
       <div className="tts-row">
         <button className="tts-icon-wrap" onClick={handlePlay} aria-label={playing ? "Dừng" : "Phát"}>
@@ -67,5 +75,6 @@ export default function TTSButton({ type = "child", label = "Nhấn để nghe",
         <div className="tts-fill" style={{ width: `${progress}%` }} />
       </div>
     </div>
+    
   );
 }

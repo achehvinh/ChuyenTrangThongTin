@@ -87,8 +87,10 @@ export default function LichHopPage() {
             {past.map(e => <EventCard key={e.id} event={e} isPast />)}
           </div>
         </div>
+        
       )}
     </div>
+    
   );
 }
 
