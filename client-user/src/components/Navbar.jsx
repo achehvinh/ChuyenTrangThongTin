@@ -12,7 +12,7 @@ const NAV_ITEMS = [
     ]
   },
   { to: '/chuyen-doi-so', label: 'Chuyển đổi số' },
-  { to: '/phap-luat', label: 'Góc pháp luật' },
+  { to: '/Thu-vien-anh', label: 'Thư viện ảnh' },
   {
   label: 'Hướng dẫn tra cứu',
   dropdown: [

@@ -1,14 +1,8 @@
   
   export const FEATURES = [
-    {
-      title: 'Thông báo',
-      image: 'https://media.istockphoto.com/id/1401607744/vi/vec-to/loa-loa-di%E1%BB%85n-gi%E1%BA%A3-ph%C6%B0%C6%A1ng-ti%E1%BB%87n-truy%E1%BB%81n-th%C3%B4ng-x%C3%A3-h%E1%BB%99i-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-qu%E1%BA%A3ng-c%C3%A1o-v%C3%A0-qu%E1%BA%A3ng-c%C3%A1o-h%C3%ACnh-minh.jpg?s=612x612&w=0&k=20&c=cBFpTg95wgNVhHyeg9ba-sEuf-S6wVtx5U6DAqsBngo=',
-      desc: 'Thông báo mới nhất từ UBND xã Đăk Pxi.',
-      path: '/thong-bao',
-    },
         {
       title: 'Phòng chống Thiên tai',
-      image: 'https://lamdongcdc.vn/upload/1002891/fck/files/2023_07_28_08_53_1016_d0744.jpg',
+      image: 'https://file3.qdnd.vn/data/images/0/2024/08/24/upload_2083/2408202vthuy9.jpg?dpi=150&quality=100&w=870',
       desc: 'Hướng dẫn phòng tránh và ứng phó với các loại thiên tai thường gặp.',
       path: '/thien-tai',
     },
@@ -44,7 +38,7 @@
     },
     {
       title: 'Tra cứu BHXH',
-      image: 'https://tpm.com.vn/wp-content/uploads/2025/10/bhxh.jpg',
+      image: 'https://vcdn1-sohoa.vnecdn.net/2022/03/10/dscf4772jpg-1646901308-1646901-2295-6368-1646902052.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=jtLZcHEg6N212T6gTFd01Q',
       desc: 'Hướng dẫn tra cứu quá trình tham gia BHXH, BHYT.',
       path: '/huong-dan-bhxh',
     },
@@ -75,34 +69,99 @@
   ];
 // src/data.js
 export const DETAILS = {
-  '/thong-bao': {
-    title: 'Thông báo',
-    images: ['link1.jpg', 'link2.jpg', 'link3.jpg'],
-    content: 'Cập nhật các thông báo quan trọng, văn bản chỉ đạo mới nhất từ UBND xã Đăk Pxi đến toàn thể bà con nhân dân.'
-  },
-  '/thien-tai': {
-    title: 'Phòng chống Thiên tai',
-    images: ['link1.jpg', 'link2.jpg', 'link3.jpg'],
-    content: 'Hướng dẫn phòng tránh và ứng phó với các loại thiên tai thường gặp.',
-  },
-'/duoi-nuoc': {
-  title: 'Phòng chống đuối nước',
-  images: ['link1.jpg', 'link2.jpg', 'link3.jpg', 'link4.jpg'],
-  content: 'Hướng dẫn kỹ năng phòng tránh đuối nước, giám sát trẻ nhỏ tại khu vực sông suối, ao hồ.',
+'/thien-tai': {
+  title: '🌪️ Phòng chống Thiên tai',
+
+  images: [
+    'LINK_ANH_THIEN_TAI_1',
+    'LINK_ANH_THIEN_TAI_2',
+    'LINK_ANH_THIEN_TAI_3'
+  ],
+
+  content:
+    'Mùa mưa bão thường xuất hiện lũ quét, sạt lở đất và giông lốc. Bà con cần theo dõi thông báo của chính quyền địa phương.',
+
+  warning: [
+    'Không đi qua suối khi nước dâng cao.',
+    'Không ngủ tại khu vực có nguy cơ sạt lở.',
+    'Di chuyển người già và trẻ em đến nơi an toàn.'
+  ],
+
+  emergencyPhone: '0339310915',
+
   videos: [
-    { type: 'local', src: '/video/duoi_nuoc1.mp4', title: 'Video hướng dẫn phòng chống đuối nước' },
+    {
+      type: 'local',
+      src: '/video/thien_tai.mp4',
+      title: 'Kỹ năng phòng tránh lũ quét'
+    }
   ]
 },
-  '/chay-rung': {
-    title: 'Phòng chống cháy rừng',
-    images: ['link1.jpg', 'link2.jpg', 'link3.jpg'],
-    content: 'Các quy định về bảo vệ rừng, nghiêm cấm đốt nương rẫy trái phép trong mùa khô hanh.'
-  },
-  '/te-nan': {
-    title: 'Phòng chống tệ nạn xã hội',
-    images: ['link1.jpg', 'link2.jpg', 'link3.jpg', 'link4.jpg', 'link5.jpg'],
-    content: 'Tuyên truyền bài trừ ma túy, cờ bạc, và các tệ nạn xã hội để xây dựng đời sống văn hóa lành mạnh.'
-  },
+'/duoi-nuoc': {
+  title: '🏊 Phòng chống đuối nước',
+
+  images: [
+    'LINK_DUOI_NUOC_1',
+    'LINK_DUOI_NUOC_2',
+    'LINK_DUOI_NUOC_3'
+  ],
+  
+  content:
+    'Trẻ em không được tự ý tắm sông, suối, ao hồ khi không có người lớn đi cùng.',
+
+  warning: [
+    'Không tắm sông một mình.',
+    'Không cứu người bằng cách nhảy xuống nước khi không biết bơi.',
+    'Luôn mặc áo phao khi đi thuyền.'
+  ],
+
+  videos: [
+    {
+      type: 'local',
+      src: '/video/duoi_nuoc1.mp4',
+      title: 'Video hướng dẫn phòng chống đuối nước'
+    }
+  ]
+  
+},
+'/chay-rung': {
+  title: '🔥 Phòng chống cháy rừng',
+
+  images: [
+    'LINK_CHAY_RUNG_1',
+    'LINK_CHAY_RUNG_2',
+    'LINK_CHAY_RUNG_3'
+  ],
+
+  content:
+    'Mùa khô nguy cơ cháy rừng rất cao. Bà con không đốt nương rẫy khi chưa được phép.',
+
+  warning: [
+    'Không mang lửa vào rừng.',
+    'Không đốt ong.',
+    'Không đốt thực bì gần khu vực rừng.'
+  ],
+
+  emergencyPhone: '0339310915'
+},
+'/te-nan': {
+  title: '🚫 Phòng chống tệ nạn xã hội',
+
+  images: [
+    'LINK_TE_NAN_1',
+    'LINK_TE_NAN_2',
+    'LINK_TE_NAN_3'
+  ],
+
+  content:
+    'Nói không với ma túy, cờ bạc, tín dụng đen và các hành vi vi phạm pháp luật.',
+
+  warning: [
+    'Không nghe lời dụ dỗ sử dụng ma túy.',
+    'Không tham gia cờ bạc.',
+    'Không vay tín dụng đen.'
+  ]
+},
   '/chuyen-doi-so': {
     title: 'Chuyển đổi số',
     images: ['link1.jpg', 'link2.jpg', 'link3.jpg'],

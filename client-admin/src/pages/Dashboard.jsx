@@ -36,8 +36,8 @@ const DATA_CHUYEN_MUC = [
 ];
 
 const RECENT_ALERTS = [
-  { type: 'danger', title: 'Cảnh báo cháy rừng thôn Đắk Wâk', time: '08:00 - 06/06/2026' },
-  { type: 'warning', title: 'Họp dân khẩn thôn Đắk Pxi', time: '10:00 - 06/06/2026' },
+  { type: 'danger', title: 'Cảnh báo cháy rừng thôn Đăk Wek', time: '08:00 - 06/06/2026' },
+  { type: 'warning', title: 'Họp dân khẩn thôn Đăk Xế Kơ Ne', time: '10:00 - 06/06/2026' },
 ];
 
 const RECENT_NOTICES = [
@@ -64,7 +64,7 @@ export default function Dashboard() {
       <div className="dashboard-topbar">
         <div>
           <h1>📊 Dashboard Tuyên truyền</h1>
-          <p>🕐 Cập nhật lúc: {now} — UBND xã Đắk Pxi</p>
+          <p>🕐 Cập nhật lúc: {now} — UBND xã Đăk Pxi</p>
         </div>
         <div className="dashboard-btn-group">
           <button className="btn-primary" onClick={() => navigate('/thong-bao')}>

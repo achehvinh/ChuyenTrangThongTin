@@ -1,0 +1,179 @@
+.dd-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1.5px solid #f5c4b3;
+}
+
+.dd-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #993c1d;
+  margin-bottom: 6px;
+}
+
+.dd-hint {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 14px;
+}
+
+/* Pool of draggable items */
+.dd-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 52px;
+  margin-bottom: 14px;
+}
+
+.drag-item {
+  background: #0f6e56;
+  color: white;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: grab;
+  border: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.drag-item:active {
+  cursor: grabbing;
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+.drag-item.placed {
+  background: #085041;
+}
+
+/* Drop zones */
+.dd-zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.dd-zone-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dd-zone-label {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1.5px solid;
+}
+
+.dd-zone-label.safe {
+  background: #eaf3de;
+  border-color: #3b6d11;
+  color: #27500a;
+}
+
+.dd-zone-label.danger {
+  background: #faece7;
+  border-color: #993c1d;
+  color: #712b13;
+}
+
+.dd-zone {
+  border: 2px dashed #9fe1cb;
+  border-radius: 14px;
+  min-height: 80px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.dd-zone.over {
+  background: #e1f5ee;
+  border-color: #0f6e56;
+}
+
+.dd-placeholder {
+  font-size: 12px;
+  color: #aaa;
+  align-self: center;
+  width: 100%;
+  text-align: center;
+}
+
+/* Actions row */
+.dd-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.dd-check-btn {
+  background: #0f6e56;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dd-check-btn:hover {
+  background: #1d9e75;
+}
+
+.dd-reset-btn {
+  background: transparent;
+  color: #0f6e56;
+  border: 1.5px solid #9fe1cb;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dd-reset-btn:hover {
+  background: #e1f5ee;
+}
+
+/* Result feedback */
+.dd-result {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.dd-result.correct {
+  background: #eaf3de;
+  color: #27500a;
+}
+
+.dd-result.wrong {
+  background: #faece7;
+  color: #712b13;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

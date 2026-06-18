@@ -8,9 +8,14 @@ export default function AllFeaturesPage() {
   const navigate = useNavigate();
   const { category } = useParams();
   const path = `/${category}`;
-  const data = DETAILS[path];
-  const { lang } = useLang();
-  const [speaking, setSpeaking] = useState(false);
+const { lang } = useLang();
+const [speaking, setSpeaking] = useState(false);
+
+const data = DETAILS[path];
+
+if (!data) {
+  return <Navigate to="/" replace />;
+}
   const audioRef = React.useRef(null);
   React.useEffect(() => {
   // Tự động đọc khi mở trang
@@ -33,7 +38,10 @@ export default function AllFeaturesPage() {
       if (result.async) {
         const audio = new Audio(result.async);
         audioRef.current = audio;
-        audio.play();
+        audio.play().catch(() => {
+  console.log("Trình duyệt chặn autoplay");
+  setSpeaking(false);
+});
         audio.onended = () => setSpeaking(false);
       } else {
         setSpeaking(false);
@@ -81,7 +89,10 @@ export default function AllFeaturesPage() {
       if (result.async) {
         const audio = new Audio(result.async);
         audioRef.current = audio;
-        audio.play();
+        audio.play().catch(() => {
+  console.log("Trình duyệt chặn autoplay");
+  setSpeaking(false);
+});
         audio.onended = () => setSpeaking(false);
       } else {
         setSpeaking(false);
@@ -100,11 +111,19 @@ export default function AllFeaturesPage() {
 
       {/* 1. Phần tiêu đề chính */}
       <section className="feature-group-single">
-        <div className="header-content">
-          <h1>{lang === 'vi' ? data.title : (data.title_xd || data.title)}</h1>
-          <p>{lang === 'vi' ? data.content : (data.content_xd || data.content)}</p>
-        </div>
-
+<div className="header-content">
+  <h1>{lang === 'vi' ? data.title : (data.title_xd || data.title)}</h1>
+  <p>
+  {lang === 'vi'
+    ? data.content
+    : (data.content_xd || data.content)}
+</p>
+      <ul>
+      {data.warning.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+</div>
         {/* 2. Gallery ảnh */}
         <div className="gallery-grid">
           {data.images && data.images.map((img, index) => (

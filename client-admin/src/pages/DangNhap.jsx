@@ -30,7 +30,7 @@ export default function DangNhap() {
       <div className="login-box">
 
         <div className="login-logo">🏛️</div>
-        <h2>UBND Xã Đắk Pxi</h2>
+        <h2>UBND Xã Đăk Pxi</h2>
         <p className="login-sub">Hệ thống quản lý nội dung</p>
 
         <form onSubmit={handleLogin}>
@@ -69,7 +69,7 @@ export default function DangNhap() {
         </form>
 
         <div className="login-footer">
-          UBND Xã Đắk Pxi — Kon Tum © 2026
+          UBND Xã Đăk Pxi — Quảng Ngãi © 2026
         </div>
 
       </div>

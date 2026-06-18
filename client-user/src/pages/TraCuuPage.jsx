@@ -1,114 +1,72 @@
 import { useState, useRef, useEffect } from 'react';
 import './TraCuuPage.css';
+import FAQChatBot from '../components/FAQChatBot';
 
 const HUONG_DAN_APP = [
   {
     id: 1,
     title: 'App VssID',
-    subtitle: 'Ứng dụng Bảo hiểm Xã hội Việt Nam',
-    steps: [
-      'Tải app VssID trên CH Play hoặc App Store',
-      'Đăng nhập bằng số CCCD 12 chữ số',
-      'Chọn mục "Thẻ BHYT" để xem thông tin thẻ',
-    ],
-    btn: {
-      label: '📲 Tải VssID',
-      url: 'https://play.google.com/store/apps/details?id=com.vssid',
-    },
+    subtitle: 'Bảo hiểm Xã hội Việt Nam',
     color: '#005bac',
     icon: '🔵',
+    hinh: '/huong-dan/tracuuappbhyt.jpg',
+    buoc: ['Tải app VssID', 'Nhập số CCCD', 'Chọn "Thẻ BHYT"'],
+    btn: { label: '📲 Tải VssID ngay', url: 'https://play.google.com/store/apps/details?id=com.vssid' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=com.vssid',
   },
   {
     id: 2,
     title: 'App Sức khỏe điện tử',
-    subtitle: 'Ứng dụng của Bộ Y tế',
-    steps: [
-      'Tải app "Sức khỏe điện tử" trên CH Play hoặc App Store',
-      'Đăng ký bằng số điện thoại và CCCD',
-      'Chọn mục "Hồ sơ sức khỏe" rồi xem thông tin BHYT',
-    ],
-    btn: {
-      label: '📲 Tải Sức khỏe điện tử',
-      url: 'https://play.google.com/store/apps/details?id=vn.gov.moh.sk',
-    },
+    subtitle: 'Bộ Y tế',
     color: '#0891b2',
     icon: '🩺',
+    hinh: '/huong-dan/suckhoe.jpg',
+    buoc: ['Tải app Sức khỏe điện tử', 'Nhập SĐT + CCCD', 'Vào "Hồ sơ sức khỏe"'],
+    btn: { label: '📲 Tải Sức khỏe điện tử', url: 'https://play.google.com/store/apps/details?id=vn.gov.moh.sk' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=vn.gov.moh.sk',
   },
   {
     id: 3,
     title: 'App VNeID',
-    subtitle: 'Ứng dụng định danh điện tử quốc gia',
-    steps: [
-      'Tải app VNeID trên CH Play hoặc App Store',
-      'Đăng nhập bằng số CCCD và xác thực khuôn mặt',
-      'Chọn mục "Giấy tờ" rồi tìm "Thẻ BHYT điện tử"',
-    ],
-    btn: {
-      label: '📲 Tải VNeID',
-      url: 'https://play.google.com/store/apps/details?id=com.vnpt.vneid',
-    },
+    subtitle: 'Định danh điện tử quốc gia',
     color: '#7c3aed',
     icon: '🪪',
+    hinh: '/huong-dan/tracuuvneid.jpg',
+    buoc: ['Tải app VNeID', 'Đăng nhập + xác thực mặt', 'Vào "Giấy tờ" → BHYT'],
+    btn: { label: '📲 Tải VNeID', url: 'https://play.google.com/store/apps/details?id=com.vnpt.vneid' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=com.vnpt.vneid',
   },
 ];
 
 const HUONG_DAN_WEB = [
   {
-    id: 1,
-    title: 'Cổng thông tin BHXH Việt Nam',
-    subtitle: 'baohiemxahoi.gov.vn',
-    steps: [
-      'Vào trang: baohiemxahoi.gov.vn',
-      'Chọn mục "Tra cứu" trên thanh menu',
-      'Chọn "Tra cứu thông tin người tham gia BHYT"',
-      'Nhập số CCCD 12 chữ số và bấm tra cứu',
-    ],
-    btn: {
-      label: '🌐 Vào tra cứu ngay',
-      url: 'https://baohiemxahoi.gov.vn/tracuu/Pages/tra-cuu-the-bao-hiem-y-te.aspx',
-    },
-    color: '#16a34a',
-    icon: '🏛️',
-  },
-  {
     id: 2,
-    title: 'Cổng dịch vụ công quốc gia',
-    subtitle: 'dichvucong.gov.vn',
-    steps: [
-      'Vào trang: dichvucong.gov.vn',
-      'Đăng nhập bằng tài khoản VNeID hoặc số CCCD',
-      'Tìm kiếm "Tra cứu thẻ BHYT"',
-      'Nhập thông tin và xem kết quả',
-    ],
-    btn: {
-      label: '🌐 Vào Cổng dịch vụ công',
-      url: 'https://dichvucong.gov.vn',
-    },
+    title: 'dichvucong.gov.vn',
+    subtitle: 'Cổng dịch vụ công quốc gia',
     color: '#dc2626',
     icon: '🖥️',
+    hinh: '/huong-dan/tracuwdichvucong.jpg',
+    buoc: ['Vào dichvucong.gov.vn', 'Đăng nhập bằng VNeID', 'Tìm "Tra cứu thẻ BHYT"'],
+    btn: { label: '🌐 Vào Cổng dịch vụ công', url: 'https://dichvucong.gov.vn' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://dichvucong.gov.vn',
   },
   {
     id: 3,
-    title: 'Tra cứu trên Cổng BHYT',
-    subtitle: 'baohiemyte.vn',
-    steps: [
-      'Vào trang: baohiemyte.vn',
-      'Chọn mục "Tra cứu thông tin"',
-      'Nhập số thẻ BHYT hoặc số CCCD',
-      'Bấm "Tra cứu" để xem thông tin',
-    ],
-    btn: {
-      label: '🌐 Vào baohiemyte.vn',
-      url: 'https://baohiemyte.vn',
-    },
+    title: 'baohiemyte.vn',
+    subtitle: 'Cổng Bảo hiểm Y tế',
     color: '#0369a1',
     icon: '💻',
+    hinh: '/huong-dan/tracuubhyt.jpg',
+    buoc: ['Vào baohiemyte.vn', 'Chọn "Tra cứu thông tin"', 'Nhập CCCD hoặc mã thẻ'],
+    btn: { label: '🌐 Vào baohiemyte.vn', url: 'https://baohiemyte.vn' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://baohiemyte.vn',
   },
 ];
 
 export default function TraCuuPage() {
   const [speaking, setSpeaking] = useState(false);
   const [tab, setTab] = useState('app');
+  const [anhPhongTo, setAnhPhongTo] = useState(null);
   const audioRef = useRef(null);
 
   const readText = `
@@ -145,13 +103,9 @@ export default function TraCuuPage() {
         setSpeaking(false);
       }
     }, 1000);
-
     return () => {
       clearTimeout(timer);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
       setSpeaking(false);
     };
   }, []);
@@ -162,16 +116,41 @@ export default function TraCuuPage() {
     <div className="tracuu-page">
       <div className="tracuu-inner">
 
+        {/* Header */}
         <header className="tracuu-header">
-          <h1>HƯỚNG DẪN TRA CỨU THẺ BHYT TẠI NHÀ</h1>
-          <p>Bà con không cần lên UBND xã, chỉ cần điện thoại hoặc máy tính là tra cứu được ngay!</p>
-          {speaking && (
-            <div className="tts-indicator">
-              🔊 Đang đọc hướng dẫn...
-            </div>
-          )}
+          <div className="tracuu-header-icon">🏥</div>
+          <h1>Tra cứu thẻ BHYT tại nhà<br /><span>không cần lên xã!</span></h1>
+          <p>Chỉ cần điện thoại hoặc máy tính là xong</p>
+          {speaking && <div className="tts-indicator">🔊 Đang đọc hướng dẫn...</div>}
         </header>
 
+        {/* Chuẩn bị */}
+        <div className="tracuu-chuan-bi">
+          <div className="chuan-bi-title">📋 Bà con cần chuẩn bị:</div>
+          <div className="chuan-bi-list">
+            <div className="chuan-bi-item">
+              <div className="chuan-bi-icon">🪪</div>
+              <div className="chuan-bi-text">Thẻ CCCD<br /><span>12 chữ số</span></div>
+            </div>
+            <div className="chuan-bi-arrow">→</div>
+            <div className="chuan-bi-item">
+              <div className="chuan-bi-icon">📱</div>
+              <div className="chuan-bi-text">Điện thoại<br /><span>hoặc máy tính</span></div>
+            </div>
+            <div className="chuan-bi-arrow">→</div>
+            <div className="chuan-bi-item">
+              <div className="chuan-bi-icon">📶</div>
+              <div className="chuan-bi-text">Internet<br /><span>wifi hoặc 4G</span></div>
+            </div>
+            <div className="chuan-bi-arrow">→</div>
+            <div className="chuan-bi-item chuan-bi-item--result">
+              <div className="chuan-bi-icon">✅</div>
+              <div className="chuan-bi-text">Tra cứu<br /><span>được ngay!</span></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Emergency */}
         <div className="tracuu-emergency">
           <span>🚨</span>
           <div>
@@ -180,91 +159,146 @@ export default function TraCuuPage() {
           </div>
         </div>
 
-        <div className="tracuu-notice">
-          <span>💡</span>
-          <p>Bà con chỉ cần chuẩn bị <strong>số CCCD 12 chữ số</strong> là có thể tra cứu ngay tại nhà!</p>
-        </div>
-
+        {/* Tabs */}
         <div className="tab-wrapper">
-          <button
-            className={'tab-btn' + (tab === 'app' ? ' tab-active' : '')}
-            onClick={() => setTab('app')}
-          >
-            📱 Tra cứu qua App
+          <button className={'tab-btn' + (tab === 'app' ? ' tab-active' : '')} onClick={() => setTab('app')}>
+            <span className="tab-icon">📱</span>
+            <span>Dùng điện thoại</span>
+            <span className="tab-sub">Tải app về máy</span>
           </button>
-          <button
-            className={'tab-btn' + (tab === 'web' ? ' tab-active' : '')}
-            onClick={() => setTab('web')}
-          >
-            🌐 Tra cứu qua Website
+          <button className={'tab-btn' + (tab === 'web' ? ' tab-active' : '')} onClick={() => setTab('web')}>
+            <span className="tab-icon">🌐</span>
+            <span>Dùng trình duyệt</span>
+            <span className="tab-sub">Không cần cài app</span>
           </button>
         </div>
 
-        <div className="tab-desc">
-          {tab === 'app' && (
-            <p>Dùng điện thoại thông minh, tải 1 trong 3 app bên dưới để xem thông tin thẻ BHYT</p>
-          )}
-          {tab === 'web' && (
-            <p>Dùng điện thoại hoặc máy tính vào 1 trong 3 trang web bên dưới để tra cứu</p>
-          )}
-        </div>
-
+        {/* Cards */}
         <div className="huong-dan-list">
           {danhSach.map((hd) => (
             <div className="huong-dan-card" key={hd.id}>
 
-              <div className="huong-dan-title" style={{ borderColor: hd.color }}>
-                <span className="huong-dan-icon">{hd.icon}</span>
+              {/* Header */}
+              <div className="huong-dan-card-header" style={{ background: hd.color }}>
+                <span className="hd-header-icon">{hd.icon}</span>
                 <div>
-                  <h2>{hd.title}</h2>
-                  <span className="huong-dan-subtitle">{hd.subtitle}</span>
+                  <div className="hd-header-title">{hd.title}</div>
+                  <div className="hd-header-sub">{hd.subtitle}</div>
                 </div>
               </div>
 
-              <div className="huong-dan-body" style={{ gridTemplateColumns: '1fr' }}>
-                <div className="huong-dan-steps">
-                  {hd.steps.map((step, i) => (
-                    <div className="step-item" key={i}>
-                      <span className="step-num" style={{ background: hd.color }}>{i + 1}</span>
-                      <p>{step}</p>
-                    </div>
-                  ))}
-                  <a
-                    href={hd.btn.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="huong-dan-btn"
-                    style={{ background: hd.color }}
-                  > 
-                    {hd.btn.label}
-                  </a>
+              {/* Nhãn các bước */}
+              <div className="hd-step-label-row" style={{ background: hd.color + 'dd' }}>
+                {hd.buoc.map((b, i) => (
+                  <div className="hd-step-label-item" key={i}>
+                    <div className="hd-step-label-num">{i + 1}</div>
+                    <div>{b}</div>
+                  </div>
+                ))}
+              </div>
+                
+              {/* Ảnh full width */}
+              <img
+                src={hd.hinh}
+                alt={hd.title}
+                className="hd-img-full"
+                style={{ cursor: 'zoom-in' }}
+                onClick={() => setAnhPhongTo(hd.hinh)}
+                onError={e => { e.target.style.display = 'none'; }}
+                />
+
+              {/* Footer */}
+              <div className="hd-card-footer">
+                <div className="hd-qr-box">
+                  <img src={hd.qr} alt="QR" className="hd-qr-img"
+                    onError={e => { e.target.style.display = 'none'; }} />
+                  <div className="hd-qr-label">Quét QR để mở</div>
                 </div>
+                <a href={hd.btn.url} target="_blank" rel="noreferrer"
+                  className="hd-main-btn" style={{ background: hd.color }}>
+                  {hd.btn.label}
+                </a>
               </div>
 
             </div>
           ))}
         </div>
 
+        {/* Video */}
         <div className="video-section">
-          <h2 className="video-title">
+          <div className="video-header">
             {tab === 'app' ? '🎬 Video hướng dẫn tra cứu qua App' : '🎬 Video hướng dẫn tra cứu qua Website'}
-          </h2>
-          <video
-            key={tab}
-            className="video-main"
-            controls
-            playsInline
-            preload="metadata"
-          >
-            <source
-              src={tab === 'app' ? '/video/huongdan-bhyt.mp4' : '/video/huongdan-bhytweb.mp4'}
-              type="video/mp4"
-            />
-            Trinh duyet khong ho tro video.
+          </div>
+          <video key={tab} className="video-main" controls playsInline preload="metadata">
+            <source src={tab === 'app' ? '/video/huongdan-bhyt.mp4' : '/video/huongdan-bhytweb.mp4'} type="video/mp4" />
           </video>
         </div>
-
+        <FAQChatBot type="bhyt" />
+        
+        {/* Footer */}
+        <div className="tracuu-footer-tip">
+          <span>🏛️</span>
+          <div>
+            <strong>Vẫn chưa tra cứu được?</strong>
+            <p>Bà con đến trực tiếp <strong>UBND xã Đăk Pxi</strong> — cán bộ hỗ trợ miễn phí!</p>
+          </div>
+          
+        </div>
+      
       </div>
+     {anhPhongTo && (
+  <div
+    onClick={() => setAnhPhongTo(null)}
+    style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(0,0,0,0.92)',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      padding: '20px',
+      cursor: 'zoom-out',
+    }}
+  >
+    <img
+      src={anhPhongTo}
+      alt="Phóng to"
+      style={{
+        maxWidth: '95vw', maxHeight: '85vh',
+        borderRadius: '12px',
+        boxShadow: '0 8px 40px rgba(0,0,0,0.5)',
+        objectFit: 'contain',
+      }}
+      onClick={e => e.stopPropagation()}
+    />
+    <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+      <a
+        href={anhPhongTo}
+        download
+        onClick={e => e.stopPropagation()}
+        style={{
+          padding: '10px 24px', background: '#005bac', color: 'white',
+          borderRadius: '10px', fontWeight: '700', fontSize: '15px',
+          textDecoration: 'none',
+        }}
+      >
+        💾 Lưu ảnh
+      </a>
+      <button
+        onClick={() => setAnhPhongTo(null)}
+        style={{
+          padding: '10px 24px', background: '#dc2626', color: 'white',
+          border: 'none', borderRadius: '10px', fontWeight: '700',
+          fontSize: '15px', cursor: 'pointer',
+        }}
+      >
+        ✕ Đóng
+      </button>
     </div>
+    <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', marginTop: '10px' }}>
+      Nhấn ra ngoài ảnh để đóng
+    </p>
+  </div>
+)}
+    </div>
+    
   );
 }

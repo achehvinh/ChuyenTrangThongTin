@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import './HuongDanBHXHPage.css';
+import './TraCuuPage.css';
+import FAQChatBot from '../components/FAQChatBot';
 
 const DICH_VU = [
   {
@@ -44,79 +46,85 @@ const HUONG_DAN_APP = [
   {
     id: 1,
     title: 'App VssID',
-    subtitle: 'Ứng dụng chính thức của BHXH Việt Nam',
-    steps: [
-      'Tải app VssID trên CH Play (Android) hoặc App Store (iPhone)',
-      'Đăng nhập bằng số CCCD 12 chữ số và mật khẩu',
-      'Chọn mục "Quá trình tham gia BHXH" để tra cứu',
-      'Xem đầy đủ số năm đóng, mức đóng và quyền lợi',
-    ],
-    btn: { label: '📲 Tải VssID', url: 'https://play.google.com/store/apps/details?id=com.vssid' },
-    color: '#1d4ed8',
+    subtitle: 'Bảo hiểm Xã hội Việt Nam',
+    color: '#005bac',
     icon: '🔵',
-    tag: 'Khuyên dùng',
+    hinh: '/huong-dan/vssid.jpg',
+    buoc: ['Tải app VssID', 'Nhập số CCCD', 'Chọn "Thẻ BHXH"'],
+    btn: { label: '📲 Tải VssID ngay', url: 'https://play.google.com/store/apps/details?id=com.vssid' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=com.vssid',
   },
   {
     id: 2,
+    title: 'App Sức khỏe điện tử',
+    subtitle: 'Bộ Y tế',
+    color: '#0891b2',
+    icon: '🩺',
+    hinh: '/huong-dan/suckhoe.jpg',
+    buoc: ['Tải app Sức khỏe điện tử', 'Nhập SĐT + CCCD', 'Vào "Hồ sơ sức khỏe"'],
+    btn: { label: '📲 Tải Sức khỏe điện tử', url: 'https://play.google.com/store/apps/details?id=vn.gov.moh.sk' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=vn.gov.moh.sk',
+  },
+  {
+    id: 3,
     title: 'App VNeID',
     subtitle: 'Định danh điện tử quốc gia',
-    steps: [
-      'Tải app VNeID trên CH Play hoặc App Store',
-      'Đăng nhập và xác thực khuôn mặt bằng CCCD gắn chip',
-      'Chọn mục "Bảo hiểm xã hội" trong danh sách dịch vụ',
-      'Xem thông tin quá trình tham gia BHXH',
-    ],
-    btn: { label: '📲 Tải VNeID', url: 'https://play.google.com/store/apps/details?id=com.vnpt.vneid' },
     color: '#7c3aed',
     icon: '🪪',
-    tag: null,
+    hinh: '/huong-dan/vneid.jpg',
+    buoc: ['Tải app VNeID', 'Đăng nhập + xác thực mặt', 'Vào "Giấy tờ" → BHXH'],
+    btn: { label: '📲 Tải VNeID', url: 'https://play.google.com/store/apps/details?id=com.vnpt.vneid' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=com.vnpt.vneid',
   },
 ];
 
 const HUONG_DAN_WEB = [
   {
     id: 1,
-    title: 'Cổng thông tin BHXH Việt Nam',
-    subtitle: 'baohiemxahoi.gov.vn',
-    steps: [
-      'Vào trang: baohiemxahoi.gov.vn',
-      'Chọn mục "Tra cứu" trên thanh menu',
-      'Chọn "Tra cứu quá trình đóng BHXH"',
-      'Nhập số CCCD 12 chữ số và bấm tra cứu',
-    ],
-    btn: { label: '🌐 Tra cứu ngay', url: 'https://baohiemxahoi.gov.vn/tracuu/Pages/tra-cuu-qua-trinh-dong-bao-hiem-xa-hoi.aspx' },
+    title: 'baohiemxahoi.gov.vn',
+    subtitle: 'Cổng BHXH Việt Nam',
     color: '#16a34a',
     icon: '🏛️',
-    tag: 'Chính thức',
+    hinh: '/huong-dan/tracuubhyt.jpg',
+    buoc: ['Vào baohiemxahoi.gov.vn', 'Chọn "Tra cứu"', 'Nhập CCCD → Tra cứu'],
+    btn: { label: '🌐 Vào tra cứu ngay', url: 'https://baohiemxahoi.gov.vn/tracuu/Pages/tra-cuu-the-bao-hiem-y-te.aspx' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://baohiemxahoi.gov.vn',
   },
   {
     id: 2,
-    title: 'Cổng dịch vụ công quốc gia',
-    subtitle: 'dichvucong.gov.vn',
-    steps: [
-      'Vào trang: dichvucong.gov.vn',
-      'Đăng nhập bằng tài khoản VNeID hoặc số CCCD',
-      'Tìm kiếm "Tra cứu BHXH" trong ô tìm kiếm',
-      'Chọn dịch vụ và nhập thông tin để tra cứu',
-    ],
-    btn: { label: '🌐 Vào Cổng DVC', url: 'https://dichvucong.gov.vn' },
+    title: 'dichvucong.gov.vn',
+    subtitle: 'Cổng dịch vụ công quốc gia',
     color: '#dc2626',
     icon: '🖥️',
-    tag: null,
+    hinh: '/huong-dan/tracuubhxh.jpg',
+    buoc: ['Vào dichvucong.gov.vn', 'Đăng nhập bằng VNeID', 'Tìm "Tra cứu thẻ BHXH"'],
+    btn: { label: '🌐 Vào Cổng dịch vụ công', url: 'https://dichvucong.gov.vn' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://dichvucong.gov.vn',
+  },
+  {
+    id: 3,
+    title: 'baohiemyte.vn',
+    subtitle: 'Cổng Bảo hiểm Y tế',
+    color: '#0369a1',
+    icon: '💻',
+    hinh: '/huong-dan/tracuubhxh.jpg',
+    buoc: ['Vào baohiemyte.vn', 'Chọn "Tra cứu thông tin"', 'Nhập CCCD hoặc mã thẻ'],
+    btn: { label: '🌐 Vào baohiemyte.vn', url: 'https://baohiemyte.vn' },
+    qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://baohiemyte.vn',
   },
 ];
 
 export default function HuongDanBHXHPage() {
-  const [tab, setTab] = useState('app');
   const [speaking, setSpeaking] = useState(false);
+  const [tab, setTab] = useState('app');
   const audioRef = useRef(null);
 
   const readText = `
-    Hướng dẫn tra cứu thông tin Bảo hiểm Xã hội tại nhà, không cần lên UBND xã.
-    Bà con chỉ cần có số căn cước công dân mười hai chữ số là tra cứu được ngay.
-    Cách thứ nhất: Dùng điện thoại qua app VssID hoặc VNeID.
-    Cách thứ hai: Dùng máy tính hoặc điện thoại vào trang baohiemxahoi.gov.vn hoặc dichvucong.gov.vn.
-    Nếu cần hỗ trợ, gọi tổng đài một chín không không, chín ba sáu, chín ba sáu. Miễn phí hai mươi bốn trên bảy.
+    Hướng dẫn tra cứu thẻ Bảo hiểm Y tế tại nhà, không cần lên UBND xã.
+    Có hai cách tra cứu chính.
+    Cách thứ nhất: Dùng điện thoại qua các ứng dụng VssID, Sức khỏe điện tử, hoặc VNeID.
+    Cách thứ hai: Dùng máy tính hoặc điện thoại vào các trang web baohiemxahoi.gov.vn, dichvucong.gov.vn, hoặc baohiemyte.vn.
+    Bà con chỉ cần có số căn cước công dân là tra cứu được ngay tại nhà.
   `;
 
   useEffect(() => {
@@ -145,13 +153,9 @@ export default function HuongDanBHXHPage() {
         setSpeaking(false);
       }
     }, 1000);
-
     return () => {
       clearTimeout(timer);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
       setSpeaking(false);
     };
   }, []);
@@ -159,20 +163,45 @@ export default function HuongDanBHXHPage() {
   const danhSach = tab === 'app' ? HUONG_DAN_APP : HUONG_DAN_WEB;
 
   return (
-    <div className="bhxh-page">
-      <div className="bhxh-inner">
+    <div className="tracuu-page">
+      <div className="tracuu-inner">
 
         {/* Header */}
-        <header className="bhxh-header">
-          <h1>HƯỚNG DẪN TRA CỨU THÔNG TIN BHXH TẠI NHÀ</h1>
-          <p>Bà con không cần lên UBND xã, chỉ cần điện thoại hoặc máy tính là tra cứu được ngay!</p>
-          {speaking && (
-            <div className="bhxh-tts">🔊 Đang đọc hướng dẫn...</div>
-          )}
+        <header className="tracuu-header">
+          <div className="tracuu-header-icon">🏥</div>
+          <h1>Tra cứu thẻ BHXH tại nhà<br /><span>không cần lên xã!</span></h1>
+          <p>Chỉ cần điện thoại hoặc máy tính là xong</p>
+          {speaking && <div className="tts-indicator">🔊 Đang đọc hướng dẫn...</div>}
         </header>
 
-        {/* Banner khẩn cấp */}
-        <div className="bhxh-emergency">
+        {/* Chuẩn bị */}
+        <div className="tracuu-chuan-bi">
+          <div className="chuan-bi-title">📋 Bà con cần chuẩn bị:</div>
+          <div className="chuan-bi-list">
+            <div className="chuan-bi-item">
+              <div className="chuan-bi-icon">🪪</div>
+              <div className="chuan-bi-text">Thẻ CCCD<br /><span>12 chữ số</span></div>
+            </div>
+            <div className="chuan-bi-arrow">→</div>
+            <div className="chuan-bi-item">
+              <div className="chuan-bi-icon">📱</div>
+              <div className="chuan-bi-text">Điện thoại<br /><span>hoặc máy tính</span></div>
+            </div>
+            <div className="chuan-bi-arrow">→</div>
+            <div className="chuan-bi-item">
+              <div className="chuan-bi-icon">📶</div>
+              <div className="chuan-bi-text">Internet<br /><span>wifi hoặc 4G</span></div>
+            </div>
+            <div className="chuan-bi-arrow">→</div>
+            <div className="chuan-bi-item chuan-bi-item--result">
+              <div className="chuan-bi-icon">✅</div>
+              <div className="chuan-bi-text">Tra cứu<br /><span>được ngay!</span></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Emergency */}
+        <div className="tracuu-emergency">
           <span>🚨</span>
           <div>
             <strong>Cần hỗ trợ ngay?</strong>
@@ -180,117 +209,88 @@ export default function HuongDanBHXHPage() {
           </div>
         </div>
 
-        {/* Gợi ý nhanh */}
-        <div className="bhxh-notice">
-          <span>💡</span>
-          <p>Bà con chỉ cần chuẩn bị <strong>số CCCD 12 chữ số</strong> là có thể tra cứu ngay tại nhà!</p>
-        </div>
-
-        {/* Các chế độ BHXH */}
-        <div className="bhxh-dich-vu-section">
-          <h2 className="bhxh-section-title">Các chế độ BHXH bà con có thể tra cứu</h2>
-          <div className="bhxh-dich-vu-grid">
-            {DICH_VU.map((dv) => (
-              <div className="bhxh-dich-vu-item" key={dv.id} style={{ borderColor: dv.color }}>
-                <span className="bhxh-dich-vu-icon">{dv.icon}</span>
-                <span className="bhxh-dich-vu-label" style={{ color: dv.color }}>{dv.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Tab chọn cách tra cứu */}
-        <div className="bhxh-tab-wrapper">
-          <button
-            className={'bhxh-tab-btn' + (tab === 'app' ? ' bhxh-tab-active' : '')}
-            onClick={() => setTab('app')}
-          >
-            📱 Tra cứu qua App
+        {/* Tabs */}
+        <div className="tab-wrapper">
+          <button className={'tab-btn' + (tab === 'app' ? ' tab-active' : '')} onClick={() => setTab('app')}>
+            <span className="tab-icon">📱</span>
+            <span>Dùng điện thoại</span>
+            <span className="tab-sub">Tải app về máy</span>
           </button>
-          <button
-            className={'bhxh-tab-btn' + (tab === 'web' ? ' bhxh-tab-active' : '')}
-            onClick={() => setTab('web')}
-          >
-            🌐 Tra cứu qua Website
+          <button className={'tab-btn' + (tab === 'web' ? ' tab-active' : '')} onClick={() => setTab('web')}>
+            <span className="tab-icon">🌐</span>
+            <span>Dùng trình duyệt</span>
+            <span className="tab-sub">Không cần cài app</span>
           </button>
         </div>
 
-        <div className="bhxh-tab-desc">
-          {tab === 'app'
-            ? 'Dùng điện thoại thông minh, tải 1 trong 2 app bên dưới để xem thông tin BHXH'
-            : 'Dùng điện thoại hoặc máy tính vào 1 trong 2 trang web bên dưới để tra cứu'}
-        </div>
-
-        {/* Danh sách hướng dẫn */}
-        <div className="bhxh-list">
+        {/* Cards */}
+        <div className="huong-dan-list">
           {danhSach.map((hd) => (
-            <div className="bhxh-card" key={hd.id}>
+            <div className="huong-dan-card" key={hd.id}>
 
-              <div className="bhxh-card-title" style={{ borderColor: hd.color }}>
-                <span className="bhxh-card-icon">{hd.icon}</span>
+              {/* Header */}
+              <div className="huong-dan-card-header" style={{ background: hd.color }}>
+                <span className="hd-header-icon">{hd.icon}</span>
                 <div>
-                  <div className="bhxh-card-name">
-                    {hd.title}
-                    {hd.tag && (
-                      <span className="bhxh-tag" style={{ background: hd.color }}>{hd.tag}</span>
-                    )}
-                  </div>
-                  <span className="bhxh-card-subtitle">{hd.subtitle}</span>
+                  <div className="hd-header-title">{hd.title}</div>
+                  <div className="hd-header-sub">{hd.subtitle}</div>
                 </div>
               </div>
 
-              <div className="bhxh-card-body">
-                <div className="bhxh-steps">
-                  {hd.steps.map((step, i) => (
-                    <div className="bhxh-step-item" key={i}>
-                      <span className="bhxh-step-num" style={{ background: hd.color }}>{i + 1}</span>
-                      <p>{step}</p>
-                    </div>
-                  ))}
-                  <a
-                    href={hd.btn.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="bhxh-btn"
-                    style={{ background: hd.color }}
-                  >
-                    {hd.btn.label}
-                  </a>
+              {/* Nhãn các bước */}
+              <div className="hd-step-label-row" style={{ background: hd.color + 'dd' }}>
+                {hd.buoc.map((b, i) => (
+                  <div className="hd-step-label-item" key={i}>
+                    <div className="hd-step-label-num">{i + 1}</div>
+                    <div>{b}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Ảnh full width */}
+              <img
+                src={hd.hinh}
+                alt={hd.title}
+                className="hd-img-full"
+                onError={e => { e.target.style.display = 'none'; }}
+              />
+
+              {/* Footer */}
+              <div className="hd-card-footer">
+                <div className="hd-qr-box">
+                  <img src={hd.qr} alt="QR" className="hd-qr-img"
+                    onError={e => { e.target.style.display = 'none'; }} />
+                  <div className="hd-qr-label">Quét QR để mở</div>
                 </div>
+                <a href={hd.btn.url} target="_blank" rel="noreferrer"
+                  className="hd-main-btn" style={{ background: hd.color }}>
+                  {hd.btn.label}
+                </a>
               </div>
 
             </div>
           ))}
         </div>
 
-        {/* Video hướng dẫn */}
-        <div className="bhxh-video-section">
-          <h2 className="bhxh-video-title">
-            {tab === 'app' ? '🎬 Video hướng dẫn tra cứu BHXH qua App' : '🎬 Video hướng dẫn tra cứu BHXH qua Website'}
-          </h2>
-          <video
-            key={tab}
-            className="bhxh-video"
-            controls
-            playsInline
-            preload="metadata"
-          >
-            <source
-              src={tab === 'app' ? '/video/huongdan-bhxh-app.mp4' : '/video/huongdan-bhxh-web.mp4'}
-              type="video/mp4"
-            />
-            Trinh duyet khong ho tro video.
+        {/* Video */}
+        <div className="video-section">
+          <div className="video-header">
+            {tab === 'app' ? '🎬 Video hướng dẫn tra cứu qua App' : '🎬 Video hướng dẫn tra cứu qua Website'}
+          </div>
+          <video key={tab} className="video-main" controls playsInline preload="metadata">
+            <source src={tab === 'app' ? '/video/huongdan-bhyt.mp4' : '/video/huongdan-bhytweb.mp4'} type="video/mp4" />
           </video>
-          <p className="bhxh-video-note">Chưa có video? Bà con xem hướng dẫn chi tiết ở các bước phía trên nhé!</p>
         </div>
+        <FAQChatBot type="bhxh" />
 
-        {/* Footer gợi ý */}
-        <div className="bhxh-footer-tip">
-          <span>📞</span>
+        {/* Footer */}
+        <div className="tracuu-footer-tip">
+          <span>🏛️</span>
           <div>
             <strong>Vẫn chưa tra cứu được?</strong>
-            <p>Bà con gọi tổng đài <a href="tel:1900936936">1900 936 936</a> miễn phí hoặc đến trực tiếp <strong>UBND xã Đăk Pxi</strong> để cán bộ hỗ trợ.</p>
+            <p>Bà con đến trực tiếp <strong>UBND xã Đăk Pxi</strong> — cán bộ hỗ trợ miễn phí!</p>
           </div>
+          
         </div>
 
       </div>

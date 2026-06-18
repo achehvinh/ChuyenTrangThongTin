@@ -49,7 +49,7 @@ export function ThongTinPage() {
         <div className="page-header">
           <span className="page-badge">ℹ️ Thông tin</span>
           <h1>Thông tin Bảo hiểm Xã hội</h1>
-          <p>Các thông tin, quy định và chính sách BHYT mới nhất dành cho người dân xã Đắk Pxi.</p>
+          <p>Các thông tin, quy định và chính sách BHYT mới nhất dành cho người dân xã Đăk Pxi.</p>
         </div>
 
         <div className="articles-grid">
@@ -83,14 +83,14 @@ export function ThongBaoPage() {
       type: 'Quan trọng',
       typeCls: 'type-urgent',
       title: 'Thông báo gia hạn thẻ BHYT quý III/2026',
-      content: 'UBND Xã Đắk Pxi thông báo: Người dân có thẻ BHYT hết hạn vào 30/06/2026 cần đến UBND xã để làm thủ tục gia hạn trước ngày 20/06/2026.',
+      content: 'UBND Xã Đăk Pxi thông báo: Người dân có thẻ BHYT hết hạn vào 30/06/2026 cần đến UBND xã để làm thủ tục gia hạn trước ngày 20/06/2026.',
     },
     {
       date: '20/05/2026',
       type: 'Thông báo',
       typeCls: 'type-normal',
       title: 'Lịch khám sức khỏe định kỳ cho hộ nghèo',
-      content: 'Trạm y tế xã Đắk Pxi tổ chức khám sức khỏe định kỳ miễn phí cho các hộ nghèo và cận nghèo vào ngày 05/06/2026. Người dân mang theo thẻ BHYT và CCCD.',
+      content: 'Trạm y tế xã Đăk Pxi tổ chức khám sức khỏe định kỳ miễn phí cho các hộ nghèo và cận nghèo vào ngày 05/06/2026. Người dân mang theo thẻ BHYT và CCCD.',
     },
     {
       date: '15/05/2026',
@@ -120,8 +120,8 @@ export function ThongBaoPage() {
       <div className="info-inner">
         <div className="page-header">
           <span className="page-badge">📢 Thông báo</span>
-          <h1>Thông báo từ UBND Xã Đắk Pxi</h1>
-          <p>Các thông báo, thông tin mới nhất từ UBND Xã Đắk Pxi gửi đến người dân.</p>
+          <h1>Thông báo từ UBND Xã Đăk Pxi</h1>
+          <p>Các thông báo, thông tin mới nhất từ UBND Xã Đăk Pxi gửi đến người dân.</p>
         </div>
 
         <div className="notices-list">
@@ -146,9 +146,9 @@ export function ThongBaoPage() {
 ═══════════════════════════════════════════════════════ */
 export function LienHePage() {
   const contacts = [
-    { icon: '🏢', label: 'Địa chỉ',       value: 'Thôn Đắk Pxi, Xã Đắk Pxi, Huyện Đắk Hà, Tỉnh Kon Tum' },
+    { icon: '🏢', label: 'Địa chỉ',       value: 'Thôn Pa Cheng, Xã Đăk Pxi, Tỉnh Quảng Ngãi' },
     { icon: '📞', label: 'Điện thoại',    value: '(0260) 123 4567' },
-    { icon: '✉️', label: 'Email',          value: 'ubnd.dakpxi@kontum.gov.vn' },
+    { icon: '✉️', label: 'Email',          value: 'ubnd.dakpxi@quangngai.gov.vn' },
     { icon: '🕐', label: 'Giờ làm việc',  value: 'Thứ 2 – Thứ 6: 7:30 – 11:30 và 13:30 – 17:00' },
   ];
 
@@ -164,7 +164,7 @@ export function LienHePage() {
         <div className="page-header">
           <span className="page-badge">📞 Liên hệ</span>
           <h1>Liên hệ & Hỗ trợ</h1>
-          <p>Thông tin liên hệ UBND Xã Đắk Pxi và đội ngũ cán bộ hỗ trợ người dân.</p>
+          <p>Thông tin liên hệ UBND Xã Đăk Pxi và đội ngũ cán bộ hỗ trợ người dân.</p>
         </div>
 
         <div className="contact-grid">

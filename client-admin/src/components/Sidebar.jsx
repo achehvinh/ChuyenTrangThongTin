@@ -41,7 +41,7 @@ export default function Sidebar() {
         <div className="sidebar-logo-icon">🏛️</div>
         <div>
           <div className="sidebar-logo-title">UBND Xã</div>
-          <div className="sidebar-logo-sub">Đắk Pxi — Kon Tum</div>
+          <div className="sidebar-logo-sub">Đăk Pxi — Quảng Ngãi</div>
         </div>
       </div>
 

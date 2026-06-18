@@ -1,0 +1,146 @@
+.cds-page{
+  background:#f8fafc;
+  min-height:100vh;
+}
+
+.cds-hero{
+  height:500px;
+  background:
+  linear-gradient(
+      rgba(0,0,0,.45),
+      rgba(0,0,0,.45)
+  ),
+  url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3");
+
+  background-size:cover;
+  background-position:center;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.cds-overlay{
+  text-align:center;
+  color:white;
+  max-width:900px;
+}
+
+.cds-overlay h1{
+  font-size:60px;
+  margin-bottom:20px;
+}
+
+.cds-overlay p{
+  font-size:22px;
+  line-height:1.8;
+}
+
+.cds-intro{
+  max-width:1200px;
+  margin:auto;
+  padding:70px 30px;
+  text-align:center;
+}
+
+.cds-intro h2{
+  color:#005bac;
+  margin-bottom:25px;
+  font-size:40px;
+}
+
+.cds-intro p{
+  font-size:18px;
+  line-height:1.8;
+  margin-bottom:15px;
+}
+
+.cds-grid{
+  max-width:1400px;
+  margin:auto;
+  padding:0 30px 80px;
+
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.cds-card{
+  background:white;
+  border-radius:18px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  transition:.3s;
+}
+
+.cds-card:hover{
+  transform:translateY(-8px);
+}
+
+.cds-icon{
+  font-size:50px;
+  margin-bottom:15px;
+}
+
+.cds-card h3{
+  margin-bottom:15px;
+  color:#005bac;
+}
+
+.cds-card p{
+  line-height:1.7;
+}
+
+.cds-target{
+  background:#005bac;
+  padding:80px 30px;
+}
+
+.cds-target h2{
+  text-align:center;
+  color:white;
+  margin-bottom:40px;
+}
+
+.target-grid{
+  max-width:1200px;
+  margin:auto;
+
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+.target-box{
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  text-align:center;
+}
+
+.target-box strong{
+  display:block;
+  font-size:42px;
+  color:#005bac;
+}
+
+.target-box span{
+  display:block;
+  margin-top:10px;
+}
+
+@media(max-width:900px){
+
+  .cds-grid{
+    grid-template-columns:1fr;
+  }
+
+  .target-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cds-overlay h1{
+    font-size:35px;
+  }
+}

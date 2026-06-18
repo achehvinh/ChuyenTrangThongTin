@@ -1,0 +1,312 @@
+/* ═══════════════════════════════════
+   ThuVienAnh.css — Thư viện ảnh
+   Layout masonry, chuyên nghiệp
+═══════════════════════════════════ */
+
+.thuvien-page {
+  background: #0f172a;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.thuvien-header {
+  background: linear-gradient(135deg, #005bac 0%, #0f172a 100%);
+  padding: 60px 40px 40px;
+  text-align: center;
+}
+
+.thuvien-header h1 {
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  margin: 0 0 10px;
+}
+
+.thuvien-header p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+}
+
+/* ── Inner ── */
+.thuvien-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 32px 60px;
+}
+
+/* ── Bộ lọc ── */
+.thuvien-filter {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.thuvien-search {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 16px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.thuvien-search::placeholder { color: rgba(255,255,255,0.4); }
+.thuvien-search:focus { border-color: #005bac; background: rgba(255,255,255,0.12); }
+
+.thuvien-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.thuvien-tag {
+  padding: 8px 16px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.thuvien-tag:hover {
+  border-color: #005bac;
+  color: white;
+}
+
+.thuvien-tag.active {
+  background: #005bac;
+  border-color: #005bac;
+  color: white;
+}
+
+/* ── Đếm ── */
+.thuvien-count {
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.thuvien-count strong {
+  color: white;
+}
+
+/* ── Grid masonry ── */
+.thuvien-grid {
+  columns: 4;
+  column-gap: 12px;
+}
+
+@media (max-width: 1200px) { .thuvien-grid { columns: 3; } }
+@media (max-width: 768px)  { .thuvien-grid { columns: 2; } }
+@media (max-width: 480px)  { .thuvien-grid { columns: 1; } }
+
+/* ── Item ── */
+.thuvien-item {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  display: block;
+}
+
+.thuvien-item--normal .thuvien-img { aspect-ratio: 4/3; }
+.thuvien-item--tall   .thuvien-img { aspect-ratio: 3/4; }
+.thuvien-item--wide   .thuvien-img { aspect-ratio: 16/9; }
+
+.thuvien-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* ── Overlay ── */
+.thuvien-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.thuvien-item:hover .thuvien-overlay { opacity: 1; }
+.thuvien-item:hover .thuvien-img { transform: scale(1.04); }
+
+.thuvien-overlay-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.thuvien-overlay-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.thuvien-overlay-icon {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+}
+
+/* ── Empty ── */
+.thuvien-empty {
+  text-align: center;
+  padding: 80px;
+  color: rgba(255,255,255,0.3);
+  font-size: 18px;
+}
+
+/* ══════════════════════════
+   LIGHTBOX
+══════════════════════════ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lightbox-inner {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+  animation: zoomIn 0.25s ease;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.lightbox-close:hover { background: #dc2626; }
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 75vh;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+
+.lightbox-footer {
+  background: #1e293b;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.lightbox-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.lightbox-tag {
+  font-size: 12px;
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.lightbox-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.lightbox-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.lightbox-btn--save {
+  background: #005bac;
+  color: white;
+}
+
+.lightbox-btn--save:hover { background: #004a8f; }
+
+.lightbox-btn--close {
+  background: #dc2626;
+  color: white;
+}
+
+.lightbox-btn--close:hover { background: #b91c1c; }
+
+.lightbox-hint {
+  color: rgba(255,255,255,0.3);
+  font-size: 12px;
+  margin-top: 12px;
+  text-align: center;
+}

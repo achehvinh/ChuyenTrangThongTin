@@ -1,6 +1,6 @@
 .feedback-trigger {
   position: fixed;
-  bottom: 226px; /* 30px + 3 nút (52px + 12px gap) x 3 */
+  bottom: 300px; /* 30px + 3 nút (52px + 12px gap) x 3 */
   right: 24px;
   z-index: 9999;
   background: #005bac;

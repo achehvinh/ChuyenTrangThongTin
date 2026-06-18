@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import './HuongDanVNeIDPage.css';
+import FAQChatBot from '../components/FAQChatBot';
 
 const TINH_NANG = [
   { icon: '🪪', label: 'CCCD điện tử', desc: 'Thay thế CCCD vật lý trong nhiều thủ tục' },
@@ -296,6 +297,7 @@ export default function HuongDanVNeIDPage() {
           </video>
           <p className="vneid-video-note">Chưa có video? Bà con xem hướng dẫn chi tiết ở các bước phía trên nhé!</p>
         </div>
+        <FAQChatBot type="vneid" />
 
         {/* Footer */}
         <div className="vneid-footer-tip">
