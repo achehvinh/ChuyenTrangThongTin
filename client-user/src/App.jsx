@@ -12,7 +12,7 @@ import HomePage from './pages/HomePage';
 import TraCuuPage from './pages/TraCuuPage';
 import HuongDanBHXHPage from './pages/HuongDanBHXHPage';
 import HuongDanVNeIDPage from './pages/HuongDanVNeIDPage';
-import ThuVienAnh from './pages/ThuVienAnh.jsx';
+import ThuVienAnh from './pages/Thuvienanh.jsx';
 import { ThongTinPage, ThongBaoPage, LienHePage } from './pages/InfoPages';
 import AllFeaturesPage from './pages/AllFeaturesPage';
 import LichHopPage from './pages/LichHopPage';
@@ -39,7 +39,7 @@ function App() {
               <Route path="/huong-dan-vneid" element={<HuongDanVNeIDPage />} />
               <Route path="/lich-hop" element={<LichHopPage />} />
               <Route path="/chuyen-doi-so" element={<ChuyenDoiSoPage />} />
-              <Route path="/thu-vien-anh" element={<ThuVienAnh />} />
+              <Route path="/thu-vien-anh" element={<Thuvienanh />} />
               <Route path="/lien-he" element={<LienHePage />} />
               <Route path="/duoi-nuoc" element={<DuoiNuocPage />} />
               <Route path="/quiz/:topic" element={<QuizGame />} />
