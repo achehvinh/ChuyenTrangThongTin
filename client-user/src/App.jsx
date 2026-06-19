@@ -17,10 +17,10 @@ import { ThongTinPage, ThongBaoPage, LienHePage } from './pages/InfoPages';
 import AllFeaturesPage from './pages/AllFeaturesPage';
 import LichHopPage from './pages/LichHopPage';
 import ChuyenDoiSoPage from './pages/ChuyenDoiSoPage';
+// Dòng 20 — đổi thành
+import { LanguageProvider } from './LanguageContext';
 import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
-
-import { LanguageProvider } from './languageContext';
 
 function App() {
   return (
