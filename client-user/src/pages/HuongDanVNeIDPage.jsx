@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import './HuongDanVNeIDPage.css';
-import FAQChatBot from '../components/FAQChatBot';
+import FAQChatBot from '../components/Faqchatbot';
 
 const TINH_NANG = [
   { icon: '🪪', label: 'CCCD điện tử', desc: 'Thay thế CCCD vật lý trong nhiều thủ tục' },

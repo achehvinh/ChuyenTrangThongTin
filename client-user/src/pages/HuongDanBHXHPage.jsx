@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import './HuongDanBHXHPage.css';
 import './TraCuuPage.css';
-import FAQChatBot from '../components/FAQChatBot';
+import FAQChatBot from '../components/Faqchatbot';
 
 const DICH_VU = [
   {
