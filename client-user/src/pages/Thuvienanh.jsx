@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './ThuVienAnh.css';
+import './Thuvienanh.css';
 
 const DANH_MUC = ['Tất cả', 'Hoạt động xã hội', 'Văn hóa dân tộc', 'Thiên nhiên', 'Cộng đồng'];
 
