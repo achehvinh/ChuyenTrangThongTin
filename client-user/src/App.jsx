@@ -39,7 +39,7 @@ function App() {
               <Route path="/huong-dan-vneid" element={<HuongDanVNeIDPage />} />
               <Route path="/lich-hop" element={<LichHopPage />} />
               <Route path="/chuyen-doi-so" element={<ChuyenDoiSoPage />} />
-              <Route path="/thu-vien-anh" element={<Thuvienanh />} />
+              <Route path="/thu-vien-anh" element={<ThuVienAnh />} />
               <Route path="/lien-he" element={<LienHePage />} />
               <Route path="/duoi-nuoc" element={<DuoiNuocPage />} />
               <Route path="/quiz/:topic" element={<QuizGame />} />
