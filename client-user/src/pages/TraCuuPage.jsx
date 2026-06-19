@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import './TraCuuPage.css';
-import FAQChatBot from '../components/Faqchatbot';
+import FAQChatBot from "../components/Faqchatbot";
 
 const HUONG_DAN_APP = [
   {
