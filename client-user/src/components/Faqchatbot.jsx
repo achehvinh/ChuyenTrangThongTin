@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import './FAQChatBot.css';
+import './Faqchatbot.css';
 
 const FAQ_BHYT = [
   {
