@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import './SeasonEffect.css';
+import './Seasoneffect.css';
 
 // Tự động chọn hiệu ứng theo tháng
 function getSeason() {
@@ -66,7 +66,7 @@ function Particle({ emoji, style }) {
   );
 }
 
-export default function SeasonEffect() {
+export default function Seasoneffect() {
   const season = getSeason();
   const config = SEASON_CONFIG[season];
   const [particles, setParticles] = useState([]);

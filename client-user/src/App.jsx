@@ -22,7 +22,7 @@ import Thutuchanhchinh from './pages/Thutuchanhchinh';
 import { LanguageProvider } from './LanguageContext';
 import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
-import SeasonEffect from './components/SeasonEffect';
+import Seasoneffect from './components/Seasoneffect';
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
       <div className="app-shell">
         <Router>
           <Navbar />
-          <SeasonEffect />
+          <Seasoneffect />
           <AlertBanner />
           <main className="app-content">
             <Routes>
