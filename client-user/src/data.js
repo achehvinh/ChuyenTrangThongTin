@@ -242,3 +242,86 @@ export const ALERTS = [
     autoRead: false,
   },
 ];
+export const CATEGORIES = [
+  {
+    id: "khai-sinh-tu",
+    icon: "ks",
+    code: "01",
+    title: "Khai sinh / Khai tử",
+    subtitle: "Đăng ký cho trẻ sơ sinh hoặc người mất",
+    items: [
+      {
+        id: "ks-1",
+        title: "Đăng ký khai sinh",
+        tag: "Miễn phí",
+        tagType: "free",
+        steps: [
+          { title: "Chuẩn bị giấy tờ", desc: "Giấy chứng sinh (bệnh viện cấp), CCCD của bố mẹ, sổ hộ khẩu.", tts: "Chuẩn bị giấy chứng sinh, căn cước công dân của bố mẹ và sổ hộ khẩu." },
+          { title: "Đến UBND xã", desc: "Mang hồ sơ đến bộ phận Tư pháp – Hộ tịch xã Đăk Pxi.", tts: "Mang hồ sơ đến bộ phận Tư pháp hộ tịch xã Đăk Pxi." },
+          { title: "Điền tờ khai", desc: "Điền Tờ khai đăng ký khai sinh theo hướng dẫn của cán bộ.", tts: "Điền tờ khai đăng ký khai sinh." },
+          { title: "Nhận kết quả", desc: "Nhận giấy khai sinh trong ngày hoặc tối đa 3 ngày làm việc.", tts: "Nhận giấy khai sinh trong ngày hoặc tối đa 3 ngày làm việc." }
+        ],
+        forms: [{ name: "Tờ khai đăng ký khai sinh (Mẫu 01)", url: "#" }],
+        faqs: [
+          { q: "Lệ phí làm khai sinh là bao nhiêu?", a: "Đăng ký khai sinh đúng hạn là hoàn toàn miễn phí." },
+          { q: "Có cần mang theo trẻ sơ sinh không?", a: "Không, người đi làm thủ tục chỉ cần mang giấy tờ chứng sinh và giấy tờ tùy thân của bố mẹ." }
+        ]
+      },
+      {
+        id: "ks-2",
+        title: "Đăng ký khai tử",
+        tag: "Miễn phí",
+        tagType: "free",
+        steps: [
+          { title: "Chuẩn bị giấy tờ", desc: "Giấy báo tử (y tế cấp), CCCD người chết và người khai báo.", tts: "Chuẩn bị giấy báo tử, căn cước công dân của người mất và người khai báo." },
+          { title: "Thời hạn", desc: "Phải khai trong vòng 15 ngày kể từ ngày mất.", tts: "Phải khai báo trong vòng 15 ngày kể từ ngày người thân mất." },
+          { title: "Nhận kết quả", desc: "Giấy chứng tử được cấp ngay trong ngày làm việc.", tts: "Giấy chứng tử được cấp ngay trong ngày làm việc." }
+        ],
+        forms: [{ name: "Tờ khai đăng ký khai tử", url: "#" }],
+        faqs: [{ q: "Ai có trách nhiệm khai tử?", a: "Người thân trong gia đình hoặc người có trách nhiệm liên quan." }]
+      }
+    ]
+  },
+  {
+    id: "ho-khau",
+    icon: "hk",
+    code: "02",
+    title: "Hộ khẩu / Cư trú",
+    subtitle: "Đăng ký thường trú, tạm trú",
+    items: [
+      {
+        id: "hk-1",
+        title: "Đăng ký thường trú",
+        tag: "Miễn phí",
+        tagType: "free",
+        steps: [
+          { title: "Chuẩn bị hồ sơ", desc: "CCCD, giấy tờ chứng minh chỗ ở hợp pháp (sổ đỏ, hợp đồng thuê).", tts: "Chuẩn bị căn cước công dân và giấy tờ chứng minh chỗ ở." },
+          { title: "Nộp tại UBND xã", desc: "Điền phiếu đăng ký cư trú (mẫu CT01).", tts: "Điền phiếu đăng ký cư trú mẫu CT01 tại xã." }
+        ],
+        forms: [{ name: "Phiếu đăng ký cư trú (Mẫu CT01)", url: "#" }],
+        faqs: [{ q: "Thời gian xử lý là bao lâu?", a: "Kết quả trong vòng 7 ngày làm việc." }]
+      }
+    ]
+  },
+  {
+    id: "cccd",
+    icon: "cc",
+    code: "03",
+    title: "CCCD / Giấy tờ tùy thân",
+    subtitle: "Làm mới, cấp lại CCCD",
+    items: [
+      {
+        id: "cc-1",
+        title: "Làm CCCD lần đầu",
+        tag: "50.000đ",
+        tagType: "paid",
+        steps: [
+          { title: "Đến cơ quan Công an", desc: "Mang CCCD cũ hoặc giấy tờ xác nhận cư trú.", tts: "Mang giấy tờ xác nhận cư trú đến công an xã." },
+          { title: "Thu thập sinh trắc học", desc: "Chụp ảnh và lấy vân tay tại chỗ.", tts: "Chụp ảnh và lấy vân tay trực tiếp tại chỗ." }
+        ],
+        forms: [{ name: "Tờ khai cấp CCCD", url: "#" }],
+        faqs: [{ q: "Khi nào nhận được thẻ?", a: "Từ 7 đến 15 ngày làm việc." }]
+      }
+    ]
+  }
+];

@@ -17,10 +17,12 @@ import { ThongTinPage, ThongBaoPage, LienHePage } from './pages/InfoPages';
 import AllFeaturesPage from './pages/AllFeaturesPage';
 import LichHopPage from './pages/LichHopPage';
 import ChuyenDoiSoPage from './pages/ChuyenDoiSoPage';
+import Thutuchanhchinh from './pages/Thutuchanhchinh';
 // Dòng 20 — đổi thành
 import { LanguageProvider } from './LanguageContext';
 import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
+import SeasonEffect from './components/SeasonEffect';
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
       <div className="app-shell">
         <Router>
           <Navbar />
+          <SeasonEffect />
           <AlertBanner />
           <main className="app-content">
             <Routes>
@@ -47,6 +50,7 @@ function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
               <Route path="/alert" element={<TTSButton />} />
               <Route path="/drag-drop" element={<DragDrop />} />
+              <Route path="/thu-tuc-hanh-chinh" element={<Thutuchanhchinh />} />
 
             </Routes>
           </main>

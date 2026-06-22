@@ -1,0 +1,168 @@
+/* ═══════════════════════════════════
+   SeasonEffect.css
+   Hiệu ứng trang trí theo mùa
+═══════════════════════════════════ */
+
+/* ── Canvas rơi ── */
+.season-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  overflow: hidden;
+}
+
+.season-particle {
+  position: absolute;
+  top: -60px;
+  animation: particleFall linear infinite;
+  user-select: none;
+  will-change: transform;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+@keyframes particleFall {
+  0% {
+    transform: translateY(-60px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--swing, 30px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ── Banner chào mùa ── */
+.season-banner {
+  position: fixed;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border-radius: 40px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  animation: bannerIn 0.5s ease, bannerOut 0.5s ease 4.5s forwards;
+  white-space: nowrap;
+}
+
+@keyframes bannerIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes bannerOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
+
+.season-banner-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.season-banner-close {
+  background: rgba(255,255,255,0.25);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+
+.season-banner-close:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+/* ── Lân múa Trung thu ── */
+.lan-wrapper {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  z-index: 1000;
+  cursor: pointer;
+  animation: lanFloat 3s ease-in-out infinite;
+}
+
+@keyframes lanFloat {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%       { transform: translateY(-16px) rotate(3deg); }
+}
+
+.lan-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 20px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 32px rgba(251,191,36,0.5);
+  border: 3px solid rgba(255,255,255,0.4);
+}
+
+.lan-head {
+  font-size: 48px;
+  animation: lanBob 0.8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+@keyframes lanBob {
+  from { transform: scale(1) rotate(-5deg); }
+  to   { transform: scale(1.1) rotate(5deg); }
+}
+
+.lan-tail {
+  font-size: 24px;
+  animation: lanBob 0.8s ease-in-out infinite alternate-reverse;
+}
+
+.lan-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #7c2d12;
+  text-align: center;
+  line-height: 1.3;
+  margin-top: 4px;
+}
+
+/* ── Hiệu ứng riêng từng mùa ── */
+
+/* Tết: nhấp nháy đỏ vàng */
+.season-canvas[data-season="tet"] .season-particle {
+  filter: drop-shadow(0 0 6px rgba(220,38,38,0.6));
+}
+
+/* Trung thu: phát sáng vàng */
+.season-canvas[data-season="mooncake"] .season-particle {
+  filter: drop-shadow(0 0 8px rgba(251,191,36,0.8));
+}
+
+/* Tuyết: trắng trong */
+.season-canvas[data-season="snow"] .season-particle {
+  filter: drop-shadow(0 0 4px rgba(147,210,255,0.7));
+}
+
+/* Mưa: rơi nhanh thẳng */
+.season-canvas[data-season="rain"] .season-particle {
+  animation-timing-function: linear;
+}

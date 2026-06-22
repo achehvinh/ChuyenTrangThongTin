@@ -10,78 +10,86 @@ const HERO_IMAGES = [
 ];
 
 const STATS = [
-  { value: '5.000+', label: 'Người dân tiếp cận thông tin' },
-  { value: '24/7', label: 'Cập nhật trực tuyến' },
-  { value: '100%', label: 'Thông tin chính thống' },
-  { value: 'UBND', label: 'Xã Đăk Pxi' },
+  { value: '5.000+', label: 'Người dân tiếp cận', icon: '👥' },
+  { value: '24/7',   label: 'Cập nhật trực tuyến', icon: '🕐' },
+  { value: '100%',   label: 'Thông tin chính thống', icon: '✅' },
+  { value: 'UBND',   label: 'Xã Đắk Pxi', icon: '🏛️' },
 ];
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-const handleSearch = (e) => {
-  const val = e.target.value;
-  setSearchQuery(val);
-  if (val.trim() === '') {
+  const handleSearch = (e) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    if (!val.trim()) { setSuggestions([]); return; }
+    setSuggestions(FEATURES.filter(f =>
+      f.title.toLowerCase().includes(val.toLowerCase()) ||
+      f.desc.toLowerCase().includes(val.toLowerCase())
+    ));
+  };
+
+  const handleSelect = (path) => {
+    setSearchQuery('');
     setSuggestions([]);
-    return;
-  }
-  const filtered = FEATURES.filter(f =>
-    f.title.toLowerCase().includes(val.toLowerCase()) ||
-    f.desc.toLowerCase().includes(val.toLowerCase())
-  );
-  setSuggestions(filtered);
-};
+    navigate(path);
+  };
 
-const handleSelect = (path) => {
-  setSearchQuery('');
-  setSuggestions([]);
-  navigate(path);
-};
+  const filteredFeatures = FEATURES.filter(f =>
+    f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    f.desc.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="home">
 
+      {/* ── Hero ── */}
       <section className="hero">
-        {HERO_IMAGES.map((img, index) => (
+        {HERO_IMAGES.map((img, i) => (
           <div
-            key={index}
+            key={i}
             className="hero-slide"
-            style={{
-              backgroundImage: `url(${img})`,
-              animationDelay: `${index * 5}s`,
-            }}
+            style={{ backgroundImage: `url(${img})`, animationDelay: `${i * 5}s` }}
           />
         ))}
+        <div className="hero-overlay" />
         <div className="hero-inner">
+          <div className="hero-tag">🏛️ UBND XÃ ĐăK PXI · KON TUM</div>
           <h1 className="hero-title">
-            CHUYÊN TRANG THÔNG TIN
-            <br />
-            <span className="hero-accent">CHÍNH QUYỀN - NGƯỜI DÂN</span>
+            Chuyên trang thông tin
+            <span className="hero-accent">Chính quyền — Người dân</span>
           </h1>
           <p className="hero-desc">
-            Kênh thông tin chính thức phục vụ người dân.
-            Cập nhật thông báo, tuyên truyền pháp luật,
-            chuyển đổi số, phòng chống đuối nước,
-            phòng chống cháy rừng và các hoạt động của địa phương.
+            Kênh thông tin chính thức phục vụ bà con xã Đăk Pxi.
+            Cập nhật thông báo, hướng dẫn thủ tục, tuyên truyền pháp luật và chuyển đổi số.
           </p>
           <div className="hero-actions">
-            <button className="btn-primary" onClick={() => navigate('/thong-bao')}>
+            <button className="hero-btn hero-btn--primary" onClick={() => navigate('/thong-bao')}>
               Xem thông báo
             </button>
-            <button className="btn-secondary" onClick={() => navigate('/chuyen-doi-so')}>
-              Chuyển đổi số
+            <button className="hero-btn hero-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
+              Thủ tục hành chính
             </button>
           </div>
         </div>
+
+        {/* Dot indicator */}
+        <div className="hero-dots">
+          {HERO_IMAGES.map((_, i) => (
+            <div key={i} className={`hero-dot ${i === currentSlide ? 'active' : ''}`} />
+          ))}
+        </div>
       </section>
 
+      {/* ── Stats ── */}
       <section className="stats-section">
         <div className="stats-grid">
           {STATS.map((s) => (
             <div className="stat-item" key={s.label}>
+              <div className="stat-icon">{s.icon}</div>
               <strong>{s.value}</strong>
               <span>{s.label}</span>
             </div>
@@ -89,68 +97,68 @@ const handleSelect = (path) => {
         </div>
       </section>
 
+      {/* ── Features ── */}
       <section className="features-section">
         <div className="section-header">
+          <div className="section-tag">Dành cho bà con</div>
           <h2>Chuyên mục thông tin</h2>
           <p>Các nội dung tuyên truyền và hỗ trợ dành cho người dân xã Đăk Pxi</p>
+
           <div className="home-search-box">
-  <input
-    type="text"
-    className="home-search-input"
-    placeholder="🔍 Tìm chuyên mục..."
-    value={searchQuery}
-    onChange={handleSearch}
-  />
-  {suggestions.length > 0 && (
-    <div className="home-search-dropdown">
-      {suggestions.map((f) => (
-        <div
-          key={f.path}
-          className="home-search-item"
-          onClick={() => handleSelect(f.path)}
-        >
-          <img src={f.image} alt={f.title} className="home-search-item-img" />
-          <div>
-            <p className="home-search-item-title">{f.title}</p>
-            <p className="home-search-item-desc">{f.desc}</p>
+            <div className="search-icon">🔍</div>
+            <input
+              type="text"
+              className="home-search-input"
+              placeholder="Tìm chuyên mục..."
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+            {suggestions.length > 0 && (
+              <div className="home-search-dropdown">
+                {suggestions.map((f) => (
+                  <div key={f.path} className="home-search-item" onClick={() => handleSelect(f.path)}>
+                    <img src={f.image} alt={f.title} className="home-search-item-img" />
+                    <div>
+                      <p className="home-search-item-title">{f.title}</p>
+                      <p className="home-search-item-desc">{f.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      ))}
-    </div>
-  )}
-</div>
         </div>
 
         <div className="features-grid">
-          {FEATURES.filter(f =>
-            f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            f.desc.toLowerCase().includes(searchQuery.toLowerCase())
-          ).map((f) => (
-            <div
-              className="feature-card"
-              key={f.title}
-              onClick={() => navigate(f.path)}
-            >
-              <img src={f.image} alt={f.title} className="feature-image" />
+          {filteredFeatures.map((f) => (
+            <div className="feature-card" key={f.title} onClick={() => navigate(f.path)}>
+              <div className="feature-img-wrap">
+                <img src={f.image} alt={f.title} className="feature-image" />
+              </div>
               <div className="feature-content">
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
+                <div className="feature-link">Xem chi tiết →</div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
+      {/* ── CTA ── */}
       <section className="cta-section">
         <div className="cta-inner">
-          <h2>Cùng xây dựng cộng đồng an toàn và phát triển</h2>
-          <p>
-            Theo dõi thông báo mới nhất, kiến thức pháp luật,
-            chuyển đổi số và các hoạt động tuyên truyền của UBND xã Đăk Pxi.
-          </p>
-          <button className="btn-primary large" onClick={() => navigate('/thong-bao')}>
-            Xem thông báo mới nhất
-          </button>
+          <div className="cta-tag">📢 Luôn cập nhật</div>
+          <h2>Cùng xây dựng cộng đồng<br />an toàn và phát triển</h2>
+          <p>Theo dõi thông báo mới nhất, hướng dẫn thủ tục hành chính và các hoạt động tuyên truyền của UBND xã Đắk Pxi.</p>
+          <div className="cta-actions">
+            <button className="cta-btn cta-btn--primary" onClick={() => navigate('/thong-bao')}>
+              Xem thông báo mới nhất
+            </button>
+            <button className="cta-btn cta-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
+              Thủ tục hành chính
+            </button>
+          </div>
         </div>
       </section>
 

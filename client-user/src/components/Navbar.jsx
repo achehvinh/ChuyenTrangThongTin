@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   },
   { to: '/chuyen-doi-so', label: 'Chuyển đổi số' },
   { to: '/Thu-vien-anh', label: 'Thư viện ảnh' },
+   { to: '/Thu-tuc-hanh-chinh', label: 'Thủ tục hành chính' },
   {
   label: 'Hướng dẫn tra cứu',
   dropdown: [
