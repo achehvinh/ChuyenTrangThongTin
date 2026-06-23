@@ -7,6 +7,7 @@ import AlertBanner from './components/AlertBanner';
 import TTSButton from './components/TTSButton';
 import DragDrop from './components/DragDrop';
 import FloatingChatBot from './components/FloatingChatBot';
+import { FontSizeProvider } from './FontSizeContext';
 
 import HomePage from './pages/HomePage';
 import TraCuuPage from './pages/TraCuuPage';
@@ -23,10 +24,12 @@ import { LanguageProvider } from './LanguageContext';
 import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
 import Seasoneffect from './components/Seasoneffect';
+import Bando from './pages/Bando';
 
 function App() {
   return (
     <LanguageProvider>
+      <FontSizeProvider>
       <div className="app-shell">
         <Router>
           <Navbar />
@@ -51,6 +54,7 @@ function App() {
               <Route path="/alert" element={<TTSButton />} />
               <Route path="/drag-drop" element={<DragDrop />} />
               <Route path="/thu-tuc-hanh-chinh" element={<Thutuchanhchinh />} />
+              <Route path="/Ban-do" element={<Bando />} />
 
             </Routes>
           </main>
@@ -68,6 +72,7 @@ function App() {
         </div>
         <FloatingChatBot type="general" />
       </div>
+      </FontSizeProvider>
     </LanguageProvider>
   );
 }

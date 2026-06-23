@@ -118,11 +118,11 @@ if (!data) {
     ? data.content
     : (data.content_xd || data.content)}
 </p>
-      <ul>
-      {data.warning.map((item, index) => (
-        <li key={index}>{item}</li>
-      ))}
-    </ul>
+<ul>
+  {(data.warning || []).map((item, index) => (
+    <li key={index}>{item}</li>
+  ))}
+</ul>
 </div>
         {/* 2. Gallery ảnh */}
         <div className="gallery-grid">

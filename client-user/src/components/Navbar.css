@@ -1,249 +1,186 @@
-/* ==========================
-   RESET
-========================== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ══════════════════════════════════════
+   Navbar.css — 2 hàng tách biệt
+   Hàng 1: Logo + Tên + Ngôn ngữ
+   Hàng 2: Menu điều hướng
+══════════════════════════════════════ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
   background: #f5f7fa;
 }
 
-/* ==========================
-   NAVBAR
-========================== */
 .navbar {
   width: 100%;
   background: #ffffff;
-  border-bottom: 1px solid #dcdcdc;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   position: sticky;
   top: 0;
   z-index: 999;
 }
 
-.navbar-inner {
+/* ── Hàng 1: Logo + Tên + Ngôn ngữ ── */
+.navbar-top {
   width: 100%;
-  height: 90px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding: 0 40px;
+  padding: 14px 40px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-/* ==========================
-   LOGO
-========================== */
 .navbar-brand {
   display: flex;
   align-items: center;
   gap: 14px;
-  min-width: 320px;
 }
 
-.navbar-logo{
-  width:70px;
-  height:70px;
-  object-fit:cover;
-  border-radius:50%;
+.navbar-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #e2e8f0;
 }
 
 .navbar-title {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .navbar-sub {
-  font-size: 18px;
-  color: #0a0a0a;
+  font-size: 13px;
+  color: #475569;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   line-height: 1.2;
 }
 
 .navbar-main {
-  font-size: 30px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   color: #005bac;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  line-height: 1.05;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
 }
 
-/* ==========================
-   MENU
-========================== */
-.navbar-nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  flex: 1;
-  justify-content: center;
-}
-
-.nav-link {
-  position: relative;
-
-  text-decoration: none;
-  color: #222;
-
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-  line-height: 1.3;
-
-  padding: 8px 12px;
-
-  transition: all .3s ease;
-}
-
-.nav-link:hover {
-  color: #f59e0b;
-}
-
-.nav-link--active {
-  color: #f59e0b;
-}
-
-.nav-link--active::after {
-  content: "";
-
-  position: absolute;
-  bottom: -8px;
-  left: 12px;
-
-  width: calc(100% - 24px);
-  height: 2px;
-
-  background: #f59e0b;
-}
-
-/* ==========================
-   BUTTON HƯỚNG DẪN
-========================== */
-.navbar-help {
-  background: #f59e0b;
-  color: white;
-
-  padding: 10px 18px;
-
-  border-radius: 30px;
-
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-
-  transition: .3s;
-}
-
-.navbar-help:hover {
-  background: #d97706;
-}
-
-/* ==========================
-   RESPONSIVE
-========================== */
-@media (max-width: 1200px) {
-
-  .navbar-inner {
-    flex-wrap: wrap;
-    height: auto;
-    padding: 15px;
-  }
-
-  .navbar-brand {
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
-  .navbar-nav {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .navbar-help {
-    margin-top: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-
-  .navbar-logo {
-    width: 45px;
-    height: 45px;
-  }
-
-  .navbar-main {
-    font-size: 18px;
-  }
-
-  .navbar-sub {
-    font-size: 11px;
-  }
-
-  .nav-link {
-    font-size: 14px;
-    padding: 8px 10px;
-  }
-
-  .navbar-help {
-    display: none;
-  }
-}
-.hero {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-}
 .lang-toggle {
-  padding: 8px 16px;
+  padding: 8px 18px;
   background: #fbbf24;
   color: #111;
   border: none;
   border-radius: 20px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .lang-toggle:hover {
-  background: #e9a400;
+  background: #f59e0b;
+  transform: translateY(-1px);
 }
+
+/* ── Hàng 2: Menu ── */
+.navbar-bottom {
+  width: 100%;
+  background: #005bac;
+  padding: 0 40px;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 46px;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0 16px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  letter-spacing: 0.2px;
+}
+
+.nav-link:hover {
+  color: white;
+  background: rgba(255,255,255,0.1);
+}
+
+.nav-link--active {
+  color: #fbbf24;
+  background: rgba(255,255,255,0.08);
+}
+
+.nav-link--active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  width: calc(100% - 32px);
+  height: 2px;
+  background: #fbbf24;
+  border-radius: 2px 2px 0 0;
+}
+
+/* ── Dropdown ── */
 .nav-dropdown {
   position: relative;
+  height: 46px;
+  display: flex;
+  align-items: center;
 }
 
 .nav-dropdown-trigger {
   cursor: pointer;
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 16px;
+  height: 46px;
   display: flex;
   align-items: center;
   gap: 4px;
+  transition: 0.2s;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+.nav-dropdown-trigger:hover {
+  color: white;
+  background: rgba(255,255,255,0.1);
 }
 
 .nav-dropdown-menu {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 0;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-  min-width: 180px;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  min-width: 200px;
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px);
+  transform: translateY(-6px);
   transition: all 0.2s ease;
   z-index: 9999;
+  border-top: 3px solid #fbbf24;
 }
 
 .nav-dropdown:hover .nav-dropdown-menu {
@@ -254,20 +191,111 @@ body {
 
 .nav-dropdown-item {
   display: block;
-  padding: 14px 18px;
+  padding: 12px 18px;
   font-size: 14px;
   font-weight: 600;
   color: #0f172a;
   text-decoration: none;
-  transition: 0.2s;
+  transition: 0.15s;
   border-bottom: 1px solid #f1f5f9;
 }
 
-.nav-dropdown-item:last-child {
-  border-bottom: none;
-}
+.nav-dropdown-item:last-child { border-bottom: none; }
 
 .nav-dropdown-item:hover {
   background: #f0f7ff;
   color: #005bac;
+  padding-left: 24px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .navbar-top { padding: 12px 20px; }
+  .navbar-bottom { padding: 0 20px; }
+  .navbar-main { font-size: 18px; }
+}
+
+@media (max-width: 768px) {
+  .navbar-top { padding: 10px 16px; }
+  .navbar-bottom { padding: 0; overflow-x: auto; }
+  .navbar-logo { width: 44px; height: 44px; }
+  .navbar-main { font-size: 15px; }
+  .navbar-sub { font-size: 11px; }
+  .navbar-nav { gap: 0; }
+  .nav-link, .nav-dropdown-trigger { font-size: 12px; padding: 0 10px; }
+}
+/* ── Khu vực phải: font size + ngôn ngữ ── */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.font-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+.font-label {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.font-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #005bac;
+  color: white;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.font-btn:hover:not(:disabled) {
+  background: #0073d1;
+  transform: scale(1.1);
+}
+
+.font-btn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* giữ nguyên .lang-toggle như cũ */
+.lang-toggle {
+  padding: 8px 18px;
+  background: #fbbf24;
+  color: #111;
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.lang-toggle:hover { background: #f59e0b; transform: translateY(-1px); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .font-label { display: none; }
+  .font-btn { width: 28px; height: 28px; font-size: 11px; }
+  .lang-toggle { padding: 6px 12px; font-size: 12px; }
 }

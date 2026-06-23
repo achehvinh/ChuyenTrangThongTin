@@ -1,27 +1,39 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import './HomePage.css';
 import { FEATURES } from "../data";
 
-const HERO_IMAGES = [
-  "https://scontent.fdad1-3.fna.fbcdn.net/v/t39.30808-6/484106471_1028733972633541_4025247298642484062_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1152&ctp=s2048x1152&_nc_cat=111&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeF2d3g2yfALJbW7Cqv-DporAFNDqJShvOIAU0OolKG84o_cIRqxbi94zTm54pyrB1kENcFUPRlb5kHEHK_Wq08Y&_nc_ohc=craJaeR-vcoQ7kNvwHbce8X&_nc_oc=AdpUxvxKcoGV7jDMTQzogRJXYXB1LFgVWLKHVbYb6Y8szkxn-pij_tVhm3nNHFByYrWjAsUkORW1oZy5oSWacOCG&_nc_zt=23&_nc_ht=scontent.fdad1-3.fna&_nc_gid=8WeXuJRQqzclIE_GnO82yg&_nc_ss=7b2a8&oh=00_Af_aRl7CrhcFUNfgksOt9YVJgmFArNBwl_cmng2EtQBR9A&oe=6A35778E",
-  "https://scontent.fdad1-4.fna.fbcdn.net/v/t39.30808-6/484326055_1028734052633533_9212664193593569105_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1152&ctp=s2048x1152&_nc_cat=103&ccb=1-7&_nc_sid=86c6b0&_nc_eui2=AeG89cmzDZpP9uqZ16nzMhIdRp_71m2OPXRGn_vWbY49dNmsTyyK_RTSF2R7yFIlGiAJileQ3eUkkp-In2Tw39IN&_nc_ohc=MTEQzfltkFoQ7kNvwHrJiCG&_nc_oc=AdreAgMtQl8edOG3FpT4ac9t7p4yGTdgAHSNnEtx7RrB9FPlZm0cCWtKKQwx59LhGSodqTYiwkgnY-XAETuYhoDF&_nc_zt=23&_nc_ht=scontent.fdad1-4.fna&_nc_gid=xePBMyzJQXxZk8D2_0ATUA&_nc_ss=7b2a8&oh=00_Af-DAy5-55kw_6HIhlNJXrxJ9p7LBEQEqRc4VB8CTwQFPw&oe=6A356DD3",
-  "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/472649407_1942409232914054_6110705543997189469_n.jpg?stp=dst-jpg_tt6&cstp=mx1939x1076&ctp=s1939x1076&_nc_cat=108&ccb=1-7&_nc_sid=86c6b0&_nc_eui2=AeGqP4nAENAYJAvEr5aJgTmgWRxs6dojyAFZHGzp2iPIAUU0fidca25xRKP9NYVlBgsnFoi53K9FX2qx2RRr1AaK&_nc_ohc=z1Ttx4_nneAQ7kNvwEycreD&_nc_oc=AdrHag-oRuo1A3_gtOVPeMFOnt2z74d6HYvTfLIMnY6BSaTykJZLbqJdJX-hJLlXw045erDgibiuRJb6WjJCrKdJ&_nc_zt=23&_nc_ht=scontent.fdad2-1.fna&_nc_gid=Kwg76JY1Yx1CE2K4glORIg&_nc_ss=7b2a8&oh=00_Af867C13DqeNQIvDariHd47bwJu07Rz0ej4NP6_hahDzkw&oe=6A356629",
+
+
+
+const HERO_VIDEOS = [
+  '/videos/video1.mp4',
 ];
 
 const STATS = [
   { value: '5.000+', label: 'Người dân tiếp cận', icon: '👥' },
   { value: '24/7',   label: 'Cập nhật trực tuyến', icon: '🕐' },
   { value: '100%',   label: 'Thông tin chính thống', icon: '✅' },
-  { value: 'UBND',   label: 'Xã Đắk Pxi', icon: '🏛️' },
+  { value: 'UBND',   label: 'Xã Đăk Pxi', icon: '🏛️' },
 ];
+
+// Nhóm chuyên mục nổi bật (featured) và bình thường
+const FEATURED_PATHS = ['/thong-bao', '/tra-cuu', '/huong-dan-vneid', '/thu-tuc-hanh-chinh'];
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide] = useState(0);
+  const [activeTab, setActiveTab] = useState('tat-ca');
 
+  const TABS = [
+    { id: 'tat-ca', label: 'Tất cả' },
+    { id: 'huong-dan', label: 'Hướng dẫn', paths: ['/tra-cuu', '/huong-dan-bhxh', '/huong-dan-vneid'] },
+    { id: 'tuyen-truyen', label: 'Tuyên truyền', paths: ['/duoi-nuoc', '/chay-rung', '/te-nan', '/thien-tai'] },
+    { id: 'hanh-chinh', label: 'Hành chính', paths: ['/thong-bao', '/lich-hop', '/thu-tuc-hanh-chinh', '/phap-luat'] },
+  ];
+  
   const handleSearch = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
@@ -38,51 +50,25 @@ export default function HomePage() {
     navigate(path);
   };
 
-  const filteredFeatures = FEATURES.filter(f =>
-    f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    f.desc.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const getFiltered = () => {
+    const tab = TABS.find(t => t.id === activeTab);
+    let list = FEATURES;
+    if (tab && tab.paths) list = FEATURES.filter(f => tab.paths.includes(f.path));
+    if (searchQuery.trim()) list = list.filter(f =>
+      f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      f.desc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    return list;
+  };
+
+  const filteredFeatures = getFiltered();
+
+  // Tách featured và normal
+  const featured = filteredFeatures.filter(f => FEATURED_PATHS.includes(f.path));
+  const normal = filteredFeatures.filter(f => !FEATURED_PATHS.includes(f.path));
 
   return (
     <div className="home">
-
-      {/* ── Hero ── */}
-      <section className="hero">
-        {HERO_IMAGES.map((img, i) => (
-          <div
-            key={i}
-            className="hero-slide"
-            style={{ backgroundImage: `url(${img})`, animationDelay: `${i * 5}s` }}
-          />
-        ))}
-        <div className="hero-overlay" />
-        <div className="hero-inner">
-          <div className="hero-tag">🏛️ UBND XÃ ĐăK PXI · KON TUM</div>
-          <h1 className="hero-title">
-            Chuyên trang thông tin
-            <span className="hero-accent">Chính quyền — Người dân</span>
-          </h1>
-          <p className="hero-desc">
-            Kênh thông tin chính thức phục vụ bà con xã Đăk Pxi.
-            Cập nhật thông báo, hướng dẫn thủ tục, tuyên truyền pháp luật và chuyển đổi số.
-          </p>
-          <div className="hero-actions">
-            <button className="hero-btn hero-btn--primary" onClick={() => navigate('/thong-bao')}>
-              Xem thông báo
-            </button>
-            <button className="hero-btn hero-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
-              Thủ tục hành chính
-            </button>
-          </div>
-        </div>
-
-        {/* Dot indicator */}
-        <div className="hero-dots">
-          {HERO_IMAGES.map((_, i) => (
-            <div key={i} className={`hero-dot ${i === currentSlide ? 'active' : ''}`} />
-          ))}
-        </div>
-      </section>
 
       {/* ── Stats ── */}
       <section className="stats-section">
@@ -97,22 +83,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Features ── */}
+      {/* ── Features — Charcoal Gold ── */}
       <section className="features-section">
+
+        {/* Header */}
         <div className="section-header">
           <div className="section-tag">Dành cho bà con</div>
           <h2>Chuyên mục thông tin</h2>
-          <p>Các nội dung tuyên truyền và hỗ trợ dành cho người dân xã Đăk Pxi</p>
+          <p>Tra cứu, hướng dẫn và tuyên truyền dành cho người dân xã Đăk Pxi</p>
 
+          {/* Search */}
           <div className="home-search-box">
             <div className="search-icon">🔍</div>
-            <input
-              type="text"
-              className="home-search-input"
-              placeholder="Tìm chuyên mục..."
-              value={searchQuery}
-              onChange={handleSearch}
-            />
+            <input type="text" className="home-search-input"
+              placeholder="Tìm chuyên mục..." value={searchQuery} onChange={handleSearch} />
             {suggestions.length > 0 && (
               <div className="home-search-dropdown">
                 {suggestions.map((f) => (
@@ -127,40 +111,93 @@ export default function HomePage() {
               </div>
             )}
           </div>
+
+          {/* Tabs lọc */}
+          <div className="features-tabs">
+            {TABS.map(tab => (
+              <button key={tab.id}
+                className={`features-tab ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}>
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="features-grid">
-          {filteredFeatures.map((f) => (
-            <div className="feature-card" key={f.title} onClick={() => navigate(f.path)}>
-              <div className="feature-img-wrap">
-                <img src={f.image} alt={f.title} className="feature-image" />
+        {/* Bento Grid — Featured lớn */}
+        {featured.length > 0 && !searchQuery && activeTab === 'tat-ca' && (
+          <div className="bento-grid">
+            {featured.slice(0, 4).map((f, i) => (
+              <div key={f.title}
+                className={`bento-card bento-card--${i === 0 ? 'hero' : i === 1 ? 'tall' : 'normal'}`}
+                onClick={() => navigate(f.path)}>
+                <img src={f.image} alt={f.title} className="bento-img" />
+                <div className="bento-overlay">
+                  <div className="bento-tag">Nổi bật</div>
+                  <h3>{f.title}</h3>
+                  <p>{f.desc}</p>
+                  <div className="bento-link">Xem ngay →</div>
+                </div>
               </div>
-              <div className="feature-content">
+            ))}
+          </div>
+        )}
+
+        {/* Divider */}
+        {!searchQuery && activeTab === 'tat-ca' && normal.length > 0 && (
+          <div className="features-divider">
+            <span>Tất cả chuyên mục</span>
+          </div>
+        )}
+
+        {/* List ngang cuộn */}
+        <div className="features-list">
+          {(searchQuery || activeTab !== 'tat-ca' ? filteredFeatures : normal).map((f) => (
+            <div key={f.title} className="flist-card" onClick={() => navigate(f.path)}>
+              <div className="flist-img-wrap">
+                <img src={f.image} alt={f.title} className="flist-img" />
+              </div>
+              <div className="flist-body">
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
-                <div className="feature-link">Xem chi tiết →</div>
+                <span className="flist-link">Xem chi tiết →</span>
               </div>
             </div>
           ))}
         </div>
-      </section>
 
-      {/* ── CTA ── */}
-      <section className="cta-section">
-        <div className="cta-inner">
-          <div className="cta-tag">📢 Luôn cập nhật</div>
-          <h2>Cùng xây dựng cộng đồng<br />an toàn và phát triển</h2>
-          <p>Theo dõi thông báo mới nhất, hướng dẫn thủ tục hành chính và các hoạt động tuyên truyền của UBND xã Đắk Pxi.</p>
-          <div className="cta-actions">
-            <button className="cta-btn cta-btn--primary" onClick={() => navigate('/thong-bao')}>
-              Xem thông báo mới nhất
-            </button>
-            <button className="cta-btn cta-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
-              Thủ tục hành chính
-            </button>
-          </div>
-        </div>
       </section>
+{/* ── Hero ── */}
+<section className="hero">
+  <video
+    className="hero-video"
+    src="/videos/hero.mp4"
+    autoPlay
+    muted
+    loop
+    playsInline
+  />
+  <div className="hero-overlay" />
+  <div className="hero-inner">
+    <div className="hero-tag">🏛️ UBND XÃ ĐĂK PXI · QUẢNG NGÃI</div>
+    <h1 className="hero-title">
+      Chuyên trang thông tin
+      <span className="hero-accent">Chính quyền — Người dân</span>
+    </h1>
+    <p className="hero-desc">
+      Kênh thông tin chính thức phục vụ bà con xã Đắk Pxi.
+      Cập nhật thông báo, hướng dẫn thủ tục, tuyên truyền pháp luật.
+    </p>
+    <div className="hero-actions">
+      <button className="hero-btn hero-btn--primary" onClick={() => navigate('/thong-bao')}>
+        Xem thông báo
+      </button>
+      <button className="hero-btn hero-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
+        Thủ tục hành chính
+      </button>
+    </div>
+  </div>
+</section>
 
     </div>
   );
