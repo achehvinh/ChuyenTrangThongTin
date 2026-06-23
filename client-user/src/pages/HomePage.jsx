@@ -3,11 +3,8 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import './HomePage.css';
 import { FEATURES } from "../data";
 
-
-
-
-const HERO_VIDEOS = [
-  '/videos/video1.mp4',
+const HERO_VIDEO = [
+  '/video/hero.mp4',
 ];
 
 const STATS = [
@@ -69,6 +66,38 @@ export default function HomePage() {
 
   return (
     <div className="home">
+
+      {/* ── Hero ── */}
+<section className="hero">
+  <video
+    className="hero-video"
+    src="/video/hero.mp4"
+    autoPlay
+    muted
+    loop
+    playsInline
+  />
+  <div className="hero-overlay" />
+  <div className="hero-inner">
+    <div className="hero-tag">🏛️ UBND XÃ ĐĂK PXI · QUẢNG NGÃI</div>
+    <h1 className="hero-title">
+      Chuyên trang thông tin
+      <span className="hero-accent">Chính quyền — Người dân</span>
+    </h1>
+    <p className="hero-desc">
+      Kênh thông tin chính thức phục vụ bà con xã Đắk Pxi.
+      Cập nhật thông báo, hướng dẫn thủ tục, tuyên truyền pháp luật.
+    </p>
+    <div className="hero-actions">
+      <button className="hero-btn hero-btn--primary" onClick={() => navigate('/thong-bao')}>
+        Xem thông báo
+      </button>
+      <button className="hero-btn hero-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
+        Thủ tục hành chính
+      </button>
+    </div>
+  </div>
+</section>
 
       {/* ── Stats ── */}
       <section className="stats-section">
@@ -167,37 +196,6 @@ export default function HomePage() {
         </div>
 
       </section>
-{/* ── Hero ── */}
-<section className="hero">
-  <video
-    className="hero-video"
-    src="/videos/hero.mp4"
-    autoPlay
-    muted
-    loop
-    playsInline
-  />
-  <div className="hero-overlay" />
-  <div className="hero-inner">
-    <div className="hero-tag">🏛️ UBND XÃ ĐĂK PXI · QUẢNG NGÃI</div>
-    <h1 className="hero-title">
-      Chuyên trang thông tin
-      <span className="hero-accent">Chính quyền — Người dân</span>
-    </h1>
-    <p className="hero-desc">
-      Kênh thông tin chính thức phục vụ bà con xã Đắk Pxi.
-      Cập nhật thông báo, hướng dẫn thủ tục, tuyên truyền pháp luật.
-    </p>
-    <div className="hero-actions">
-      <button className="hero-btn hero-btn--primary" onClick={() => navigate('/thong-bao')}>
-        Xem thông báo
-      </button>
-      <button className="hero-btn hero-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
-        Thủ tục hành chính
-      </button>
-    </div>
-  </div>
-</section>
 
     </div>
   );
