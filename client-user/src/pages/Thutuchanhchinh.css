@@ -13,10 +13,15 @@
   --row-bg-hover: #ebeef2;
   --line: #e5e7eb;
 
-  --terracotta: #b5532f;
-  --terracotta-deep: #8f3f23;
-  --terracotta-soft: #c96a44;
-  --terracotta-tint: #fbece4;
+ --primary-red: #d4001a;
+--primary-red-dark: #a50014;
+--primary-red-light: #ffe5e8;
+
+--primary-blue: #005bac;
+--primary-blue-dark: #004a8c;
+--primary-blue-light: #eaf4ff;
+
+--primary-gold: #f5a623;
 
   --amber: #b45309;
   --amber-tint: #fff7e6;
@@ -54,8 +59,11 @@
    HERO
    ============================================================ */
 .tthc-hero {
-  background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-deep) 100%);
-  padding: 2.25rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    #317cc7 0%,
+    #175368 100%
+  );
 }
 
 .tthc-hero-inner {
@@ -161,8 +169,8 @@
 }
 .tthc-search-row input:focus {
   outline: none;
-  border-color: var(--terracotta);
-  box-shadow: 0 0 0 3px var(--terracotta-tint);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0,91,172,.15);
 }
 
 .tthc-search-row button {
@@ -210,12 +218,8 @@
   color: var(--terracotta);
 }
 .tthc-filter-chip.is-active {
-  background: var(--terracotta);
-  border-color: var(--terracotta);
-  color: #fff;
-}
-.tthc-filter-chip.is-active .tthc-filter-count {
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--primary-blue);
+  border-color: var(--primary-blue);
   color: #fff;
 }
 
@@ -274,10 +278,7 @@
 }
 
 .tthc-results-heading h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--terracotta-deep);
+  color: var(--primary-blue);
 }
 
 .tthc-results-heading span {
@@ -325,14 +326,8 @@
 }
 
 .tthc-group-pill {
-  display: inline-flex;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--terracotta);
-  background: var(--terracotta-tint);
-  border-radius: 999px;
-  padding: 3px 10px;
-  white-space: nowrap;
+  color: var(--primary-blue);
+  background: var(--primary-blue-light);
 }
 
 .tthc-view-count {
@@ -370,11 +365,13 @@
   border-top: 1px solid var(--line);
 }
 
-.tthc-card-action {
-  margin-top: 0.2rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--terracotta);
+.tthc-primary-btn {
+  background: var(--primary-red);
+  color: #fff;
+}
+
+.tthc-primary-btn:hover {
+  background: var(--primary-red-dark);
 }
 
 /* ============================================================
@@ -624,7 +621,7 @@
 }
 .tthc-progress-fill {
   height: 100%;
-  background: var(--terracotta);
+  background: var(--primary-blue);
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -836,7 +833,7 @@
   padding: 0;
 }
 .tthc-stars button.is-active {
-  color: var(--amber-btn);
+  color: var(--primary-gold);
 }
 
 /* ============================================================

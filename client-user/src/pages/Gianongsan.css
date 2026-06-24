@@ -2,7 +2,7 @@
 
 /* Hero */
 .gns-hero {
-  background: #0f172a;
+  background: #29d63a;
   padding: 40px 40px 32px;
   position: relative;
   overflow: hidden;
@@ -104,7 +104,7 @@
 }
 .gns-card:hover {
   border-color: #005bac;
-  box-shadow: 0 6px 20px rgba(0,91,172,.08);
+  box-shadow: 0 6px 20px rgba(22, 137, 238, 0.08);
   transform: translateY(-2px);
 }
 
@@ -126,7 +126,7 @@
 }
 
 .gns-name { flex: 1; }
-.gns-name h3 { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+.gns-name h3 { font-size: 13px; font-weight: 700; color: #3a6ce0; margin-bottom: 2px; }
 .gns-name span { font-size: 11px; color: #94a3b8; }
 
 .gns-badge {
@@ -165,7 +165,7 @@
 }
 .gns-meta-row { display: flex; flex-direction: column; gap: 1px; }
 .gns-meta-row span { font-size: 10px; color: #94a3b8; font-weight: 500; }
-.gns-meta-row strong { font-size: 12px; color: #0f172a; }
+.gns-meta-row strong { font-size: 12px; color: #3261d0; }
 
 /* Contact */
 .gns-contact {
@@ -178,7 +178,7 @@
   border-radius: 12px;
 }
 .gns-contact-icon { font-size: 28px; }
-.gns-contact strong { display: block; font-size: 13px; color: #0f172a; margin-bottom: 3px; }
+.gns-contact strong { display: block; font-size: 13px; color: #315fcb; margin-bottom: 3px; }
 .gns-contact p { font-size: 12px; color: #64748b; margin: 0; }
 .gns-contact a { color: #005bac; font-weight: 700; text-decoration: none; }
 

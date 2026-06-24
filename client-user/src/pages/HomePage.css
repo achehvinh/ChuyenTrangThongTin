@@ -2,36 +2,24 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  font-family: 'Be Vietnam Pro', system-ui, sans-serif;
-  background: #f5f7fa;
-  color: #1e293b;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
 .home { width: 100%; }
+
 
 /* ══════════════════════════════════════
    HERO
 ══════════════════════════════════════ */
 .hero {
-  position: relative;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  max-width: 1200px;
+  margin: 0 auto;
   height: 480px;
-  display: flex;
-  align-items: center;
   overflow: hidden;
 }
 
 .hero-banner {
   position: absolute;
   inset: 0;
-
   width: 100%;
   height: 100%;
-
   object-fit: cover;
 }
 
@@ -40,9 +28,9 @@ body {
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(0, 35, 82, 0.88) 0%,
-    rgba(0, 35, 82, 0.60) 55%,
-    rgba(0, 35, 82, 0.30) 100%
+    rgba(0,35,82,.92) 0%,
+    rgba(0,35,82,.75) 45%,
+    rgba(0,35,82,.35) 100%
   );
   z-index: 2;
 }
@@ -154,6 +142,167 @@ body {
 }
 
 /* ══════════════════════════════════════
+   QUICK SERVICES WRAPPER — ảnh nền
+══════════════════════════════════════ */
+.quick-services-wrapper-OLD {
+  position: relative;
+  background-image: url('/anhnen1.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  padding: 56px 0 52px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+/* Overlay trắng nhẹ để card nổi, ảnh vẫn thấy rõ */
+.quick-services-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════
+   QUICK SERVICES — card grid
+══════════════════════════════════════ */
+.quick-services {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.service-box {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  padding: 36px 24px 32px;
+  text-align: center;
+  border-top: 5px solid #003d7a;
+  border-radius: 16px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 12px 32px rgba(0, 61, 122, 0.14);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 160px;
+
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer glow khi hover */
+.service-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #005bac, #0ea5e9, #005bac);
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.25s;
+  animation: shimmer 2s linear infinite;
+}
+.service-box:hover::before {
+  opacity: 1;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.service-box:hover {
+  transform: translateY(-8px);
+  background: #ffffff;
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.08),
+    0 24px 56px rgba(0, 61, 122, 0.20);
+  border-top-color: #005bac;
+}
+
+/* Icon */
+.service-box span {
+  font-size: 42px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0,61,122,0.15));
+  transition: transform 0.25s;
+}
+.service-box:hover span {
+  transform: scale(1.15);
+}
+
+/* Label */
+.service-box p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.45;
+  letter-spacing: 0.1px;
+}
+
+/* Mũi tên hover */
+.service-box::after {
+  content: '→';
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #005bac;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.22s;
+}
+.service-box:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Dropdown */
+.service-dropdown { position: relative; }
+
+.service-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,.15);
+  z-index: 999;
+}
+
+.service-dropdown-item {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: .2s;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.service-dropdown-item:hover {
+  background: #005bac;
+  color: white;
+}
+.service-dropdown-item:last-child { border-bottom: none; }
+
+/* ══════════════════════════════════════
    STATS
 ══════════════════════════════════════ */
 .stats-section {
@@ -198,10 +347,9 @@ body {
 ══════════════════════════════════════ */
 .features-section {
   padding: 64px 40px;
-  background: #f5f7fa;
+  background: #2a5aa2;
 }
 
-/* ── Section Header ── */
 .section-header {
   text-align: center;
   margin-bottom: 40px;
@@ -339,15 +487,8 @@ body {
   transition: 0.18s;
   letter-spacing: 0.2px;
 }
-.features-tab:hover {
-  border-color: #005bac;
-  color: #005bac;
-}
-.features-tab.active {
-  background: #005bac;
-  border-color: #005bac;
-  color: #ffffff;
-}
+.features-tab:hover { border-color: #005bac; color: #005bac; }
+.features-tab.active { background: #005bac; border-color: #005bac; color: #ffffff; }
 
 /* ── Bento Grid ── */
 .bento-grid {
@@ -378,10 +519,7 @@ body {
   transition: transform 0.45s ease;
   filter: brightness(0.78);
 }
-.bento-card:hover .bento-img {
-  transform: scale(1.05);
-  filter: brightness(0.62);
-}
+.bento-card:hover .bento-img { transform: scale(1.05); filter: brightness(0.62); }
 
 .bento-overlay {
   position: absolute;
@@ -435,10 +573,7 @@ body {
   transform: translateY(5px);
   transition: 0.22s;
 }
-.bento-card:hover .bento-link {
-  opacity: 1;
-  transform: translateY(0);
-}
+.bento-card:hover .bento-link { opacity: 1; transform: translateY(0); }
 
 /* ── Divider ── */
 .features-divider {
@@ -485,8 +620,8 @@ body {
 }
 .flist-card:hover {
   border-color: #005bac;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,91,172,0.10);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,91,172,.12);
 }
 
 .flist-img-wrap { height: 130px; overflow: hidden; }
@@ -639,13 +774,10 @@ body {
    RESPONSIVE
 ══════════════════════════════════════ */
 @media (max-width: 1200px) {
-  .bento-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-  }
+  .bento-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .bento-card--hero  { grid-column: 1 / 3; grid-row: 1; height: 260px; }
-  .bento-card--tall  { grid-column: 1;     grid-row: 2; height: 200px; }
-  .bento-card--normal { grid-column: 2;    grid-row: 2; height: 200px; }
+  .bento-card--tall  { grid-column: 1; grid-row: 2; height: 200px; }
+  .bento-card--normal { grid-column: 2; grid-row: 2; height: 200px; }
   .features-list { grid-template-columns: repeat(3, 1fr); }
 }
 
@@ -672,30 +804,360 @@ body {
   .cta-inner h2 { font-size: 24px; }
   .home-search-dropdown { width: 90vw; }
   .search-icon { left: 16px; }
+
+  .quick-services-wrapper-OLD { padding: 32px 0 28px; }
+  .quick-services {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    padding: 0 16px;
+  }
+  .service-box { padding: 24px 16px 20px; min-height: 130px; }
+  .service-box p { font-size: 13px; }
+  .service-box span { font-size: 34px; }
 }
 
 @media (max-width: 480px) {
+  .quick-services { grid-template-columns: 1fr; }
   .features-list { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
-.quick-services{
-  max-width:1200px;
-  margin:-40px auto 40px;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:20px;
-  position:relative;
-  z-index:20;
+
+/* ══════════════════════════════════════
+   2-COLUMN LAYOUT
+══════════════════════════════════════ */
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 24px;
+  align-items: start;
 }
 
-.service-box{
-  background:white;
-  padding:25px;
-  text-align:center;
+/* ── Cột trái: Nội dung chính ── */
+.home-main {
+  min-width: 0;
+}
 
-  border-top:4px solid #005bac;
+.main-section-header {
+  background: #003d7a;
+  padding: 10px 16px;
+  border-radius: 4px 4px 0 0;
+  margin-bottom: 0;
+}
 
-  box-shadow:0 4px 16px rgba(0,0,0,.08);
+.main-section-header h2 {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
 
-  font-weight:700;
+.main-content-area {
+  border: 1px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: #ffffff;
+  min-height: 400px;
+  padding: 20px;
+}
+
+/* Placeholder tạm — xóa khi thêm nội dung thật */
+.main-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 360px;
+  gap: 12px;
+  color: #94a3b8;
+  text-align: center;
+}
+.main-placeholder span { font-size: 48px; }
+.main-placeholder p { font-size: 15px; font-weight: 600; color: #64748b; }
+.main-placeholder small { font-size: 12px; color: #94a3b8; }
+
+/* ── Cột phải: Sidebar ── */
+.home-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 80px;
+  overflow: visible;
+}
+
+.sidebar-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: visible;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.sidebar-card-header {
+  background: #003d7a;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 16px;
+  letter-spacing: 0.3px;
+}
+
+/* Links sidebar */
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-links li {
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1e293b;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-links li::before {
+  content: '›';
+  color: #005bac;
+  font-weight: 800;
+  font-size: 16px;
+}
+.sidebar-links li:last-child { border-bottom: none; }
+.sidebar-links li:hover {
+  background: #f0f7ff;
+  color: #005bac;
+  padding-left: 20px;
+}
+
+/* Hỗ trợ trực tuyến */
+.sidebar-support {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+}
+
+.sidebar-support-icon {
+  font-size: 48px;
+  flex-shrink: 0;
+}
+
+.sidebar-support-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sidebar-support-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.sidebar-support-phone {
+  font-size: 18px;
+  font-weight: 900;
+  color: #dc2626;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-support-hours {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Giá nông sản */
+.sidebar-agri {
+  padding: 8px 0;
+}
+
+.sidebar-agri-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+}
+.sidebar-agri-item:last-child { border-bottom: none; }
+.sidebar-agri-item span { color: #475569; }
+.sidebar-agri-item strong { color: #dc2626; font-weight: 700; }
+
+.sidebar-agri-btn {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 0 16px 14px;
+  padding: 8px;
+  background: #005bac;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+.sidebar-agri-btn:hover {
+  background: #004a8f;
+}
+
+/* ── Responsive 2 cột ── */
+@media (max-width: 900px) {
+  .home-layout {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+  .home-sidebar {
+    position: static;
+  }
+}
+
+/* ── Wrapper ảnh nền — cập nhật ── */
+.quick-services-wrapper {
+  position: relative;
+  background-image: url('/anhnen1.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  padding: 0 0 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.quick-services-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+/* Stats bên trong wrapper */
+.quick-services-wrapper .stats-section {
+  background: rgba(0, 61, 122, 0.88);
+  backdrop-filter: blur(4px);
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Sidebar card trên ảnh nền — thêm blur nhẹ */
+.quick-services-wrapper .sidebar-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  overflow: visible;
+}
+
+/* Main content area trên ảnh nền */
+.quick-services-wrapper .main-content-area {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+}
+
+/* ── Fix layout căn thẳng lề như ảnh tham khảo ── */
+.home-layout {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.quick-services-wrapper .home-layout {
+  margin-top: 0;
+}
+
+/* Bỏ border-radius để header thẳng góc như ảnh */
+.main-section-header {
+  border-radius: 0;
+}
+
+.main-content-area {
+  border-radius: 0;
+  border: 1px solid #dde3ec;
+  border-top: none;
+}
+
+.sidebar-card {
+  border-radius: 0;
+}
+
+.sidebar-card-header {
+  border-radius: 0;
+}
+
+/* ── Sidebar dropdown mở xuống ── */
+.sidebar-link-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.sidebar-link-dropdown > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 16px;
+  color: #005bac;
+  font-weight: 600;
+  font-size: 13px;
+  background: #f0f7ff;
+}
+
+.sidebar-dropdown-arrow {
+  font-size: 10px;
+  margin-left: 6px;
+}
+
+.sidebar-link-submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.sidebar-link-submenu li {
+  padding: 10px 28px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1e293b;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sidebar-link-submenu li:last-child { border-bottom: none; }
+
+.sidebar-link-submenu li:hover {
+  background: #e0f0ff;
+  color: #005bac;
+}
+/* Fix dropdown không bị che */
+.home-sidebar {
+  overflow: visible;
+}
+
+.sidebar-card {
+  overflow: visible;
+}
+
+.sidebar-link-dropdown {
+  position: relative;
+  z-index: 10;
+}
+
+.sidebar-link-submenu {
+  position: relative;
+  z-index: 11;
 }

@@ -6,36 +6,70 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  font-family: 'Be Vietnam Pro', Arial, sans-serif;
-  background: #f5f7fa;
-}
 
 .navbar {
   width: 100%;
-  background: #ffffff;
+  max-width: 1200px;
+
+  margin: 0 auto;
+
   border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  position: sticky;
-  top: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+
+  position: relative;
   z-index: 999;
+
+  overflow: visible;
+
+  border-radius: 6px 6px 0 0;
 }
 
-/* ── Hàng 1: Logo + Tên + Ngôn ngữ ── */
+/* ── Overlay khi có ảnh nền ── */
+.navbar-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 35, 82, 0.35) 0%,
+    rgba(0, 35, 82, 0.25) 55%,
+    rgba(0, 20, 55, 0.50) 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Khi navbar có ảnh nền, cho phần tử .navbar trong suốt
+   để ảnh nền hiển thị khắp vùng header (không hiện khung trắng) */
+.navbar[style*="backgroundImage"] {
+  background-color: transparent;
+}
+
+.navbar-top,
+.navbar-bottom {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Hàng 1: Logo + Tên + Actions ── */
 .navbar-top {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background: linear-gradient(
-    180deg,
-    #005bac 0%,
-    #004785 100%
-  );
-
   color: white;
-  padding: 18px 40px;
+
+  padding: 18px 24px;
+}
+
+/* Khi có ảnh nền */
+.navbar[style*="backgroundImage"] .navbar-top {
+  background: transparent;
+}
+
+.navbar[style*="backgroundImage"] .navbar-bottom {
+  background: rgba(0, 30, 70, 0.55);
+  border-top-color: rgba(251, 191, 36, 0.85);
+  backdrop-filter: blur(2px);
 }
 
 .navbar-brand {
@@ -47,8 +81,7 @@ body {
 .navbar-logo {
   width: 72px;
   height: 72px;
-  border-radius: 0;
-  border: none;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
 }
 
 .navbar-title {
@@ -75,6 +108,69 @@ body {
   line-height: 1.1;
 }
 
+.navbar[style*="backgroundImage"] .navbar-sub {
+  color: rgba(255,255,255,0.95);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+
+.navbar[style*="backgroundImage"] .navbar-main {
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+}
+
+/* ── Actions: font size + ngôn ngữ ── */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.font-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,0.20);
+}
+
+.font-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.80);
+  font-weight: 600;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.font-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.25);
+  color: white;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.font-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.40);
+  transform: scale(1.1);
+}
+
+.font-btn:disabled {
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.35);
+  cursor: not-allowed;
+}
+
 .lang-toggle {
   padding: 8px 18px;
   background: #fbbf24;
@@ -94,7 +190,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* ── Hàng 2: Menu ── */
+/* ── Hàng 2: Menu — đồng bộ lề với home-layout ── */
 .navbar-bottom {
   background: #003d73;
   border-top: 2px solid #fbbf24;
@@ -103,8 +199,9 @@ body {
 .navbar-nav {
   display: flex;
   align-items: center;
-  gap: 0;
   height: 46px;
+
+  padding: 0 24px;
 }
 
 .nav-link {
@@ -179,7 +276,7 @@ body {
   border-radius: 0 0 12px 12px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.15);
   min-width: 200px;
-  overflow: hidden;
+  overflow: visible;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-6px);
@@ -214,92 +311,24 @@ body {
 }
 
 /* ── Responsive ── */
+@media (max-width: 1232px) {
+  /* Khi màn hình nhỏ hơn max-width + padding thì dùng padding cố định */
+  .navbar-top { padding: 18px 16px; }
+}
+
 @media (max-width: 1100px) {
-  .navbar-top { padding: 12px 20px; }
-  .navbar-bottom { padding: 0 20px; }
+  .navbar-top { padding: 12px 16px; }
   .navbar-main { font-size: 18px; }
 }
 
 @media (max-width: 768px) {
   .navbar-top { padding: 10px 16px; }
-  .navbar-bottom { padding: 0; overflow-x: auto; }
+  .navbar-bottom { padding: 0; }
+  .navbar-nav { padding: 0 8px; overflow-x: auto; }
   .navbar-logo { width: 44px; height: 44px; }
   .navbar-main { font-size: 15px; }
   .navbar-sub { font-size: 11px; }
-  .navbar-nav { gap: 0; }
   .nav-link, .nav-dropdown-trigger { font-size: 12px; padding: 0 10px; }
-}
-/* ── Khu vực phải: font size + ngôn ngữ ── */
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
-
-.font-size-controls {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: #f1f5f9;
-  border-radius: 20px;
-  padding: 4px 10px;
-}
-
-.font-label {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 600;
-  padding: 0 4px;
-  white-space: nowrap;
-}
-
-.font-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  background: #005bac;
-  color: white;
-  font-weight: 800;
-  font-size: 13px;
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.font-btn:hover:not(:disabled) {
-  background: #0073d1;
-  transform: scale(1.1);
-}
-
-.font-btn:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* giữ nguyên .lang-toggle như cũ */
-.lang-toggle {
-  padding: 8px 18px;
-  background: #fbbf24;
-  color: #111;
-  border: none;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: 0.2s;
-  white-space: nowrap;
-}
-
-.lang-toggle:hover { background: #f59e0b; transform: translateY(-1px); }
-
-/* Responsive */
-@media (max-width: 768px) {
   .font-label { display: none; }
   .font-btn { width: 28px; height: 28px; font-size: 11px; }
   .lang-toggle { padding: 6px 12px; font-size: 12px; }

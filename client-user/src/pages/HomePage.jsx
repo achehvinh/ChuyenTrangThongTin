@@ -1,222 +1,105 @@
 import { useState } from 'react';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import { FEATURES } from "../data";
 
-const HERO_VIDEO = [
-  '/video/hero.mp4',
-];
-
-const STATS = [
-  { value: '5.000+', label: 'Người dân tiếp cận', icon: '👥' },
-  { value: '24/7',   label: 'Cập nhật trực tuyến', icon: '🕐' },
-  { value: '100%',   label: 'Thông tin chính thống', icon: '✅' },
-  { value: 'UBND',   label: 'Xã Đăk Pxi', icon: '🏛️' },
-];
-
-// Nhóm chuyên mục nổi bật (featured) và bình thường
 const FEATURED_PATHS = ['/thong-bao', '/tra-cuu', '/huong-dan-vneid', '/thu-tuc-hanh-chinh'];
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [currentSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState('tat-ca');
-
-  const TABS = [
-    { id: 'tat-ca', label: 'Tất cả' },
-    { id: 'huong-dan', label: 'Hướng dẫn', paths: ['/tra-cuu', '/huong-dan-bhxh', '/huong-dan-vneid'] },
-    { id: 'tuyen-truyen', label: 'Tuyên truyền', paths: ['/duoi-nuoc', '/chay-rung', '/te-nan', '/thien-tai'] },
-    { id: 'hanh-chinh', label: 'Hành chính', paths: ['/thong-bao', '/lich-hop', '/thu-tuc-hanh-chinh', '/phap-luat'] },
-  ];
-  
-  const handleSearch = (e) => {
-    const val = e.target.value;
-    setSearchQuery(val);
-    if (!val.trim()) { setSuggestions([]); return; }
-    setSuggestions(FEATURES.filter(f =>
-      f.title.toLowerCase().includes(val.toLowerCase()) ||
-      f.desc.toLowerCase().includes(val.toLowerCase())
-    ));
-  };
-
-  const handleSelect = (path) => {
-    setSearchQuery('');
-    setSuggestions([]);
-    navigate(path);
-  };
-
-  const getFiltered = () => {
-    const tab = TABS.find(t => t.id === activeTab);
-    let list = FEATURES;
-    if (tab && tab.paths) list = FEATURES.filter(f => tab.paths.includes(f.path));
-    if (searchQuery.trim()) list = list.filter(f =>
-      f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      f.desc.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    return list;
-  };
-
-  const filteredFeatures = getFiltered();
-
-  // Tách featured và normal
-  const featured = filteredFeatures.filter(f => FEATURED_PATHS.includes(f.path));
-  const normal = filteredFeatures.filter(f => !FEATURED_PATHS.includes(f.path));
+  const [showTraCuu, setShowTraCuu] = useState(false);
 
   return (
     <div className="home">
 
-      {/* ── Hero ── */}
-<section className="hero">
-<img
- className="hero-banner"
- src="/images/banner-ubnd.jpg"
- alt="Banner UBND"
-/>
-  <div className="hero-overlay" />
-  <div className="hero-inner">
-    <div className="hero-tag">
-CỔNG THÔNG TIN ĐIỆN TỬ
-</div>
-    <h1 className="hero-title">
-ỦY BAN NHÂN DÂN XÃ ĐĂK PXI
+      {/* ── Ảnh nền + 2 cột ── */}
+      <div className="quick-services-wrapper">
+        <div className="home-layout">
 
-<span className="hero-accent">
-CHÍNH QUYỀN PHỤC VỤ NHÂN DÂN
-</span>
-</h1>
-    <p className="hero-desc">
-Cung cấp thông tin chính thống, thủ tục hành chính,
-dịch vụ công trực tuyến và các hoạt động của địa phương.
-</p>
-    <div className="hero-actions">
-      <button className="hero-btn hero-btn--primary" onClick={() => navigate('/thong-bao')}>
-        Xem thông báo
-      </button>
-      <button className="hero-btn hero-btn--outline" onClick={() => navigate('/Thu-tuc-hanh-chinh')}>
-        Thủ tục hành chính
-      </button>
-    </div>
-  </div>
-</section>  
-    <section className="quick-services">
-
-  <div className="service-box">
-    Tra cứu thủ tục hành chính
-  </div>
-
-  <div className="service-box">
-    Dịch vụ công trực tuyến
-  </div>
-
-  <div className="service-box">
-    Hướng dẫn VNeID
-  </div>
-
-  <div className="service-box">
-    Lịch tiếp công dân
-  </div>
-
-</section>
-
-      {/* ── Stats ── */}
-      <section className="stats-section">
-        <div className="stats-grid">
-          {STATS.map((s) => (
-            <div className="stat-item" key={s.label}>
-              <div className="stat-icon">{s.icon}</div>
-              <strong>{s.value}</strong>
-              <span>{s.label}</span>
+          {/* CỘT TRÁI */}
+          <main className="home-main">
+            <div className="main-section-header">
+              <h2>CHUYÊN TRANG THÔNG TIN ĐĂK PXI</h2>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Features — Charcoal Gold ── */}
-      <section className="features-section">
-
-        {/* Header */}
-        <div className="section-header">
-          <div className="section-tag">Dành cho bà con</div>
-          <h2>Chuyên mục thông tin</h2>
-          <p>Tra cứu, hướng dẫn và tuyên truyền dành cho người dân xã Đăk Pxi</p>
-
-          {/* Search */}
-          <div className="home-search-box">
-            <div className="search-icon">🔍</div>
-            <input type="text" className="home-search-input"
-              placeholder="Tìm chuyên mục..." value={searchQuery} onChange={handleSearch} />
-            {suggestions.length > 0 && (
-              <div className="home-search-dropdown">
-                {suggestions.map((f) => (
-                  <div key={f.path} className="home-search-item" onClick={() => handleSelect(f.path)}>
-                    <img src={f.image} alt={f.title} className="home-search-item-img" />
-                    <div>
-                      <p className="home-search-item-title">{f.title}</p>
-                      <p className="home-search-item-desc">{f.desc}</p>
-                    </div>
-                  </div>
-                ))}
+            <div className="main-content-area">
+              <div className="main-placeholder">
+                <span>📰</span>
+                <p>Khu vực tin tức & nội dung chính</p>
+                <small>Thêm component tin tức, bài viết vào đây</small>
               </div>
-            )}
-          </div>
+            </div>
+          </main>
 
-          {/* Tabs lọc */}
-          <div className="features-tabs">
-            {TABS.map(tab => (
-              <button key={tab.id}
-                className={`features-tab ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}>
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
+          {/* CỘT PHẢI — Sidebar */}
+          <aside className="home-sidebar">
 
-        {/* Bento Grid — Featured lớn */}
-        {featured.length > 0 && !searchQuery && activeTab === 'tat-ca' && (
-          <div className="bento-grid">
-            {featured.slice(0, 4).map((f, i) => (
-              <div key={f.title}
-                className={`bento-card bento-card--${i === 0 ? 'hero' : i === 1 ? 'tall' : 'normal'}`}
-                onClick={() => navigate(f.path)}>
-                <img src={f.image} alt={f.title} className="bento-img" />
-                <div className="bento-overlay">
-                  <div className="bento-tag">Nổi bật</div>
-                  <h3>{f.title}</h3>
-                  <p>{f.desc}</p>
-                  <div className="bento-link">Xem ngay →</div>
+            <div className="sidebar-card">
+              <div className="sidebar-card-header">TIỆN ÍCH DỊCH VỤ</div>
+              <ul className="sidebar-links">
+                <li onClick={() => navigate('/thu-tuc-hanh-chinh')}>Thủ tục hành chính</li>
+                <li onClick={() => navigate('/huong-dan-vneid')}>Hướng dẫn VNeID</li>
+                <li onClick={() => navigate('/chuyen-doi-so')}>Chuyển đổi số</li>
+
+                {/* Dropdown mở xuống khi hover */}
+                <li
+                  className={`sidebar-link-dropdown ${showTraCuu ? 'open' : ''}`}
+                  onMouseEnter={() => setShowTraCuu(true)}
+                  onMouseLeave={() => setShowTraCuu(false)}
+                >
+                  <span>
+                    Hướng dẫn tra cứu
+                    <span className="sidebar-dropdown-arrow">{showTraCuu ? '▴' : '▾'}</span>
+                  </span>
+                  {showTraCuu && (
+                    <ul className="sidebar-link-submenu">
+                      <li onClick={() => navigate('/tra-cuu')}>🔍 Tra cứu BHYT</li>
+                      <li onClick={() => navigate('/huong-dan-bhxh')}>📋 Tra cứu BHXH</li>
+                    </ul>
+                  )}
+                </li>
+
+                <li onClick={() => navigate('/tra-cuu')}>Tra cứu CCCD</li>
+                <li onClick={() => navigate('/phap-luat')}>Góc pháp luật</li>
+              </ul>
+            </div>
+
+            <div className="sidebar-card">
+              <div className="sidebar-card-header">HỖ TRỢ TRỰC TUYẾN</div>
+              <div className="sidebar-support">
+                <div className="sidebar-support-icon">👨‍💼</div>
+                <div className="sidebar-support-info">
+                  <p className="sidebar-support-label">Đường dây nóng:</p>
+                  <p className="sidebar-support-phone">0339.310.915</p>
+                  <p className="sidebar-support-hours">Giờ làm việc: 7h30 – 17h00</p>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {/* Divider */}
-        {!searchQuery && activeTab === 'tat-ca' && normal.length > 0 && (
-          <div className="features-divider">
-            <span>Tất cả chuyên mục</span>
-          </div>
-        )}
-
-        {/* List ngang cuộn */}
-        <div className="features-list">
-          {(searchQuery || activeTab !== 'tat-ca' ? filteredFeatures : normal).map((f) => (
-            <div key={f.title} className="flist-card" onClick={() => navigate(f.path)}>
-              <div className="flist-img-wrap">
-                <img src={f.image} alt={f.title} className="flist-img" />
-              </div>
-              <div className="flist-body">
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-                <span className="flist-link">Xem chi tiết →</span>
-              </div>
             </div>
-          ))}
-        </div>
 
-      </section>
+            <div className="sidebar-card">
+              <div className="sidebar-card-header">🌾 GIÁ NÔNG SẢN</div>
+              <div className="sidebar-agri">
+                <div className="sidebar-agri-item">
+                  <span>Cà phê nhân</span>
+                  <strong>125.000đ/kg</strong>
+                </div>
+                <div className="sidebar-agri-item">
+                  <span>Hồ tiêu</span>
+                  <strong>145.000đ/kg</strong>
+                </div>
+                <div className="sidebar-agri-item">
+                  <span>Sắn lát khô</span>
+                  <strong>4.200đ/kg</strong>
+                </div>
+              </div>
+              <button className="sidebar-agri-btn" onClick={() => navigate('/gia-nong-san')}>
+                Xem đầy đủ →
+              </button>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
 
     </div>
   );
