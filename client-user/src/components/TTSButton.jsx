@@ -36,7 +36,7 @@ export default function TTSButton({ type = "child", label = "Nhấn để nghe",
     utt.lang = "vi-VN";
     utt.rate = 0.85;
 
-    setPlaying(true);
+    setPlaying(false);
     setProgress(0);
 
     intervalRef.current = setInterval(() => {

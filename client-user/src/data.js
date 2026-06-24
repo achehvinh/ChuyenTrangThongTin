@@ -224,13 +224,13 @@ export const EVENTS = [
 export const ALERTS = [
   {
     id: 1,
-    active: true,
+    active: false,
     level: 'danger', // danger = đỏ, warning = vàng
     title: '🔥 CẢNH BÁO CHÁY RỪNG',
     content: 'Nguy cơ cháy rừng rất cao tại thôn Đăk Wâk và Kon Hơng. Bà con không đốt nương rẫy, không vào rừng.',
     thon: 'Đăk Wâk, Kon Hơng',
     time: '06/06/2026 08:00',
-    autoRead: true,
+    autoRead: false,
   },
   {
     id: 2,

@@ -46,7 +46,7 @@ export default function Navbar() {
       <div className="navbar-top">
         <div className="navbar-brand">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Emblem_of_Vietnam.svg"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjZ1BrruhiReTVU_7ul40Ev2emExnG9Moo4A&s"
             alt="Logo UBND"
             className="navbar-logo"
           />
