@@ -25,15 +25,14 @@ body {
   overflow: hidden;
 }
 
-/* XÓA 2 block cũ, thay bằng 1 block này */
-.hero-video {
+.hero-banner {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
-  z-index: 1;
-  /* XÓA opacity: 0 và animation vì chỉ dùng 1 video */
 }
 
 .hero-overlay {
@@ -679,4 +678,24 @@ body {
   .features-list { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
+.quick-services{
+  max-width:1200px;
+  margin:-40px auto 40px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  position:relative;
+  z-index:20;
+}
 
+.service-box{
+  background:white;
+  padding:25px;
+  text-align:center;
+
+  border-top:4px solid #005bac;
+
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+
+  font-weight:700;
+}

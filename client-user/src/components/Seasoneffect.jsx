@@ -1,154 +1,57 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './Seasoneffect.css';
 
-// Tự động chọn hiệu ứng theo tháng
-function getSeason() {
-  const month = new Date().getMonth() + 1;
-  if (month === 1 || month === 2) return 'tet';        // Tháng 1-2: Tết - pháo hoa + đào
-  if (month === 3 || month === 4) return 'spring';     // Tháng 3-4: Xuân - lá hoa rơi
-  if (month === 5 || month === 6) return 'summer';     // Tháng 5-6: Hè - bướm bay
-  if (month === 7 || month === 8) return 'rain';       // Tháng 7-8: Mưa - giọt mưa
-  if (month === 9 || month === 10) return 'mooncake';  // Tháng 9-10: Trung thu - lân + sao
-  if (month === 11 || month === 12) return 'snow';     // Tháng 11-12: Đông - tuyết
-  return 'spring';
-}
+const LEAF_SVGS = [
+  `<svg width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 7 Q7 1 14 2 Q21 1 27 7 Q21 13 14 12 Q7 13 1 7Z" fill="#5a9e30" opacity="0.85"/><line x1="14" y1="2" x2="14" y2="12" stroke="#3d7a1e" stroke-width="0.8"/></svg>`,
+  `<svg width="22" height="10" viewBox="0 0 22 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5 Q5.5 1 11 1.5 Q16.5 1 21 5 Q16.5 9 11 8.5 Q5.5 9 1 5Z" fill="#7bc44a" opacity="0.8"/><line x1="11" y1="1.5" x2="11" y2="8.5" stroke="#4e8a28" stroke-width="0.7"/></svg>`,
+  `<svg width="32" height="12" viewBox="0 0 32 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 6 Q8 1 16 2 Q24 1 31 6 Q24 11 16 10 Q8 11 1 6Z" fill="#4a8e25" opacity="0.75"/><line x1="16" y1="2" x2="16" y2="10" stroke="#2f6015" stroke-width="0.9"/></svg>`,
+  `<svg width="20" height="8" viewBox="0 0 20 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4 Q5 1 10 1.5 Q15 1 19 4 Q15 7 10 6.5 Q5 7 1 4Z" fill="#6db840" opacity="0.9"/><line x1="10" y1="1.5" x2="10" y2="6.5" stroke="#3e7522" stroke-width="0.6"/></svg>`,
+  `<svg width="26" height="11" viewBox="0 0 26 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.5 Q6.5 1 13 1.5 Q19.5 1 25 5.5 Q19.5 10 13 9.5 Q6.5 10 1 5.5Z" fill="#88cc55" opacity="0.7"/><line x1="13" y1="1.5" x2="13" y2="9.5" stroke="#558833" stroke-width="0.7"/></svg>`,
+];
 
-const SEASON_CONFIG = {
-  tet: {
-    label: '🎆 Chúc mừng năm mới!',
-    color: '#dc2626',
-    particles: ['🌸', '🧧', '🎆', '✨', '🌺', '🎇', '💫'],
-    count: 25,
-    speed: 3,
-  },
-  spring: {
-    label: '🌸 Mùa xuân tươi đẹp!',
-    color: '#db2777',
-    particles: ['🌸', '🌺', '🍀', '🦋', '🌼', '🌷', '💐'],
-    count: 30,
-    speed: 2.5,
-  },
-  summer: {
-    label: '☀️ Mùa hè rực rỡ!',
-    color: '#f59e0b',
-    particles: ['🦋', '🌻', '⭐', '✨', '🌈', '🌟', '💛'],
-    count: 20,
-    speed: 2,
-  },
-  rain: {
-    label: '🌧️ Mùa mưa Tây Nguyên',
-    color: '#0891b2',
-    particles: ['💧', '🌿', '🍃', '💦', '🌱', '🌧️', '🍀'],
-    count: 35,
-    speed: 4,
-  },
-  mooncake: {
-    label: '🏮 Chúc mừng Tết Trung thu!',
-    color: '#d97706',
-    particles: ['🏮', '⭐', '🌟', '✨', '🌙', '💫', '🌠'],
-    count: 25,
-    speed: 2,
-  },
-  snow: {
-    label: '❄️ Mùa đông an lành!',
-    color: '#0891b2',
-    particles: ['❄️', '⛄', '✨', '💫', '🌨️', '⭐', '🌟'],
-    count: 30,
-    speed: 2,
-  },
-};
+const LEAF_COUNT = 30;
 
-function Particle({ emoji, style }) {
-  return (
-    <div className="season-particle" style={style}>
-      {emoji}
-    </div>
-  );
+function createLeafEl() {
+  const el = document.createElement('div');
+  el.className = 'bamboo-leaf';
+  el.innerHTML = LEAF_SVGS[Math.floor(Math.random() * LEAF_SVGS.length)];
+
+  const left     = Math.random() * 96;
+  const duration = 7 + Math.random() * 6;
+  const delay    = Math.random() * -duration;
+  const drift    = Math.random() * 120 - 60;
+  const rot      = Math.random() * 540 - 270;
+  const scale    = 0.7 + Math.random() * 0.8;
+
+  el.style.cssText = `
+    left: ${left}%;
+    animation-duration: ${duration}s;
+    animation-delay: ${delay}s;
+    --drift: ${drift}px;
+    --rot: ${rot}deg;
+    transform: scale(${scale});
+    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.12));
+  `;
+  return el;
 }
 
 export default function Seasoneffect() {
-  const season = getSeason();
-  const config = SEASON_CONFIG[season];
-  const [particles, setParticles] = useState([]);
-  const [showBanner, setShowBanner] = useState(true);
-  const [showLan, setShowLan] = useState(season === 'mooncake');
-  const idRef = useRef(0);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    const initial = Array.from({ length: config.count }, (_, i) => ({
-      id: i,
-      emoji: config.particles[Math.floor(Math.random() * config.particles.length)],
-      left: Math.random() * 100,
-      delay: Math.random() * 8,
-      duration: 6 + Math.random() * 6,
-      size: 16 + Math.random() * 20,
-      swing: Math.random() * 60 - 30,
-    }));
-    setParticles(initial);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const interval = setInterval(() => {
-      idRef.current += 1;
-      setParticles(prev => [
-        ...prev.slice(-config.count),
-        {
-          id: Date.now(),
-          emoji: config.particles[Math.floor(Math.random() * config.particles.length)],
-          left: Math.random() * 100,
-          delay: 0,
-          duration: 6 + Math.random() * 6,
-          size: 16 + Math.random() * 20,
-          swing: Math.random() * 60 - 30,
-        }
-      ]);
-    }, 800);
+    for (let i = 0; i < LEAF_COUNT; i++) {
+      canvas.appendChild(createLeafEl());
+    }
 
-    return () => clearInterval(interval);
-  }, [season]);
-
-  // Ẩn banner sau 5 giây
-  useEffect(() => {
-    if (!showBanner) return;
-    const t = setTimeout(() => setShowBanner(false), 5000);
-    return () => clearTimeout(t);
+    return () => {
+      canvas.innerHTML = '';
+    };
   }, []);
 
   return (
-    <>
-      {/* Particles rơi */}
-      <div className="season-canvas">
-        {particles.map(p => (
-          <Particle
-            key={p.id}
-            emoji={p.emoji}
-            style={{
-              left: `${p.left}%`,
-              fontSize: `${p.size}px`,
-              animationDuration: `${p.duration}s`,
-              animationDelay: `${p.delay}s`,
-              '--swing': `${p.swing}px`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Banner chào mùa */}
-      {showBanner && (
-        <div className="season-banner" style={{ background: config.color }}>
-          <span className="season-banner-text">{config.label}</span>
-          <button className="season-banner-close" onClick={() => setShowBanner(false)}>✕</button>
-        </div>
-      )}
-
-      {/* Lân múa (chỉ Trung thu) */}
-      {showLan && (
-        <div className="lan-wrapper" onClick={() => setShowLan(false)} title="Bấm để ẩn lân">
-          <div className="lan-body">
-            <div className="lan-head">🦁</div>
-            <div className="lan-tail">🎊</div>
-            <div className="lan-label">Chúc Trung thu vui vẻ!</div>
-          </div>
-        </div>
-      )}
-    </>
+    <div ref={canvasRef} className="bamboo-canvas" aria-hidden="true" />
   );
 }

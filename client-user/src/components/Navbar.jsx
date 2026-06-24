@@ -23,6 +23,7 @@ const NAV_ITEMS = [
     ]
   },
     { to: '/Ban-do', label: 'Bản đồ' },
+  { to: '/gia-nong-san', label: '🌾 Giá nông sản' }
 ];
 
 export default function Navbar() {
@@ -40,10 +41,15 @@ export default function Navbar() {
             alt="Logo UBND"
             className="navbar-logo"
           />
-          <div className="navbar-title">
-            <span className="navbar-sub">UBND XÃ ĐĂK PXI - QUẢNG NGÃI</span>
-            <span className="navbar-main">TRANG TUYÊN TRUYỀN - HƯỚNG DẪN </span>
-          </div>
+         <div className="navbar-title">
+  <div className="navbar-sub">
+    ỦY BAN NHÂN DÂN XÃ ĐĂK PXI
+  </div>
+
+  <div className="navbar-main">
+    CỔNG THÔNG TIN ĐIỆN TỬ
+  </div>
+</div>
         </div>
 
         <div className="navbar-actions">

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+const { router: giaRouter } = require('./routes/gianongsanRoutes');
 
 const result = dotenv.config({ path: path.resolve(__dirname, ".env") });
 if (result.error) {
@@ -32,6 +33,7 @@ app.use("/api/thong-bao", thongBaoRoutes);
 app.use("/api/canh-bao", canhBaoRoutes);
 app.use("/api/lich-hop", lichHopRoutes);
 app.use("/api/v1", tthcRoutes);
+app.use('/api/v1/gia-nong-san', giaRouter);
 
 app.get("/api/v1", (req, res) => {
   res.json({ message: "UBND Dak Pxi API is running" });

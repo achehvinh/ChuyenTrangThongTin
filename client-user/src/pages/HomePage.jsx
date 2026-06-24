@@ -69,25 +69,27 @@ export default function HomePage() {
 
       {/* ── Hero ── */}
 <section className="hero">
-  <video
-    className="hero-video"
-    src="/video/hero.mp4"
-    autoPlay
-    muted
-    loop
-    playsInline
-  />
+<img
+ className="hero-banner"
+ src="/images/banner-ubnd.jpg"
+ alt="Banner UBND"
+/>
   <div className="hero-overlay" />
   <div className="hero-inner">
-    <div className="hero-tag">🏛️ UBND XÃ ĐĂK PXI · QUẢNG NGÃI</div>
+    <div className="hero-tag">
+CỔNG THÔNG TIN ĐIỆN TỬ
+</div>
     <h1 className="hero-title">
-      Chuyên trang thông tin
-      <span className="hero-accent">Chính quyền — Người dân</span>
-    </h1>
+ỦY BAN NHÂN DÂN XÃ ĐĂK PXI
+
+<span className="hero-accent">
+CHÍNH QUYỀN PHỤC VỤ NHÂN DÂN
+</span>
+</h1>
     <p className="hero-desc">
-      Kênh thông tin chính thức phục vụ bà con xã Đắk Pxi.
-      Cập nhật thông báo, hướng dẫn thủ tục, tuyên truyền pháp luật.
-    </p>
+Cung cấp thông tin chính thống, thủ tục hành chính,
+dịch vụ công trực tuyến và các hoạt động của địa phương.
+</p>
     <div className="hero-actions">
       <button className="hero-btn hero-btn--primary" onClick={() => navigate('/thong-bao')}>
         Xem thông báo
@@ -97,6 +99,25 @@ export default function HomePage() {
       </button>
     </div>
   </div>
+</section>  
+    <section className="quick-services">
+
+  <div className="service-box">
+    Tra cứu thủ tục hành chính
+  </div>
+
+  <div className="service-box">
+    Dịch vụ công trực tuyến
+  </div>
+
+  <div className="service-box">
+    Hướng dẫn VNeID
+  </div>
+
+  <div className="service-box">
+    Lịch tiếp công dân
+  </div>
+
 </section>
 
       {/* ── Stats ── */}

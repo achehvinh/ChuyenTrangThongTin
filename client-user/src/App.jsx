@@ -25,6 +25,7 @@ import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
 import Seasoneffect from './components/Seasoneffect';
 import Bando from './pages/Bando';
+import Gianongsan from './pages/Gianongsan';
 
 function App() {
   return (
@@ -33,8 +34,13 @@ function App() {
       <div className="app-shell">
         <Router>
           <Navbar />
-          <Seasoneffect />
-          <AlertBanner />
+
+<div className="gov-notice">
+📢 THÔNG BÁO: Người dân thực hiện thủ tục hành chính trực tuyến trên Cổng Dịch vụ công Quốc gia.
+</div>
+
+<Seasoneffect />
+<AlertBanner />
           <main className="app-content">
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -55,6 +61,7 @@ function App() {
               <Route path="/drag-drop" element={<DragDrop />} />
               <Route path="/thu-tuc-hanh-chinh" element={<Thutuchanhchinh />} />
               <Route path="/Ban-do" element={<Bando />} />
+              <Route path="/gia-nong-san" element={<Gianongsan />} />
 
             </Routes>
           </main>
