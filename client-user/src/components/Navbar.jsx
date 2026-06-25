@@ -5,7 +5,6 @@ import { useFontSize } from '../FontSizeContext';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ' },
-  { to: '/thong-bao', label: 'Thông báo' },
   { to: '/chuyen-doi-so', label: 'Chuyển đổi số' },
   { to: '/thu-vien-anh', label: 'Thư viện ảnh' },
   { to: '/ban-do', label: 'Bản đồ' },
@@ -23,7 +22,7 @@ const NAV_ITEMS = [
 ];
 
 // ← Thêm link ảnh nền vào đây
-const NAVBAR_BG_IMAGE = 'http://localhost:3000/anhnen.jpg';
+const NAVBAR_BG_IMAGE = 'http://localhost:3000/hinhnen1.jpg';
 
 export default function Navbar() {
   const { lang, toggleLang } = useLang();
@@ -52,11 +51,13 @@ export default function Navbar() {
           />
           <div className="navbar-title">
             <div className="navbar-sub">
-              ỦY BAN NHÂN DÂN XÃ ĐĂK PXI
+              PHÒNG VĂN HÓA XÃ HỘI - XÃ ĐĂK PXI
             </div>
             <div className="navbar-main">
-              CỔNG THÔNG TIN ĐIỆN TỬ
+              TUYÊN TRUYỀN
             </div>
+            <div className="navbar-main"> 
+              VÀ HỖ TRỢ DỊCH VỤ CÔNG TRỰC TUYẾN </div>
           </div>
         </div>
         <div className="navbar-actions">

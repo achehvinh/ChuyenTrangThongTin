@@ -43,7 +43,7 @@ button { font-family: inherit; }
 
 .quick-btn.call {
   background: #eae5e4;
-  font-size: 22px;
+  font-size: 16px;
 }
 
 @keyframes pulse {
@@ -68,13 +68,14 @@ button { font-family: inherit; }
   overflow: hidden;
   width: 100%;
   padding: 0;
+  gap:16px;
 }
 
 .gov-notice-label {
   flex-shrink: 0;
   background: #dc2626;
   color: white;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 800;
   padding: 0 16px;
   height: 100%;
@@ -92,7 +93,7 @@ button { font-family: inherit; }
 .gov-notice-text {
   display: inline-block;
   white-space: nowrap;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: #1e293b;
   animation: ticker 25s linear infinite;
@@ -101,4 +102,30 @@ button { font-family: inherit; }
 @keyframes ticker {
   0%   { transform: translateX(100vw); }
   100% { transform: translateX(-100%); }
+}
+.container-1200 {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.gov-notice-track{
+    flex:1;
+    overflow:hidden;
+}
+
+.gov-notice-more{
+    white-space: nowrap;
+    text-decoration: none;
+    font-weight: 600;
+
+    font-size: 13px; /* giảm chữ */
+    
+    color: #ee3d29;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: .2s;
+}
+
+.gov-notice-more:hover{
+    background:#eef4ff;
 }

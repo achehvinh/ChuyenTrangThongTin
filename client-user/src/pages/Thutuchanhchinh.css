@@ -13,12 +13,12 @@
   --row-bg-hover: #ebeef2;
   --line: #e5e7eb;
 
- --primary-red: #d4001a;
---primary-red-dark: #a50014;
+ --primary-red: #0f0f0f;
+--primary-red-dark: #0f0f0f;
 --primary-red-light: #ffe5e8;
 
---primary-blue: #005bac;
---primary-blue-dark: #004a8c;
+--primary-blue: #0f0f0f;
+--primary-blue-dark: #0f0f0f;
 --primary-blue-light: #eaf4ff;
 
 --primary-gold: #f5a623;
@@ -31,7 +31,7 @@
   --green: #16a34a;
   --green-tint: #ecfdf3;
 
-  --red: #dc2626;
+  --red: #0f0f0f;
   --red-tint: #fef2f2;
 
   --radius-md: 10px;
@@ -49,26 +49,245 @@
 
 .tthc-root * {
   box-sizing: border-box;
+  --terracotta: #0f0f0f;
+--terracotta-soft: #f59e0b;
+--terracotta-tint: #fff7ed;
+--terracotta-deep: #9a3412;
 }
 
 .tthc-root button {
   font-family: inherit;
 }
 
+/* ==========================================================
+   GOV HEADER
+   ========================================================== */
+
+.tthc-gov-title {
+  color: #dc2626; /* đỏ */
+  font-size: 28px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.tthc-gov-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.tthc-gov-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tthc-gov-logo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.tthc-gov-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.tthc-gov-title-sub {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: .9;
+  color: #000000; /* đen */
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.tthc-gov-title-main {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.tthc-gov-header-right {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  gap: 4px;
+}
+
+.tthc-gov-hotline {
+  font-weight: 700;
+}
+
+.tthc-gov-hours {
+  font-size: .85rem;
+  opacity: .9;
+}
+
+/* ==========================================================
+   BREADCRUMB
+   ========================================================== */
+
+.tthc-breadcrumb {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tthc-breadcrumb-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .9rem;
+  color: #0f0f0f;
+}
+
+.tthc-breadcrumb-current {
+  color: #0f0f0f;
+  font-weight: 600;
+}
+
+.tthc-breadcrumb-sep {
+  color: #9ca3af;
+}
+
+/* ==========================================================
+   PAGE TITLE
+   ========================================================== */
+
+.tthc-page-title {
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #131212;
+}
+
+/* ==========================================================
+   DANH SÁCH THỦ TỤC
+   ========================================================== */
+
+.tthc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tthc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  padding: 18px 22px;
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.tthc-row:hover {
+  border-color: #005bac;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+  transform: translateY(-2px);
+}
+
+.tthc-row-left {
+  flex: 1;
+}
+
+.tthc-row-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.tthc-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: .85rem;
+  color: #6b7280;
+}
+
+.tthc-row-fee {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.tthc-row-btn {
+  flex-shrink: 0;
+
+  background: #e23232;
+  color: #fff;
+
+  border: none;
+  border-radius: 999px;
+
+  padding: 10px 18px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.tthc-row-btn:hover {
+  background: #004a8c;
+}
+
+/* ==========================================================
+   LOADING LIST
+   ========================================================== */
+
+.tthc-loading-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tthc-skeleton-row {
+  height: 90px;
+  border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 25%,
+    #e5e7eb 37%,
+    #f1f5f9 63%
+  );
+  background-size: 400% 100%;
+  animation: tthc-shimmer 1.4s infinite;
+}
+
 /* ============================================================
    HERO
    ============================================================ */
 .tthc-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 0 0 12px 12px;  /* bo góc dưới cho đẹp */
   background: linear-gradient(
     135deg,
     #317cc7 0%,
     #175368 100%
   );
+  padding: 0.5rem 1.5rem;
 }
 
 .tthc-hero-inner {
-  max-width: 1180px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 1.5rem 24px;  /* ← padding 24px đồng bộ với navbar */
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -87,6 +306,7 @@
 }
 
 .tthc-hero-inner h1 {
+  max-width: 1200px;
   margin: 0 0 0.5rem;
   font-size: 1.85rem;
   font-weight: 800;
@@ -129,9 +349,9 @@
    MAIN CONTAINER
    ============================================================ */
 .tthc-main {
-  max-width: 1180px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 1.75rem 1.5rem 4rem;
+  padding: 1.75rem 24px 4rem;  /* ← cùng 24px */
 }
 
 /* ============================================================
@@ -854,9 +1074,13 @@
   .tthc-loading-grid {
     grid-template-columns: 1fr;
   }
-  .tthc-hero-inner {
-    align-items: flex-start;
-  }
+ .tthc-hero-inner,
+.tthc-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
   .tthc-hero-inner h1 {
     font-size: 1.5rem;
   }
@@ -884,4 +1108,37 @@
     transition: none;
     animation: none;
   }
+}
+
+.breadcrumb {
+  max-width: 1200px;
+  margin: 15px auto;
+  padding: 0 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.breadcrumb a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb span:last-child {
+  color: #333;
+  font-weight: 500;
+}
+.tthc-container{
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px;
+}
+
+.tthc-detail-page{
+    background:#f5f7fa;
+    min-height:100vh;
 }
