@@ -22,7 +22,7 @@ const NAV_ITEMS = [
 ];
 
 // ← Thêm link ảnh nền vào đây
-const NAVBAR_BG_IMAGE = 'http://localhost:3000/hinh-nen.jpg';
+const NAVBAR_BG_IMAGE = 'http://localhost:3000/anhnen1.png';
 
 export default function Navbar() {
   const { lang, toggleLang } = useLang();
