@@ -275,9 +275,9 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: white;
+  background: rgb(245, 245, 246);
   border-radius: 0 0 12px 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 30px rgba(248, 247, 247, 0.15);
   min-width: 200px;
   overflow: visible;
   opacity: 0;

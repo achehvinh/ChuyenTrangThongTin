@@ -60,6 +60,7 @@ export default function HomePage() {
 
                 <li onClick={() => navigate('/tra-cuu')}>Tra cứu CCCD</li>
                 <li onClick={() => navigate('/phap-luat')}>Góc pháp luật</li>
+                <li onClick={() => navigate('/chuyen-muc')}>Tuyên truyền</li>
               </ul>
             </div>
 

@@ -1142,3 +1142,196 @@
     background:#f5f7fa;
     min-height:100vh;
 }
+/* ============================================================
+   LAYOUT 2 CỘT: SIDEBAR LĨNH VỰC (25%) + DANH SÁCH (75%)
+   ============================================================ */
+.tthc-layout {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ---------- Sidebar trái ---------- */
+.tthc-sidebar {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: sticky;
+  top: 16px;
+}
+
+.tthc-sidebar-head {
+  background: #14497d;
+  color: #fff;
+  padding: 14px 18px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.tthc-sidebar-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.tthc-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 13px 18px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+}
+
+.tthc-sidebar-item:last-child {
+  border-bottom: none;
+}
+
+.tthc-sidebar-item:hover {
+  background: var(--row-bg);
+  color: var(--primary-blue);
+  padding-left: 22px;
+}
+
+.tthc-sidebar-item.is-active {
+  background: var(--primary-blue-light);
+  color: var(--primary-blue);
+  font-weight: 700;
+  border-left: 3px solid var(--primary-blue);
+  padding-left: 15px;
+}
+
+.tthc-sidebar-arrow {
+  flex: none;
+  display: inline-flex;
+  color: #14497d;
+  opacity: 0.75;
+}
+
+.tthc-sidebar-item.is-active .tthc-sidebar-arrow {
+  opacity: 1;
+}
+
+.tthc-sidebar-label {
+  flex: 1;
+}
+
+.tthc-sidebar-count {
+  flex: none;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: var(--row-bg);
+  color: var(--ink-faint);
+  border-radius: 999px;
+  padding: 1px 8px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.tthc-sidebar-item.is-active .tthc-sidebar-count {
+  background: #fff;
+  color: var(--primary-blue);
+}
+
+/* Banner ảnh phía trên khu danh sách — chỗ trống để gắn ảnh/file sau */
+.tthc-content-banner {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--line);
+}
+
+.tthc-content-banner img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- Responsive: gập sidebar xuống dưới mobile ---------- */
+@media (max-width: 860px) {
+  .tthc-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tthc-sidebar {
+    position: static;
+  }
+
+  .tthc-sidebar-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tthc-sidebar-item {
+    border-bottom: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 560px) {
+  .tthc-sidebar-list {
+    grid-template-columns: 1fr;
+  }
+}
+/* ============================================================
+   HOVER-TO-FILTER: hiệu ứng mượt khi danh sách đổi theo hover
+   ============================================================ */
+.tthc-list,
+.tthc-loading-list {
+  animation: tthc-fade-in 0.18s ease;
+}
+
+@keyframes tthc-fade-in {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+/* Sidebar item phản hồi rõ ràng hơn khi hover, vì giờ hover = hành động thật */
+.tthc-sidebar-item:hover .tthc-sidebar-arrow {
+  transform: translateX(2px);
+}
+
+.tthc-sidebar-arrow {
+  transition: transform 0.15s ease;
+}
+/* ============================================================
+   NÚT "← TRANG CHỦ" TRONG HEADER
+   ============================================================ */
+.tthc-home-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #14497d;
+  background: #fff;
+  color: #14497d;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tthc-home-btn:hover {
+  background: #14497d;
+  color: #fff;
+}
+
+.tthc-home-btn-arrow {
+  font-size: 1rem;
+  line-height: 1;
+}

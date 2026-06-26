@@ -34,7 +34,7 @@ function AppLayout() {
   const location = useLocation();
 
   const hideLayout =
-    location.pathname === "/thu-tuc-hanh-chinh";
+    location.pathname.startsWith("/thu-tuc-hanh-chinh");
 
   return (
     <>
