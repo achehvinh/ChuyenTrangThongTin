@@ -24,6 +24,12 @@ const MENU_GROUPS = [
       { to: '/gop-y', icon: '💬', label: 'Góp ý bà con' },
     ]
   },
+  {
+    group: 'Website',
+    items: [
+      { to: '/user', icon: '🌐', label: 'Xem trang người dùng' },
+    ]
+  },
 ];
 
 export default function Sidebar() {

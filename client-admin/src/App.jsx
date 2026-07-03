@@ -9,6 +9,7 @@ import LichHop from "./pages/LichHop";
 import ChuyenMuc from "./pages/ChuyenMuc";
 import ThuVien from "./pages/ThuVien";
 import GopY from "./pages/GopY";
+import UserApp from "./user-app/App.jsx";
 
 function Layout() {
   const location = useLocation();
@@ -17,14 +18,9 @@ function Layout() {
     location.pathname === "/dang-nhap";
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="app-shell">
       {!isLoginPage && <Sidebar />}
-      <div style={{
-        marginLeft: isLoginPage ? "0" : "250px",
-        width: "100%",
-        minHeight: "100vh",
-        background: "#f5f7fb",
-      }}>
+      <main className={`app-main ${isLoginPage ? 'app-main--full' : ''}`}>
         <Routes>
           {/* Public */}
           <Route path="/" element={<DangNhap />} />
@@ -52,8 +48,11 @@ function Layout() {
           <Route path="/gop-y" element={
             <ProtectedRoute><GopY /></ProtectedRoute>
           } />
+          <Route path="/user/*" element={
+            <ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>
+          } />
         </Routes>
-      </div>
+      </main>
     </div>
   );
 }

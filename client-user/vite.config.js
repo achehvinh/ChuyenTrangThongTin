@@ -4,9 +4,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000, // Đảm bảo chạy đúng cổng 3000
+    port: 3000,
+    watch: {
+      ignored: ['**/*.mp4', '**/*.mov', '**/*.avi']
+    }
   },
-  watch: {
-      ignored: ['**/*.mp4', '**/*.mov', '**/*.avi'] // ← thêm dòng này
-  }
 });

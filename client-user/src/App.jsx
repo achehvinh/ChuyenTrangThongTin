@@ -7,7 +7,6 @@ import FeedbackPopup from './components/FeedbackPopup';
 import AlertBanner from './components/AlertBanner';
 import TTSButton from './components/TTSButton';
 import DragDrop from './components/DragDrop';
-import FloatingChatBot from './components/FloatingChatBot';
 import { FontSizeProvider } from './FontSizeContext';
 
 import HomePage from './pages/HomePage';
@@ -24,7 +23,6 @@ import Thutuchanhchinh from './pages/Thutuchanhchinh';
 import { LanguageProvider } from './LanguageContext';
 import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
-import Seasoneffect from './components/Seasoneffect';
 import Bando from './pages/Bando';
 import Gianongsan from './pages/Gianongsan';
 import ChuyenMucPage from './pages/ChuyenMucPage';
@@ -64,7 +62,6 @@ function AppLayout() {
   </div>
 </div>
 
-          <Seasoneffect />
           <AlertBanner />
         </>
       )}
@@ -146,7 +143,7 @@ function App() {
             </a>
           </div>
 
-          <FloatingChatBot type="general" />
+          {/* <FloatingChatBot type="general" /> */}
         </div>
       </FontSizeProvider>
     </LanguageProvider>

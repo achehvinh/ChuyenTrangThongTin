@@ -1,0 +1,65 @@
+.tts-card {
+  background: #e1f5ee;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
+  border: 1.5px solid #9fe1cb;
+}
+
+.tts-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tts-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #0f6e56;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+  font-size: 22px;
+  color: white;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.tts-icon-wrap:hover {
+  background: #1d9e75;
+  transform: scale(1.06);
+}
+
+.tts-texts {
+  flex: 1;
+}
+
+.tts-label {
+  font-size: 12px;
+  color: #0f6e56;
+  margin-bottom: 2px;
+}
+
+.tts-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #085041;
+}
+
+.tts-bar {
+  height: 4px;
+  background: #9fe1cb;
+  border-radius: 2px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.tts-fill {
+  height: 100%;
+  background: #0f6e56;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
