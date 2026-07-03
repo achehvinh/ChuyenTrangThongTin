@@ -310,6 +310,7 @@
  .nav-dropdown-item:hover {
    background: rgba(251, 191, 36, 0.14);
    color: #fbbf24;
+}
 @media (max-width: 1232px) {
   /* Khi màn hình nhỏ hơn max-width + padding thì dùng padding cố định */
   .navbar-top { padding: 18px 16px; }

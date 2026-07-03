@@ -9,4 +9,7 @@ export default defineConfig({
       ignored: ['**/*.mp4', '**/*.mov', '**/*.avi']
     }
   },
+  build: {
+    cssMinify: 'esbuild',
+  },
 });
