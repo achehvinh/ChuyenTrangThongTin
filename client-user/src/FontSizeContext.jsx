@@ -2,8 +2,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const FontSizeContext = createContext();
 
-const SCALES = [1, 1.2, 1.45, 1.7, 2.0];
-const DEFAULT_INDEX = 0;
+// Cỡ chữ gốc tính bằng px — chỉ chữ to ra, layout giữ nguyên
+const SIZES = [14, 16, 18, 20, 22];
+const SIZE_LABELS = ['Nhỏ', 'Vừa', 'Lớn', 'Rất lớn', 'To nhất'];
+const DEFAULT_INDEX = 1; // mặc định 16px
 
 export function FontSizeProvider({ children }) {
   const [sizeIndex, setSizeIndex] = useState(() => {
@@ -12,15 +14,23 @@ export function FontSizeProvider({ children }) {
   });
 
   useEffect(() => {
-    document.body.style.zoom = SCALES[sizeIndex];
+    // Chỉ thay đổi font-size gốc — KHÔNG zoom layout
+    document.documentElement.style.fontSize = SIZES[sizeIndex] + 'px';
     localStorage.setItem('fontSizeIndex', sizeIndex);
   }, [sizeIndex]);
 
-  const increase = () => setSizeIndex(i => Math.min(i + 1, SCALES.length - 1));
+  const increase = () => setSizeIndex(i => Math.min(i + 1, SIZES.length - 1));
   const decrease = () => setSizeIndex(i => Math.max(i - 1, 0));
 
   return (
-    <FontSizeContext.Provider value={{ sizeIndex, increase, decrease, max: SCALES.length - 1 }}>
+    <FontSizeContext.Provider value={{
+      sizeIndex,
+      increase,
+      decrease,
+      max: SIZES.length - 1,
+      currentSize: SIZES[sizeIndex],
+      currentLabel: SIZE_LABELS[sizeIndex],
+    }}>
       {children}
     </FontSizeContext.Provider>
   );

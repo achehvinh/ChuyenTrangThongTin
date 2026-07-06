@@ -26,7 +26,7 @@ const NAVBAR_BG_IMAGE = 'http://localhost:3000/anhnen1.png';
 
 export default function Navbar() {
   const { lang, toggleLang } = useLang();
-  const { increase, decrease, sizeIndex, max } = useFontSize();
+  const { increase, decrease, sizeIndex, max, currentLabel } = useFontSize();
 
   return (
     <header
@@ -63,24 +63,24 @@ export default function Navbar() {
         <div className="navbar-actions">
           {/* Nút A+ / A- */}
           <div className="font-size-controls">
-            <button
-              className="font-btn"
-              onClick={decrease}
-              disabled={sizeIndex === 0}
-              title="Giảm cỡ chữ"
-            >
-              A−
-            </button>
-            <span className="font-label">Cỡ chữ</span>
-            <button
-              className="font-btn"
-              onClick={increase}
-              disabled={sizeIndex === max}
-              title="Tăng cỡ chữ"
-            >
-              A+
-            </button>
-          </div>
+  <button
+    className="font-btn"
+    onClick={decrease}
+    disabled={sizeIndex === 0}
+    title="Giảm cỡ chữ"
+  >
+    A−
+  </button>
+  <span className="font-label">{currentLabel}</span>
+  <button
+    className="font-btn"
+    onClick={increase}
+    disabled={sizeIndex === max}
+    title="Tăng cỡ chữ"
+  >
+    A+
+  </button>
+</div>
         </div>
       </div>
 

@@ -12,6 +12,7 @@ const MENU_GROUPS = [
     group: 'Nội dung tuyên truyền',
     items: [
       { to: '/thong-bao', icon: '📢', label: 'Thông báo' },
+      { to: '/bai-viet', icon: '📝', label: 'Bài viết' },
       { to: '/canh-bao', icon: '🚨', label: 'Cảnh báo khẩn' },
       { to: '/lich-hop', icon: '📅', label: 'Lịch họp thôn' },
       { to: '/chuyen-muc', icon: '📋', label: 'Chuyên mục' },

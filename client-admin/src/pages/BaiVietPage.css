@@ -1,0 +1,340 @@
+/* ═══════════════════════════════════════
+   BaiVietPage.css — Admin quản lý bài viết
+   Palette: navy #0f2d4e · blue #1a56db
+═══════════════════════════════════════ */
+
+.bv-page {
+  padding: 28px 32px 60px;
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #0f172a;
+}
+
+/* Header */
+.bv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.bv-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: #0f2d4e;
+}
+
+.bv-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Buttons */
+.bv-btn-primary {
+  background: #1a56db;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .14s;
+}
+.bv-btn-primary:hover { background: #1447b8; }
+.bv-btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+
+.bv-btn-secondary {
+  background: #fff;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bv-btn-secondary:hover { background: #f1f5f9; }
+
+.bv-btn-edit {
+  background: #eff6ff;
+  color: #1a56db;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bv-btn-edit:hover { background: #dbeafe; }
+
+.bv-btn-delete {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bv-btn-delete:hover { background: #fee2e2; }
+
+/* Badge */
+.bv-badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Trạng thái toggle */
+.bv-status-btn {
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  border-radius: 999px;
+  padding: 3px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.bv-status-btn.is-published {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+/* Table */
+.bv-table-wrap {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.bv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.bv-table th {
+  background: #f8fafc;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bv-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.bv-table tr:last-child td { border-bottom: none; }
+
+.bv-table tr:hover td { background: #fafbfc; }
+
+.bv-thumb {
+  width: 56px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.bv-thumb-empty {
+  background: #f1f5f9;
+  display: block;
+}
+
+.bv-row-title {
+  display: block;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.bv-row-desc {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.bv-actions {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.bv-empty {
+  text-align: center;
+  color: #94a3b8;
+  padding: 40px !important;
+}
+
+/* Loading */
+.bv-loading { display: flex; flex-direction: column; gap: 12px; }
+.bv-skeleton {
+  height: 56px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e5e7eb 37%, #f1f5f9 63%);
+  background-size: 400% 100%;
+  animation: bv-shimmer 1.4s infinite;
+}
+@keyframes bv-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+
+/* Msg */
+.bv-msg {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+
+/* Modal overlay */
+.bv-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow-y: auto;
+}
+
+.bv-modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.18);
+  animation: bv-pop .2s ease;
+}
+
+@keyframes bv-pop { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.bv-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bv-modal-head h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f2d4e;
+}
+
+.bv-modal-close {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Form */
+.bv-form {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bv-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.bv-required { color: #b91c1c; }
+
+.bv-input, .bv-select {
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: #0f172a;
+  font-family: inherit;
+  background: #fff;
+}
+
+.bv-input:focus, .bv-select:focus, .bv-textarea:focus {
+  outline: none;
+  border-color: #1a56db;
+  box-shadow: 0 0 0 3px rgba(26,86,219,.1);
+}
+
+.bv-textarea {
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #0f172a;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 180px;
+}
+
+.bv-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.bv-img-upload {
+  border: 2px dashed #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 13px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .15s;
+}
+
+.bv-img-upload:hover { border-color: #1a56db; }
+
+.bv-img-upload img {
+  max-height: 160px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.bv-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #f1f5f9;
+}

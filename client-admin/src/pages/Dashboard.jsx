@@ -67,6 +67,9 @@ export default function Dashboard() {
           <p>🕐 Cập nhật lúc: {now} — UBND xã Đăk Pxi</p>
         </div>
         <div className="dashboard-btn-group">
+          <button className="btn-primary" onClick={() => navigate('/bai-viet')}>
+            📝 Quản lý bài viết
+          </button>
           <button className="btn-primary" onClick={() => navigate('/thong-bao')}>
             📢 Đăng thông báo
           </button>

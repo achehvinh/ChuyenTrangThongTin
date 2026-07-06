@@ -8,6 +8,7 @@ import CanhBao from "./pages/CanhBao";
 import LichHop from "./pages/LichHop";
 import ChuyenMuc from "./pages/ChuyenMuc";
 import ThuVien from "./pages/ThuVien";
+import BaiVietPage from "./pages/BaiVietPage";
 import GopY from "./pages/GopY";
 import UserApp from "./user-app/App.jsx";
 
@@ -32,6 +33,9 @@ function Layout() {
           } />
           <Route path="/thong-bao" element={
             <ProtectedRoute><ThongBao /></ProtectedRoute>
+          } />
+          <Route path="/bai-viet" element={
+            <ProtectedRoute><BaiVietPage /></ProtectedRoute>
           } />
           <Route path="/canh-bao" element={
             <ProtectedRoute><CanhBao /></ProtectedRoute>
