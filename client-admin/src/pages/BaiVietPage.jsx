@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './BaiVietPage.css';
 
-const API = import.meta.env.VITE_API_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/bai-viet';
+const API =
+  import.meta.env.VITE_API_URL ||
+  'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
 const DANH_MUC_LIST = [
   { value: 'su-kien',  label: 'Sự kiện' },
