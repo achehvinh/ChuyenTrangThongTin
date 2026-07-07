@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './ChuyenTrangThongTin.css';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+const API =
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
 const DANH_MUC_LIST = [
   { value: 'tat-ca',   label: 'Tất cả' },

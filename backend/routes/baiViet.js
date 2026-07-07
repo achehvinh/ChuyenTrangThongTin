@@ -64,10 +64,13 @@ router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
       return res.status(400).json({ message: 'Tiêu đề và nội dung không được trống.' });
     }
 
-    const base = process.env.BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/bai-viet';
-    const anh_dai_dien = req.file
-      ? `${base}/uploads/baiviet/${req.file.filename}`
-      : '';
+    const base =
+process.env.BASE_URL ||
+'https://chuyen-trang-thong-tin-6os5.vercel.app';
+
+const anh_dai_dien = req.file
+ ? `${base}/uploads/baiviet/${req.file.filename}`
+ : '';
 
     const bv = await BaiViet.create({
       tieu_de: tieu_de.trim(),
