@@ -685,4 +685,6 @@
   line-height: 1.3 !important;
 }
 .ct-hero-big-meta,
-.ct-hero-small-date { display: none !important; }
+.ct-hero-small-date {
+  display: flex !important;
+}

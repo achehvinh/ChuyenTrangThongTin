@@ -199,7 +199,6 @@ export default function ChuyenTrangThongTin() {
   const [danhMuc, setDanhMuc]   = useState('tat-ca');
   const [page, setPage]         = useState(1);
   const [loading, setLoading]   = useState(true);
-  const [selectedId, setSelectedId] = useState(null);
   const LIMIT = 9;
 
   /* Load bài nổi bật + stats 1 lần khi mount */
@@ -259,11 +258,11 @@ export default function ChuyenTrangThongTin() {
             <div className="ct-section-label">Nổi bật</div>
             <div className="ct-featured-grid">
               {featured[0] && (
-                <HeroCardBig bv={featured[0]} onClick={b => setSelectedId(b._id)} />
+                <HeroCardBig bv={featured[0]} onClick={b =>window.open(`/tin-tuc/${b._id}`, '_blank')} />
               )}
               <div className="ct-featured-right">
                 {featured.slice(1, 3).map(bv => (
-                  <HeroCardSmall key={bv._id} bv={bv} onClick={b => setSelectedId(b._id)} />
+                  <HeroCardSmall key={bv._id} bv={bv} onClick={b => window.open(`/tin-tuc/${b._id}`, '_blank')} />
                 ))}
               </div>
             </div>
@@ -296,7 +295,7 @@ export default function ChuyenTrangThongTin() {
         ) : (
           <div className="ct-grid">
             {list.map(bv => (
-              <NormalCard key={bv._id} bv={bv} onClick={b => setSelectedId(b._id)} />
+              <NormalCard key={bv._id} bv={bv} onClick={b => window.open(`/tin-tuc/${b._id}`, '_blank')} />
             ))}
           </div>
         )}
@@ -358,10 +357,6 @@ export default function ChuyenTrangThongTin() {
         </div>
       </div>
 
-      {/* ── MODAL ── */}
-      {selectedId && (
-        <BaiVietModal id={selectedId} onClose={() => setSelectedId(null)} />
-      )}
     </div>
   );
 }

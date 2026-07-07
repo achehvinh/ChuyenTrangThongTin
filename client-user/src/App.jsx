@@ -28,6 +28,7 @@ import QuizGame from './pages/QuizGame';
 import Bando from './pages/Bando';
 import Gianongsan from './pages/Gianongsan';
 import ProcedureDetailPage from "./pages/ProcedureDetailPage";
+import BaiVietDetailPage from './pages/BaiVietDetailPage';
 
 function AppLayout() {
   const location = useLocation();
@@ -91,7 +92,7 @@ function AppLayout() {
           <Route path="/chuyen-muc" element={<ChuyenMucPage />} />
           <Route path="/tin-tuc" element={<ChuyenTrangThongTin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
-          
+          <Route path="/tin-tuc/:id"element={<BaiVietDetailPage />}/>
 
         </Routes>
       </main>
