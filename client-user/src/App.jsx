@@ -108,44 +108,6 @@ function App() {
             <AppLayout />
           </Router>
 
-          <div className="quick-contacts">
-            <FeedbackPopup />
-
-            <a
-              href="tel:0339310915"
-              className="quick-btn call"
-              title="Goi dien"
-            >
-              📞
-            </a>
-
-            <a
-              href="https://m.me/ten.fanpage"
-              target="_blank"
-              rel="noreferrer"
-              className="quick-btn messenger"
-              title="Messenger"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/b/be/Facebook_Messenger_logo_2020.svg"
-                alt="Messenger"
-              />
-            </a>
-
-            <a
-              href="https://zalo.me/0339310915"
-              target="_blank"
-              rel="noreferrer"
-              className="quick-btn zalo"
-              title="Zalo"
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg"
-                alt="Zalo"
-              />
-            </a>
-          </div>
-
           {/* <FloatingChatBot type="general" /> */}
         </div>
       </FontSizeProvider>

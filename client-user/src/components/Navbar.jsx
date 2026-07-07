@@ -6,7 +6,6 @@ import { useFontSize } from '../FontSizeContext';
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ' },
   { to: '/chuyen-doi-so', label: 'Chuyển đổi số' },
-  { to: '/thu-vien-anh', label: 'Thư viện ảnh' },
   { to: '/ban-do', label: 'Bản đồ' },
 
   {

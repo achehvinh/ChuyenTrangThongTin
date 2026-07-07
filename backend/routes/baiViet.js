@@ -1,42 +1,34 @@
 const express   = require('express');
 const multer    = require('multer');
-const path      = require('path');
-const fs        = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const BaiViet   = require('../models/BaiViet');
 const { authAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-/* ── Cấu hình upload ảnh ── */
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = path.join(__dirname, '..', 'uploads', 'baiviet');
-    fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+/* ── Cấu hình upload ảnh lên Cloudinary ── */
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'baiviet',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    transformation: [{ width: 1200, crop: 'limit' }],
   },
 });
 
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    const allowed = /\.(jpeg|jpg|png|webp)$/i.test(path.extname(file.originalname));
-    cb(null, allowed);
-  },
 });
 
 /* ════════════════════════════════════════
    ADMIN routes — đặt TRƯỚC /:id
-   để Express không nhầm "admin" thành id
 ════════════════════════════════════════ */
 
-/* ADMIN: lấy tất cả bài (kể cả nháp) */
 router.get('/admin/all', authAdmin, async (req, res) => {
   try {
+    res.set('Cache-Control', 'no-store');
     const page  = Math.max(1, parseInt(req.query.page)  || 1);
     const limit = Math.max(1, parseInt(req.query.limit) || 20);
 
@@ -44,8 +36,7 @@ router.get('/admin/all', authAdmin, async (req, res) => {
       BaiViet.find()
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
-        .limit(limit)
-        .select('-noi_dung'),
+        .limit(limit),          // 👈 bỏ dòng .select('-noi_dung') đi
       BaiViet.countDocuments(),
     ]);
 
@@ -55,7 +46,6 @@ router.get('/admin/all', authAdmin, async (req, res) => {
   }
 });
 
-/* ADMIN: tạo bài viết mới */
 router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
   try {
     const { tieu_de, mo_ta, noi_dung, danh_muc, trang_thai, nguoi_dang } = req.body;
@@ -64,13 +54,7 @@ router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
       return res.status(400).json({ message: 'Tiêu đề và nội dung không được trống.' });
     }
 
-    const base =
-process.env.BASE_URL ||
-'https://chuyen-trang-thong-tin-6os5.vercel.app';
-
-const anh_dai_dien = req.file
- ? `${base}/uploads/baiviet/${req.file.filename}`
- : '';
+    const anh_dai_dien = req.file ? req.file.path : '';
 
     const bv = await BaiViet.create({
       tieu_de: tieu_de.trim(),
@@ -88,14 +72,12 @@ const anh_dai_dien = req.file
   }
 });
 
-/* ADMIN: sửa bài viết */
 router.put('/:id', authAdmin, upload.single('anh'), async (req, res) => {
   try {
     const update = { ...req.body };
 
     if (req.file) {
-      const base = process.env.BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/bai-viet';
-      update.anh_dai_dien = `${base}/uploads/baiviet/${req.file.filename}`;
+      update.anh_dai_dien = req.file.path;
     }
 
     const bv = await BaiViet.findByIdAndUpdate(
@@ -110,8 +92,6 @@ router.put('/:id', authAdmin, upload.single('anh'), async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
-/* ADMIN: xóa bài viết */
 router.delete('/:id', authAdmin, async (req, res) => {
   try {
     const bv = await BaiViet.findByIdAndDelete(req.params.id);
@@ -122,13 +102,9 @@ router.delete('/:id', authAdmin, async (req, res) => {
   }
 });
 
-/* ════════════════════════════════════════
-   PUBLIC routes — đặt SAU admin routes
-════════════════════════════════════════ */
-
-/* PUBLIC: danh sách bài đã đăng */
 router.get('/', async (req, res) => {
   try {
+    res.set('Cache-Control', 'no-store');
     const page     = Math.max(1, parseInt(req.query.page)  || 1);
     const limit    = Math.max(1, parseInt(req.query.limit) || 9);
     const danh_muc = req.query.danh_muc;
@@ -151,9 +127,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-/* PUBLIC: chi tiết bài + tăng lượt xem */
 router.get('/:id', async (req, res) => {
   try {
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(404).json({ message: 'Không tìm thấy bài viết.' });
+    }
     const bv = await BaiViet.findOneAndUpdate(
       { _id: req.params.id, trang_thai: 'da-dang' },
       { $inc: { luot_xem: 1 } },

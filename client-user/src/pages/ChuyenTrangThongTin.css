@@ -406,11 +406,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 11.5px !important;
+  font-size: 10.5px !important;   /* 👈 giảm từ 11.5px xuống */
   color: #94a3b8;
   margin-top: auto;
   padding-top: 7px;
   border-top: 1px solid #f1f5f9;
+  gap: 6px;                        /* 👈 thêm khoảng cách tối thiểu */
+}
+
+.ct-normal-card-meta span {
+  font-size: 10.5px !important;    /* 👈 ép luôn cho span con, phòng bị override */
+  white-space: nowrap;             /* 👈 tránh bị xuống dòng/tràn lung tung */
+  line-height: 1.3;
 }
 
 .ct-normal-card-views {

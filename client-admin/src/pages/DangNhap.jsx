@@ -20,17 +20,24 @@ export default function DangNhap() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API}/auth/login`, {
-        username,
-        password,
-      });
+      const response = await axios.post(`${API_URL}/auth/login`, {
+  username,
+  password,
+});
 
       const token = response.data.token;
       localStorage.setItem("admin_token", token);
       navigate("/dashboard");
     } catch (err) {
-      setError("Sai tài khoản hoặc mật khẩu!");
-    } finally {
+  console.log(err.response?.data);
+  console.log(err);
+
+  setError(
+    err.response?.data?.message ||
+    err.message ||
+    "Không kết nối được máy chủ"
+  );
+} finally {
       setLoading(false);
     }
   };

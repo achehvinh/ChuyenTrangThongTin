@@ -77,6 +77,7 @@ export default function BaiVietPage() {
     try {
       const res = await axios.get(`${API}/bai-viet/admin/all`, {
         headers: authHeader(),
+        params: { _t: Date.now() },
       });
       setList(res.data.data || []);
       setTotal(res.data.total || 0);
@@ -101,12 +102,12 @@ export default function BaiVietPage() {
   function openEdit(bv) {
     setEditing(bv);
     setForm({
-      tieu_de: bv.tieu_de,
-      mo_ta: bv.mo_ta,
-      noi_dung: bv.noi_dung,
-      danh_muc: bv.danh_muc,
-      trang_thai: bv.trang_thai,
-      nguoi_dang: bv.nguoi_dang,
+      tieu_de: bv.tieu_de || '',
+      mo_ta: bv.mo_ta || '',
+      noi_dung: bv.noi_dung || '',
+      danh_muc: bv.danh_muc || 'su-kien',
+      trang_thai: bv.trang_thai || 'nhap',
+      nguoi_dang: bv.nguoi_dang || 'Admin',
     });
     setAnh(null);
     setAnhPreview(bv.anh_dai_dien || '');
@@ -122,39 +123,39 @@ export default function BaiVietPage() {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
-    if (!form.tieu_de.trim() || !form.noi_dung.trim()) {
-      setMsg('Vui lòng nhập tiêu đề và nội dung.');
-      return;
-    }
-    setSaving(true);
-    setMsg('');
-    try {
-      const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v));
-      if (anh) fd.append('anh', anh);
-
-      if (editing) {
-        await axios.put(`${API}/bai-viet/${editing._id}`, fd, {
-          headers: { ...authHeader(), 'Content-Type': 'multipart/form-data' },
-        });
-        setMsg('Đã cập nhật bài viết.');
-      } else {
-        await axios.post(`${API}/bai-viet`, fd, {
-          headers: { ...authHeader(), 'Content-Type': 'multipart/form-data' },
-        });
-        setMsg('Đã tạo bài viết mới.');
-      }
-      setShowForm(false);
-      loadList();
-    } catch (err) {
-      if (!handleAuthFailure(err)) {
-        setMsg(err.response?.data?.message || 'Lưu thất bại.');
-      }
-    } finally {
-      setSaving(false);
-    }
+  e.preventDefault();
+  if (!form.tieu_de.trim() || !form.noi_dung.trim()) {
+    setMsg('Vui lòng nhập tiêu đề và nội dung.');
+    return;
   }
+  setSaving(true);
+  setMsg('');
+  try {
+    const fd = new FormData();
+    Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+    if (anh) fd.append('anh', anh);
+
+    if (editing) {
+      await axios.put(`${API}/bai-viet/${editing._id}`, fd, {
+        headers: { ...authHeader() },
+      });
+      setMsg('Đã cập nhật bài viết.');
+    } else {
+      await axios.post(`${API}/bai-viet`, fd, {   // 👈 thêm lại dòng này
+        headers: { ...authHeader() },
+      });
+      setMsg('Đã tạo bài viết mới.');
+    }
+    setShowForm(false);
+    loadList();
+  } catch (err) {
+    if (!handleAuthFailure(err)) {
+      setMsg(err.response?.data?.message || 'Lưu thất bại.');
+    }
+  } finally {
+    setSaving(false);
+  }
+}
 
   async function handleDelete(bv) {
     if (!window.confirm(`Xóa bài "${bv.tieu_de}"?`)) return;
