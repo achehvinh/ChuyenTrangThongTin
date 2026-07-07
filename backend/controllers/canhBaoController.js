@@ -21,7 +21,7 @@ exports.createCanhBao = async (req, res) => {
 
 exports.updateCanhBao = async (req, res) => {
   try {
-    const item = await CanhBao.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const item = await CanhBao.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json(item);
   } catch (err) {
     res.status(400).json({ message: err.message });

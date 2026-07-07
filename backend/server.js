@@ -29,6 +29,7 @@ const lichHopRoutes   = require("./routes/lichHopRoutes");
 const tthcRoutes      = require("./routes/tthcRoutes");
 const baiVietRoutes   = require("./routes/baiViet");
 const { router: giaRouter } = require('./routes/gianongsanRoutes');
+const { router: authRouter } = require("./middleware/auth");
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
@@ -37,6 +38,7 @@ app.use("/api/canh-bao",          canhBaoRoutes);
 app.use("/api/lich-hop",          lichHopRoutes);
 app.use("/api/v1",                tthcRoutes);
 app.use("/api/v1/gia-nong-san",   giaRouter);
+app.use("/api/v1/auth",           authRouter);
 app.use("/api/v1/bai-viet",       baiVietRoutes);
 
 app.get("/api/v1", (req, res) => {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './BaiVietPage.css';
 
@@ -42,6 +43,7 @@ function DanhMucBadge({ value }) {
 }
 
 export default function BaiVietPage() {
+  const navigate = useNavigate();
   const [list, setList]       = useState([]);
   const [total, setTotal]     = useState(0);
   const [loading, setLoading] = useState(true);
@@ -57,6 +59,17 @@ export default function BaiVietPage() {
 
   useEffect(() => { loadList(); }, []);
 
+  function handleAuthFailure(err) {
+    const status = err?.response?.status;
+    const message = err?.response?.data?.message;
+    if (status === 401 || message === 'Token không hợp lệ') {
+      localStorage.removeItem('admin_token');
+      navigate('/dang-nhap');
+      return true;
+    }
+    return false;
+  }
+
   async function loadList() {
     setLoading(true);
     try {
@@ -65,8 +78,10 @@ export default function BaiVietPage() {
       });
       setList(res.data.data || []);
       setTotal(res.data.total || 0);
-    } catch {
-      setMsg('Không tải được danh sách bài viết.');
+    } catch (err) {
+      if (!handleAuthFailure(err)) {
+        setMsg('Không tải được danh sách bài viết.');
+      }
     } finally {
       setLoading(false);
     }
@@ -131,7 +146,9 @@ export default function BaiVietPage() {
       setShowForm(false);
       loadList();
     } catch (err) {
-      setMsg(err.response?.data?.message || 'Lưu thất bại.');
+      if (!handleAuthFailure(err)) {
+        setMsg(err.response?.data?.message || 'Lưu thất bại.');
+      }
     } finally {
       setSaving(false);
     }
@@ -143,8 +160,10 @@ export default function BaiVietPage() {
     try {
       await axios.delete(`${API}/bai-viet/${bv._id}`, { headers: authHeader() });
       loadList();
-    } catch {
-      setMsg('Xóa thất bại.');
+    } catch (err) {
+      if (!handleAuthFailure(err)) {
+        setMsg('Xóa thất bại.');
+      }
     } finally {
       setDeleting(null);
     }
@@ -157,8 +176,10 @@ export default function BaiVietPage() {
         headers: authHeader(),
       });
       loadList();
-    } catch {
-      setMsg('Cập nhật trạng thái thất bại.');
+    } catch (err) {
+      if (!handleAuthFailure(err)) {
+        setMsg('Cập nhật trạng thái thất bại.');
+      }
     }
   }
 

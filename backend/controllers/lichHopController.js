@@ -21,7 +21,7 @@ exports.createLichHop = async (req, res) => {
 
 exports.updateLichHop = async (req, res) => {
   try {
-    const item = await LichHop.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const item = await LichHop.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json(item);
   } catch (err) {
     res.status(400).json({ message: err.message });

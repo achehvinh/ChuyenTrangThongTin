@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import { FEATURES } from "../data";
+import ChuyenTrangThongTin from './ChuyenTrangThongTin';
 
 const FEATURED_PATHS = ['/thong-bao', '/tra-cuu', '/huong-dan-vneid', '/thu-tuc-hanh-chinh'];
 
@@ -23,9 +24,7 @@ export default function HomePage() {
             </div>
             <div className="main-content-area">
               <div className="main-placeholder">
-                <span>📰</span>
-                <p>Khu vực tin tức & nội dung chính</p>
-                <small>Thêm component tin tức, bài viết vào đây</small>
+                <ChuyenTrangThongTin showHeader={false} />
               </div>
             </div>
           </main>

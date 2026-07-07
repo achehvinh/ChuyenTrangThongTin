@@ -44,7 +44,7 @@ const searchInsurance = async (req, res) => {
 // 3. Cập nhật BHYT (Cho cán bộ)
 const updateInsurance = async (req, res) => {
   try {
-    const updatedInsurance = await Insurance.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedInsurance = await Insurance.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     if (!updatedInsurance) return res.status(404).json({ message: "Không tìm thấy thẻ để cập nhật." });
     res.status(200).json({ message: "Cập nhật thành công.", data: updatedInsurance });
   } catch (error) {

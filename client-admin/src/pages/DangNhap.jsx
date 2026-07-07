@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./DangNhap.css";
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 export default function DangNhap() {
   const navigate = useNavigate();
@@ -9,20 +12,25 @@ export default function DangNhap() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    setTimeout(() => {
-      if (username === "Vhxh" && password === "Vhxh@2026") {
-        localStorage.setItem("admin_token", "da-dang-nhap");
-        navigate("/dashboard");
-      } else {
-        setError("Sai tài khoản hoặc mật khẩu!");
-        setLoading(false);
-      }
-    }, 800);
+    try {
+      const response = await axios.post(`${API}/auth/login`, {
+        username,
+        password,
+      });
+
+      const token = response.data.token;
+      localStorage.setItem("admin_token", token);
+      navigate("/dashboard");
+    } catch (err) {
+      setError("Sai tài khoản hoặc mật khẩu!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

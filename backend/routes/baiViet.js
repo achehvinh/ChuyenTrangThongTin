@@ -3,7 +3,7 @@ const multer    = require('multer');
 const path      = require('path');
 const fs        = require('fs');
 const BaiViet   = require('../models/BaiViet');
-const authAdmin = require('../middleware/auth');
+const { authAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -74,7 +74,7 @@ router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
       mo_ta:   (mo_ta || '').trim(),
       noi_dung: noi_dung.trim(),
       danh_muc:   danh_muc   || 'su-kien',
-      trang_thai: trang_thai || 'nhap',
+      trang_thai: trang_thai || 'da-dang',
       nguoi_dang: nguoi_dang || 'Admin',
       anh_dai_dien,
     });
@@ -98,7 +98,7 @@ router.put('/:id', authAdmin, upload.single('anh'), async (req, res) => {
     const bv = await BaiViet.findByIdAndUpdate(
       req.params.id,
       update,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
     if (!bv) return res.status(404).json({ message: 'Không tìm thấy bài viết.' });
 
@@ -154,7 +154,7 @@ router.get('/:id', async (req, res) => {
     const bv = await BaiViet.findOneAndUpdate(
       { _id: req.params.id, trang_thai: 'da-dang' },
       { $inc: { luot_xem: 1 } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!bv) return res.status(404).json({ message: 'Không tìm thấy bài viết.' });
     res.json({ data: bv });

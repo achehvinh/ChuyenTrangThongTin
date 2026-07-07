@@ -21,7 +21,7 @@ exports.createThongBao = async (req, res) => {
 
 exports.updateThongBao = async (req, res) => {
   try {
-    const item = await ThongBao.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const item = await ThongBao.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json(item);
   } catch (err) {
     res.status(400).json({ message: err.message });

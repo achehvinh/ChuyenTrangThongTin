@@ -19,13 +19,14 @@ import AllFeaturesPage from './pages/AllFeaturesPage';
 import LichHopPage from './pages/LichHopPage';
 import ChuyenDoiSoPage from './pages/ChuyenDoiSoPage';
 import Thutuchanhchinh from './pages/Thutuchanhchinh';
+import ChuyenTrangThongTin from './pages/ChuyenTrangThongTin';
+import ChuyenMucPage from './pages/ChuyenMucPage';
 // Dòng 20 — đổi thành
 import { LanguageProvider } from './LanguageContext';
 import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
 import Bando from './pages/Bando';
 import Gianongsan from './pages/Gianongsan';
-import ChuyenMucPage from './pages/ChuyenMucPage';
 import ProcedureDetailPage from "./pages/ProcedureDetailPage";
 
 function AppLayout() {
@@ -88,6 +89,7 @@ function AppLayout() {
           <Route path="/Ban-do" element={<Bando />} />
           <Route path="/gia-nong-san" element={<Gianongsan />} />
           <Route path="/chuyen-muc" element={<ChuyenMucPage />} />
+          <Route path="/tin-tuc" element={<ChuyenTrangThongTin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
           
 
