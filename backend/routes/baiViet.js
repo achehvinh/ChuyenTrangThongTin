@@ -64,7 +64,7 @@ router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
       return res.status(400).json({ message: 'Tiêu đề và nội dung không được trống.' });
     }
 
-    const base = process.env.BASE_URL || 'http://localhost:5000';
+    const base = process.env.BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/bai-viet';
     const anh_dai_dien = req.file
       ? `${base}/uploads/baiviet/${req.file.filename}`
       : '';
@@ -91,7 +91,7 @@ router.put('/:id', authAdmin, upload.single('anh'), async (req, res) => {
     const update = { ...req.body };
 
     if (req.file) {
-      const base = process.env.BASE_URL || 'http://localhost:5000';
+      const base = process.env.BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/bai-viet';
       update.anh_dai_dien = `${base}/uploads/baiviet/${req.file.filename}`;
     }
 

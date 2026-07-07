@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Định nghĩa base URL của backend
-const API_URL = 'http://localhost:5000/api/insurances';
+const API_URL = 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/bai-viet';
 
 export const getInsuranceByCode = async (code) => {
   // Hàm này gọi API tra cứu của backend
