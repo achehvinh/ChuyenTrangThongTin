@@ -61,6 +61,7 @@ export default function BaiVietPage() {
   const [deleting, setDeleting] = useState(null);
   const fileRef = useRef();
   const fileRefPhu = useRef();   
+  const [showMore, setShowMore] = useState(false);
 
 
   useEffect(() => { loadList(); }, []);
@@ -297,147 +298,120 @@ async function handleSubmit(e) {
               <button className="bv-modal-close" onClick={() => setShowForm(false)}>✕</button>
             </div>
 
-            <form className="bv-form" onSubmit={handleSubmit}>
+            <form className="bv-compose" onSubmit={handleSubmit}>
 
-              {/* Tiêu đề */}
-              <label className="bv-label">
-                Tiêu đề <span className="bv-required">*</span>
-                <input
-                  className="bv-input"
-                  value={form.tieu_de}
-                  onChange={e => setForm(p => ({ ...p, tieu_de: e.target.value }))}
-                  placeholder="Nhập tiêu đề bài viết..."
-                />
-              </label>
-
-              {/* Mô tả ngắn */}
-              <label className="bv-label">
-                Mô tả ngắn
-                <input
-                  className="bv-input"
-                  value={form.mo_ta}
-                  onChange={e => setForm(p => ({ ...p, mo_ta: e.target.value }))}
-                  placeholder="Tóm tắt hiển thị ở danh sách..."
-                />
-              </label>
-
-              {/* Ảnh đại diện */}
-              <label className="bv-label">
-                Ảnh đại diện
-                <div
-                  className="bv-img-upload"
-                  onClick={() => fileRef.current.click()}
-                >
-                  {anhPreview
-                    ? <img src={anhPreview} alt="preview" />
-                    : <span>Nhấn để chọn ảnh (JPG/PNG, tối đa 5MB)</span>}
-                </div>
-                <input
-                  ref={fileRef}
-                  type="file"
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  onChange={handleAnhChange}
-                />
-              </label>
-              {/* Ảnh phụ - nhiều ảnh */}
-<label className="bv-label">
-  Ảnh phụ (chọn nhiều)
-  <div
-    className="bv-img-upload"
-    onClick={() => fileRefPhu.current.click()}
-  >
-    <span>+ Thêm ảnh (chọn nhiều lúc, không giới hạn)</span>
-  </div>
   <input
-    ref={fileRefPhu}
+    className="bv-compose-title"
+    value={form.tieu_de}
+    onChange={e => setForm(p => ({ ...p, tieu_de: e.target.value }))}
+    placeholder="Tiêu đề bài viết"
+  />
+
+  <textarea
+    className="bv-compose-body"
+    rows={6}
+    value={form.noi_dung}
+    onChange={e => setForm(p => ({ ...p, noi_dung: e.target.value }))}
+    placeholder="Bạn muốn chia sẻ điều gì?"
+  />
+
+  <div className="bv-compose-media">
+    {anhPreview && (
+      <div className="bv-media-item bv-media-item--cover">
+        <img src={anhPreview} alt="" />
+        <span className="bv-media-badge">Ảnh bìa</span>
+        <button type="button" className="bv-media-remove"
+          onClick={() => { setAnh(null); setAnhPreview(''); }}>✕</button>
+      </div>
+    )}
+    {anhPhuPreview.map((url, i) => (
+      <div className="bv-media-item" key={i}>
+        <img src={url} alt="" />
+        <button type="button" className="bv-media-remove"
+          onClick={() => removeAnhPhu(i)}>✕</button>
+      </div>
+    ))}
+    <button type="button" className="bv-media-add" onClick={() => fileRef.current.click()}>
+      <span>+</span>
+      <small>Thêm ảnh</small>
+    </button>
+  </div>
+
+  <input
+    ref={fileRef}
     type="file"
     accept="image/*"
     multiple
     style={{ display: 'none' }}
-    onChange={handleAnhPhuChange}
+    onChange={e => {
+      const files = Array.from(e.target.files);
+      files.forEach(file => {
+        if (!anh) {
+          setAnh(file);
+          setAnhPreview(URL.createObjectURL(file));
+        } else {
+          setAnhPhu(p => [...p, file]);
+          setAnhPhuPreview(p => [...p, URL.createObjectURL(file)]);
+        }
+      });
+    }}
   />
-  {anhPhuPreview.length > 0 && (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
-      {anhPhuPreview.map((url, i) => (
-        <div key={i} style={{ position: 'relative' }}>
-          <img src={url} alt="" style={{ width: 70, height: 70, objectFit: 'cover', borderRadius: 6 }} />
-          <button
-            type="button"
-            onClick={() => removeAnhPhu(i)}
-            style={{
-              position: 'absolute', top: -6, right: -6,
-              width: 20, height: 20, borderRadius: '50%',
-              background: '#dc2626', color: '#fff', border: 'none',
-              fontSize: 12, cursor: 'pointer',
-            }}
-          >✕</button>
-        </div>
+
+  <div className="bv-compose-options">
+    <select
+      className="bv-pill-select"
+      value={form.danh_muc}
+      onChange={e => setForm(p => ({ ...p, danh_muc: e.target.value }))}
+    >
+      {DANH_MUC_LIST.map(d => (
+        <option key={d.value} value={d.value}>{d.label}</option>
       ))}
+    </select>
+
+    <button
+      type="button"
+      className={`bv-pill-toggle ${form.trang_thai === 'da-dang' ? 'is-on' : ''}`}
+      onClick={() => setForm(p => ({
+        ...p,
+        trang_thai: p.trang_thai === 'da-dang' ? 'nhap' : 'da-dang',
+      }))}
+    >
+      {form.trang_thai === 'da-dang' ? '🌐 Công khai' : '🔒 Nháp'}
+    </button>
+
+    <button type="button" className="bv-pill-more" onClick={() => setShowMore(s => !s)}>
+      {showMore ? 'Ẩn bớt' : 'Thêm chi tiết'}
+    </button>
+  </div>
+
+  {showMore && (
+    <div className="bv-compose-extra">
+      <input
+        className="bv-input"
+        placeholder="Mô tả ngắn (hiện ở danh sách)"
+        value={form.mo_ta}
+        onChange={e => setForm(p => ({ ...p, mo_ta: e.target.value }))}
+      />
+      <input
+        className="bv-input"
+        placeholder="Người đăng"
+        value={form.nguoi_dang}
+        onChange={e => setForm(p => ({ ...p, nguoi_dang: e.target.value }))}
+      />
     </div>
   )}
-</label>
 
-              {/* Danh mục + Trạng thái */}
-              <div className="bv-row-2">
-                <label className="bv-label">
-                  Danh mục
-                  <select
-                    className="bv-select"
-                    value={form.danh_muc}
-                    onChange={e => setForm(p => ({ ...p, danh_muc: e.target.value }))}
-                  >
-                    {DANH_MUC_LIST.map(d => (
-                      <option key={d.value} value={d.value}>{d.label}</option>
-                    ))}
-                  </select>
-                </label>
-                <label className="bv-label">
-                  Trạng thái
-                  <select
-                    className="bv-select"
-                    value={form.trang_thai}
-                    onChange={e => setForm(p => ({ ...p, trang_thai: e.target.value }))}
-                  >
-                    <option value="nhap">Nháp (chưa hiển thị)</option>
-                    <option value="da-dang">Đã đăng (hiện với dân)</option>
-                  </select>
-                </label>
-              </div>
+  {msg && <div className="bv-msg">{msg}</div>}
 
-              {/* Nội dung */}
-              <label className="bv-label">
-                Nội dung <span className="bv-required">*</span>
-                <textarea
-                  className="bv-textarea"
-                  rows={10}
-                  value={form.noi_dung}
-                  onChange={e => setForm(p => ({ ...p, noi_dung: e.target.value }))}
-                  placeholder="Nhập nội dung bài viết đầy đủ..."
-                />
-              </label>
-
-              {/* Người đăng */}
-              <label className="bv-label">
-                Người đăng
-                <input
-                  className="bv-input"
-                  value={form.nguoi_dang}
-                  onChange={e => setForm(p => ({ ...p, nguoi_dang: e.target.value }))}
-                />
-              </label>
-
-              {msg && <div className="bv-msg">{msg}</div>}
-
-              <div className="bv-form-actions">
-                <button type="button" className="bv-btn-secondary" onClick={() => setShowForm(false)}>
-                  Hủy
-                </button>
-                <button type="submit" className="bv-btn-primary" disabled={saving}>
-                  {saving ? 'Đang lưu...' : editing ? 'Cập nhật' : 'Đăng bài'}
-                </button>
-              </div>
-            </form>
+  <div className="bv-form-actions">
+    <button type="button" className="bv-btn-secondary" onClick={() => setShowForm(false)}>
+      Hủy
+    </button>
+    <button type="submit" className="bv-btn-primary" disabled={saving}>
+      {saving ? 'Đang đăng...' : editing ? 'Cập nhật' : 'Đăng bài'}
+    </button>
+  </div>
+</form>
           </div>
         </div>
       )}
