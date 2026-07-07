@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./DangNhap.css";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1";
 
 export default function DangNhap() {
   const navigate = useNavigate();
