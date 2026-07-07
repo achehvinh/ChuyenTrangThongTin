@@ -22,6 +22,11 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
+const uploadFields = upload.fields([
+  { name: 'anh', maxCount: 1 },        // ảnh đại diện, vẫn 1 ảnh
+  { name: 'anh_phu', maxCount: 20 },   // ảnh phụ, tối đa 20 (bro có thể tăng số này thoải mái)
+]);
+
 /* ════════════════════════════════════════
    ADMIN routes — đặt TRƯỚC /:id
 ════════════════════════════════════════ */
@@ -46,7 +51,7 @@ router.get('/admin/all', authAdmin, async (req, res) => {
   }
 });
 
-router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
+router.post('/', authAdmin, uploadFields, async (req, res) => {
   try {
     const { tieu_de, mo_ta, noi_dung, danh_muc, trang_thai, nguoi_dang } = req.body;
 
@@ -54,7 +59,8 @@ router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
       return res.status(400).json({ message: 'Tiêu đề và nội dung không được trống.' });
     }
 
-    const anh_dai_dien = req.file ? req.file.path : '';
+    const anh_dai_dien = req.files?.anh?.[0]?.path || '';
+    const anh_phu = (req.files?.anh_phu || []).map(f => f.path);
 
     const bv = await BaiViet.create({
       tieu_de: tieu_de.trim(),
@@ -64,6 +70,7 @@ router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
       trang_thai: trang_thai || 'da-dang',
       nguoi_dang: nguoi_dang || 'Admin',
       anh_dai_dien,
+      anh_phu,
     });
 
     res.status(201).json({ data: bv });
@@ -72,12 +79,15 @@ router.post('/', authAdmin, upload.single('anh'), async (req, res) => {
   }
 });
 
-router.put('/:id', authAdmin, upload.single('anh'), async (req, res) => {
+router.put('/:id', authAdmin, uploadFields, async (req, res) => {
   try {
     const update = { ...req.body };
 
-    if (req.file) {
-      update.anh_dai_dien = req.file.path;
+    if (req.files?.anh?.[0]) {
+      update.anh_dai_dien = req.files.anh[0].path;
+    }
+    if (req.files?.anh_phu?.length) {
+      update.anh_phu = req.files.anh_phu.map(f => f.path);
     }
 
     const bv = await BaiViet.findByIdAndUpdate(

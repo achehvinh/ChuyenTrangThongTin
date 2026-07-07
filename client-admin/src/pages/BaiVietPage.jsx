@@ -54,10 +54,14 @@ export default function BaiVietPage() {
   const [form, setForm]       = useState(EMPTY_FORM);
   const [anh, setAnh]         = useState(null);
   const [anhPreview, setAnhPreview] = useState('');
+  const [anhPhu, setAnhPhu]         = useState([]); 
+  const [anhPhuPreview, setAnhPhuPreview] = useState([]);
   const [saving, setSaving]   = useState(false);
   const [msg, setMsg]         = useState('');
   const [deleting, setDeleting] = useState(null);
   const fileRef = useRef();
+  const fileRefPhu = useRef();   
+
 
   useEffect(() => { loadList(); }, []);
 
@@ -91,29 +95,33 @@ export default function BaiVietPage() {
   }
 
   function openCreate() {
-    setEditing(null);
-    setForm(EMPTY_FORM);
-    setAnh(null);
-    setAnhPreview('');
-    setMsg('');
-    setShowForm(true);
-  }
+  setEditing(null);
+  setForm(EMPTY_FORM);
+  setAnh(null);
+  setAnhPreview('');
+  setAnhPhu([]);
+  setAnhPhuPreview([]);
+  setMsg('');
+  setShowForm(true);
+}
 
-  function openEdit(bv) {
-    setEditing(bv);
-    setForm({
-      tieu_de: bv.tieu_de || '',
-      mo_ta: bv.mo_ta || '',
-      noi_dung: bv.noi_dung || '',
-      danh_muc: bv.danh_muc || 'su-kien',
-      trang_thai: bv.trang_thai || 'nhap',
-      nguoi_dang: bv.nguoi_dang || 'Admin',
-    });
-    setAnh(null);
-    setAnhPreview(bv.anh_dai_dien || '');
-    setMsg('');
-    setShowForm(true);
-  }
+function openEdit(bv) {
+  setEditing(bv);
+  setForm({
+    tieu_de: bv.tieu_de || '',
+    mo_ta: bv.mo_ta || '',
+    noi_dung: bv.noi_dung || '',
+    danh_muc: bv.danh_muc || 'su-kien',
+    trang_thai: bv.trang_thai || 'nhap',
+    nguoi_dang: bv.nguoi_dang || 'Admin',
+  });
+  setAnh(null);
+  setAnhPreview(bv.anh_dai_dien || '');
+  setAnhPhu([]);
+  setAnhPhuPreview(bv.anh_phu || []);  // hiện ảnh phụ cũ (dạng URL, không phải File)
+  setMsg('');
+  setShowForm(true);
+}
 
   function handleAnhChange(e) {
     const file = e.target.files[0];
@@ -121,10 +129,23 @@ export default function BaiVietPage() {
     setAnh(file);
     setAnhPreview(URL.createObjectURL(file));
   }
+  function handleAnhPhuChange(e) {
+  const files = Array.from(e.target.files);
+  setAnhPhu(prev => [...prev, ...files]);
+  setAnhPhuPreview(prev => [...prev, ...files.map(f => URL.createObjectURL(f))]);
+}
 
-  async function handleSubmit(e) {
+function removeAnhPhu(index) {
+  setAnhPhu(prev => prev.filter((_, i) => i !== index));
+  setAnhPhuPreview(prev => prev.filter((_, i) => i !== index));
+}
+
+async function handleSubmit(e) {
   e.preventDefault();
-  if (!form.tieu_de.trim() || !form.noi_dung.trim()) {
+  const tieuDe = form.tieu_de || '';
+  const noiDung = form.noi_dung || '';
+
+  if (!tieuDe.trim() || !noiDung.trim()) {
     setMsg('Vui lòng nhập tiêu đề và nội dung.');
     return;
   }
@@ -132,8 +153,9 @@ export default function BaiVietPage() {
   setMsg('');
   try {
     const fd = new FormData();
-    Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+    Object.entries(form).forEach(([k, v]) => fd.append(k, v ?? ''));
     if (anh) fd.append('anh', anh);
+    anhPhu.forEach(file => fd.append('anh_phu', file));  // 👈 append từng ảnh phụ
 
     if (editing) {
       await axios.put(`${API}/bai-viet/${editing._id}`, fd, {
@@ -141,7 +163,7 @@ export default function BaiVietPage() {
       });
       setMsg('Đã cập nhật bài viết.');
     } else {
-      await axios.post(`${API}/bai-viet`, fd, {   // 👈 thêm lại dòng này
+      await axios.post(`${API}/bai-viet`, fd, {
         headers: { ...authHeader() },
       });
       setMsg('Đã tạo bài viết mới.');
@@ -318,6 +340,43 @@ export default function BaiVietPage() {
                   onChange={handleAnhChange}
                 />
               </label>
+              {/* Ảnh phụ - nhiều ảnh */}
+<label className="bv-label">
+  Ảnh phụ (chọn nhiều)
+  <div
+    className="bv-img-upload"
+    onClick={() => fileRefPhu.current.click()}
+  >
+    <span>+ Thêm ảnh (chọn nhiều lúc, không giới hạn)</span>
+  </div>
+  <input
+    ref={fileRefPhu}
+    type="file"
+    accept="image/*"
+    multiple
+    style={{ display: 'none' }}
+    onChange={handleAnhPhuChange}
+  />
+  {anhPhuPreview.length > 0 && (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+      {anhPhuPreview.map((url, i) => (
+        <div key={i} style={{ position: 'relative' }}>
+          <img src={url} alt="" style={{ width: 70, height: 70, objectFit: 'cover', borderRadius: 6 }} />
+          <button
+            type="button"
+            onClick={() => removeAnhPhu(i)}
+            style={{
+              position: 'absolute', top: -6, right: -6,
+              width: 20, height: 20, borderRadius: '50%',
+              background: '#dc2626', color: '#fff', border: 'none',
+              fontSize: 12, cursor: 'pointer',
+            }}
+          >✕</button>
+        </div>
+      ))}
+    </div>
+  )}
+</label>
 
               {/* Danh mục + Trạng thái */}
               <div className="bv-row-2">

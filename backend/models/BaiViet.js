@@ -5,6 +5,8 @@ const BaiVietSchema = new mongoose.Schema({
   mo_ta:   { type: String, default: '' },          // tóm tắt ngắn
   noi_dung:{ type: String, required: true },        // HTML hoặc plain text
   anh_dai_dien: { type: String, default: '' },      // URL ảnh đại diện
+  anh_phu: { type: [String], default: [] },          // 👈 mảng ảnh phụ, không giới hạn số lượng
+
   danh_muc: {
     type: String,
     enum: ['su-kien', 'the-thao', 'le-hoi', 'bau-cu', 'khac'],
