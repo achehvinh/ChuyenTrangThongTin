@@ -11,6 +11,7 @@ import ThuVien from "./pages/ThuVien";
 import BaiVietPage from "./pages/BaiVietPage";
 import GopY from "./pages/GopY";
 import UserApp from "./user-app/App.jsx";
+import KnowledgeManager from "./pages/KnowledgeManager";
 
 function Layout() {
   const location = useLocation();
@@ -51,6 +52,9 @@ function Layout() {
           } />
           <Route path="/gop-y" element={
             <ProtectedRoute><GopY /></ProtectedRoute>
+          } />
+          <Route path="/admin/knowledge" element={
+            <ProtectedRoute><KnowledgeManager /></ProtectedRoute>
           } />
           <Route path="/user/*" element={
             <ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>
