@@ -3,7 +3,7 @@ import axios from 'axios';
 import './ChatWindow.css';
 
 const ChatWindow = () => {
-    const [messages, setMessages] = useState([{ text: "Chào bạn! Tôi có thể giúp gì về thủ tục BHYT?", sender: 'ai' }]);
+    const [messages, setMessages] = useState([{ text: "Xin chào! Tôi là trợ lý AI của UBND xã Đăk Pxi, tôi có thể hỗ trợ gì cho bạn?", sender: 'ai' }]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef(null);
