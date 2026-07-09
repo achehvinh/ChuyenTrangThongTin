@@ -17,7 +17,6 @@ const MENU_GROUPS = [
       { to: '/lich-hop', icon: '📅', label: 'Lịch họp thôn' },
       { to: '/chuyen-muc', icon: '📋', label: 'Chuyên mục' },
       { to: '/thu-vien', icon: '🖼️', label: 'Thư viện ảnh' },
-      { to: '/bai-viet', icon: '📰', label: 'Bài viết & Sự kiện' },
     ]
   },
   {
