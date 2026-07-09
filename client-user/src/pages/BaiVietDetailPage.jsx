@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './BaiVietDetailPage.css';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
 const DM_COLOR = {
   'bau-cu':    '#c8102e',
