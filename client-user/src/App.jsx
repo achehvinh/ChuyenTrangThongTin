@@ -108,7 +108,6 @@ function App() {
             <AppLayout />
           </Router>
 
-          {/* <FloatingChatBot type="general" /> */}
         </div>
       </FontSizeProvider>
     </LanguageProvider>
