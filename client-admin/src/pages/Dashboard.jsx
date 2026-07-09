@@ -1,224 +1,493 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import './Dashboard.css';
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line, Legend,
-} from "recharts";
+import { useState, useEffect, useRef } from 'react';
+import api from '../services/api';
+import '../admin.css';
 
-const STATS = [
-  { label: 'Chuyên mục', value: '11', icon: '📋', color: '#005bac', bg: '#e8f0fe', change: 'Đang hoạt động' },
-  { label: 'Video hướng dẫn', value: '8', icon: '🎬', color: '#16a34a', bg: '#dcfce7', change: 'Trong chuyên mục' },
-  { label: 'Lượt xem trang', value: '1.2K', icon: '👁️', color: '#d97706', bg: '#fef3c7', change: 'Tháng này' },
-  { label: 'Bà con nghe TTS', value: '340', icon: '🔊', color: '#7c3aed', bg: '#ede9fe', change: 'Nghe nội dung' },
-  { label: 'Thông báo', value: '12', icon: '📢', color: '#0891b2', bg: '#e0f2fe', change: '3 đang hiển thị' },
-  { label: 'Lịch họp', value: '8', icon: '📅', color: '#16a34a', bg: '#dcfce7', change: 'Tháng này' },
-  { label: 'Góp ý chưa đọc', value: '24', icon: '💬', color: '#db2777', bg: '#fce7f3', change: 'Cần xử lý' },
-  { label: 'Cảnh báo khẩn', value: '2', icon: '🚨', color: '#ea580c', bg: '#fff7ed', change: 'Đang kích hoạt' },
+const DANH_MUC = [
+  { value: 'su-kien',   label: '🎉 Sự kiện',    color: '#005bac' },
+  { value: 'the-thao',  label: '⚽ Thể thao',    color: '#16a34a' },
+  { value: 'le-hoi',    label: '🏮 Lễ hội',      color: '#d97706' },
+  { value: 'bau-cu',    label: '🗳️ Bầu cử',      color: '#dc2626' },
+  { value: 'tin-tuc',   label: '📰 Tin tức',      color: '#0891b2' },
+  { value: 'thong-bao', label: '📢 Thông báo',    color: '#7c3aed' },
+  { value: 'khac',      label: '📌 Khác',          color: '#64748b' },
 ];
 
-const DATA_LUOT_XEM = [
-  { thang: 'T1', trangChu: 320, huongDan: 180, thongBao: 90 },
-  { thang: 'T2', trangChu: 380, huongDan: 210, thongBao: 110 },
-  { thang: 'T3', trangChu: 420, huongDan: 260, thongBao: 140 },
-  { thang: 'T4', trangChu: 390, huongDan: 290, thongBao: 160 },
-  { thang: 'T5', trangChu: 500, huongDan: 340, thongBao: 200 },
-  { thang: 'T6', trangChu: 560, huongDan: 410, thongBao: 220 },
-];
+const getDM = (val) => DANH_MUC.find(d => d.value === val) || DANH_MUC[4];
 
-const DATA_CHUYEN_MUC = [
-  { name: 'Tra cứu BHYT', luot: 410 },
-  { name: 'Tra cứu BHXH', luot: 320 },
-  { name: 'VNeID', luot: 280 },
-  { name: 'Đuối nước', luot: 250 },
-  { name: 'Thiên tai', luot: 190 },
-  { name: 'Cháy rừng', luot: 160 },
-];
+const EMPTY_FORM = {
+  tieu_de: '',
+  noi_dung: '',
+  tom_tat: '',
+  anh_dai_dien: '',
+  danh_muc: 'tin-tuc',
+  tac_gia: 'Admin UBND xã Đắk Pxi',
+  noi_bat: false,
+  active: true,
+  tags: '',
+};
 
-const RECENT_ALERTS = [
-  { type: 'danger', title: 'Cảnh báo cháy rừng thôn Đăk Wek', time: '08:00 - 06/06/2026' },
-  { type: 'warning', title: 'Họp dân khẩn thôn Đăk Xế Kơ Ne', time: '10:00 - 06/06/2026' },
-];
+export default function BaiViet() {
+  const [items, setItems]       = useState([]);
+  const [fetching, setFetching] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [editId, setEditId]     = useState(null);
+  const [form, setForm]         = useState(EMPTY_FORM);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
+  const [search, setSearch]     = useState('');
+  const [filterDM, setFilterDM] = useState('all');
+  const [imgPreview, setImgPreview] = useState(null);
+  const fileRef = useRef();
 
-const RECENT_NOTICES = [
-  { type: 'urgent', title: 'Gia hạn thẻ BHYT quý III/2026', time: '28/05/2026' },
-  { type: 'normal', title: 'Lịch khám sức khỏe hộ nghèo', time: '20/05/2026' },
-  { type: 'guide', title: 'Hướng dẫn tra cứu BHYT online', time: '15/05/2026' },
-];
+  /* ── Fetch ── */
+  const fetchData = async () => {
+    setFetching(true);
+    try {
+      const res = await api.get('/bai-viet?limit=100');
+      setItems(res.data.items || res.data || []);
+    } catch {
+      setError('Không thể kết nối server!');
+    } finally {
+      setFetching(false);
+    }
+  };
 
-const RECENT_GOPY = [
-  { name: 'Nguyễn Văn A', noi_dung: 'Trang hướng dẫn VNeID rất dễ hiểu, bà con dùng được', time: '06/06/2026', status: 'chua-doc' },
-  { name: 'Trần Thị B', noi_dung: 'Mong thêm video hướng dẫn bằng tiếng Xơ Đăng', time: '05/06/2026', status: 'da-doc' },
-  { name: 'Lê Văn C', noi_dung: 'Chữ trên trang hơi nhỏ, bà con lớn tuổi khó đọc', time: '04/06/2026', status: 'chua-doc' },
-];
+  useEffect(() => { fetchData(); }, []);
 
-export default function Dashboard() {
-  const navigate = useNavigate();
-  const now = new Date().toLocaleString('vi-VN');
-  const [activeTab, setActiveTab] = useState('overview');
+  /* ── Reset form ── */
+  const resetForm = () => {
+    setForm(EMPTY_FORM);
+    setEditId(null);
+    setShowForm(false);
+    setError('');
+    setImgPreview(null);
+  };
+
+  /* ── Sửa ── */
+  const handleEdit = (item) => {
+    setForm({
+      tieu_de:      item.tieu_de,
+      noi_dung:     item.noi_dung,
+      tom_tat:      item.tom_tat || '',
+      anh_dai_dien: item.anh_dai_dien || '',
+      danh_muc:     item.danh_muc,
+      tac_gia:      item.tac_gia,
+      noi_bat:      item.noi_bat,
+      active:       item.active,
+      tags:         (item.tags || []).join(', '),
+    });
+    setEditId(item._id);
+    setImgPreview(item.anh_dai_dien || null);
+    setShowForm(true);
+    window.scrollTo(0, 0);
+  };
+
+  /* ── Chọn ảnh từ máy ── */
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setImgPreview(ev.target.result);
+      setForm(f => ({ ...f, anh_dai_dien: ev.target.result }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  /* ── Submit ── */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.tieu_de.trim() || !form.noi_dung.trim()) {
+      setError('Vui lòng nhập đầy đủ tiêu đề và nội dung!');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      const payload = {
+        ...form,
+        tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
+      };
+      if (editId) {
+        const res = await api.put(`/bai-viet/${editId}`, payload);
+        setItems(prev => prev.map(i => i._id === editId ? res.data : i));
+      } else {
+        const res = await api.post('/bai-viet', payload);
+        setItems(prev => [res.data, ...prev]);
+      }
+      resetForm();
+    } catch {
+      setError('Lưu thất bại! Kiểm tra lại server.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ── Xóa ── */
+  const handleDelete = async (id) => {
+    if (!window.confirm('Xác nhận xóa bài viết này?')) return;
+    try {
+      await api.delete(`/bai-viet/${id}`);
+      setItems(prev => prev.filter(i => i._id !== id));
+    } catch {
+      alert('Xóa thất bại!');
+    }
+  };
+
+  /* ── Toggle hiển thị ── */
+  const handleToggle = async (id) => {
+    try {
+      const res = await api.patch(`/bai-viet/${id}/toggle`);
+      setItems(prev => prev.map(i => i._id === id ? res.data : i));
+    } catch {
+      alert('Cập nhật thất bại!');
+    }
+  };
+
+  /* ── Toggle nổi bật ── */
+  const handleNoiBat = async (id) => {
+    try {
+      const res = await api.patch(`/bai-viet/${id}/noi-bat`);
+      setItems(prev => prev.map(i => i._id === id ? res.data : i));
+    } catch {
+      alert('Cập nhật thất bại!');
+    }
+  };
+
+  /* ── Filter ── */
+  const filtered = items
+    .filter(i => filterDM === 'all' || i.danh_muc === filterDM)
+    .filter(i =>
+      i.tieu_de.toLowerCase().includes(search.toLowerCase()) ||
+      (i.tom_tat || '').toLowerCase().includes(search.toLowerCase())
+    );
+
+  const fmtDate = (d) => d ? new Date(d).toLocaleDateString('vi-VN') : '';
 
   return (
-    <div className="dashboard-page">
+    <div className="admin-page">
 
-      {/* Topbar */}
-      <div className="dashboard-topbar">
-        <div>
-          <h1>📊 Dashboard Tuyên truyền</h1>
-          <p>🕐 Cập nhật lúc: {now} — UBND xã Đăk Pxi</p>
+      {/* ── Header ── */}
+      <div className="admin-header">
+        <div className="admin-header-left">
+          <h1>📰 Quản lý bài viết</h1>
+          <p>
+            Tổng: {items.length} bài ·
+            Nổi bật: {items.filter(i => i.noi_bat).length} ·
+            Đang hiển thị: {items.filter(i => i.active).length}
+          </p>
         </div>
-        <div className="dashboard-btn-group">
-          <button className="btn-primary" onClick={() => navigate('/bai-viet')}>
-            📝 Quản lý bài viết
-          </button>
-          <button className="btn-primary" onClick={() => navigate('/thong-bao')}>
-            📢 Đăng thông báo
-          </button>
-          <button className="btn-danger" onClick={() => navigate('/canh-bao')}>
-            🚨 Cảnh báo khẩn
-          </button>
-        </div>
+        <button
+          className="btn-primary"
+          onClick={() => { resetForm(); setShowForm(!showForm); }}
+        >
+          {showForm ? '✕ Đóng' : '+ Thêm bài viết'}
+        </button>
       </div>
 
-      {/* Tabs */}
-      <div className="dashboard-tabs">
-        {[
-          { id: 'overview', label: '📊 Tổng quan' },
-          { id: 'luot-xem', label: '👁️ Lượt xem' },
-          { id: 'chuyen-muc', label: '📋 Chuyên mục' },
-        ].map(tab => (
+      {/* ── Form thêm / sửa ── */}
+      {showForm && (
+        <div className="admin-form-panel">
+          <h2>{editId ? '✏️ Chỉnh sửa bài viết' : '➕ Thêm bài viết mới'}</h2>
+          <form onSubmit={handleSubmit}>
+
+            {/* Tiêu đề */}
+            <div className="form-group">
+              <label className="form-label">Tiêu đề *</label>
+              <input
+                className="form-input"
+                type="text"
+                value={form.tieu_de}
+                onChange={e => setForm({ ...form, tieu_de: e.target.value })}
+                placeholder="Nhập tiêu đề bài viết..."
+              />
+            </div>
+
+            {/* Danh mục + Tác giả */}
+            <div className="form-grid-2">
+              <div className="form-group">
+                <label className="form-label">Danh mục</label>
+                <select
+                  className="form-select"
+                  value={form.danh_muc}
+                  onChange={e => setForm({ ...form, danh_muc: e.target.value })}
+                >
+                  {DANH_MUC.map(d => (
+                    <option key={d.value} value={d.value}>{d.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Tác giả</label>
+                <input
+                  className="form-input"
+                  type="text"
+                  value={form.tac_gia}
+                  onChange={e => setForm({ ...form, tac_gia: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Tóm tắt */}
+            <div className="form-group">
+              <label className="form-label">Tóm tắt (hiển thị ở danh sách)</label>
+              <textarea
+                className="form-textarea"
+                rows={2}
+                value={form.tom_tat}
+                onChange={e => setForm({ ...form, tom_tat: e.target.value })}
+                placeholder="Tóm tắt ngắn gọn nội dung bài viết..."
+              />
+            </div>
+
+            {/* Nội dung */}
+            <div className="form-group">
+              <label className="form-label">Nội dung đầy đủ *</label>
+              <textarea
+                className="form-textarea"
+                rows={10}
+                value={form.noi_dung}
+                onChange={e => setForm({ ...form, noi_dung: e.target.value })}
+                placeholder="Nhập nội dung bài viết đầy đủ..."
+              />
+            </div>
+
+            {/* Ảnh đại diện */}
+            <div className="form-group">
+              <label className="form-label">Ảnh đại diện</label>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileRef}
+                  onChange={handleFile}
+                  style={{ display: 'none' }}
+                />
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  style={{ padding: '8px 14px', fontSize: '13px', flexShrink: 0 }}
+                  onClick={() => fileRef.current.click()}
+                >
+                  📷 Chọn ảnh từ máy
+                </button>
+                <span style={{ color: '#94a3b8', fontSize: '12px', alignSelf: 'center' }}>hoặc</span>
+                <input
+                  className="form-input"
+                  type="text"
+                  value={form.anh_dai_dien}
+                  onChange={e => {
+                    setForm({ ...form, anh_dai_dien: e.target.value });
+                    setImgPreview(e.target.value);
+                  }}
+                  placeholder="Nhập URL ảnh..."
+                  style={{ flex: 1, minWidth: '200px' }}
+                />
+              </div>
+              {imgPreview && (
+                <img
+                  src={imgPreview}
+                  alt="Xem trước"
+                  onError={() => setImgPreview(null)}
+                  style={{
+                    marginTop: '10px',
+                    width: '200px',
+                    height: '120px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0',
+                    display: 'block',
+                  }}
+                />
+              )}
+            </div>
+
+            {/* Tags */}
+            <div className="form-group">
+              <label className="form-label">Tags (phân cách bằng dấu phẩy)</label>
+              <input
+                className="form-input"
+                type="text"
+                value={form.tags}
+                onChange={e => setForm({ ...form, tags: e.target.value })}
+                placeholder="VD: bầu cử, hội đồng nhân dân, 2026"
+              />
+            </div>
+
+            {/* Trạng thái + Nổi bật */}
+            <div className="form-grid-2">
+              <div className="form-group">
+                <label className="form-label">Trạng thái</label>
+                <select
+                  className="form-select"
+                  value={String(form.active)}
+                  onChange={e => setForm({ ...form, active: e.target.value === 'true' })}
+                >
+                  <option value="true">✅ Hiển thị</option>
+                  <option value="false">🚫 Ẩn</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Nổi bật</label>
+                <select
+                  className="form-select"
+                  value={String(form.noi_bat)}
+                  onChange={e => setForm({ ...form, noi_bat: e.target.value === 'true' })}
+                >
+                  <option value="false">Bình thường</option>
+                  <option value="true">⭐ Nổi bật (hiện ở trang chủ)</option>
+                </select>
+              </div>
+            </div>
+
+            {error && <div className="form-error">⚠️ {error}</div>}
+
+            <div className="form-actions">
+              <button type="submit" className="btn-primary" disabled={loading}>
+                {loading ? '⏳ Đang lưu...' : editId ? '💾 Cập nhật' : '📰 Đăng bài'}
+              </button>
+              <button type="button" className="btn-ghost" onClick={resetForm}>
+                Hủy
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* ── Filter bar ── */}
+      <div className="admin-filter-bar">
+        <input
+          className="filter-search"
+          type="text"
+          placeholder="🔍 Tìm kiếm bài viết..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        <div className="filter-tags">
           <button
-            key={tab.id}
-            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >{tab.label}</button>
-        ))}
-      </div>
-
-      {/* Stat Cards */}
-      <div className="dashboard-stats">
-        {STATS.map((s) => (
-          <div
-            key={s.label}
-            className="stat-card"
-            style={{ borderTopColor: s.color }}
+            className={`filter-tag ${filterDM === 'all' ? 'active' : ''}`}
+            onClick={() => setFilterDM('all')}
           >
-            <div>
-              <p className="stat-label">{s.label}</p>
-              <h3 className="stat-value" style={{ color: s.color }}>{s.value}</h3>
-              <p className="stat-change">{s.change}</p>
-            </div>
-            <div className="stat-icon-box" style={{ background: s.bg }}>
-              {s.icon}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Tab: Tổng quan */}
-      {activeTab === 'overview' && (
-        <div className="dashboard-grid-2">
-
-          {/* Cảnh báo khẩn */}
-          <div className="dashboard-panel">
-            <h3>🚨 Cảnh báo đang kích hoạt</h3>
-            {RECENT_ALERTS.map((a, i) => (
-              <div key={i} className={`alert-item ${a.type}`}>
-                <span style={{ fontSize: '20px' }}>{a.type === 'danger' ? '🔴' : '🟡'}</span>
-                <div>
-                  <p className="alert-item-title">{a.title}</p>
-                  <p className="alert-item-time">{a.time}</p>
-                </div>
-              </div>
-            ))}
-            <button className="btn-sm-danger" onClick={() => navigate('/canh-bao')}>
-              Quản lý cảnh báo →
-            </button>
-          </div>
-
-          {/* Thông báo gần đây */}
-          <div className="dashboard-panel">
-            <h3>📢 Thông báo gần đây</h3>
-            {RECENT_NOTICES.map((n, i) => (
-              <div key={i} className="notice-item">
-                <span>{n.type === 'urgent' ? '🔴' : n.type === 'guide' ? '🟢' : '🔵'}</span>
-                <div style={{ flex: 1 }}>
-                  <p className="notice-item-title">{n.title}</p>
-                  <p className="notice-item-time">{n.time}</p>
-                </div>
-              </div>
-            ))}
-            <button className="btn-sm-primary" onClick={() => navigate('/thong-bao')}>
-              Xem tất cả →
-            </button>
-          </div>
-
-        </div>
-      )}
-
-      {/* Tab: Lượt xem */}
-      {activeTab === 'luot-xem' && (
-        <div className="chart-panel">
-          <h3>📈 Lượt xem theo tháng</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={DATA_LUOT_XEM}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="thang" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="trangChu" name="Trang chủ" stroke="#005bac" strokeWidth={2} dot={{ r: 4 }} />
-              <Line type="monotone" dataKey="huongDan" name="Hướng dẫn" stroke="#16a34a" strokeWidth={2} dot={{ r: 4 }} />
-              <Line type="monotone" dataKey="thongBao" name="Thông báo" stroke="#d97706" strokeWidth={2} dot={{ r: 4 }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      )}
-
-      {/* Tab: Chuyên mục */}
-      {activeTab === 'chuyen-muc' && (
-        <div className="chart-panel">
-          <h3>📋 Chuyên mục được xem nhiều nhất</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={DATA_CHUYEN_MUC} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis type="number" />
-              <YAxis dataKey="name" type="category" width={110} fontSize={13} />
-              <Tooltip formatter={(val) => `${val} lượt xem`} />
-              <Bar dataKey="luot" name="Lượt xem" fill="#005bac" radius={[0, 6, 6, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      )}
-
-      {/* Góp ý gần đây */}
-      <div className="gopy-panel">
-        <div className="gopy-panel-header">
-          <h3>💬 Góp ý bà con gần đây</h3>
-          <button className="btn-sm-ghost" onClick={() => navigate('/gop-y')}>
-            Xem tất cả →
+            Tất cả
           </button>
-        </div>
-        <div className="gopy-list">
-          {RECENT_GOPY.map((g, i) => (
-            <div key={i} className={`gopy-item ${g.status}`}>
-              <div className={`gopy-avatar ${g.status}`}>👤</div>
-              <div style={{ flex: 1 }}>
-                <div className="gopy-meta">
-                  <span className="gopy-name">{g.name}</span>
-                  <div className="gopy-right">
-                    <span className="gopy-time">{g.time}</span>
-                    {g.status === 'chua-doc' && (
-                      <span className="gopy-badge">Chưa đọc</span>
-                    )}
-                  </div>
-                </div>
-                <p className="gopy-text">{g.noi_dung}</p>
-              </div>
-            </div>
+          {DANH_MUC.map(d => (
+            <button
+              key={d.value}
+              className={`filter-tag ${filterDM === d.value ? 'active' : ''}`}
+              onClick={() => setFilterDM(d.value)}
+            >
+              {d.label}
+            </button>
           ))}
         </div>
       </div>
 
+      {/* ── Loading / Error ── */}
+      {fetching && <div className="admin-loading">⏳ Đang tải dữ liệu...</div>}
+
+      {error && !showForm && (
+        <div className="admin-error">
+          ⚠️ {error}
+          <button
+            className="btn-danger"
+            style={{ marginLeft: '10px' }}
+            onClick={fetchData}
+          >
+            Thử lại
+          </button>
+        </div>
+      )}
+
+      {/* ── Danh sách ── */}
+      {!fetching && (
+        <div className="admin-list">
+          {filtered.length === 0 ? (
+            <div className="admin-empty">Không có bài viết nào</div>
+          ) : (
+            filtered.map(item => {
+              const dm = getDM(item.danh_muc);
+              return (
+                <div
+                  key={item._id}
+                  className="admin-card"
+                  style={{ borderLeftColor: dm.color, opacity: item.active ? 1 : 0.6 }}
+                >
+                  {/* Ảnh thumbnail */}
+                  {item.anh_dai_dien && (
+                    <img
+                      src={item.anh_dai_dien}
+                      alt={item.tieu_de}
+                      onError={e => { e.target.style.display = 'none'; }}
+                      style={{
+                        width: '100px',
+                        height: '72px',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                        flexShrink: 0,
+                        border: '1px solid #e2e8f0',
+                      }}
+                    />
+                  )}
+
+                  {/* Thông tin */}
+                  <div className="admin-card-body">
+                    <div className="admin-card-tags">
+                      <span
+                        className="admin-card-tag"
+                        style={{ background: dm.color + '20', color: dm.color }}
+                      >
+                        {dm.label}
+                      </span>
+                      {item.noi_bat && (
+                        <span
+                          className="admin-card-tag"
+                          style={{ background: '#fef9c3', color: '#854d0e' }}
+                        >
+                          ⭐ Nổi bật
+                        </span>
+                      )}
+                      <span className="admin-card-date">📅 {fmtDate(item.createdAt)}</span>
+                      <span className="admin-card-date">👁 {item.luot_xem || 0} lượt xem</span>
+                      <span className={item.active ? 'admin-card-status-on' : 'admin-card-status-off'}>
+                        {item.active ? '✅ Đang hiển thị' : '🚫 Đã ẩn'}
+                      </span>
+                    </div>
+                    <h3>{item.tieu_de}</h3>
+                    {item.tom_tat && <p>{item.tom_tat}</p>}
+                    {item.tac_gia && (
+                      <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>
+                        ✍️ {item.tac_gia}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Hành động */}
+                  <div className="admin-card-actions">
+                    <button
+                      className={item.noi_bat ? 'btn-sm-toggle-off' : 'btn-sm-toggle-on'}
+                      onClick={() => handleNoiBat(item._id)}
+                    >
+                      {item.noi_bat ? '★ Bỏ nổi bật' : '☆ Nổi bật'}
+                    </button>
+                    <button
+                      className={item.active ? 'btn-sm-toggle-off' : 'btn-sm-toggle-on'}
+                      onClick={() => handleToggle(item._id)}
+                    >
+                      {item.active ? '🚫 Ẩn' : '✅ Hiện'}
+                    </button>
+                    <button className="btn-sm-edit" onClick={() => handleEdit(item)}>
+                      ✏️ Sửa
+                    </button>
+                    <button className="btn-sm-delete" onClick={() => handleDelete(item._id)}>
+                      🗑️ Xóa
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 }

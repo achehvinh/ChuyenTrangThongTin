@@ -12,6 +12,7 @@ import BaiVietPage from "./pages/BaiVietPage";
 import GopY from "./pages/GopY";
 import UserApp from "./user-app/App.jsx";
 import KnowledgeManager from "./pages/KnowledgeManager";
+import BaiViet from './pages/BaiViet';
 
 function Layout() {
   const location = useLocation();
@@ -59,6 +60,9 @@ function Layout() {
           <Route path="/user/*" element={
             <ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>
           } />
+          <Route path="/bai-viet" element={<ProtectedRoute><BaiViet /></ProtectedRoute>} />
+          <Route path="/admin/knowledge" element={<KnowledgeManager />} />
+
         </Routes>
       </main>
     </div>
