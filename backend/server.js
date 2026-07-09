@@ -31,6 +31,7 @@ const baiVietRoutes   = require("./routes/baiViet");
 const { router: giaRouter } = require('./routes/gianongsanRoutes');
 const { router: authRouter } = require("./middleware/auth");
 const aiRoutes = require("./routes/aiRoutes");
+const knowledgeRoutes = require('./routes/knowledgeRoutes');
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
@@ -42,6 +43,7 @@ app.use("/api/v1/gia-nong-san",   giaRouter);
 app.use("/api/v1/auth",           authRouter);
 app.use("/api/v1/bai-viet",       baiVietRoutes);
 app.use("/api/v1/ai", aiRoutes);
+app.use('/api/v1/knowledge', knowledgeRoutes);
 
 app.get("/api/v1", (req, res) => {
   res.json({ message: "UBND Dak Pxi API is running" });
