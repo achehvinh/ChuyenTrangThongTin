@@ -1,0 +1,4 @@
+.chatbot-wrapper { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+.chatbot-trigger { background: #007bff; color: white; border: none; padding: 15px 25px; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+.chatbot-popup { position: absolute; bottom: 70px; right: 0; width: 350px; height: 500px; background: #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden; }
+.close-btn { position: absolute; top: 5px; right: 5px; background: none; border: none; font-size: 20px; cursor: pointer; }

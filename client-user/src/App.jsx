@@ -21,6 +21,7 @@ import ChuyenDoiSoPage from './pages/ChuyenDoiSoPage';
 import Thutuchanhchinh from './pages/Thutuchanhchinh';
 import ChuyenTrangThongTin from './pages/ChuyenTrangThongTin';
 import ChuyenMucPage from './pages/ChuyenMucPage';
+import FloatingChatBot from './components/FloatingChatBot';
 // Dòng 20 — đổi thành
 import { LanguageProvider } from './LanguageContext';
 import DuoiNuocPage from './pages/DuoiNuocPage';
@@ -96,6 +97,7 @@ function AppLayout() {
           <Route path="/tin-tuc/:id"element={<BaiVietDetailPage />}/>
           <Route path="/chat" element={<ChatWindow />} />
 
+
         </Routes>
       </main>
     </>
@@ -110,6 +112,7 @@ function App() {
             <AppLayout />
           </Router>
 
+          <FloatingChatBot />
         </div>
       </FontSizeProvider>
     </LanguageProvider>
