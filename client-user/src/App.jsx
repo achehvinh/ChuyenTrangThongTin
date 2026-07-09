@@ -31,6 +31,7 @@ import Gianongsan from './pages/Gianongsan';
 import ProcedureDetailPage from "./pages/ProcedureDetailPage";
 import BaiVietDetailPage from './pages/BaiVietDetailPage';
 import ChatWindow from './components/ai/ChatWindow';
+import KnowledgeManager from './pages/KnowledgeManager';
 
 function AppLayout() {
   const location = useLocation();
@@ -96,7 +97,7 @@ function AppLayout() {
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/tin-tuc/:id"element={<BaiVietDetailPage />}/>
           <Route path="/chat" element={<ChatWindow />} />
-
+          <Route path="/admin/knowledge" element={<KnowledgeManager />} />
 
         </Routes>
       </main>

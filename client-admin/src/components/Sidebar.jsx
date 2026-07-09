@@ -43,7 +43,6 @@ export default function Sidebar() {
 
   return (
     <div className="sidebar">
-      {/* Logo */}
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon">🏛️</div>
         <div>
@@ -52,8 +51,17 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Menu */}
       <nav className="sidebar-nav">
+        {/* Mục AI riêng biệt */}
+        <div className="sidebar-group">
+          <div className="sidebar-group-label">Trợ lý AI</div>
+          <NavLink to="/admin/knowledge" className={({isActive}) => `sidebar-item ${isActive ? 'active' : ''}`}>
+            <span className="sidebar-item-icon">🤖</span>
+            <span>Quản lý Tri thức AI</span>
+          </NavLink>
+        </div>
+
+        {/* Các mục menu khác */}
         {MENU_GROUPS.map((group) => (
           <div className="sidebar-group" key={group.group}>
             <div className="sidebar-group-label">{group.group}</div>
@@ -61,9 +69,7 @@ export default function Sidebar() {
               <NavLink
                 key={item.to}
                 to={item.to}
-                className={({ isActive }) =>
-                  `sidebar-item ${isActive ? 'active' : ''}`
-                }
+                className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
               >
                 <span className="sidebar-item-icon">{item.icon}</span>
                 <span>{item.label}</span>
@@ -73,7 +79,6 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer */}
       <div className="sidebar-footer">
         <button className="sidebar-logout" onClick={handleLogout}>
           🔐 Đăng xuất
