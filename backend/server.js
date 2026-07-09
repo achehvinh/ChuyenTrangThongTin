@@ -30,6 +30,7 @@ const tthcRoutes      = require("./routes/tthcRoutes");
 const baiVietRoutes   = require("./routes/baiViet");
 const { router: giaRouter } = require('./routes/gianongsanRoutes');
 const { router: authRouter } = require("./middleware/auth");
+const aiRoutes = require("./routes/aiRoutes");
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
@@ -40,6 +41,7 @@ app.use("/api/v1",                tthcRoutes);
 app.use("/api/v1/gia-nong-san",   giaRouter);
 app.use("/api/v1/auth",           authRouter);
 app.use("/api/v1/bai-viet",       baiVietRoutes);
+app.use("/api/v1/ai", aiRoutes);
 
 app.get("/api/v1", (req, res) => {
   res.json({ message: "UBND Dak Pxi API is running" });
@@ -51,6 +53,16 @@ app.get("/", (req, res) => {
 
 // ── Start ──
 const PORT = process.env.PORT || 5000;
+// Middleware xử lý lỗi (đặt cuối cùng sau các routes)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    success: false, 
+    message: "Có lỗi xảy ra tại hệ thống!", 
+    error: process.env.NODE_ENV === 'development' ? err.message : {} 
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
