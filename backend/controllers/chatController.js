@@ -1,3 +1,4 @@
+const Knowledge = require("../models/Knowledge");
 exports.getChatResponse = async (req, res) => {
     try {
         const { message } = req.body;
@@ -18,7 +19,11 @@ exports.getChatResponse = async (req, res) => {
             res.status(200).json({ reply: "Xin lỗi, tôi chưa có thông tin này." });
         }
     } catch (error) {
-        console.error("Lỗi server:", error); // <--- XEM DÒNG NÀY TRONG TERMINAL
-        res.status(500).json({ reply: "Hệ thống đang bận, vui lòng thử lại sau." });
-    }
+    console.error("Lỗi server:", error);
+
+    res.status(500).json({
+        reply: "Hệ thống đang bận.",
+        error: error.message
+    });
+}
 };
