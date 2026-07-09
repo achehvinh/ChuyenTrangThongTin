@@ -24,7 +24,7 @@ const ChatWindow = () => {
 
         try {
             // Gửi tới API của bạn
-            const res = await axios.post('https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1', { message: input });
+            const res = await axios.post('https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/chat', { message: input });
             setMessages(prev => [...prev, { text: res.data.reply, sender: 'ai' }]);
         } catch (err) {
             setMessages(prev => [...prev, { text: "Xin lỗi, hệ thống đang bận.", sender: 'ai' }]);
