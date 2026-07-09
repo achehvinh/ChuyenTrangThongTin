@@ -61,7 +61,7 @@ function Layout() {
             <ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>
           } />
           <Route path="/bai-viet" element={<ProtectedRoute><BaiViet /></ProtectedRoute>} />
-          <Route path="/admin/knowledge" element={<KnowledgeManager />} />
+          <Route path="/KnowledgeManager" element={<KnowledgeManager />} />
 
         </Routes>
       </main>
