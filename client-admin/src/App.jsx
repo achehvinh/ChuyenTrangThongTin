@@ -12,7 +12,7 @@ import BaiVietPage from "./pages/BaiVietPage";
 import GopY from "./pages/GopY";
 import UserApp from "./user-app/App.jsx";
 import KnowledgeManager from "./pages/KnowledgeManager";
-import BaiViet from './pages/BaiViet';
+// ❌ Xóa dòng này: import BaiViet from './pages/BaiViet';
 
 function Layout() {
   const location = useLocation();
@@ -25,44 +25,20 @@ function Layout() {
       {!isLoginPage && <Sidebar />}
       <main className={`app-main ${isLoginPage ? 'app-main--full' : ''}`}>
         <Routes>
-          {/* Public */}
           <Route path="/" element={<DangNhap />} />
           <Route path="/dang-nhap" element={<DangNhap />} />
-
-          {/* Protected */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute><Dashboard /></ProtectedRoute>
-          } />
-          <Route path="/thong-bao" element={
-            <ProtectedRoute><ThongBao /></ProtectedRoute>
-          } />
-          <Route path="/bai-viet" element={
-            <ProtectedRoute><BaiVietPage /></ProtectedRoute>
-          } />
-          <Route path="/canh-bao" element={
-            <ProtectedRoute><CanhBao /></ProtectedRoute>
-          } />
-          <Route path="/lich-hop" element={
-            <ProtectedRoute><LichHop /></ProtectedRoute>
-          } />
-          <Route path="/chuyen-muc" element={
-            <ProtectedRoute><ChuyenMuc /></ProtectedRoute>
-          } />
-          <Route path="/thu-vien" element={
-            <ProtectedRoute><ThuVien /></ProtectedRoute>
-          } />
-          <Route path="/gop-y" element={
-            <ProtectedRoute><GopY /></ProtectedRoute>
-          } />
-          <Route path="/admin/knowledge" element={
-            <ProtectedRoute><KnowledgeManager /></ProtectedRoute>
-          } />
-          <Route path="/user/*" element={
-            <ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>
-          } />
-          <Route path="/bai-viet" element={<ProtectedRoute><BaiViet /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/thong-bao" element={<ProtectedRoute><ThongBao /></ProtectedRoute>} />
+          <Route path="/bai-viet" element={<ProtectedRoute><BaiVietPage /></ProtectedRoute>} />
+          <Route path="/canh-bao" element={<ProtectedRoute><CanhBao /></ProtectedRoute>} />
+          <Route path="/lich-hop" element={<ProtectedRoute><LichHop /></ProtectedRoute>} />
+          <Route path="/chuyen-muc" element={<ProtectedRoute><ChuyenMuc /></ProtectedRoute>} />
+          <Route path="/thu-vien" element={<ProtectedRoute><ThuVien /></ProtectedRoute>} />
+          <Route path="/gop-y" element={<ProtectedRoute><GopY /></ProtectedRoute>} />
+          <Route path="/admin/knowledge" element={<ProtectedRoute><KnowledgeManager /></ProtectedRoute>} />
+          <Route path="/user/*" element={<ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>} />
           <Route path="/KnowledgeManager" element={<KnowledgeManager />} />
-
+          {/* ❌ Xóa route trùng: <Route path="/bai-viet" element={<ProtectedRoute><BaiViet /></ProtectedRoute>} /> */}
         </Routes>
       </main>
     </div>
