@@ -94,7 +94,7 @@ export default function ChatWindow() {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([
     {
-      text: 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đắk Pxi. Bà con cần hỗ trợ gì?',
+      text: 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đăk Pxi. Bà con cần hỗ trợ gì?',
       sender: 'ai',
       suggestions: [],
     },
@@ -157,7 +157,7 @@ export default function ChatWindow() {
       <div className="cw-header">
         <div className="cw-header-avatar">🤖</div>
         <div>
-          <div className="cw-header-name">Trợ lý AI UBND xã Đắk Pxi</div>
+          <div className="cw-header-name">Trợ lý AI UBND xã Đăk Pxi</div>
           <div className="cw-header-status">
             <span className="cw-status-dot" />
             Sẵn sàng hỗ trợ

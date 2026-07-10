@@ -25,9 +25,41 @@ const KnowledgeManager = () => {
         e.preventDefault();
         await axios.post('https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/knowledge', data);
         alert("Đã cập nhật!");
-        setData({ title: '', content: '', category: '' });
+        setData({
+            title: '',
+            keywords: '',
+            category: '',
+            content: ''
+        });
         fetchKnowledge(); // Tải lại danh sách
     };
+
+    const generateKeywords = () => {
+
+    let title = data.title.toLowerCase();
+
+    let keywords = [];
+
+    keywords.push(title);
+
+    keywords.push(title.replaceAll("đ","d"));
+
+    keywords.push(title.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replaceAll("đ","d"));
+
+    keywords.push("làm " + title);
+
+    keywords.push("đăng ký " + title);
+
+    keywords.push("thủ tục " + title);
+
+    setData({
+        ...data,
+        keywords:[...new Set(keywords)].join(", ")
+    });
+
+}
 
     return (
         <div className="admin-container">
@@ -49,6 +81,12 @@ const KnowledgeManager = () => {
             setData({ ...data, keywords: e.target.value })
         }
     />
+    <button
+        type="button"
+        onClick={generateKeywords}
+    >
+    🤖 AI sinh từ khóa
+    </button>
 
     <input
         placeholder="Danh mục"
