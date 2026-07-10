@@ -3,7 +3,12 @@ import axios from 'axios';
 import './KnowledgeManager.css';
 
 const KnowledgeManager = () => {
-    const [data, setData] = useState({ title: '', content: '', category: '' });
+    const [data, setData] = useState({
+    title: "",
+    keywords: "",
+    category: "",
+    content: ""
+    });
     const [list, setList] = useState([]);
 
     // Hàm lấy danh sách kiến thức
@@ -27,12 +32,45 @@ const KnowledgeManager = () => {
     return (
         <div className="admin-container">
             <h2>Quản lý Tri thức AI</h2>
-            <form onSubmit={handleSubmit}>
-                <input placeholder="Tiêu đề" value={data.title} onChange={(e) => setData({...data, title: e.target.value})} />
-                <input placeholder="Danh mục" value={data.category} onChange={(e) => setData({...data, category: e.target.value})} />
-                <textarea placeholder="Nội dung chi tiết..." value={data.content} onChange={(e) => setData({...data, content: e.target.value})} />
-                <button type="submit">Lưu kiến thức</button>
-            </form>
+           <form onSubmit={handleSubmit}>
+
+    <input
+        placeholder="Tiêu đề"
+        value={data.title}
+        onChange={(e) =>
+            setData({ ...data, title: e.target.value })
+        }
+    />
+
+    <input
+        placeholder="Từ khóa (cách nhau bằng dấu phẩy)"
+        value={data.keywords}
+        onChange={(e) =>
+            setData({ ...data, keywords: e.target.value })
+        }
+    />
+
+    <input
+        placeholder="Danh mục"
+        value={data.category}
+        onChange={(e) =>
+            setData({ ...data, category: e.target.value })
+        }
+    />
+
+    <textarea
+        placeholder="Nội dung chi tiết..."
+        value={data.content}
+        onChange={(e) =>
+            setData({ ...data, content: e.target.value })
+        }
+    />
+
+    <button type="submit">
+        Lưu kiến thức
+    </button>
+
+    </form>
 
             <div className="knowledge-list">
                 <h3>Danh sách đã nhập:</h3>

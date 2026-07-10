@@ -6,8 +6,9 @@ exports.getChatResponse = async (req, res) => {
 
         const knowledge = await Knowledge.findOne({
             $or: [
-                { title: { $regex: message, $options: 'i' } },
-                { content: { $regex: message, $options: 'i' } }
+                { title: { $regex: message, $options: "i" } },
+                { keywords: { $regex: message, $options: "i" } },
+                { content: { $regex: message, $options: "i" } }
             ]
         });
 
