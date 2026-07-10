@@ -109,9 +109,8 @@ function App() {
         <div className="app-shell">
           <Router>
             <AppLayout />
+            <FloatingChatBot />
           </Router>
-
-          <FloatingChatBot />
         </div>
       </FontSizeProvider>
     </LanguageProvider>
