@@ -32,7 +32,7 @@ import ProcedureDetailPage from "./pages/ProcedureDetailPage";
 import BaiVietDetailPage from './pages/BaiVietDetailPage';
 import ChatWindow from './components/ai/ChatWindow';
 import ThienTaiPage from './pages/ThienTaiPage';
-
+import ChayRungPage from './pages/ChayRungPage';
 function AppLayout() {
   const location = useLocation();
 
@@ -85,6 +85,7 @@ function AppLayout() {
           <Route path="/lien-he" element={<LienHePage />} />
           <Route path="/duoi-nuoc" element={<DuoiNuocPage />} />
           <Route path="/thien-tai" element={<ThienTaiPage />} />
+          <Route path="/chay-rung" element={<ChayRungPage />} />
           <Route path="/quiz/:topic" element={<QuizGame />} />
           <Route path="/:category" element={<AllFeaturesPage />} />
           <Route path="/alert" element={<TTSButton />} />
