@@ -1,75 +1,24 @@
 /* ══════════════════════════════════════
-   Navbar.css — 2 hàng tách biệt
-   Hàng 1: Logo + Tên + Ngôn ngữ
-   Hàng 2: Menu điều hướng
+   Navbar — đơn giản, ít màu
+   Palette: trắng + xanh navy + xám nhạt
 ══════════════════════════════════════ */
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
 
 .navbar {
   width: 100%;
-  max-width: 1200px;
-
-  margin: 0 auto;
-
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 2px 12px rgba(0,0,0,.07);
-
-  position: relative;
-  z-index: 999;
-
-  overflow: visible;
-
-  border-radius: 6px 6px 0 0;
+  background: #fff;
+  border-bottom: 1px solid #d1d5db;
+  font-family: 'Times New Roman', Georgia, serif;
 }
 
-/* ── Overlay khi có ảnh nền ── */
-.navbar-bg-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 35, 82, 0.35) 0%,
-    rgba(0, 35, 82, 0.25) 55%,
-    rgba(0, 20, 55, 0.50) 100%
-  );
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Khi navbar có ảnh nền, cho phần tử .navbar trong suốt
-   để ảnh nền hiển thị khắp vùng header (không hiện khung trắng) */
-.navbar[style*="backgroundImage"] {
-  background-color: transparent;
-}
-
-.navbar-top,
-.navbar-bottom {
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Hàng 1: Logo + Tên + Actions ── */
+/* ── Hàng 1 ── */
 .navbar-top {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: white;
-
-  padding: 18px 24px;
-}
-
-/* Khi có ảnh nền */
-.navbar[style*="backgroundImage"] .navbar-top {
-  background: transparent;
-}
-
-.navbar[style*="backgroundImage"] .navbar-bottom {
-  background: rgba(0, 30, 70, 0.55);
-  border-top-color: rgba(251, 191, 36, 0.85);
-  backdrop-filter: blur(2px);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  gap: 16px;
 }
 
 .navbar-brand {
@@ -79,12 +28,10 @@
 }
 
 .navbar-logo {
-  width: 72px;
-  height: 72px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
-  border-radius: 50%;
-  display: block;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  flex-shrink: 0;
 }
 
 .navbar-title {
@@ -94,38 +41,25 @@
 }
 
 .navbar-sub {
-  font-size: 13px;
-  color: rgba(255,255,255,0.9);
-  font-weight: 600;
+  font-size: 12px;
+  color: #6b7280;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  line-height: 1.2;
+  letter-spacing: 0.06em;
+  font-family: Arial, sans-serif;
 }
 
 .navbar-main {
-  color: white;
-  font-size: 28px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a3a5c;
+  line-height: 1.2;
 }
 
-.navbar[style*="backgroundImage"] .navbar-sub {
-  color: rgba(255,255,255,0.95);
-  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-}
-
-.navbar[style*="backgroundImage"] .navbar-main {
-  color: #ffffff;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.55);
-}
-
-/* ── Actions: font size + ngôn ngữ ── */
+/* ── Actions ── */
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
@@ -133,203 +67,123 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 20px;
-  padding: 4px 10px;
-  border: 1px solid rgba(255,255,255,0.20);
-}
-
-.font-label {
-  font-size: 11px;
-  color: rgba(255,255,255,0.80);
-  font-weight: 600;
-  padding: 0 4px;
-  white-space: nowrap;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: #f9fafb;
 }
 
 .font-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  background: none;
   border: none;
-  background: rgba(255,255,255,0.25);
-  color: white;
-  font-weight: 800;
   font-size: 13px;
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.font-btn:hover:not(:disabled) {
-  background: rgba(255,255,255,0.40);
-  transform: scale(1.1);
-}
-
-.font-btn:disabled {
-  background: rgba(255,255,255,0.10);
-  color: rgba(255,255,255,0.35);
-  cursor: not-allowed;
-}
-
-.lang-toggle {
-  padding: 8px 18px;
-  background: #fbbf24;
-  color: #111;
-  border: none;
-  border-radius: 20px;
   font-weight: 700;
-  font-size: 13px;
+  color: #374151;
   cursor: pointer;
-  transition: 0.2s;
-  white-space: nowrap;
-  flex-shrink: 0;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.font-btn:hover:not(:disabled) { background: #e5e7eb; }
+.font-btn:disabled { color: #d1d5db; cursor: not-allowed; }
+
+.font-label {
+  font-size: 12px;
+  color: #6b7280;
+  padding: 0 4px;
+  font-family: Arial, sans-serif;
 }
 
-.lang-toggle:hover {
-  background: #f59e0b;
-  transform: translateY(-1px);
+.lang-btn {
+  background: #1a3a5c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
 }
+.lang-btn:hover { background: #153050; }
 
-/* ── Hàng 2: Menu — đồng bộ lề với home-layout ── */
+/* ── Hàng 2: Menu ── */
 .navbar-bottom {
-  background: #003d73;
-  border-top: 2px solid #fbbf24;
+  border-top: 3px solid #1a3a5c;
+  background: #1a3a5c;
 }
 
 .navbar-nav {
   display: flex;
   align-items: center;
-  height: 46px;
-
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 24px;
 }
 
 .nav-link {
-  position: relative;
-  text-decoration: none;
-  color: rgba(255,255,255,0.85);
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-  padding: 0 16px;
-  height: 46px;
   display: flex;
   align-items: center;
-  transition: all 0.2s ease;
-  letter-spacing: 0.2px;
+  height: 42px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
 }
-
-.nav-link:hover {
-  color: white;
-  background: rgba(255,255,255,0.1);
-}
-
-.nav-link--active {
-  color: #fbbf24;
-  background: rgba(255,255,255,0.08);
-}
-
-.nav-link--active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 16px;
-  width: calc(100% - 32px);
-  height: 2px;
-  background: #fbbf24;
-  border-radius: 2px 2px 0 0;
-}
+.nav-link:hover { color: #fff; border-bottom-color: #fbbf24; }
+.nav-link--active { color: #fbbf24; border-bottom-color: #fbbf24; }
 
 /* ── Dropdown ── */
 .nav-dropdown {
   position: relative;
-  height: 46px;
+  height: 42px;
   display: flex;
   align-items: center;
 }
 
 .nav-dropdown-trigger {
   cursor: pointer;
-  color: rgba(255,255,255,0.85);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 0 16px;
-  height: 46px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: 0.2s;
-  white-space: nowrap;
-  letter-spacing: 0.2px;
-}
-
-.nav-dropdown-trigger:hover {
-  color: white;
-  background: rgba(255,255,255,0.1);
+  user-select: none;
 }
 
 .nav-dropdown-menu {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
-   background: #003d73;
-   border-radius: 0 0 12px 12px;
-   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
-   min-width: 220px;
-   overflow: visible;
-   opacity: 0;
-   visibility: hidden;
-   transform: translateY(-6px);
-   transition: all 0.2s ease;
-   z-index: 9999;
-   border-top: 3px solid #fbbf24;
- }
- 
- .nav-dropdown:hover .nav-dropdown-menu {
-   opacity: 1;
-   visibility: visible;
-   transform: translateY(0);
- }
- 
- .nav-dropdown-item {
-   display: block;
-   padding: 12px 18px;
-   font-size: 14px;
-   font-weight: 700;
-   color: rgba(255, 255, 255, 0.95);
-   text-decoration: none;
-   transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
-   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
- }
- 
- .nav-dropdown-item:last-child { border-bottom: none; }
- 
- .nav-dropdown-item:hover {
-   background: rgba(251, 191, 36, 0.14);
-   color: #fbbf24;
-}
-@media (max-width: 1232px) {
-  /* Khi màn hình nhỏ hơn max-width + padding thì dùng padding cố định */
-  .navbar-top { padding: 18px 16px; }
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-top: 3px solid #1a3a5c;
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  z-index: 999;
 }
 
-@media (max-width: 1100px) {
-  .navbar-top { padding: 12px 16px; }
-  .navbar-main { font-size: 18px; }
-}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
 
+.nav-dropdown-item {
+  display: block;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #1f2937;
+  text-decoration: none;
+  border-bottom: 1px solid #f3f4f6;
+  font-family: Arial, sans-serif;
+}
+.nav-dropdown-item:last-child { border-bottom: none; }
+.nav-dropdown-item:hover { background: #f0f4f8; color: #1a3a5c; }
+
+/* ── Responsive ── */
 @media (max-width: 768px) {
   .navbar-top { padding: 10px 16px; }
-  .navbar-bottom { padding: 0; }
-  .navbar-nav { padding: 0 8px; overflow-x: auto; }
-  .navbar-logo { width: 44px; height: 44px; }
   .navbar-main { font-size: 15px; }
-  .navbar-sub { font-size: 11px; }
-  .nav-link, .nav-dropdown-trigger { font-size: 12px; padding: 0 10px; }
-  .font-label { display: none; }
-  .font-btn { width: 28px; height: 28px; font-size: 11px; }
-  .lang-toggle { padding: 6px 12px; font-size: 12px; }
+  .navbar-sub  { font-size: 11px; }
+  .navbar-logo { width: 44px; height: 44px; }
+  .navbar-nav  { padding: 0 8px; overflow-x: auto; }
+  .nav-link    { font-size: 13px; padding: 0 10px; }
+  .font-label  { display: none; }
 }

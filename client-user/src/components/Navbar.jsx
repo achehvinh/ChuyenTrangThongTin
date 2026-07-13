@@ -7,40 +7,26 @@ const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ' },
   { to: '/chuyen-doi-so', label: 'Chuyển đổi số' },
   { to: '/ban-do', label: 'Bản đồ' },
-
   {
     label: 'Hỗ trợ',
     dropdown: [
-      { to: '/huong-dan', label: '📘 Hướng dẫn sử dụng' },
-      { to: '/lien-he', label: '📞 Liên hệ' },
-      { to: '/video', label: '🎥 Video' },
-      { to: '/thu-vien-anh', label: '🖼️ Hình ảnh' },
-      { to: '/gioi-thieu', label: '🏛️ Giới thiệu' },
+      { to: '/huong-dan',    label: 'Hướng dẫn sử dụng' },
+      { to: '/lien-he',      label: 'Liên hệ' },
+      { to: '/video',        label: 'Video' },
+      { to: '/thu-vien-anh', label: 'Hình ảnh' },
+      { to: '/gioi-thieu',   label: 'Giới thiệu' },
     ]
   }
 ];
-
-// ← Thêm link ảnh nền vào đây
-const NAVBAR_BG_IMAGE = 'http://localhost:3000/anhnen1.png';
 
 export default function Navbar() {
   const { lang, toggleLang } = useLang();
   const { increase, decrease, sizeIndex, max, currentLabel } = useFontSize();
 
   return (
-    <header
-      className="navbar"
-      style={NAVBAR_BG_IMAGE ? {
-        backgroundImage: `url('${NAVBAR_BG_IMAGE}')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center top',
-        backgroundRepeat: 'no-repeat',
-      } : undefined}
-    >
-      {/* Overlay tối nhẹ để chữ dễ đọc khi có ảnh nền */}
-      {NAVBAR_BG_IMAGE && <div className="navbar-bg-overlay" />}
+    <header className="navbar">
 
-      {/* Hàng 1 — Logo + Tên + Nút ngôn ngữ */}
+      {/* Hàng 1 — Logo + Tên + Cỡ chữ */}
       <div className="navbar-top">
         <div className="navbar-brand">
           <img
@@ -49,54 +35,33 @@ export default function Navbar() {
             className="navbar-logo"
           />
           <div className="navbar-title">
-            <div className="navbar-sub">
-              PHÒNG VĂN HÓA XÃ HỘI - XÃ ĐĂK PXI
-            </div>
-            <div className="navbar-main">
-              TUYÊN TRUYỀN
-            </div>
-            <div className="navbar-main"> 
-              VÀ HỖ TRỢ DỊCH VỤ CÔNG TRỰC TUYẾN </div>
+            <span className="navbar-sub">Phòng Văn hóa Xã hội — Xã Đăk Pxi</span>
+            <span className="navbar-main">Tuyên truyền & Hỗ trợ Dịch vụ Công</span>
           </div>
         </div>
+
         <div className="navbar-actions">
-          {/* Nút A+ / A- */}
           <div className="font-size-controls">
-  <button
-    className="font-btn"
-    onClick={decrease}
-    disabled={sizeIndex === 0}
-    title="Giảm cỡ chữ"
-  >
-    A−
-  </button>
-  <span className="font-label">{currentLabel}</span>
-  <button
-    className="font-btn"
-    onClick={increase}
-    disabled={sizeIndex === max}
-    title="Tăng cỡ chữ"
-  >
-    A+
-  </button>
-</div>
+            <button className="font-btn" onClick={decrease} disabled={sizeIndex === 0} title="Giảm cỡ chữ">A−</button>
+            <span className="font-label">{currentLabel}</span>
+            <button className="font-btn" onClick={increase} disabled={sizeIndex === max} title="Tăng cỡ chữ">A+</button>
+          </div>
+          <button className="lang-btn" onClick={toggleLang}>
+            {lang === 'vi' ? 'Xê Đăng' : 'Tiếng Việt'}
+          </button>
         </div>
       </div>
 
-      {/* Hàng 2 — Menu điều hướng */}
+      {/* Hàng 2 — Menu */}
       <div className="navbar-bottom">
         <nav className="navbar-nav">
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map(item =>
             item.dropdown ? (
               <div className="nav-dropdown" key={item.label}>
-                <span className="nav-link nav-dropdown-trigger">
-                  {item.label} ▾
-                </span>
+                <span className="nav-link nav-dropdown-trigger">{item.label} ▾</span>
                 <div className="nav-dropdown-menu">
                   {item.dropdown.map(sub => (
-                    <NavLink key={sub.to} to={sub.to} className="nav-dropdown-item">
-                      {sub.label}
-                    </NavLink>
+                    <NavLink key={sub.to} to={sub.to} className="nav-dropdown-item">{sub.label}</NavLink>
                   ))}
                 </div>
               </div>
@@ -105,16 +70,15 @@ export default function Navbar() {
                 key={item.to}
                 to={item.to}
                 end={item.to === '/'}
-                className={({ isActive }) =>
-                  `nav-link ${isActive ? 'nav-link--active' : ''}`
-                }
+                className={({ isActive }) => `nav-link${isActive ? ' nav-link--active' : ''}`}
               >
                 {item.label}
               </NavLink>
             )
-          ))}
+          )}
         </nav>
       </div>
+
     </header>
   );
 }

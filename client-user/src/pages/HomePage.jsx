@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
-import { FEATURES } from "../data";
 import ChuyenTrangThongTin from './ChuyenTrangThongTin';
-
-const FEATURED_PATHS = ['/thong-bao', '/tra-cuu', '/huong-dan-vneid', '/thu-tuc-hanh-chinh'];
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -13,78 +10,77 @@ export default function HomePage() {
   return (
     <div className="home">
 
-      {/* ── Ảnh nền + 2 cột ── */}
-      <div className="quick-services-wrapper">
-        <div className="home-layout">
+      {/* ── Layout 2 cột ── */}
+      <div className="home-body">
 
-          {/* CỘT TRÁI */}
-          <main className="home-main">
-            <div className="main-section-header">
-              <h2>CHUYÊN TRANG THÔNG TIN ĐĂK PXI</h2>
+        {/* CỘT TRÁI — Bài viết */}
+        <main className="home-main">
+          <div className="section-header">
+            <h2>Chuyên trang thông tin Đăk Pxi</h2>
+          </div>
+          <ChuyenTrangThongTin showHeader={false} />
+        </main>
+
+        {/* CỘT PHẢI — Sidebar */}
+        <aside className="home-sidebar">
+
+          {/* Tiện ích dịch vụ */}
+          <div className="sidebar-box">
+            <div className="sidebar-box-title">Tiện ích dịch vụ</div>
+            <ul className="sidebar-list">
+              <li onClick={() => navigate('/thu-tuc-hanh-chinh')}>Thủ tục hành chính</li>
+              <li onClick={() => navigate('/huong-dan-vneid')}>Hướng dẫn VNeID</li>
+
+              {/* Dropdown tra cứu */}
+              <li
+                className={`sidebar-list-dropdown${showTraCuu ? ' open' : ''}`}
+                onMouseEnter={() => setShowTraCuu(true)}
+                onMouseLeave={() => setShowTraCuu(false)}
+              >
+                <span>
+                  Hướng dẫn tra cứu
+                  <span className="dropdown-arrow">{showTraCuu ? ' ▴' : ' ▾'}</span>
+                </span>
+                {showTraCuu && (
+                  <ul className="sidebar-submenu">
+                    <li onClick={() => navigate('/tra-cuu')}>Tra cứu BHYT</li>
+                    <li onClick={() => navigate('/huong-dan-bhxh')}>Tra cứu BHXH</li>
+                  </ul>
+                )}
+              </li>
+
+              <li onClick={() => navigate('/phap-luat')}>Góc pháp luật</li>
+              <li onClick={() => navigate('/chuyen-muc')}>Tuyên truyền</li>
+            </ul>
+          </div>
+
+          {/* Giá nông sản */}
+          <div className="sidebar-box">
+            <div className="sidebar-box-title">Giá nông sản</div>
+            <table className="agri-table">
+              <tbody>
+                <tr><td>Cà phê nhân</td><td>125.000đ/kg</td></tr>
+                <tr><td>Hồ tiêu</td><td>145.000đ/kg</td></tr>
+                <tr><td>Sắn lát khô</td><td>4.200đ/kg</td></tr>
+              </tbody>
+            </table>
+            <button className="sidebar-link-btn" onClick={() => navigate('/gia-nong-san')}>
+              Xem đầy đủ →
+            </button>
+          </div>
+
+          {/* Liên hệ */}
+          <div className="sidebar-box">
+            <div className="sidebar-box-title">Liên hệ UBND xã</div>
+            <div className="contact-info">
+              <p>📞 <strong>0339.310.915</strong></p>
+              <p>🕐 Thứ 2 – Thứ 6</p>
+              <p>7:30–11:30 và 13:30–17:00</p>
             </div>
-            <div className="main-content-area">
-              <div className="main-placeholder">
-                <ChuyenTrangThongTin showHeader={false} />
-              </div>
-            </div>
-          </main>
+          </div>
 
-          {/* CỘT PHẢI — Sidebar */}
-          <aside className="home-sidebar">
+        </aside>
 
-            <div className="sidebar-card">
-              <div className="sidebar-card-header">TIỆN ÍCH DỊCH VỤ</div>
-              <ul className="sidebar-links">
-                <li onClick={() => navigate('/thu-tuc-hanh-chinh')}>Thủ tục hành chính</li>
-                <li onClick={() => navigate('/huong-dan-vneid')}>Hướng dẫn VNeID</li>
-
-                {/* Dropdown mở xuống khi hover */}
-                <li
-                  className={`sidebar-link-dropdown ${showTraCuu ? 'open' : ''}`}
-                  onMouseEnter={() => setShowTraCuu(true)}
-                  onMouseLeave={() => setShowTraCuu(false)}
-                >
-                  <span>
-                    Hướng dẫn tra cứu
-                    <span className="sidebar-dropdown-arrow">{showTraCuu ? '▴' : '▾'}</span>
-                  </span>
-                  {showTraCuu && (
-                    <ul className="sidebar-link-submenu">
-                      <li onClick={() => navigate('/tra-cuu')}>🔍 Tra cứu BHYT</li>
-                      <li onClick={() => navigate('/huong-dan-bhxh')}>📋 Tra cứu BHXH</li>
-                    </ul>
-                  )}
-                </li>
-
-                <li onClick={() => navigate('/phap-luat')}>Góc pháp luật</li>
-                <li onClick={() => navigate('/chuyen-muc')}>Tuyên truyền</li>
-              </ul>
-            </div>
-
-            <div className="sidebar-card">
-              <div className="sidebar-card-header">🌾 GIÁ NÔNG SẢN</div>
-              <div className="sidebar-agri">
-                <div className="sidebar-agri-item">
-                  <span>Cà phê nhân</span>
-                  <strong>125.000đ/kg</strong>
-                </div>
-                <div className="sidebar-agri-item">
-                  <span>Hồ tiêu</span>
-                  <strong>145.000đ/kg</strong>
-                </div>
-                <div className="sidebar-agri-item">
-                  <span>Sắn lát khô</span>
-                  <strong>4.200đ/kg</strong>
-                </div>
-              </div>
-              <button className="sidebar-agri-btn" onClick={() => navigate('/gia-nong-san')}>
-                Xem đầy đủ →
-              </button>
-            </div>
-
-          </aside>
-
-        </div>
       </div>
 
     </div>
