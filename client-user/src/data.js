@@ -73,11 +73,11 @@ export const DETAILS = {
 '/thien-tai': {
   title: '🌪️ Phòng chống Thiên tai',
 
-  images: [
-    'LINK_ANH_THIEN_TAI_1',
-    'LINK_ANH_THIEN_TAI_2',
-    'LINK_ANH_THIEN_TAI_3'
-  ],
+ images: [
+  '/huong-dan/thien-tai-1.png',
+  '/huong-dan/thien-tai-2.png',
+  '/huong-dan/thien-tai-3.png',
+],
 
   content:
     'Mùa mưa bão thường xuất hiện lũ quét, sạt lở đất và giông lốc. Bà con cần theo dõi thông báo của chính quyền địa phương.',

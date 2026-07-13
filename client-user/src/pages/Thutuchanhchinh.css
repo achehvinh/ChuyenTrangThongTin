@@ -71,7 +71,7 @@
 }
 
 .tthc-gov-header-inner {
-  max-width: 1200px;
+  max-width: 1550px;
   margin: 0 auto;
   padding: 18px 24px;
   display: flex;
@@ -141,7 +141,7 @@
 }
 
 .tthc-breadcrumb-inner {
-  max-width: 1200px;
+  max-width: 1550px;
   margin: 0 auto;
   padding: 12px 24px;
   display: flex;
@@ -273,7 +273,7 @@
    HERO
    ============================================================ */
 .tthc-hero {
-  max-width: 1200px;
+  max-width: 1550px;
   margin: 0 auto;
   border-radius: 0 0 12px 12px;  /* bo góc dưới cho đẹp */
   background: linear-gradient(
@@ -285,7 +285,7 @@
 }
 
 .tthc-hero-inner {
-  max-width: 1200px;
+  max-width: 1550px;
   margin: 0 auto;
   padding: 1.5rem 24px;  /* ← padding 24px đồng bộ với navbar */
   display: flex;
@@ -349,7 +349,7 @@
    MAIN CONTAINER
    ============================================================ */
 .tthc-main {
-  max-width: 1200px;
+  max-width: 1550px;
   margin: 0 auto;
   padding: 1.75rem 24px 4rem;  /* ← cùng 24px */
 }
@@ -1076,7 +1076,7 @@
   }
  .tthc-hero-inner,
 .tthc-main {
-  max-width: 1200px;
+  max-width: 1550px;
   margin: 0 auto;
   padding-left: 24px;
   padding-right: 24px;
@@ -1111,7 +1111,7 @@
 }
 
 .breadcrumb {
-  max-width: 1200px;
+  max-width: 1550px;
   margin: 15px auto;
   padding: 0 15px;
   font-size: 14px;
@@ -1133,7 +1133,7 @@
   font-weight: 500;
 }
 .tthc-container{
-    max-width:1200px;
+    max-width:1550px;
     margin:0 auto;
     padding:20px;
 }

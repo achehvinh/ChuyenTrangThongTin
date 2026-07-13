@@ -31,6 +31,7 @@ import Gianongsan from './pages/Gianongsan';
 import ProcedureDetailPage from "./pages/ProcedureDetailPage";
 import BaiVietDetailPage from './pages/BaiVietDetailPage';
 import ChatWindow from './components/ai/ChatWindow';
+import ThienTaiPage from './pages/ThienTaiPage';
 
 function AppLayout() {
   const location = useLocation();
@@ -83,6 +84,7 @@ function AppLayout() {
           <Route path="/thu-vien-anh" element={<ThuVienAnh />} />
           <Route path="/lien-he" element={<LienHePage />} />
           <Route path="/duoi-nuoc" element={<DuoiNuocPage />} />
+          <Route path="/thien-tai" element={<ThienTaiPage />} />
           <Route path="/quiz/:topic" element={<QuizGame />} />
           <Route path="/:category" element={<AllFeaturesPage />} />
           <Route path="/alert" element={<TTSButton />} />
