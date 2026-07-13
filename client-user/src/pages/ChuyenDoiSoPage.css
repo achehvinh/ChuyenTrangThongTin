@@ -130,7 +130,7 @@
   margin-top:10px;
 }
 
-@media(max-width:900px){
+@media(max-width:1200px){
 
   .cds-grid{
     grid-template-columns:1fr;
