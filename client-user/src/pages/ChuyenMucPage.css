@@ -1,11 +1,111 @@
-.chuyenmuc-page{
-  max-width:1200px;
-  margin:auto;
-  padding:40px 20px;
+/* ══════════════════════════════════════
+   ChuyenMucPage — gọn, sạch, ít màu
+══════════════════════════════════════ */
+
+.cm-page {
+  max-width: 1550px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+  font-family: Arial, sans-serif;
 }
 
-.chuyenmuc-page h1{
-  text-align:center;
-  margin-bottom:30px;
-  color:#005bac;
+/* ── Header ── */
+.cm-header {
+  border-left: 4px solid #1a3a5c;
+  padding: 6px 14px;
+  margin-bottom: 24px;
+}
+
+.cm-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-family: 'Times New Roman', Georgia, serif;
+}
+
+.cm-header p {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── Grid ── */
+.cm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* ── Card ── */
+.cm-card {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  display: flex;
+  flex-direction: column;
+}
+
+.cm-card:hover {
+  border-color: #1a3a5c;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+/* Ảnh */
+.cm-img-wrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+.cm-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s;
+}
+.cm-card:hover .cm-img { transform: scale(1.04); }
+
+/* Nội dung */
+.cm-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cm-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin: 0 0 6px;
+  line-height: 1.4;
+  font-family: 'Times New Roman', Georgia, serif;
+}
+
+.cm-desc {
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0 0 12px;
+  flex: 1;
+}
+
+.cm-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a3a5c;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .cm-page  { padding: 16px 12px 32px; }
+  .cm-grid  { grid-template-columns: 1fr; }
 }

@@ -6,28 +6,34 @@ export default function ChuyenMucPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="chuyenmuc-page">
-      <h1>📚 Chuyên Mục Dành Cho Bà Con</h1>
+    <div className="cm-page">
 
-      <div className="features-list">
+      {/* Header */}
+      <div className="cm-header">
+        <h1>Chuyên mục dành cho bà con</h1>
+        <p>Thông tin tuyên truyền, hướng dẫn từ UBND xã Đăk Pxi</p>
+      </div>
+
+      {/* Danh sách */}
+      <div className="cm-grid">
         {FEATURES.map((f) => (
           <div
             key={f.path}
-            className="flist-card"
+            className="cm-card"
             onClick={() => navigate(f.path)}
           >
-            <div className="flist-img-wrap">
-              <img src={f.image} alt={f.title} className="flist-img" />
+            <div className="cm-img-wrap">
+              <img src={f.image} alt={f.title} className="cm-img" />
             </div>
-
-            <div className="flist-body">
-              <h3>{f.title}</h3>
-              <p>{f.desc}</p>
-              <span className="flist-link">Xem chi tiết →</span>
+            <div className="cm-body">
+              <h3 className="cm-title">{f.title}</h3>
+              <p className="cm-desc">{f.desc}</p>
+              <span className="cm-link">Xem chi tiết →</span>
             </div>
           </div>
         ))}
       </div>
+
     </div>
   );
 }
