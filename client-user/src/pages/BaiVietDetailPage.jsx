@@ -101,6 +101,7 @@ export default function BaiVietDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState('');
   const [copied,  setCopied]  = useState(false);
+   const [lightboxIdx, setLightboxIdx] = useState(null);
   const topRef                = useRef(null);
 
   /* Load bài chính + bài liên quan */
@@ -131,6 +132,17 @@ export default function BaiVietDetailPage() {
       .then(r => setTicker((r.data.data || []).map(b => b.tieu_de)))
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+  if (lightboxIdx === null || !bv?.anh_phu) return;
+  function onKey(e) {
+    if (e.key === 'Escape') setLightboxIdx(null);
+    if (e.key === 'ArrowRight') setLightboxIdx(i => (i + 1) % bv.anh_phu.length);
+    if (e.key === 'ArrowLeft') setLightboxIdx(i => (i - 1 + bv.anh_phu.length) % bv.anh_phu.length);
+  }
+  window.addEventListener('keydown', onKey);
+  return () => window.removeEventListener('keydown', onKey);
+}, [lightboxIdx, bv]);
 
   function copyLink() {
     navigator.clipboard?.writeText(window.location.href).then(() => {
@@ -257,18 +269,48 @@ export default function BaiVietDetailPage() {
               <div className="bvd-rule" style={{ background: color }} />
 
               {/* Ảnh banner */}
-              {bv.anh_dai_dien && (
-                <figure className="bvd-figure">
-                  <img
-                    src={bv.anh_dai_dien}
-                    alt={bv.tieu_de}
-                    className="bvd-banner"
-                  />
-                  <figcaption className="bvd-caption">
-                    {bv.mo_ta || bv.tieu_de} — Ảnh: {bv.nguoi_dang}
-                  </figcaption>
-                </figure>
-              )}
+{bv.anh_dai_dien && (
+  <figure className="bvd-figure">
+    <img src={bv.anh_dai_dien} alt={bv.tieu_de} className="bvd-banner" />
+    <figcaption className="bvd-caption">
+      {bv.mo_ta || bv.tieu_de} — Ảnh: {bv.nguoi_dang}
+    </figcaption>
+  </figure>
+)}
+
+{/* Video */}
+{bv.video && (
+  <div className="bvd-video-wrap">
+    <video src={bv.video} controls className="bvd-video" />
+  </div>
+)}
+
+{/* Gallery ảnh phụ */}
+{Array.isArray(bv.anh_phu) && bv.anh_phu.length > 0 && (
+  <div className="bvd-gallery">
+    {bv.anh_phu.map((url, i) => (
+      <button key={i} className="bvd-gallery-item" onClick={() => setLightboxIdx(i)}>
+        <img src={url} alt={`${bv.tieu_de} - ảnh ${i + 1}`} />
+      </button>
+    ))}
+  </div>
+)}
+
+{/* Lightbox */}
+{lightboxIdx !== null && (
+  <div className="bvd-lightbox" onClick={() => setLightboxIdx(null)}>
+    <button className="bvd-lightbox-close" onClick={() => setLightboxIdx(null)}>✕</button>
+    <button className="bvd-lightbox-nav bvd-lightbox-prev"
+      onClick={e => { e.stopPropagation(); setLightboxIdx(i => (i - 1 + bv.anh_phu.length) % bv.anh_phu.length); }}>
+      ‹
+    </button>
+    <img src={bv.anh_phu[lightboxIdx]} alt="" className="bvd-lightbox-img" onClick={e => e.stopPropagation()} />
+    <button className="bvd-lightbox-nav bvd-lightbox-next"
+      onClick={e => { e.stopPropagation(); setLightboxIdx(i => (i + 1) % bv.anh_phu.length); }}>
+      ›
+    </button>
+  </div>
+)}
 
               {/* Nội dung */}
               <div className="bvd-content">

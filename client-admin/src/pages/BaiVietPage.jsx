@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './BaiVietPage.css';
 
+const CLOUDINARY_CLOUD_NAME = 'hfbyeesv'; // 👈 thay bằng cloud_name thật của bạn
+const CLOUDINARY_UPLOAD_PRESET = 'baiviet_video_unsigned';
+
 const API =
   import.meta.env.VITE_API_URL ||
   'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
@@ -26,6 +29,36 @@ function getToken() {
 
 function authHeader() {
   return { Authorization: `Bearer ${getToken()}` };
+}
+
+function handleVideoChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 100 * 1024 * 1024) {
+    setMsg('Video quá lớn (tối đa 100MB, khoảng 5 phút).');
+    return;
+  }
+  setVideo(file);
+  setVideoPreview(URL.createObjectURL(file));
+}
+
+async function uploadVideoToCloudinary(file, onProgress) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+  const res = await axios.post(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`,
+    fd,
+    {
+      onUploadProgress: (e) => {
+        if (onProgress && e.total) {
+          onProgress(Math.round((e.loaded * 100) / e.total));
+        }
+      },
+    }
+  );
+  return res.data.secure_url;
 }
 
 function DanhMucBadge({ value }) {
@@ -62,6 +95,10 @@ export default function BaiVietPage() {
   const fileRef = useRef();
   const fileRefPhu = useRef();   
   const [showMore, setShowMore] = useState(false);
+  const [video, setVideo] = useState(null);
+  const [videoPreview, setVideoPreview] = useState('');
+  const fileRefVideo = useRef();
+  const [uploadProgress, setUploadProgress] = useState(0);
 
 
   useEffect(() => { loadList(); }, []);
@@ -104,6 +141,19 @@ export default function BaiVietPage() {
   setAnhPhuPreview([]);
   setMsg('');
   setShowForm(true);
+  setVideo(null);
+  setVideoPreview('');
+}
+
+function handleVideoChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 100 * 1024 * 1024) {
+    setMsg('Video quá lớn (tối đa 100MB, ~5 phút).');
+    return;
+  }
+  setVideo(file);
+  setVideoPreview(URL.createObjectURL(file));
 }
 
 function openEdit(bv) {
@@ -122,6 +172,8 @@ function openEdit(bv) {
   setAnhPhuPreview(bv.anh_phu || []);  // hiện ảnh phụ cũ (dạng URL, không phải File)
   setMsg('');
   setShowForm(true);
+  setVideoPreview(bv.video || '');
+  setVideo(null);
 }
 
   function handleAnhChange(e) {
@@ -152,31 +204,43 @@ async function handleSubmit(e) {
   }
   setSaving(true);
   setMsg('');
+  setUploadProgress(0);
+
   try {
+    let videoUrl = editing?.video || '';
+
+    if (video) {
+      setMsg('Đang tải video lên Cloudinary...');
+      videoUrl = await uploadVideoToCloudinary(video, (pct) => {
+        setUploadProgress(pct);
+        setMsg(`Đang tải video lên... ${pct}%`);
+      });
+    }
+
+    setMsg('Đang lưu bài viết...');
     const fd = new FormData();
     Object.entries(form).forEach(([k, v]) => fd.append(k, v ?? ''));
     if (anh) fd.append('anh', anh);
-    anhPhu.forEach(file => fd.append('anh_phu', file));  // 👈 append từng ảnh phụ
+    anhPhu.forEach(file => fd.append('anh_phu', file));
+    fd.append('video_url', videoUrl);
 
     if (editing) {
-      await axios.put(`${API}/bai-viet/${editing._id}`, fd, {
-        headers: { ...authHeader() },
-      });
+      await axios.put(`${API}/bai-viet/${editing._id}`, fd, { headers: { ...authHeader() } });
       setMsg('Đã cập nhật bài viết.');
     } else {
-      await axios.post(`${API}/bai-viet`, fd, {
-        headers: { ...authHeader() },
-      });
+      await axios.post(`${API}/bai-viet`, fd, { headers: { ...authHeader() } });
       setMsg('Đã tạo bài viết mới.');
     }
     setShowForm(false);
     loadList();
   } catch (err) {
     if (!handleAuthFailure(err)) {
-      setMsg(err.response?.data?.message || 'Lưu thất bại.');
+      const cloudErr = err?.response?.data?.error?.message;
+      setMsg(cloudErr || err.response?.data?.message || 'Lưu thất bại.');
     }
   } finally {
     setSaving(false);
+    setUploadProgress(0);
   }
 }
 
@@ -222,7 +286,11 @@ async function handleSubmit(e) {
           + Tạo bài viết mới
         </button>
       </div>
-
+      {saving && uploadProgress > 0 && uploadProgress < 100 && (
+  <div className="bv-progress-bar">
+    <div className="bv-progress-fill" style={{ width: `${uploadProgress}%` }} />
+  </div>
+)}
       {msg && <div className="bv-msg">{msg}</div>}
 
       {/* Bảng danh sách */}
@@ -335,6 +403,29 @@ async function handleSubmit(e) {
       <span>+</span>
       <small>Thêm ảnh</small>
     </button>
+
+    <div className="bv-compose-video">
+  {videoPreview ? (
+    <div className="bv-video-item">
+      <video src={videoPreview} controls />
+      <button type="button" className="bv-media-remove"
+        onClick={() => { setVideo(null); setVideoPreview(''); }}>✕</button>
+    </div>
+  ) : (
+    <button type="button" className="bv-video-add" onClick={() => fileRefVideo.current.click()}>
+      <span>🎥</span>
+      <small>Thêm video (tối đa 5 phút)</small>
+    </button>
+  )}
+</div>
+
+<input
+  ref={fileRefVideo}
+  type="file"
+  accept="video/*"
+  style={{ display: 'none' }}
+  onChange={handleVideoChange}
+/>
   </div>
 
   <input

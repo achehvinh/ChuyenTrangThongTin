@@ -28,7 +28,7 @@ import DuoiNuocPage from './pages/DuoiNuocPage';
 import QuizGame from './pages/QuizGame';
 import Bando from './pages/Bando';
 import Gianongsan from './pages/Gianongsan';
-import ProcedureDetailPage from "./pages/ProcedureDetailPage";
+import ThuTucChiTiet from "./pages/ThuTucChiTiet";
 import BaiVietDetailPage from './pages/BaiVietDetailPage';
 import ChatWindow from './components/ai/ChatWindow';
 import ThienTaiPage from './pages/ThienTaiPage';
@@ -91,15 +91,14 @@ function AppLayout() {
           <Route path="/alert" element={<TTSButton />} />
           <Route path="/drag-drop" element={<DragDrop />} />
           <Route path="/thu-tuc-hanh-chinh" element={<Thutuchanhchinh />} />
-          <Route path="/thu-tuc-hanh-chinh/:slug" element={<ProcedureDetailPage />} />
+          <Route path="/thu-tuc-hanh-chinh/:slug" element={<ThuTucChiTiet />} />
           <Route path="/Ban-do" element={<Bando />} />
           <Route path="/gia-nong-san" element={<Gianongsan />} />
           <Route path="/chuyen-muc" element={<ChuyenMucPage />} />
           <Route path="/tin-tuc" element={<ChuyenTrangThongTin />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-          <Route path="/tin-tuc/:id"element={<BaiVietDetailPage />}/>
+          <Route path="/tin-tuc/:id" element={<BaiVietDetailPage />} />
           <Route path="/chat" element={<ChatWindow />} />
-
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
     </>

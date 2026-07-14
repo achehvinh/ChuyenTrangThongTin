@@ -130,6 +130,9 @@ function NormalCard({ bv, onClick }) {
 function BaiVietModal({ id, onClose }) {
   const [bv, setBv]         = useState(null);
   const [loading, setLoading] = useState(true);
+  {bv.video && (
+  <video src={bv.video} controls className="ct-modal-video" style={{ width: '100%', maxHeight: 320, background: '#000' }} />
+)}
 
   useEffect(() => {
     setLoading(true);

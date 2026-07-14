@@ -1,0 +1,136 @@
+/* ============================================================
+   KHU VỰC CHỌN NHANH TRÊN TRANG CHỦ
+   "Bà con muốn hỗ trợ gì?" — 2 lựa chọn lớn, rõ ràng, dễ bấm.
+   Đặt tên class riêng (home-choice-*) để không trùng với
+   CSS hiện có của HomePage.
+   ============================================================ */
+
+.home-choice {
+  max-width: 1550px;
+  margin: 0 auto;
+  padding: 28px 20px 8px;
+}
+
+.home-choice-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #14497d;
+  margin: 0 0 20px;
+}
+
+.home-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.home-choice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
+
+  background: #ffffff;
+  border: 2px solid #e2e6ec;
+  border-radius: 16px;
+  padding: 28px 26px;
+
+  cursor: pointer;
+  font-family: inherit;
+
+  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.04), 0 8px 20px -6px rgba(16, 24, 40, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.home-choice-card:hover,
+.home-choice-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(16, 24, 40, 0.06), 0 16px 30px -8px rgba(16, 24, 40, 0.16);
+  outline: none;
+}
+
+.home-choice-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.home-choice-name {
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: #14171f;
+}
+
+.home-choice-desc {
+  font-size: 1rem;
+  color: #55606f;
+  line-height: 1.55;
+}
+
+.home-choice-cta {
+  margin-top: 10px;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+/* ---- Thẻ "Tuyên truyền": tông xanh dương ---- */
+.home-choice-card--tuyentruyen .home-choice-icon {
+  background: #e8f0f8;
+  color: #14497d;
+}
+.home-choice-card--tuyentruyen .home-choice-cta {
+  color: #14497d;
+}
+.home-choice-card--tuyentruyen:hover {
+  border-color: #14497d;
+}
+
+/* ---- Thẻ "Hỗ trợ dịch vụ công": tông đỏ ---- */
+.home-choice-card--dichvucong .home-choice-icon {
+  background: #fdeceb;
+  color: #c0272d;
+}
+.home-choice-card--dichvucong .home-choice-cta {
+  color: #c0272d;
+}
+.home-choice-card--dichvucong:hover {
+  border-color: #c0272d;
+}
+
+/* ---- Thẻ "Hướng dẫn Tra cứu": tông vàng cam ---- */
+.home-choice-card--tracuu .home-choice-icon {
+  background: #fff3d9;
+  color: #a15c00;
+}
+.home-choice-card--tracuu .home-choice-cta {
+  color: #a15c00;
+}
+.home-choice-card--tracuu:hover {
+  border-color: #d97706;
+}
+
+/* ---- Responsive: máy tính bảng 2 cột, điện thoại 1 cột dễ bấm ---- */
+@media (max-width: 980px) {
+  .home-choice-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-choice-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-choice-title {
+    font-size: 1.35rem;
+  }
+  .home-choice-card {
+    padding: 22px 20px;
+  }
+}
