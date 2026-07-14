@@ -5,10 +5,10 @@
 ══════════════════════════════════════ */
 
 .home {
-  max-width: 1560px;
+  max-width: 1550px;
   margin: 0 auto;
   padding: 20px 24px 40px;
-  font-family: Arial, sans-serif;
+  font-family: inherit;
 }
 
 /* ── Layout 2 cột ── */
@@ -17,6 +17,7 @@
   grid-template-columns: 1fr 260px;
   gap: 24px;
   align-items: start;
+  margin-top: 48px;
 }
 
 /* ── Cột trái ── */
@@ -37,7 +38,7 @@
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  font-family: 'Times New Roman', Georgia, serif;
+  font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
 }
 
 /* ── Sidebar ── */
@@ -55,9 +56,9 @@
 .sidebar-box-title {
   background: #1a3a5c;
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  padding: 8px 12px;
+  padding: 12px 16px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -70,14 +71,15 @@
 }
 
 .sidebar-list > li {
-  padding: 9px 12px;
-  font-size: 13px;
-  color: #1f2937;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
 }
 .sidebar-list > li:last-child { border-bottom: none; }
 .sidebar-list > li:hover { background: #f0f4f8; color: #1a3a5c; }
@@ -86,11 +88,12 @@
   content: '›';
   color: #1a3a5c;
   font-weight: 700;
-  margin-right: 8px;
+  font-size: 18px;
+  line-height: 1;
   flex-shrink: 0;
 }
 
-.dropdown-arrow { font-size: 11px; color: #9ca3af; }
+.dropdown-arrow { font-size: 12px; color: #6b7280; margin-left: 6px; }
 
 /* Dropdown tra cứu */
 .sidebar-list-dropdown {
@@ -101,22 +104,29 @@
   cursor: pointer;
 }
 
+.sidebar-list-dropdown::before {
+  display: none !important;
+}
+
 .sidebar-list-dropdown > span {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 9px 12px;
-  font-size: 13px;
+  padding: 12px 16px;
+  font-size: 15px;
   color: #1a3a5c;
   font-weight: 600;
   background: #f0f4f8;
+  gap: 8px;
 }
 
 .sidebar-list-dropdown > span::before {
   content: '›';
   color: #1a3a5c;
   font-weight: 700;
-  margin-right: 8px;
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .sidebar-submenu {
@@ -129,10 +139,10 @@
 }
 
 .sidebar-submenu li {
-  padding: 8px 12px 8px 28px;
-  font-size: 13px;
-  color: #374151;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 10px 16px 10px 32px;
+  font-size: 14.5px;
+  color: #4b5563;
+  border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
 }
 .sidebar-submenu li:last-child { border-bottom: none; }
@@ -142,15 +152,15 @@
 .agri-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 14.5px;
 }
 
-.agri-table tr { border-bottom: 1px solid #f3f4f6; }
+.agri-table tr { border-bottom: 1px solid #f1f5f9; }
 .agri-table tr:last-child { border-bottom: none; }
 
 .agri-table td {
-  padding: 8px 12px;
-  color: #1f2937;
+  padding: 12px 16px;
+  color: #334155;
   vertical-align: middle;
 }
 
@@ -163,24 +173,24 @@
 .sidebar-link-btn {
   display: block;
   width: 100%;
-  padding: 8px 12px;
+  padding: 12px 16px;
   background: none;
   border: none;
   border-top: 1px solid #e5e7eb;
-  font-size: 13px;
+  font-size: 14.5px;
   color: #1a3a5c;
   font-weight: 600;
   cursor: pointer;
   text-align: left;
-  font-family: Arial, sans-serif;
+  font-family: inherit;
 }
 .sidebar-link-btn:hover { background: #f0f4f8; }
 
 /* Liên hệ */
 .contact-info {
-  padding: 10px 12px;
-  font-size: 13px;
-  color: #374151;
+  padding: 14px 16px;
+  font-size: 14.5px;
+  color: #4b5563;
   line-height: 1.8;
 }
 .contact-info strong { color: #1a3a5c; }

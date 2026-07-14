@@ -28,7 +28,9 @@ export default function ChuyenMucPage() {
             <div className="cm-body">
               <h3 className="cm-title">{f.title}</h3>
               <p className="cm-desc">{f.desc}</p>
-              <span className="cm-link">Xem chi tiết →</span>
+              <span className="cm-link">
+                Xem chi tiết <span className="arrow">→</span>
+              </span>
             </div>
           </div>
         ))}

@@ -10,7 +10,11 @@ const HUONG_DAN_APP = [
     color: '#005bac',
     icon: '🔵',
     hinh: '/huong-dan/tracuuappbhyt.jpg',
-    buoc: ['Tải app VssID', 'Nhập số CCCD', 'Chọn "Thẻ BHYT"'],
+    steps: [
+      { title: 'Tải và cài đặt ứng dụng', desc: 'Tìm và tải ứng dụng VssID từ cửa hàng App Store hoặc Google Play (hoặc quét mã QR ở dưới).' },
+      { title: 'Đăng nhập tài khoản', desc: 'Nhập Mã số BHXH (hoặc số định danh cá nhân) cùng mật khẩu cá nhân để đăng nhập vào ứng dụng.' },
+      { title: 'Hiển thị thẻ BHYT', desc: 'Chọn mục "Thẻ BHYT" tại màn hình chính để hiển thị hình ảnh thẻ và mã QR đi khám chữa bệnh.' }
+    ],
     btn: { label: '📲 Tải VssID ngay', url: 'https://play.google.com/store/apps/details?id=com.vssid' },
     qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=com.vssid',
   },
@@ -21,7 +25,11 @@ const HUONG_DAN_APP = [
     color: '#0891b2',
     icon: '🩺',
     hinh: '/huong-dan/suckhoe.jpg',
-    buoc: ['Tải app Sức khỏe điện tử', 'Nhập SĐT + CCCD', 'Vào "Hồ sơ sức khỏe"'],
+    steps: [
+      { title: 'Tải ứng dụng về máy', desc: 'Tải ứng dụng "Sức khỏe điện tử" trên điện thoại của bạn từ cửa hàng ứng dụng CH Play hoặc App Store.' },
+      { title: 'Đăng ký & Đăng nhập', desc: 'Nhập số điện thoại đăng ký và cập nhật mã định danh cá nhân (CCCD) để đồng bộ dữ liệu y tế.' },
+      { title: 'Tra cứu thông tin BHYT', desc: 'Vào phần "Hồ sơ sức khỏe" hoặc mục "Thẻ BHYT" để tra cứu chi tiết giá trị sử dụng thẻ.' }
+    ],
     btn: { label: '📲 Tải Sức khỏe điện tử', url: 'https://play.google.com/store/apps/details?id=vn.gov.moh.sk' },
     qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=vn.gov.moh.sk',
   },
@@ -32,7 +40,11 @@ const HUONG_DAN_APP = [
     color: '#7c3aed',
     icon: '🪪',
     hinh: '/huong-dan/tracuuvneid.jpg',
-    buoc: ['Tải app VNeID', 'Đăng nhập + xác thực mặt', 'Vào "Giấy tờ" → BHYT'],
+    steps: [
+      { title: 'Kích hoạt tài khoản', desc: 'Đảm bảo bạn đã cài đặt ứng dụng VNeID và kích hoạt tài khoản định danh điện tử Mức độ 2 thành công.' },
+      { title: 'Xác thực thông tin ví', desc: 'Đăng nhập vào VNeID, vào phần "Ví giấy tờ", nhập mật mã bảo mật (Passcode) và thực hiện xác thực.' },
+      { title: 'Hiển thị thẻ BHYT', desc: 'Chọn thẻ "Bảo hiểm y tế" để hiển thị chi tiết hạn dùng và mã QR để sử dụng khi đi khám bệnh.' }
+    ],
     btn: { label: '📲 Tải VNeID', url: 'https://play.google.com/store/apps/details?id=com.vnpt.vneid' },
     qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://play.google.com/store/apps/details?id=com.vnpt.vneid',
   },
@@ -46,7 +58,11 @@ const HUONG_DAN_WEB = [
     color: '#dc2626',
     icon: '🖥️',
     hinh: '/huong-dan/tracuwdichvucong.jpg',
-    buoc: ['Vào dichvucong.gov.vn', 'Đăng nhập bằng VNeID', 'Tìm "Tra cứu thẻ BHYT"'],
+    steps: [
+      { title: 'Truy cập cổng dịch vụ công', desc: 'Sử dụng trình duyệt trên điện thoại hoặc máy tính truy cập trang dichvucong.gov.vn.' },
+      { title: 'Đăng nhập bằng tài khoản VNeID', desc: 'Nhấn Đăng nhập và chọn hình thức đăng nhập bằng Tài khoản định danh điện tử VNeID.' },
+      { title: 'Tra cứu thẻ BHYT', desc: 'Tìm kiếm tiện ích "Tra cứu thông tin thẻ BHYT" để kiểm tra hạn sử dụng và quyền lợi của bạn.' }
+    ],
     btn: { label: '🌐 Vào Cổng dịch vụ công', url: 'https://dichvucong.gov.vn' },
     qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://dichvucong.gov.vn',
   },
@@ -57,7 +73,11 @@ const HUONG_DAN_WEB = [
     color: '#0369a1',
     icon: '💻',
     hinh: '/huong-dan/tracuubhyt.jpg',
-    buoc: ['Vào baohiemyte.vn', 'Chọn "Tra cứu thông tin"', 'Nhập CCCD hoặc mã thẻ'],
+    steps: [
+      { title: 'Truy cập trang web', desc: 'Vào địa chỉ website baohiemyte.vn (hoặc trang tra cứu chính thức của Bảo hiểm xã hội Việt Nam).' },
+      { title: 'Nhập thông tin cá nhân', desc: 'Điền đầy đủ Mã thẻ BHYT (hoặc số CCCD), họ tên, ngày tháng năm sinh vào biểu mẫu tra cứu.' },
+      { title: 'Xác thực & Xem kết quả', desc: 'Tích chọn mã bảo mật captcha "Tôi không phải là người máy" và bấm "Tra cứu" để kiểm tra.' }
+    ],
     btn: { label: '🌐 Vào baohiemyte.vn', url: 'https://baohiemyte.vn' },
     qr: 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://baohiemyte.vn',
   },
@@ -187,25 +207,39 @@ export default function TraCuuPage() {
                 </div>
               </div>
 
-              {/* Nhãn các bước */}
-              <div className="hd-step-label-row" style={{ background: hd.color + 'dd' }}>
-                {hd.buoc.map((b, i) => (
-                  <div className="hd-step-label-item" key={i}>
-                    <div className="hd-step-label-num">{i + 1}</div>
-                    <div>{b}</div>
+              {/* Card Body: 2 Columns on Desktop */}
+              <div className="hd-card-body">
+                {/* Left Column: Steps */}
+                <div className="hd-steps-section">
+                  <h3 className="hd-section-title" style={{ color: hd.color }}>Các bước thực hiện</h3>
+                  <div className="hd-steps-list">
+                    {hd.steps.map((step, i) => (
+                      <div className="hd-step-item" key={i}>
+                        <div className="hd-step-num" style={{ background: hd.color }}>{i + 1}</div>
+                        <div className="hd-step-content">
+                          <h4>{step.title}</h4>
+                          <p>{step.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* Right Column: Image */}
+                <div className="hd-image-section">
+                  <h3 className="hd-section-title" style={{ color: hd.color }}>Ảnh minh họa giao diện</h3>
+                  <div className="hd-img-container">
+                    <img
+                      src={hd.hinh}
+                      alt={hd.title}
+                      className="hd-img-thumb"
+                      onClick={() => setAnhPhongTo(hd.hinh)}
+                      onError={e => { e.target.parentNode.style.display = 'none'; }}
+                    />
+                    <div className="hd-img-overlay">🔍 Nhấn để phóng to ảnh</div>
+                  </div>
+                </div>
               </div>
-                
-              {/* Ảnh full width */}
-              <img
-                src={hd.hinh}
-                alt={hd.title}
-                className="hd-img-full"
-                style={{ cursor: 'zoom-in' }}
-                onClick={() => setAnhPhongTo(hd.hinh)}
-                onError={e => { e.target.style.display = 'none'; }}
-                />
 
               {/* Footer */}
               <div className="hd-card-footer">

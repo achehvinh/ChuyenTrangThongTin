@@ -13,7 +13,10 @@ export default function HomePage() {
 
       {/* ── KHU VỰC CHỌN NHANH: Tuyên truyền / Hỗ trợ dịch vụ công ── */}
       <section className="home-choice">
-        <h2 className="home-choice-title">Bà con muốn hỗ trợ gì?</h2>
+        <h2 className="home-choice-title">
+          Chào mừng bà con đến với Trang thông tin điện tử xã Đăk Pxi!<br />
+          Bà con muốn hỗ trợ gì?
+        </h2>
         <div className="home-choice-grid">
           <button
             type="button"

@@ -33,6 +33,7 @@ import BaiVietDetailPage from './pages/BaiVietDetailPage';
 import ChatWindow from './components/ai/ChatWindow';
 import ThienTaiPage from './pages/ThienTaiPage';
 import ChayRungPage from './pages/ChayRungPage';
+import Baucu from './pages/Baucu';
 function AppLayout() {
   const location = useLocation();
 
@@ -87,6 +88,7 @@ function AppLayout() {
           <Route path="/thien-tai" element={<ThienTaiPage />} />
           <Route path="/chay-rung" element={<ChayRungPage />} />
           <Route path="/quiz/:topic" element={<QuizGame />} />
+          <Route path="/bau-cu" element={<Baucu />} />
           <Route path="/:category" element={<AllFeaturesPage />} />
           <Route path="/alert" element={<TTSButton />} />
           <Route path="/drag-drop" element={<DragDrop />} />

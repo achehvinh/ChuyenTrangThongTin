@@ -1,5 +1,10 @@
-  
-  export const FEATURES = [
+export const FEATURES = [
+    {
+      title: 'Tuyên truyền Bầu cử',
+      image: 'https://vcdn1-thoidai.vnecdn.net/2021/03/17/Logo-Bau-cu-1615953049-1457-1615953086.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=ZfI-eXbU1Vsk1YpA5rA9ig',
+      desc: 'Thông tin, hướng dẫn cử tri thực hiện quyền và nghĩa vụ bầu cử Đại biểu Quốc hội & HĐND các cấp.',
+      path: '/bau-cu',
+    },
         {
       title: 'Phòng chống Thiên tai',
       image: 'https://file3.qdnd.vn/data/images/0/2024/08/24/upload_2083/2408202vthuy9.jpg?dpi=150&quality=100&w=870',
@@ -68,10 +73,28 @@
     },
     
   ];
-// src/data.js
 export const DETAILS = {
-'/thien-tai': {
-  title: '🌪️ Phòng chống Thiên tai',
+  '/bau-cu': {
+    title: '🗳️ Tuyên truyền Bầu cử',
+    images: [
+      'https://kinhtexaydung.petrotimes.vn/stores/news_dataimages/2021/052021/20/10/in_article/1057_bau-cu-2.jpg',
+    ],
+    content:
+      'Bầu cử Đại biểu Quốc hội và Đại biểu Hội đồng Nhân dân các cấp là quyền và nghĩa vụ thiêng liêng của mỗi công dân. Đây là ngày hội của toàn dân nhằm lựa chọn những đại biểu có đủ đức, đủ tài đại diện cho ý chí, nguyện vọng của nhân dân xã Đăk Pxi tham gia vào cơ quan quyền lực nhà nước.',
+    warning: [
+      'Mỗi cử tri có quyền và nghĩa vụ tự đi bỏ phiếu, tuyệt đối không bỏ phiếu hộ, bỏ phiếu thay người khác.',
+      'Bảo mật quá trình bầu cử: Cử tri vào buồng gạch phiếu độc lập, không mang thiết bị ghi hình vào buồng gạch phiếu.',
+      'Kiểm tra kỹ thông tin trên Thẻ cử tri của mình trước ngày bầu cử, nếu có sai sót báo ngay cho Tổ bầu cử tại thôn để sửa đổi kịp thời.'
+    ],
+    steps: [
+      { stt: '01', title: 'Kiểm tra thẻ & danh sách cử tri', desc: 'Xem danh sách cử tri niêm yết tại Nhà rông thôn hoặc UBND xã, nhận Thẻ cử tri từ Tổ bầu cử.' },
+      { stt: '02', title: 'Nghiên cứu ứng cử viên', desc: 'Đọc kỹ tiểu sử tóm tắt và chương trình hành động của các ứng cử viên niêm yết tại khu vực bỏ phiếu.' },
+      { id: 'bc-3', stt: '03', title: 'Xuất trình thẻ & Nhận phiếu bầu', desc: 'Đến đúng phòng bỏ phiếu của thôn vào ngày chủ nhật bầu cử, xuất trình thẻ cử tri để nhận phiếu bầu.' },
+      { id: 'bc-4', stt: '04', title: 'Gạch phiếu & Bỏ phiếu', desc: 'Vào buồng kín gạch tên ứng cử viên không tín nhiệm, để lại ứng cử viên tín nhiệm và tự tay bỏ phiếu vào hòm phiếu.' }
+    ]
+  },
+  '/thien-tai': {
+    title: '🌪️ Phòng chống Thiên tai',
 
  images: [
   '/huong-dan/thien-tai-1.png',
@@ -253,29 +276,29 @@ export const CATEGORIES = [
     items: [
       {
         id: "ks-1",
-        title: "Đăng ký khai sinh",
+        title: "Đăng ký khai sinh lần đầu (Trực tuyến/Trực tiếp)",
         tag: "Miễn phí",
         tagType: "free",
         steps: [
-          { title: "Chuẩn bị giấy tờ", desc: "Giấy chứng sinh (bệnh viện cấp), CCCD của bố mẹ, sổ hộ khẩu.", tts: "Chuẩn bị giấy chứng sinh, căn cước công dân của bố mẹ và sổ hộ khẩu." },
-          { title: "Đến UBND xã", desc: "Mang hồ sơ đến bộ phận Tư pháp – Hộ tịch xã Đăk Pxi.", tts: "Mang hồ sơ đến bộ phận Tư pháp hộ tịch xã Đăk Pxi." },
-          { title: "Điền tờ khai", desc: "Điền Tờ khai đăng ký khai sinh theo hướng dẫn của cán bộ.", tts: "Điền tờ khai đăng ký khai sinh." },
-          { title: "Nhận kết quả", desc: "Nhận giấy khai sinh trong ngày hoặc tối đa 3 ngày làm việc.", tts: "Nhận giấy khai sinh trong ngày hoặc tối đa 3 ngày làm việc." }
+          { title: "Nộp hồ sơ trực tuyến", desc: "Truy cập dichvucong.gov.vn bằng VNeID, điền tờ khai và đính kèm bản chụp các giấy tờ (Giấy chứng sinh, Giấy kết hôn, CCCD).", tts: "Truy cập cổng dịch vụ công quốc gia bằng tài khoản định danh điện tử, điền tờ khai và tải lên bản chụp các giấy tờ cần thiết." },
+          { title: "Tiếp nhận và thụ lý", desc: "Bộ phận Một cửa tiếp nhận hồ sơ trực tuyến, chuyển Công chức Tư pháp - Hộ tịch kiểm tra tính hợp lệ.", tts: "Cán bộ tiếp nhận và kiểm tra hồ sơ, nếu thiếu sẽ gửi tin nhắn yêu cầu bổ sung." },
+          { title: "Xác minh và duyệt", desc: "Công chức Tư pháp đối chiếu dữ liệu quốc gia, xin cấp số định danh cá nhân cho trẻ và trình Lãnh đạo ký duyệt.", tts: "Cán bộ đối chiếu dữ liệu dân cư và trình lãnh đạo xã ký phê duyệt cấp số định danh cá nhân." },
+          { title: "Ký sổ & Nhận kết quả", desc: "Mang bản chính giấy tờ (Giấy chứng sinh, Giấy kết hôn) đến UBND xã đối chiếu bản gốc, ký Sổ hộ tịch và nhận Giấy khai sinh bản chính.", tts: "Mang theo bản chính các giấy tờ đối chiếu để ký nhận giấy khai sinh tại ủy ban nhân dân xã." }
         ],
         forms: [
-  {
-    id: 'khai-sinh-01',
-    title: 'Tờ khai đăng ký khai sinh',
-    file_type: 'docx',
-    file_size: 25600,
-    description: 'Mẫu số 01 - Ban hành kèm Thông tư 04/2020/TT-BTP',
-    src: '/forms/to-khai-dang-ky-khai-sinh.docx',  // ← trỏ thẳng vào public/
-    filename: 'to-khai-dang-ky-khai-sinh.docx',
-  },
-],
+          {
+            id: 'khai-sinh-01',
+            title: 'Tờ khai đăng ký khai sinh điện tử',
+            file_type: 'docx',
+            file_size: 25600,
+            description: 'Mẫu số 01 - Ban hành kèm Thông tư 04/2020/TT-BTP',
+            src: '/forms/to-khai-dang-ky-khai-sinh.docx',
+            filename: 'to-khai-dang-ky-khai-sinh.docx',
+          },
+        ],
         faqs: [
-          { q: "Lệ phí làm khai sinh là bao nhiêu?", a: "Đăng ký khai sinh đúng hạn là hoàn toàn miễn phí." },
-          { q: "Có cần mang theo trẻ sơ sinh không?", a: "Không, người đi làm thủ tục chỉ cần mang giấy tờ chứng sinh và giấy tờ tùy thân của bố mẹ." }
+          { q: "Lệ phí làm khai sinh là bao nhiêu?", a: "Đăng ký khai sinh đúng hạn (trong vòng 60 ngày kể từ ngày sinh) được miễn hoàn toàn lệ phí." },
+          { q: "Khi đi nhận kết quả trực tiếp cần mang theo những gì?", a: "Bạn bắt buộc phải mang theo bản chính Giấy chứng sinh của cơ sở y tế cấp và Giấy chứng nhận kết hôn của bố mẹ để đối chiếu trước khi ký Sổ đăng ký hộ tịch." }
         ]
       },
       {

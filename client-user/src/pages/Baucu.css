@@ -1,0 +1,568 @@
+/* ── Baucu.css ── */
+
+.baucu-container {
+    max-width: 1550px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
+    color: #1e293b;
+    background-color: #fcfcfc;
+}
+
+/* Nút quay lại */
+.baucu-back-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 30px;
+}
+
+.baucu-back-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    transform: translateX(-3px);
+}
+
+/* Header cổ động */
+.baucu-header {
+    text-align: center;
+    background: linear-gradient(135deg, #da251d 0%, #a81710 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 48px 32px;
+    box-shadow: 0 10px 30px rgba(218, 37, 29, 0.2);
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.baucu-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+    pointer-events: none;
+}
+
+.baucu-header-logo {
+    font-size: 64px;
+    margin-bottom: 16px;
+    animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.08);
+    }
+}
+
+.baucu-main-title {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    margin: 0 0 12px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.baucu-subtitle {
+    font-size: 18px;
+    opacity: 0.95;
+    font-weight: 500;
+    margin: 0 0 24px;
+}
+
+.baucu-gov-badge {
+    display: inline-block;
+    background: #ffd700;
+    color: #da251d;
+    font-weight: 800;
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 24px;
+}
+
+.baucu-speak-btn {
+    display: block;
+    margin: 0 auto;
+    background: #fff;
+    color: #da251d;
+    border: 2px solid #ffd700;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    transition: all 0.25s ease;
+}
+
+.baucu-speak-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35);
+    background: #ffd700;
+    color: #8b0000;
+}
+
+.baucu-speak-btn.speaking {
+    background: #ffd700;
+    color: #8b0000;
+    border-color: #fff;
+    animation: blink-speak 1.5s infinite;
+}
+
+@keyframes blink-speak {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.85;
+    }
+}
+
+/* 4 Nguyên tắc */
+.baucu-principles {
+    margin-bottom: 50px;
+}
+
+.baucu-section-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.baucu-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: #da251d;
+    border-radius: 2px;
+}
+
+.baucu-principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.principle-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s;
+}
+
+.principle-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+    border-color: #cbd5e1;
+}
+
+.principle-icon {
+    font-size: 36px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.principle-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #da251d;
+    margin: 0 0 8px;
+}
+
+.principle-card p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* 4 bước bỏ phiếu */
+.baucu-steps {
+    margin-bottom: 60px;
+}
+
+.baucu-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.baucu-step-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.baucu-step-row:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.baucu-step-row.reverse {
+    direction: ltr;
+}
+
+/* Đối với hàng chẵn, đảo cột ảnh qua trái trên desktop */
+@media (min-width: 900px) {
+    .baucu-step-row.reverse .baucu-step-info {
+        order: 2;
+    }
+
+    .baucu-step-row.reverse .baucu-step-image {
+        order: 1;
+    }
+}
+
+.baucu-step-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.step-badge {
+    background: #da251d;
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    align-self: flex-start;
+    letter-spacing: 0.05em;
+}
+
+.baucu-step-info h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+
+.baucu-step-info p {
+    font-size: 15.5px;
+    color: #4b5563;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.step-alert {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    color: #1e3a8a;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14.5px;
+    font-weight: 600;
+}
+
+.step-alert.warning {
+    background: #fff7ed;
+    border-left-color: #f97316;
+    color: #7c2d12;
+}
+
+/* Ảnh minh họa */
+.baucu-step-image {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.baucu-step-image img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.image-caption {
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+    font-style: italic;
+}
+
+/* notices */
+.baucu-notices {
+    margin-bottom: 60px;
+}
+
+.notices-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+
+.notice-box {
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid;
+}
+
+.notice-box h4 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 16px;
+}
+
+.notice-box ul {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notice-box li {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.notice-box.danger {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.notice-box.danger h4 {
+    color: #991b1b;
+}
+
+.notice-box.info {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1e40af;
+}
+
+.notice-box.info h4 {
+    color: #1e3a8a;
+}
+
+/* footer */
+.baucu-footer {
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 30px;
+    margin-top: 50px;
+}
+
+.baucu-footer .slogan {
+    font-size: 16px;
+    font-weight: 800;
+    color: #da251d;
+    margin-bottom: 12px;
+}
+
+.baucu-footer .copyright {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .baucu-step-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .baucu-step-image img {
+        height: 240px;
+    }
+
+    .notices-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .baucu-container {
+        padding: 20px 16px;
+    }
+
+    .baucu-header {
+        padding: 32px 16px;
+    }
+
+    .baucu-main-title {
+        font-size: 24px;
+    }
+
+    .baucu-subtitle {
+        font-size: 15px;
+    }
+
+    .baucu-step-info h3 {
+        font-size: 18px;
+    }
+}
+
+/* ── Banner Mời Nghe & Tuyên Truyền ── */
+.baucu-invite-banner {
+    position: relative;
+    background: linear-gradient(135deg, #da251d 0%, #b81b14 100%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    border-left: 5px solid #ffd700;
+    box-shadow: 0 4px 15px rgba(218, 37, 29, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    transition: all 0.3s ease;
+    animation: slide-down 0.5s ease-out;
+}
+
+.baucu-invite-banner.playing {
+    background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+    border-left-color: #3b82f6;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.banner-icon-pulse {
+    font-size: 28px;
+    animation: wave-shake 0.5s infinite alternate;
+}
+
+@keyframes wave-shake {
+    0% { transform: rotate(-8deg) scale(1); }
+    100% { transform: rotate(8deg) scale(1.12); }
+}
+
+.banner-text {
+    flex: 1;
+}
+
+.banner-text strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.banner-text p {
+    font-size: 13.5px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.4;
+}
+
+/* Sóng âm thanh động */
+.sound-wave {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 20px;
+    padding: 0 8px;
+}
+
+.wave-bar {
+    display: block;
+    width: 3px;
+    background: #ffd700;
+    border-radius: 2px;
+    animation: bar-jump 0.7s infinite alternate ease-in-out;
+}
+
+.baucu-invite-banner.playing .wave-bar {
+    background: #60a5fa;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0.1s; height: 8px; }
+.wave-bar:nth-child(2) { animation-delay: 0.3s; height: 16px; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
+.wave-bar:nth-child(4) { animation-delay: 0.4s; height: 12px; }
+
+@keyframes bar-jump {
+    0% { height: 4px; }
+    100% { height: 20px; }
+}
+
+.banner-close-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    line-height: 1;
+}
+
+.banner-close-btn:hover {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .baucu-invite-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 18px;
+        border-radius: 8px;
+    }
+    
+    .sound-wave {
+        align-self: flex-end;
+        margin-top: -10px;
+    }
+    
+    .banner-close-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+}

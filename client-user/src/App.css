@@ -1,7 +1,7 @@
-﻿*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Segoe UI', 'Be Vietnam Pro', sans-serif;
+  font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   background: #f8fafc;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
@@ -66,7 +66,7 @@ button { font-family: inherit; }
 }
 /* ── Ticker chạy chữ ── */
 .gov-notice-wrapper {
-  max-width: 1560px;
+  max-width: 1550px;
   margin: 16px auto;
   background: #fff;
   border: 1px solid #e5e7eb;

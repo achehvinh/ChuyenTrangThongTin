@@ -7,7 +7,7 @@
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #d1d5db;
-  font-family: 'Times New Roman', Georgia, serif;
+  font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
 }
 
 /* ── Hàng 1 ── */
@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1560px;
+  max-width: 1550px;
   margin: 0 auto;
   padding: 14px 24px;
   gap: 16px;
@@ -115,7 +115,7 @@
 .navbar-nav {
   display: flex;
   align-items: center;
-  max-width: 1560px;
+  max-width: 1550px;
   margin: 0 auto;
   padding: 0 24px;
 }

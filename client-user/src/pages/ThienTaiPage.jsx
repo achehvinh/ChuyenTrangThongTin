@@ -2,25 +2,48 @@ import { useState } from 'react';
 import './ThienTaiPage.css';
 
 const DATA = {
-  title: 'Phòng chống Thiên tai',
-  subtitle: 'UBND xã Đăk Pxi — Thông tin khẩn cấp mùa mưa bão',
+  title: 'Phòng chống Thiên tai & Bão lũ',
+  subtitle: 'Ban Chỉ huy PCTT & TKCN xã Đăk Pxi — Cẩm nang chủ động phòng chống mùa mưa bão',
   images: [
     '/huong-dan/thien-tai-1.png',
     '/huong-dan/thien-tai-2.png',
     '/huong-dan/thien-tai-3.png',
   ],
   content:
-    'Mùa mưa bão thường xuất hiện lũ quét, sạt lở đất và giông lốc. Bà con cần theo dõi thông báo của chính quyền địa phương và chuẩn bị sẵn sàng di tản khi có lệnh.',
+    'Xã Đăk Pxi nằm trong khu vực miền núi có địa hình dốc, mùa mưa bão thường xảy ra lũ quét, lũ ống, sạt lở đất nghiêm trọng và giông lốc mạnh. Để bảo vệ tính mạng và tài sản, bà con cần đặc biệt nâng cao tinh thần cảnh giác, chủ động thực hiện tốt các phương án phòng tránh theo phương châm "4 tại chỗ" (Chỉ huy tại chỗ; Lực lượng tại chỗ; Vật tư, phương tiện tại chỗ; Hậu cần tại chỗ).',
   warning: [
-    'Không đi qua suối khi nước dâng cao.',
-    'Không ngủ tại khu vực có nguy cơ sạt lở.',
-    'Di chuyển người già và trẻ em đến nơi an toàn.',
+    'Tuyệt đối không đi qua sông, suối, ngầm tràn, cầu phao hoặc vùng ngập sâu khi nước đang dâng cao, dòng chảy xiết.',
+    'Không đánh bắt cá, vớt củi trên sông suối khi có lũ.',
+    'Không ngủ hoặc ở lại trong các lán trại tạm thời, khu vực sườn dốc có nguy cơ sạt lở cao khi trời mưa lớn kéo dài.',
+    'Chủ động ngắt toàn bộ thiết bị điện và cầu dao chính khi nước tràn vào nhà.',
+    'Tuyệt đối tuân thủ lệnh di dời, di tản của Ban chỉ huy phòng chống thiên tai địa phương.',
   ],
   steps: [
-    { stt: '01', title: 'Theo dõi thông báo', desc: 'Nghe đài, loa phát thanh xã và thông báo từ trưởng thôn.' },
-    { stt: '02', title: 'Chuẩn bị đồ dùng', desc: 'Giấy tờ quan trọng, thuốc men, lương thực đủ dùng 3 ngày.' },
-    { stt: '03', title: 'Di tản kịp thời', desc: 'Khi có lệnh, di chuyển ngay đến điểm tập kết an toàn của thôn.' },
-    { stt: '04', title: 'Liên hệ chính quyền', desc: 'Gọi ngay số khẩn cấp nếu có người bị kẹt hoặc cần hỗ trợ.' },
+    { 
+      stt: '01', 
+      title: 'Gia cố nhà cửa & Bảo vệ tài sản', 
+      desc: 'Trước mùa mưa bão, bà con cần kiểm tra và giằng chống mái nhà, cắt tỉa các cành cây cao gần nhà đề phòng đổ gãy. Di chuyển vật nuôi, nông sản và tài sản có giá trị lên các khu vực cao ráo, an toàn.' 
+    },
+    { 
+      stt: '02', 
+      title: 'Dự trữ nhu yếu phẩm thiết yếu', 
+      desc: 'Chuẩn bị sẵn lương thực khô (gạo, mì tôm, lương khô), nước uống đóng chai, diêm, nến, đèn pin và các loại thuốc y tế thông dụng (thuốc cảm sốt, bông băng, thuốc sát trùng) đủ dùng trong ít nhất 3 đến 5 ngày.' 
+    },
+    { 
+      stt: '03', 
+      title: 'Bảo vệ giấy tờ & Thiết bị liên lạc', 
+      desc: 'Bọc kín các giấy tờ tùy thân quan trọng (CCCD, sổ hộ khẩu, giấy tờ đất) trong túi nilon chống nước và cất ở nơi an toàn. Sạc đầy pin điện thoại, chuẩn bị pin dự phòng để duy trì liên lạc với người thân và chính quyền.' 
+    },
+    { 
+      stt: '04', 
+      title: 'Theo dõi thông tin & Di tản khẩn cấp', 
+      desc: 'Thường xuyên lắng nghe thông báo khẩn cấp phát trên loa truyền thanh của xã hoặc từ trưởng thôn. Khi nhận lệnh di tản, lập tức khóa gas, ngắt điện và nhanh chóng di chuyển đến điểm lánh nạn an toàn theo hướng dẫn.' 
+    },
+  ],
+  preparednessItems: [
+    { title: '📦 Túi khẩn cấp', desc: 'Đèn pin, còi cứu hộ, pin dự phòng, áo mưa, giấy tờ bọc chống nước.' },
+    { title: '💊 Y tế thiết yếu', desc: 'Thuốc hạ sốt, thuốc tiêu hóa, dầu gió, cồn sát trùng, băng gạc.' },
+    { title: '🥫 Thực phẩm khô', desc: 'Mì tôm, nước đóng chai, lương khô, sữa hộp cho trẻ em.' },
   ],
   emergencyPhone: '0339310915',
   videos: [
@@ -91,6 +114,24 @@ export default function ThienTaiPage() {
                 ))}
               </div>
             </section>
+
+            {/* Túi nhu yếu phẩm chuẩn bị khẩn cấp */}
+            {DATA.preparednessItems && (
+              <section className="tt-section tt-preparedness-section">
+                <h2 className="tt-section-title">Nhu yếu phẩm khẩn cấp cần chuẩn bị sẵn</h2>
+                <div className="tt-prep-grid">
+                  {DATA.preparednessItems.map((item, i) => (
+                    <div key={i} className="tt-prep-card">
+                      <div className="tt-prep-icon">🎒</div>
+                      <div className="tt-prep-body">
+                        <h4>{item.title}</h4>
+                        <p>{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Video */}
             {DATA.videos.length > 0 && (
