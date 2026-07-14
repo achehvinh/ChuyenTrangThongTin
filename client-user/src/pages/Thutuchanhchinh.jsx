@@ -70,7 +70,15 @@ function ProcedureRow({ item }) {
   return (
     <div className="tthc-row">
       <div className="tthc-row-left">
-        <div className="tthc-row-title">{item.title}</div>
+        <div className="tthc-row-title-container">
+          <div className="tthc-row-title">{item.title}</div>
+          {item.online_type === "toan-trinh" && (
+            <span className="tthc-online-badge toan-trinh">Toàn trình</span>
+          )}
+          {item.online_type === "mot-phan" && (
+            <span className="tthc-online-badge mot-phan">Một phần</span>
+          )}
+        </div>
         <div className="tthc-row-meta">
           <span>Nơi nộp hồ sơ: {item.agency}</span>
           <span>Áp dụng cho: Công dân xã Đăk Pxi</span>

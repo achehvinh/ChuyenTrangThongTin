@@ -1,463 +1,627 @@
 .vneid-page {
-  background: #f8fafc;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2f6 100%);
   min-height: 100vh;
   padding: 60px 20px;
+  color: #1e293b;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .vneid-inner {
-  max-width: 1550px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Header */
+/* ─── 1. Header ─── */
 .vneid-header {
   text-align: center;
-  margin-bottom: 30px;
+  background: white;
+  border-radius: 24px;
+  padding: 48px 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
 }
 
-.vneid-logo-row {
+.vneid-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #b91c1c 0%, #d97706 50%, #2563eb 100%);
+}
+
+.vneid-brand-row {
   display: flex;
-  justify-content: center;
-  margin-bottom: 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.vneid-logo {
-  height: 60px;
+.vneid-logo-img {
+  height: 80px;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
 }
 
-.vneid-badge {
-  display: inline-block;
-  padding: 8px 20px;
-  background: #ede9fe;
-  color: #5b21b6;
+.vneid-logo-img:hover {
+  transform: scale(1.05);
+}
+
+.vneid-brand-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 6px 18px;
   border-radius: 20px;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+  border: 1px solid #bfdbfe;
 }
 
 .vneid-header h1 {
-  font-size: 34px;
-  font-weight: 800;
+  font-size: 38px;
+  font-weight: 850;
   color: #0f172a;
-  margin-bottom: 10px;
+  margin: 0 0 14px;
+  letter-spacing: -0.02em;
 }
 
-.vneid-header p {
-  font-size: 16px;
+.vneid-subtitle {
+  font-size: 17px;
   color: #64748b;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
 }
 
-.vneid-tts {
-  text-align: center;
-  color: #5b21b6;
-  font-weight: 600;
+.vneid-speech-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
   font-size: 15px;
-  margin-top: 12px;
-  animation: blink 1.5s infinite;
+  font-weight: 700;
+  padding: 12px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  transition: all 0.25s ease;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+.vneid-speech-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
 }
 
-/* Emergency */
-.vneid-emergency {
+.vneid-speech-btn.active {
+  background: #d97706;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+  animation: speech-pulse 1.5s infinite;
+}
+
+@keyframes speech-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* ─── 2. Hỗ trợ khẩn cấp ─── */
+.vneid-emergency-banner {
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: #fef3c7;
-  border: 2px solid #fbbf24;
-  border-radius: 14px;
-  padding: 18px 24px;
-  margin-bottom: 20px;
-  font-size: 15px;
+  gap: 20px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 18px;
+  padding: 20px 28px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.05);
 }
 
-.vneid-emergency span {
-  font-size: 28px;
+.emergency-icon {
+  font-size: 32px;
 }
 
-.vneid-emergency strong {
+.vneid-emergency-banner strong {
   display: block;
+  font-size: 16px;
   color: #92400e;
   margin-bottom: 4px;
 }
 
-.vneid-emergency p {
-  color: #78350f;
+.vneid-emergency-banner p {
   margin: 0;
+  font-size: 14.5px;
+  color: #78350f;
+  line-height: 1.5;
 }
 
-.vneid-emergency a {
-  color: #1d4ed8;
+.vneid-emergency-banner a {
+  color: #2563eb;
   font-weight: 700;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
-/* Notice */
-.vneid-notice {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #f5f3ff;
-  border: 2px solid #c4b5fd;
-  border-radius: 14px;
-  padding: 16px 24px;
-  margin-bottom: 36px;
-  font-size: 15px;
-  color: #4c1d95;
-}
-
-.vneid-notice span {
-  font-size: 24px;
-}
-
-/* Section */
-.vneid-section {
-  margin-bottom: 36px;
-}
-
-.vneid-section-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-/* Tinh nang grid */
-.vneid-tinh-nang-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.vneid-tinh-nang-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: white;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 16px 18px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.vneid-tinh-nang-item:hover {
-  transform: translateY(-2px);
-  border-color: #7c3aed;
-}
-
-.vneid-tn-icon {
-  font-size: 28px;
-  flex-shrink: 0;
-}
-
-.vneid-tn-label {
-  font-size: 15px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 2px;
-}
-
-.vneid-tn-desc {
-  font-size: 13px;
-  color: #64748b;
-}
-
-/* Tabs */
-.vneid-tab-wrapper {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.vneid-tab-btn {
-  flex: 1;
-  padding: 14px 20px;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  background: white;
-  font-size: 16px;
-  font-weight: 700;
-  color: #64748b;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.vneid-tab-btn:hover {
-  border-color: #7c3aed;
-  color: #7c3aed;
-}
-
-.vneid-tab-active {
-  background: #7c3aed;
-  border-color: #7c3aed;
-  color: white;
-}
-
-.vneid-tab-content {
+/* ─── 3. Chuẩn bị giấy tờ trước khi làm ─── */
+.vneid-checklist-card {
   background: white;
   border-radius: 20px;
-  padding: 28px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #e2e8f0;
+  padding: 28px 32px;
   margin-bottom: 32px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
 }
 
-.vneid-tab-desc {
-  text-align: center;
-  color: #64748b;
-  font-size: 15px;
-  margin-bottom: 28px;
+.checklist-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 20px;
 }
 
-/* Buoc dang ky */
-.vneid-buoc-list {
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.checklist-item {
   display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-bottom: 28px;
-}
-
-.vneid-buoc-item {
-  display: flex;
-  gap: 16px;
-}
-
-.vneid-buoc-left {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 36px;
+  gap: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  border-radius: 14px;
+}
+
+.chk-icon {
+  font-size: 26px;
+  background: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
   flex-shrink: 0;
 }
 
-.vneid-buoc-num {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  color: white;
+.checklist-item span:last-child {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #475569;
+}
+
+/* ─── 4. Lợi ích ─── */
+.vneid-benefits {
+  margin-bottom: 40px;
+}
+
+.vneid-title {
+  font-size: 24px;
   font-weight: 800;
-  font-size: 16px;
+  color: #0f172a;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.vneid-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.vneid-benefit-card {
+  background: white;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: all 0.25s ease;
+}
+
+.vneid-benefit-card:hover {
+  transform: translateY(-3px);
+  border-color: #2563eb;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.08);
+}
+
+.benefit-icon {
+  font-size: 28px;
+  background: #f1f5f9;
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  z-index: 1;
 }
 
-.vneid-buoc-line {
-  width: 2px;
-  flex: 1;
-  background: #e2e8f0;
-  margin: 4px 0;
-  min-height: 24px;
+.benefit-text h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px;
 }
 
-.vneid-buoc-right {
+.benefit-text p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* ─── 5. Tabs ─── */
+.vneid-tabs {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding-bottom: 24px;
+  background: #e2e8f0;
+  padding: 6px;
+  border-radius: 16px;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.vneid-tab-trigger {
   flex: 1;
-}
-
-.vneid-buoc-icon {
-  font-size: 24px;
-  flex-shrink: 0;
-  margin-top: 4px;
-}
-
-.vneid-buoc-title {
+  border: none;
+  background: transparent;
+  color: #475569;
   font-size: 16px;
   font-weight: 700;
+  padding: 16px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vneid-tab-trigger.active {
+  background: white;
+  color: #2563eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* ─── Tab Panel Content ─── */
+.vneid-tab-panel {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.02);
+}
+
+.vneid-panel-intro {
+  font-size: 15.5px;
+  color: #64748b;
+  margin: 0 0 32px;
+  text-align: center;
+}
+
+/* Steps list */
+.vneid-step-flow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.vneid-step-card-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 24px 20px;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.vneid-step-card-item:hover {
+  border-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+}
+
+.step-badge {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.step-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  margin-top: 6px;
+}
+
+.step-card-icon {
+  font-size: 24px;
+}
+
+.step-card-header h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.step-card-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Downloads Section */
+.vneid-downloads {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 32px;
+  text-align: center;
+}
+
+.vneid-downloads h4 {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 20px;
+}
+
+.downloads-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dl-btn {
+  flex: 1;
+  max-width: 280px;
+  background: #0f172a;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.dl-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.dl-btn.dl-android {
+  background: #10b981;
+}
+
+.dl-btn.dl-ios {
+  background: #475569;
+}
+
+.dl-btn span {
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.dl-btn small {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* Activation Grid */
+.vneid-activation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-bottom: 32px;
+}
+
+.activation-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+}
+
+.activation-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.act-icon {
+  font-size: 32px;
+  background: white;
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  flex-shrink: 0;
+}
+
+.activation-card-head h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px;
+}
+
+.act-badge {
+  display: inline-block;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.activation-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.act-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.act-step-idx {
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.act-step-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.vneid-warning-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+
+.warning-box-icon {
+  font-size: 24px;
+}
+
+.vneid-warning-box p {
+  margin: 0;
+  font-size: 14px;
+  color: #1e40af;
+  line-height: 1.6;
+}
+
+/* ─── 7. Video Section ─── */
+.vneid-video-section {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.02);
+}
+
+.vneid-video-section h2 {
+  font-size: 22px;
+  font-weight: 850;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.video-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.vneid-video-player {
+  width: 100%;
+  border-radius: 16px;
+  background: black;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  display: block;
+}
+
+.video-caption {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.video-caption strong {
+  display: block;
+  font-size: 16px;
   color: #0f172a;
   margin-bottom: 4px;
 }
 
-.vneid-buoc-desc {
-  font-size: 14px;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-/* Download buttons */
-.vneid-download-row {
-  display: flex;
-  gap: 12px;
-}
-
-.vneid-dl-btn {
-  flex: 1;
-  padding: 14px 20px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  transition: 0.2s;
-}
-
-.vneid-dl-btn:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-}
-
-.vneid-dl-android {
-  background: #1d4ed8;
-}
-
-.vneid-dl-ios {
-  background: #374151;
-}
-
-/* Kich hoat */
-.vneid-kich-hoat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.vneid-kh-card {
-  background: #f8fafc;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1.5px solid #e2e8f0;
-}
-
-.vneid-kh-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
-  border-left: 5px solid;
-  background: white;
-}
-
-.vneid-kh-icon {
-  font-size: 24px;
-}
-
-.vneid-kh-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.vneid-kh-tag {
-  font-size: 11px;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-weight: 700;
-}
-
-.vneid-kh-body {
-  padding: 16px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.vneid-kh-step {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.vneid-kh-num {
-  min-width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  color: white;
-  font-weight: 700;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.vneid-kh-step p {
-  font-size: 14px;
-  color: #334155;
-  line-height: 1.6;
+.video-caption p {
   margin: 0;
-  padding-top: 3px;
+  font-size: 13.5px;
+  color: #64748b;
 }
 
-.vneid-nfc-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: #eff6ff;
-  border: 2px solid #bfdbfe;
-  border-radius: 12px;
-  padding: 14px 18px;
-  font-size: 14px;
-  color: #1e40af;
-}
-
-.vneid-nfc-note span {
-  font-size: 22px;
-  flex-shrink: 0;
-}
-
-/* Video */
-.vneid-video-section {
-  background: white;
-  border-radius: 20px;
-  padding: 28px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  margin-bottom: 32px;
-}
-
-.vneid-video-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 16px;
-}
-
-.vneid-video {
-  width: 100%;
-  border-radius: 12px;
-  background: #000;
-  max-height: 400px;
-  object-fit: contain;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.vneid-video-note {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #94a3b8;
+/* ─── 8. Exit Row ─── */
+.vneid-exit-row {
   text-align: center;
+  margin-top: 32px;
 }
 
-/* Footer */
+.vneid-exit-btn {
+  display: inline-block;
+  background: #334155;
+  color: white;
+  font-weight: 800;
+  font-size: 15.5px;
+  padding: 16px 36px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.vneid-exit-btn:hover {
+  background: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4);
+}
+
+/* ─── 9. Footer Tip ─── */
 .vneid-footer-tip {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  background: #f0fdf4;
-  border: 2px solid #86efac;
-  border-radius: 14px;
-  padding: 20px 24px;
-  font-size: 15px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 32px;
+  font-size: 14.5px;
 }
 
 .vneid-footer-tip span {
@@ -466,36 +630,43 @@
 
 .vneid-footer-tip strong {
   display: block;
-  color: #14532d;
+  color: #1e3a8a;
   margin-bottom: 6px;
-  font-size: 16px;
+  font-size: 15.5px;
 }
 
 .vneid-footer-tip p {
-  color: #166534;
+  color: #1e40af;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .vneid-step-flow {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .checklist-grid, .vneid-benefits-grid, .vneid-activation-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .vneid-step-flow {
+    grid-template-columns: 1fr;
+  }
   .vneid-header h1 {
-    font-size: 24px;
+    font-size: 28px;
   }
-
-  .vneid-tinh-nang-grid {
-    grid-template-columns: 1fr;
+  .vneid-header {
+    padding: 32px 20px;
   }
-
-  .vneid-kich-hoat-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .vneid-tab-wrapper {
-    flex-direction: column;
-  }
-
-  .vneid-download-row {
-    flex-direction: column;
+  .vneid-tab-trigger {
+    font-size: 14px;
+    padding: 12px 10px;
   }
 }

@@ -1,0 +1,435 @@
+.law-page {
+  background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+  min-height: 100vh;
+  padding: 60px 20px;
+  color: #2d3748;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.law-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── 1. Header ─── */
+.law-header {
+  text-align: center;
+  background: white;
+  border-radius: 24px;
+  padding: 48px 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.law-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #b91c1c 0%, #d97706 50%, #1e3a8a 100%);
+}
+
+.law-header-badge {
+  display: inline-block;
+  background: #fef2f2;
+  color: #991b1b;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 6px 18px;
+  border-radius: 20px;
+  letter-spacing: 0.045em;
+  border: 1px solid #fee2e2;
+  margin-bottom: 20px;
+}
+
+.law-header h1 {
+  font-size: 38px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 14px;
+  line-height: 1.25;
+}
+
+.law-header h1 span {
+  background: linear-gradient(90deg, #b91c1c 0%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.law-subtitle {
+  font-size: 16.5px;
+  color: #64748b;
+  max-width: 750px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+}
+
+.law-speech-btn {
+  background: #b91c1c;
+  color: white;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(185, 28, 28, 0.3);
+  transition: all 0.25s ease;
+}
+
+.law-speech-btn:hover {
+  background: #991b1b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.45);
+}
+
+.law-speech-btn.active {
+  background: #d97706;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+  animation: law-pulse 1.5s infinite;
+}
+
+@keyframes law-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* ─── 2. Search Box ─── */
+.law-search-box {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 6px 16px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.law-search-box:focus-within {
+  border-color: #b91c1c;
+  box-shadow: 0 4px 18px rgba(185, 28, 28, 0.1);
+}
+
+.search-icon {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.law-search-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 15.5px;
+  color: #0f172a;
+  outline: none;
+  font-family: inherit;
+}
+
+.law-search-box input::placeholder {
+  color: #94a3b8;
+}
+
+.clear-search {
+  background: #f1f5f9;
+  border: none;
+  color: #64748b;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* ─── 3. Grid 4 Thẻ Văn Bản Luật ─── */
+.law-grid-section {
+  margin-bottom: 50px;
+}
+
+.law-section-title {
+  font-size: 24px;
+  font-weight: 850;
+  text-align: center;
+  color: #0f172a;
+  margin-bottom: 32px;
+}
+
+.law-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.law-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: all 0.25s ease;
+}
+
+.law-card:hover {
+  transform: translateY(-4px);
+  border-color: #b91c1c;
+  box-shadow: 0 10px 25px rgba(185, 28, 28, 0.05);
+}
+
+.law-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.law-card-icon-wrap {
+  font-size: 32px;
+  background: #f8fafc;
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
+}
+
+.law-card-badge {
+  display: inline-block;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.law-card-head h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.law-card-body {
+  flex: 1;
+}
+
+.law-card-desc {
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.law-card-keypoints {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.law-card-keypoints strong {
+  display: block;
+  font-size: 13.5px;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.law-card-keypoints ul {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.law-card-keypoints li {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.law-card-foot {
+  margin-top: 24px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 20px;
+}
+
+.law-card-btn {
+  display: inline-block;
+  color: #b91c1c;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: all 0.2s ease;
+}
+
+.law-card-btn:hover {
+  color: #991b1b;
+  transform: translateX(3px);
+}
+
+.law-empty-state {
+  grid-column: span 2;
+  text-align: center;
+  padding: 48px;
+  background: white;
+  border-radius: 20px;
+  border: 1px dashed #cbd5e1;
+}
+
+.law-empty-state span {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.law-empty-state p {
+  color: #64748b;
+  margin: 0;
+  font-size: 15px;
+}
+
+/* ─── 4. Cổng liên kết pháp luật ─── */
+.law-gov-links {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  padding: 40px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+  margin-bottom: 40px;
+}
+
+.gov-links-intro {
+  text-align: center;
+  font-size: 15.5px;
+  color: #64748b;
+  margin: -16px 0 32px;
+}
+
+.gov-links-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.gov-link-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  gap: 20px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.gov-link-card:hover {
+  transform: translateY(-2px);
+  border-color: #b91c1c;
+  background: white;
+  box-shadow: 0 6px 18px rgba(185, 28, 28, 0.05);
+}
+
+.gov-link-icon {
+  font-size: 32px;
+  background: white;
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+  flex-shrink: 0;
+}
+
+.gov-link-content {
+  flex: 1;
+}
+
+.gov-link-content h4 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px;
+}
+
+.gov-link-content p {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.gov-link-url {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+/* ─── 5. Nút Thoát ─── */
+.law-exit-row {
+  text-align: center;
+}
+
+.law-exit-btn {
+  display: inline-block;
+  background: #334155;
+  color: white;
+  font-weight: 800;
+  font-size: 15.5px;
+  padding: 16px 36px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.law-exit-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(185, 28, 28, 0.4);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .law-grid, .gov-links-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .law-empty-state {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .law-header h1 {
+    font-size: 28px;
+  }
+  .law-header {
+    padding: 32px 20px;
+  }
+  .law-gov-links {
+    padding: 24px;
+  }
+}

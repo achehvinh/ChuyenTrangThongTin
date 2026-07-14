@@ -5,7 +5,7 @@
 ══════════════════════════════════════ */
 
 .home {
-  max-width: 1550px;
+  max-width: 1560px;
   margin: 0 auto;
   padding: 20px 24px 40px;
   font-family: inherit;
@@ -21,7 +21,9 @@
 }
 
 /* ── Cột trái ── */
-.home-main { min-width: 0; }
+.home-main {
+  min-width: 0;
+}
 
 .section-header {
   border-left: 4px solid #1a3a5c;
@@ -70,7 +72,7 @@
   padding: 0;
 }
 
-.sidebar-list > li {
+.sidebar-list>li {
   padding: 12px 16px;
   font-size: 15px;
   font-weight: 600;
@@ -81,10 +83,17 @@
   align-items: center;
   gap: 8px;
 }
-.sidebar-list > li:last-child { border-bottom: none; }
-.sidebar-list > li:hover { background: #f0f4f8; color: #1a3a5c; }
 
-.sidebar-list > li::before {
+.sidebar-list>li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-list>li:hover {
+  background: #f0f4f8;
+  color: #1a3a5c;
+}
+
+.sidebar-list>li::before {
   content: '›';
   color: #1a3a5c;
   font-weight: 700;
@@ -93,7 +102,11 @@
   flex-shrink: 0;
 }
 
-.dropdown-arrow { font-size: 12px; color: #6b7280; margin-left: 6px; }
+.dropdown-arrow {
+  font-size: 12px;
+  color: #6b7280;
+  margin-left: 6px;
+}
 
 /* Dropdown tra cứu */
 .sidebar-list-dropdown {
@@ -108,7 +121,7 @@
   display: none !important;
 }
 
-.sidebar-list-dropdown > span {
+.sidebar-list-dropdown>span {
   display: flex;
   align-items: center;
   width: 100%;
@@ -120,7 +133,7 @@
   gap: 8px;
 }
 
-.sidebar-list-dropdown > span::before {
+.sidebar-list-dropdown>span::before {
   content: '›';
   color: #1a3a5c;
   font-weight: 700;
@@ -145,8 +158,15 @@
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
 }
-.sidebar-submenu li:last-child { border-bottom: none; }
-.sidebar-submenu li:hover { background: #e5edfa; color: #1a3a5c; }
+
+.sidebar-submenu li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-submenu li:hover {
+  background: #e5edfa;
+  color: #1a3a5c;
+}
 
 /* Giá nông sản */
 .agri-table {
@@ -155,8 +175,13 @@
   font-size: 14.5px;
 }
 
-.agri-table tr { border-bottom: 1px solid #f1f5f9; }
-.agri-table tr:last-child { border-bottom: none; }
+.agri-table tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.agri-table tr:last-child {
+  border-bottom: none;
+}
 
 .agri-table td {
   padding: 12px 16px;
@@ -184,7 +209,10 @@
   text-align: left;
   font-family: inherit;
 }
-.sidebar-link-btn:hover { background: #f0f4f8; }
+
+.sidebar-link-btn:hover {
+  background: #f0f4f8;
+}
 
 /* Liên hệ */
 .contact-info {
@@ -193,16 +221,24 @@
   color: #4b5563;
   line-height: 1.8;
 }
-.contact-info strong { color: #1a3a5c; }
+
+.contact-info strong {
+  color: #1a3a5c;
+}
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .home-body {
     grid-template-columns: 1fr;
   }
-  .home-sidebar { position: static; }
+
+  .home-sidebar {
+    position: static;
+  }
 }
 
 @media (max-width: 600px) {
-  .home { padding: 12px 12px 32px; }
+  .home {
+    padding: 12px 12px 32px;
+  }
 }

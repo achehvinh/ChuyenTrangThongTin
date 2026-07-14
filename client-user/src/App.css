@@ -142,3 +142,115 @@ button { font-family: inherit; }
 .gov-notice-more:hover{
     background:#eef4ff;
 }
+/* ── BREADCRUMBS TOÀN CỤC CHUYÊN NGHIỆP ── */
+.global-breadcrumbs {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 10px 24px;
+}
+
+.global-breadcrumbs-inner {
+  max-width: 1550px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.breadcrumb-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-link {
+  color: #1e3a8a;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  color: #cbd5e1;
+  font-weight: 450;
+  font-size: 16px;
+  user-select: none;
+}
+
+.breadcrumb-current {
+  color: #334155;
+  font-weight: 800;
+}
+
+@media (max-width: 600px) {
+  .global-breadcrumbs {
+    padding: 8px 16px;
+  }
+  .global-breadcrumbs-inner {
+    font-size: 13px;
+    gap: 6px;
+  }
+  .breadcrumb-separator {
+    font-size: 14px;
+  }
+}
+
+/* ── Nút Cuộn Lên Đầu Trang (Scroll to Top) ── */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 100px; /* Nằm ngay phía trên nút Trợ lý AI */
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1e3a8a;
+  border: 2px solid #cbd5e1;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+}
+
+.scroll-to-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top-btn:hover {
+  background: #1e3a8a;
+  color: #ffffff;
+  border-color: #1e3a8a;
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.25);
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+@media (max-width: 600px) {
+  .scroll-to-top-btn {
+    bottom: 90px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
+}

@@ -1,108 +1,129 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Confetti from "react-confetti";
 import "./QuizGame.css";
 
 const QUESTIONS = [
   {
-    question: "Khi thấy bạn bị đuối nước, điều đầu tiên em nên làm là gì?",
-    image:"/images/quiz1.jpg",
+    question: "Khi thấy bạn bị rơi xuống ao, hồ và đang đuối nước, điều đầu tiên em nên làm là gì?",
     options: [
-      "Nhảy xuống cứu bạn ngay",
-      "Hét to gọi người lớn đến giúp",
-      "Bỏ đi vì sợ",
-      "Đứng quay video lại",
+      "Nhảy ngay xuống nước để kéo bạn lên",
+      "Hét thật to gọi người lớn đến cứu giúp",
+      "Bỏ chạy đi chỗ khác vì sợ hãi",
+      "Đứng xem và quay video điện thoại",
     ],
     correct: 1,
     explain:
-      "Tuyệt đối KHÔNG tự ý nhảy xuống nếu em không biết bơi và chưa được học kỹ năng cứu hộ. Hãy hét to gọi người lớn đến ngay!",
+      "Tuyệt đối KHÔNG tự ý nhảy xuống nước cứu bạn khi em chưa có kỹ năng cứu hộ chuyên nghiệp. Hãy hét thật to để gọi người lớn xung quanh đến giúp ngay lập tức!",
   },
   {
-    question: "Số điện thoại nào để gọi cấp cứu y tế?",
+    question: "Số điện thoại khẩn cấp nào dùng để gọi Cấp cứu Y tế tại Việt Nam?",
     options: ["113", "114", "115", "116"],
     correct: 2,
-    explain: "115 là số cấp cứu y tế. Hãy gọi ngay khi có người bị đuối nước.",
+    explain: "115 là số điện thoại khẩn cấp gọi Cấp cứu Y tế để cấp cứu nạn nhân đuối nước kịp thời.",
   },
   {
-    question: "Trước khi đi thuyền, bè trên sông, em cần làm gì?",
+    question: "Trước khi bước xuống tàu, thuyền, bè hoặc nô đùa gần sông nước, em cần làm gì?",
     options: [
-      "Mặc áo phao",
-      "Mang theo điện thoại",
-      "Đội mũ bảo hiểm",
-      "Không cần làm gì",
+      "Mặc áo phao bảo hộ đúng quy cách",
+      "Mang theo điện thoại thông minh",
+      "Đội mũ bảo hiểm bảo vệ đầu",
+      "Không cần chuẩn bị gì cả",
     ],
     correct: 0,
-    explain: "Áo phao giúp em không bị chìm nếu chẳng may rơi xuống nước.",
+    explain: "Mặc áo phao giúp em luôn nổi trên mặt nước và bảo vệ an toàn nếu chẳng may bị rơi xuống nước.",
   },
   {
-    question: "Dấu hiệu nào cho thấy một người có thể đang bị đuối nước?",
+    question: "Dấu hiệu nào sau đây cho thấy một người đang bị đuối nước thực tế?",
     options: [
-      "Vẫy tay chào to và cười",
-      "Đầu chìm dần, mắt lờ đờ, không kêu được",
-      "Bơi rất nhanh về bờ",
-      "Hát to khi ở dưới nước",
+      "Vẫy tay chào lớn và cười nói vui vẻ",
+      "Bơi rất nhanh về phía bờ cát",
+      "Đầu chìm dập dềnh sát mặt nước, mắt đờ đẫn, miệng ngậm nước không kêu cứu được",
+      "Hát to dưới nước để thu hút sự chú ý",
     ],
-    correct: 1,
+    correct: 2,
     explain:
-      "Người đuối nước thường im lặng, không kêu cứu được, vùng vẫy yếu và đầu chìm dần xuống nước.",
+      "Người đuối nước thực tế thường ngậm nước, miệng chìm dần, mắt lờ đờ, không thể hét lên kêu cứu và hai tay quạt yếu ớt trên mặt nước.",
   },
   {
-    question:
-      "Khi cứu người bị đuối nước mà không biết bơi, em nên dùng vật gì?",
+    question: "Khi muốn cứu bạn đuối nước từ trên bờ, em nên chọn dùng vật dụng trung gian nào?",
     options: [
-      "Nắm tay kéo trực tiếp",
-      "Phao, dây thừng, hoặc sào tre",
-      "Nhảy xuống cùng để kéo lên",
+      "Nhảy xuống nắm tay bạn kéo lên",
+      "Ném phao, đưa sào tre, cành cây hoặc ném dây thừng để bạn bám vào",
+      "Chờ bạn chìm hẳn rồi mới cứu",
       "Không làm gì cả",
     ],
     correct: 1,
     explain:
-      "Hãy ném phao, dây thừng hoặc đưa sào tre cho nạn nhân bám vào, sau đó kéo họ lên bờ.",
+      "Hãy đứng trên bờ an toàn, dùng sào tre, cành cây dài đưa ra hoặc ném phao, dây thừng cho bạn bám vào rồi kéo vào bờ.",
   },
   {
-    question: "Em có nên đi tắm sông, suối, ao hồ một mình không?",
+    question: "Em có nên tự ý đi tắm sông, suối, ao, hồ một mình vào buổi trưa hoặc ngày nắng nóng không?",
     options: [
-      "Có, nếu biết bơi",
-      "Có, nếu trời nắng",
-      "Không, luôn phải có người lớn đi cùng",
-      "Có, vào buổi trưa",
+      "Có, nếu em bơi rất giỏi",
+      "Có, đi tắm một mình cho tự do thoải mái",
+      "Không, luôn phải có người lớn biết bơi đi cùng giám sát",
+      "Có, nếu rủ thêm bạn nhỏ đi cùng",
     ],
     correct: 2,
     explain:
-      "Dù biết bơi hay không, các em nhỏ không nên tự ý ra sông, suối, ao hồ mà không có người lớn giám sát.",
+      "Không bao giờ được tự ý tắm sông, suối, ao, hồ một mình hoặc chỉ rủ bạn nhỏ đi cùng. Luôn luôn phải có người lớn biết bơi đi kèm bảo hộ.",
   },
 ];
 
 export default function QuizGame() {
-const [currentIndex, setCurrentIndex] = useState(0);
-const [selected, setSelected] = useState(null);
-const [score, setScore] = useState(0);
-const [finished, setFinished] = useState(false);
+  const [playerName, setPlayerName] = useState("");
+  const [started, setStarted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [score, setScore] = useState(0);
+  const [finished, setFinished] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
-const [showConfetti, setShowConfetti] = useState(false);
-const [answerEffect, setAnswerEffect] = useState("");
+  // Quản lý thời gian đếm ngược
+  const [timeLeft, setTimeLeft] = useState(15);
+  const timerRef = useRef(null);
 
   const current = QUESTIONS[currentIndex];
   const isLast = currentIndex === QUESTIONS.length - 1;
 
-const handleSelect = (idx) => {
-  if (selected !== null) return;
+  // Xử lý tự động chạy thời gian đếm ngược
+  useEffect(() => {
+    if (started && !finished && selected === null) {
+      setTimeLeft(15);
+      if (timerRef.current) clearInterval(timerRef.current);
 
-  setSelected(idx);
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current);
+            // Hết giờ tự động chọn đáp án sai (hoặc đánh dấu đã trả lời)
+            setSelected(-1);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
 
-  if (idx === current.correct) {
-    setScore((s) => s + 1);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [started, currentIndex, finished, selected]);
 
-    setAnswerEffect("correct");
+  const handleSelect = (idx) => {
+    if (selected !== null) return;
+    if (timerRef.current) clearInterval(timerRef.current);
 
-    setShowConfetti(true);
+    setSelected(idx);
 
-    setTimeout(() => {
-      setShowConfetti(false);
-    }, 1500);
-  } else {
-    setAnswerEffect("wrong");
-  }
-};
+    if (idx === current.correct) {
+      setScore((s) => s + 1);
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 1800);
+    }
+  };
 
   const handleNext = () => {
     if (isLast) {
@@ -113,67 +134,186 @@ const handleSelect = (idx) => {
     setSelected(null);
   };
 
+  const handleStartGame = (e) => {
+    e.preventDefault();
+    if (playerName.trim() === "") {
+      alert("Vui lòng nhập tên của em để bắt đầu cuộc thi nhé!");
+      return;
+    }
+    setStarted(true);
+  };
+
   const handleRestart = () => {
     setCurrentIndex(0);
     setSelected(null);
     setScore(0);
     setFinished(false);
+    setTimeLeft(15);
   };
 
-  if (finished) {
-    const percent = Math.round((score / QUESTIONS.length) * 100);
-    let message = "Cần cố gắng hơn nhé!";
-    let emoji = "💪";
-    if (percent === 100) {
-      message = "Xuất sắc! Em đã nắm rất tốt kiến thức an toàn!";
-      emoji = "🏆";
-    } else if (percent >= 70) {
-      message = "Tốt lắm! Hãy ghi nhớ thêm các quy tắc an toàn nhé!";
-      emoji = "🌟";
-    } else if (percent >= 40) {
-      message = "Khá ổn! Hãy xem lại các quy tắc an toàn ở trên nhé!";
-      emoji = "👍";
-    }
+  const handlePrint = () => {
+    window.print();
+  };
 
+  // MÀN HÌNH CHÀO MỪNG NHẬP TÊN
+  if (!started) {
     return (
-      <div className="quiz-card quiz-result">
-        <div className="quiz-result-emoji">{emoji}</div>
-        <div className="quiz-result-title">Hoàn thành!</div>
-        <div className="quiz-result-score">
-          {score} / {QUESTIONS.length} câu đúng
+      <div className="quiz-start-container">
+        <div className="quiz-start-header">
+          <span className="quiz-badge-icon">🎖️</span>
+          <h2>Thử Thách Hiệp Sĩ An Toàn Nguồn Nước</h2>
+          <p>Bé hãy trả lời các câu hỏi để chứng minh kiến thức phòng chống đuối nước và nhận Bằng khen vinh danh từ UBND Xã Đăk Pxi nhé!</p>
         </div>
-        <div className="quiz-result-message">{message}</div>
-        <button className="quiz-restart-btn" onClick={handleRestart}>
-          🔄 Làm lại
-        </button>
+
+        <form onSubmit={handleStartGame} className="quiz-start-form">
+          <label htmlFor="student-name">Nhập họ và tên của bé:</label>
+          <input
+            id="student-name"
+            type="text"
+            placeholder="Ví dụ: Nguyễn Văn A"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            maxLength={30}
+            required
+            autoComplete="off"
+          />
+          <button type="submit" className="quiz-start-btn">
+            Bắt đầu Thử thách 🚀
+          </button>
+        </form>
       </div>
     );
   }
 
+  // MÀN HÌNH KẾT QUẢ & BẰNG KHEN
+  if (finished) {
+    const passed = score >= 5; // Cần đúng 5/6 câu để đạt bằng khen
+
+    return (
+      <div className="quiz-result-wrapper">
+        {passed && <Confetti numberOfPieces={150} recycle={false} />}
+
+        {passed ? (
+          <div className="quiz-certificate-section">
+            {/* Nút In bằng khen nằm ngoài khung in */}
+            <div className="print-controls">
+              <p className="passed-title">🎉 Chúc mừng em đã xuất sắc vượt qua cuộc thi!</p>
+              <div className="print-buttons">
+                <button className="quiz-print-btn" onClick={handlePrint}>
+                  🖨️ In / Tải Bằng Khen của em
+                </button>
+                <button className="quiz-restart-btn text" onClick={handleRestart}>
+                  🔄 Chơi lại
+                </button>
+              </div>
+            </div>
+
+            {/* BẢN BẰNG KHEN IN ĐƯỢC CHUẨN ĐẸP */}
+            <div className="dn-certificate" id="print-area">
+              <div className="certificate-border">
+                <div className="certificate-inner">
+                  {/* Quốc hiệu */}
+                  <div className="cert-header">
+                    <p className="cert-nation">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                    <p className="cert-motto">Độc lập - Tự do - Hạnh phúc</p>
+                    <div className="cert-divider">🌟</div>
+                  </div>
+
+                  {/* Cơ quan cấp */}
+                  <div className="cert-issuer">
+                    <p>ỦY BAN NHÂN DÂN XÃ ĐĂK PXI</p>
+                    <p>TỈNH QUẢNG NGÃI</p>
+                  </div>
+
+                  {/* Tiêu đề Giấy Chứng Nhận */}
+                  <div className="cert-title-container">
+                    <h1 className="cert-title">GIẤY CHỨNG NHẬN</h1>
+                    <p className="cert-subtitle">DANH HIỆU HIỆP SĨ AN TOÀN NGUỒN NƯỚC</p>
+                  </div>
+
+                  {/* Nội dung khen tặng */}
+                  <div className="cert-content">
+                    <p className="cert-intro">Ủy ban nhân dân xã Đăk Pxi chứng nhận em:</p>
+                    <h2 className="cert-name">{playerName.toUpperCase()}</h2>
+                    <p className="cert-reason">
+                      Đã hoàn thành xuất sắc khóa học tương tác trực tuyến về Kỹ năng Phòng chống đuối nước và ứng phó tai nạn sông nước năm 2026.
+                    </p>
+                  </div>
+
+                  {/* Con dấu và Chữ ký */}
+                  <div className="cert-footer">
+                    <div className="cert-date">
+                      <p>Đăk Pxi, ngày 14 tháng 07 năm 2026</p>
+                      <p className="cert-sign-title">TM. ỦY BAN NHÂN DÂN XÃ</p>
+                      <p className="cert-signer-role">CHỦ TỊCH</p>
+                      <div className="cert-signature-space">
+                        {/* Con dấu đỏ giả lập bằng CSS */}
+                        <div className="cert-stamp">
+                          <span className="stamp-inner">UBND XÃ ĐĂK PXI</span>
+                        </div>
+                        <p className="cert-signer-name">Phan Văn Cường</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="quiz-card quiz-failed">
+            <div className="quiz-result-emoji">😢</div>
+            <div className="quiz-result-title">Cố lên em ơi!</div>
+            <div className="quiz-result-score">
+              Em đạt {score} / {QUESTIONS.length} câu đúng
+            </div>
+            <p className="quiz-failed-msg">
+              Em cần trả lời đúng tối thiểu <strong>5/6 câu</strong> để được nhận Giấy chứng nhận danh giá từ UBND xã. Hãy đọc kỹ lại cẩm nang học tập ở trên và thử lại nhé!
+            </p>
+            <button className="quiz-start-btn" onClick={handleRestart}>
+              🔄 Thử sức lại ngay
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // MÀN HÌNH CHƠI GAME CÂU HỎI
   return (
     <div className="quiz-card">
-      <div className="quiz-progress">
-        <div className="quiz-progress-text">
-          Câu {currentIndex + 1} / {QUESTIONS.length}
+      {/* Pháo hoa nhẹ khi trả lời đúng */}
+      {showConfetti && <Confetti numberOfPieces={40} recycle={false} />}
+
+      {/* Thanh tiến trình & Đồng hồ đếm ngược */}
+      <div className="quiz-header-status">
+        <div className="quiz-progress-info">
+          <span>Câu {currentIndex + 1} / {QUESTIONS.length}</span>
+          <div className="quiz-bar-bg">
+            <div
+              className="quiz-bar-fill"
+              style={{
+                width: `${((currentIndex + 1) / QUESTIONS.length) * 100}%`,
+              }}
+            />
+          </div>
         </div>
-        <div className="quiz-progress-bar">
-          <div
-            className="quiz-progress-fill"
-            style={{
-              width: `${((currentIndex + 1) / QUESTIONS.length) * 100}%`,
-            }}
-          />
+
+        <div className={`quiz-timer ${timeLeft <= 5 ? "danger" : ""}`}>
+          ⏰ {timeLeft}s
         </div>
       </div>
 
+      {/* Câu hỏi */}
       <div className="quiz-question">{current.question}</div>
 
+      {/* Đáp án */}
       <div className="quiz-options">
         {current.options.map((opt, idx) => {
           let cls = "quiz-option";
           if (selected !== null) {
             if (idx === current.correct) cls += " correct";
             else if (idx === selected) cls += " incorrect";
+            else cls += " disabled";
           }
           return (
             <button
@@ -182,24 +322,35 @@ const handleSelect = (idx) => {
               onClick={() => handleSelect(idx)}
               disabled={selected !== null}
             >
-              {opt}
+              <span className="option-letter">
+                {String.fromCharCode(65 + idx)}
+              </span>
+              <span className="option-text">{opt}</span>
             </button>
           );
         })}
       </div>
 
+      {/* Hiển thị giải thích sau khi trả lời hoặc hết giờ */}
       {selected !== null && (
-        <div className="quiz-explain">
-          <div className="quiz-explain-icon">
-            {selected === current.correct ? "✅" : "❌"}
+        <div className="quiz-explain-box">
+          <div className="explain-header">
+            {selected === current.correct ? (
+              <span className="correct-label">✅ Trả lời đúng!</span>
+            ) : selected === -1 ? (
+              <span className="timeout-label">⏰ Đã hết thời gian trả lời!</span>
+            ) : (
+              <span className="incorrect-label">❌ Trả lời chưa chính xác!</span>
+            )}
           </div>
-          <div className="quiz-explain-text">{current.explain}</div>
+          <p className="explain-body">{current.explain}</p>
         </div>
       )}
 
+      {/* Nút đi tiếp */}
       {selected !== null && (
         <button className="quiz-next-btn" onClick={handleNext}>
-          {isLast ? "Xem kết quả" : "Câu tiếp theo →"}
+          {isLast ? "Xem Kết Quả Cuộc Thi 🏆" : "Câu tiếp theo →"}
         </button>
       )}
     </div>

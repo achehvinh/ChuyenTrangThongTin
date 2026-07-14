@@ -783,11 +783,20 @@ export default function ProcedureDetailPage() {
               {/* Tiêu đề + đọc hướng dẫn */}
               <section className="pdp-hero">
                 <div className="pdp-hero-top">
-                  <h1 className="pdp-hero-title">{procedure.title}</h1>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', flex: 1 }}>
+                    <h1 className="pdp-hero-title" style={{ margin: 0 }}>{procedure.title}</h1>
+                    {procedure.online_type === "toan-trinh" && (
+                      <span className="tthc-online-badge toan-trinh">Toàn trình</span>
+                    )}
+                    {procedure.online_type === "mot-phan" && (
+                      <span className="tthc-online-badge mot-phan">Một phần</span>
+                    )}
+                  </div>
                   <button
                     className={`pdp-speak-btn ${speaking ? "is-speaking" : ""}`}
                     type="button"
                     onClick={handleSpeak}
+                    style={{ flexShrink: 0 }}
                   >
                     <PdpIcon type={speaking ? "stop" : "speaker"} />
                     {speaking ? "Dừng đọc" : "Đọc hướng dẫn"}

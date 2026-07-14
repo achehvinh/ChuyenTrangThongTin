@@ -7,7 +7,7 @@ export default function Baucu() {
     const [speaking, setSpeaking] = useState(false);
     const [showInviteBanner, setShowInviteBanner] = useState(true);
     // Sử dụng tệp âm thanh ghi âm riêng (giong-doc-bau-cu.mp3 trong thư mục public/video)
-    const [audio] = useState(() => new Audio('/video/giong-doc-bau-cu.mp3'));
+    const [audio] = useState(() => new Audio('/video/dakpxi-baucu.mp3'));
 
     function handleSpeak() {
         if (speaking) {
@@ -19,7 +19,7 @@ export default function Baucu() {
                     setSpeaking(true);
                 })
                 .catch((err) => {
-                    alert("Tính năng đọc giọng nói: Bà con vui lòng đặt tệp âm thanh 'giong-doc-bau-cu.mp3' vào thư mục public/video/ để nghe giọng đọc nhé!");
+                    alert("Tính năng đọc giọng nói: Bà con vui lòng đặt tệp âm thanh 'dakpxi-baucu.mp3' vào thư mục public/video/ để nghe giọng đọc nhé!");
                     console.error("Audio play error:", err);
                 });
         }
@@ -79,12 +79,12 @@ export default function Baucu() {
             <header className="baucu-header">
                 <div className="baucu-header-logo">🗳️</div>
                 <h1 className="baucu-main-title">
-                    HƯỚNG DẪN QUY TRÌNH BẦU CỬ
+                    HƯỚNG DẪN QUY TRÌNH BẦU CỬ TRƯỞNG THÔN
                 </h1>
                 <p className="baucu-subtitle">
-                    Đại biểu Quốc hội khóa XV và Đại biểu Hội đồng nhân dân các cấp
+                    Các làng trên địa bàn xã Đăk Pxi - Nhiệm kỳ 2025 - 2030
                 </p>
-                <span className="baucu-gov-badge">ỦY BAN BẦU CỬ XÃ ĐẮK PXI</span>
+                <span className="baucu-gov-badge">ỦY BAN NHÂN DÂN XÃ ĐĂK PXI</span>
 
                 {/* Nút nghe đọc giọng nói */}
                 <button
@@ -242,8 +242,7 @@ export default function Baucu() {
 
             {/* Khẩu hiệu tuyên truyền chân trang */}
             <footer className="baucu-footer">
-                <p className="slogan">"BẦU CỬ ĐẠI BIỂU QUỐC HỘI VÀ HĐND CÁC CẤP LÀ QUYỀN LỢI VÀ NGHĨA VỤ CỦA MỖI CÔNG DÂN!"</p>
-                <p className="copyright">© 2026 Trang thông tin điện tử xã Đăk Pxi - Phát triển bởi Ban tuyên giáo xã</p>
+                <p className="slogan">"TÍCH CỰC THAM GIA BẦU CỬ TRƯỞNG THÔN – PHÁT HUY QUYỀN LÀM CHỦ CỦA NHÂN DÂN!"</p>
             </footer>
         </div>
     );

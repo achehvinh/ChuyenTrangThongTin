@@ -1,0 +1,430 @@
+.te-nan-page {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  color: #f1f5f9;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+}
+
+.te-nan-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── 1. Header Tuyên Truyền ─── */
+.te-nan-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 30px;
+  background: rgba(30, 41, 59, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.header-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+  color: white;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 8px 20px;
+  border-radius: 30px;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.te-nan-header h1 {
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0 0 16px;
+}
+
+.te-nan-header h1 span {
+  background: linear-gradient(90deg, #fb7185 0%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-subtitle {
+  font-size: 17px;
+  color: #94a3b8;
+  max-width: 750px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+}
+
+.header-actions .speak-btn {
+  background: #1e293b;
+  border: 2px solid #ef4444;
+  color: #f8fafc;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.15);
+}
+
+.header-actions .speak-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+}
+
+.header-actions .speak-btn.speaking {
+  background: #dc2626;
+  border-color: #dc2626;
+  animation: pulse-speak 2s infinite;
+}
+
+@keyframes pulse-speak {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* ─── 2. Đường Dây Nóng Công An Xã ─── */
+.hotline-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+  border: 2px solid #ef4444;
+  border-radius: 20px;
+  padding: 24px 32px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.15);
+}
+
+.hotline-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hotline-icon {
+  font-size: 40px;
+  animation: phone-wiggle 1.5s infinite;
+}
+
+@keyframes phone-wiggle {
+  0% { transform: rotate(0) scale(1); }
+  10% { transform: rotate(-10deg) scale(1.1); }
+  20% { transform: rotate(10deg) scale(1.1); }
+  30% { transform: rotate(-10deg) scale(1.1); }
+  40% { transform: rotate(10deg) scale(1.1); }
+  50% { transform: rotate(0) scale(1); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+.hotline-left strong {
+  font-size: 19px;
+  color: #fca5a5;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.hotline-left p {
+  color: #cbd5e1;
+  margin: 0;
+  font-size: 15px;
+}
+
+.hotline-btn {
+  background: #ef4444;
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+  transition: all 0.2s ease;
+}
+
+.hotline-btn:hover {
+  background: #f43f5e;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.55);
+}
+
+/* ─── 3. 4 Chuyên Mục Tuyên Truyền ─── */
+.te-nan-categories {
+  margin-bottom: 50px;
+}
+
+.section-title {
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.category-card {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+}
+
+.card-media {
+  height: 180px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-illustration {
+  font-size: 80px;
+  opacity: 0.85;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover .card-illustration {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.danger-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(220, 38, 38, 0.85);
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+.card-content {
+  padding: 24px;
+}
+
+.card-content h3 {
+  font-size: 21px;
+  font-weight: 800;
+  margin: 0 0 10px;
+  color: white;
+}
+
+.card-desc {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.warning-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.35);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.warning-item {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.warning-item strong {
+  color: #fca5a5;
+}
+
+/* ─── 4. Đấu Trí Tình Huống ─── */
+.quiz-scenario-section {
+  background: rgba(30, 41, 59, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 40px;
+  margin-bottom: 50px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.quiz-header h2 {
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.quiz-header p {
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+.scenarios-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.scenario-item-box {
+  background: rgba(15, 23, 42, 0.45);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.scenario-question {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  border-left: 4px solid #ef4444;
+  padding-left: 12px;
+}
+
+.scenario-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.opt-btn {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  text-align: left;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.opt-btn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: white;
+}
+
+.opt-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.opt-btn.opt-correct {
+  background: rgba(16, 185, 129, 0.25) !important;
+  border-color: #10b981 !important;
+  color: #a7f3d0 !important;
+  font-weight: 700;
+}
+
+.opt-btn.opt-wrong {
+  background: rgba(239, 68, 68, 0.25) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+  font-weight: 700;
+}
+
+.scenario-feedback {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.scenario-feedback.fb-correct {
+  background: rgba(16, 185, 129, 0.15);
+  color: #a7f3d0;
+  border-left: 4px solid #10b981;
+}
+
+.scenario-feedback.fb-wrong {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border-left: 4px solid #ef4444;
+}
+
+/* ─── 5. Nút Thoát ─── */
+.back-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn-exit-to-home {
+  display: inline-block;
+  background: #334155;
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  padding: 16px 40px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.btn-exit-to-home:hover {
+  background: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .te-nan-header h1 {
+    font-size: 32px;
+  }
+  .hotline-bar {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    padding: 20px;
+  }
+  .hotline-left {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

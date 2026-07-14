@@ -1,4 +1,5 @@
 import './App.css';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
@@ -34,6 +35,87 @@ import ChatWindow from './components/ai/ChatWindow';
 import ThienTaiPage from './pages/ThienTaiPage';
 import ChayRungPage from './pages/ChayRungPage';
 import Baucu from './pages/Baucu';
+import TeNanXaHoiPage from './pages/TeNanXaHoiPage';
+import PhapLuatPage from './pages/PhapLuatPage';
+function Breadcrumbs() {
+  const location = useLocation();
+  const path = location.pathname;
+
+  // Ẩn breadcrumbs trên trang chủ
+  if (path === "/" || path === "") return null;
+
+  // Xác định các cấp bậc dựa vào path
+  const segments = path.split("/").filter(Boolean);
+  const breadcrumbsList = [];
+
+  // Mặc định luôn có Trang chủ ở đầu
+  breadcrumbsList.push({ label: "🏠 Trang chủ", path: "/" });
+
+  if (segments[0] === "chuyen-muc") {
+    breadcrumbsList.push({ label: "Chuyên mục cho bà con", path: "/chuyen-muc" });
+  } else if (segments[0] === "thu-tuc-hanh-chinh") {
+    breadcrumbsList.push({ label: "Dịch vụ công trực tuyến", path: "/thu-tuc-hanh-chinh" });
+    if (segments[1]) {
+      breadcrumbsList.push({ label: "Chi tiết thủ tục", path: `/thu-tuc-hanh-chinh/${segments[1]}` });
+    }
+  } else if (["bau-cu", "duoi-nuoc", "chay-rung", "thien-tai", "te-nan"].includes(segments[0])) {
+    breadcrumbsList.push({ label: "Chuyên mục cho bà con", path: "/chuyen-muc" });
+    
+    // Label cho từng chuyên mục
+    const labels = {
+      "bau-cu": "Tuyên truyền Bầu cử",
+      "duoi-nuoc": "Phòng chống đuối nước",
+      "chay-rung": "Phòng chống cháy rừng",
+      "thien-tai": "Phòng chống thiên tai",
+      "te-nan": "Phòng chống tệ nạn"
+    };
+    breadcrumbsList.push({ label: labels[segments[0]] || segments[0], path: path });
+  } else if (segments[0] === "tin-tuc") {
+    breadcrumbsList.push({ label: "Chuyên trang tin tức", path: "/tin-tuc" });
+    if (segments[1]) {
+      breadcrumbsList.push({ label: "Chi tiết bài viết", path: `/tin-tuc/${segments[1]}` });
+    }
+  } else {
+    // Các trang thông thường khác
+    const labels = {
+      "thong-bao": "Thông báo từ UBND",
+      "thong-tin": "Chuyên trang thông tin",
+      "tra-cuu": "Tra cứu thông tin",
+      "huong-dan-bhxh": "Hướng dẫn BHXH",
+      "huong-dan-vneid": "Hướng dẫn VNeID",
+      "lich-hop": "Lịch họp Ủy ban",
+      "chuyen-doi-so": "Chuyển đổi số",
+      "thu-vien-anh": "Thư viện ảnh",
+      "lien-he": "Liên hệ UBND xã",
+      "Ban-do": "Bản đồ xã Đăk Pxi",
+      "gia-nong-san": "Giá nông sản hôm nay"
+    };
+    breadcrumbsList.push({ label: labels[segments[0]] || segments[0], path: path });
+  }
+
+  return (
+    <nav className="global-breadcrumbs" aria-label="Breadcrumb">
+      <div className="global-breadcrumbs-inner">
+        {breadcrumbsList.map((item, index) => {
+          const isLast = index === breadcrumbsList.length - 1;
+          return (
+            <span key={index} className="breadcrumb-item-wrapper">
+              {index > 0 && <span className="breadcrumb-separator">›</span>}
+              {isLast ? (
+                <span className="breadcrumb-current">{item.label}</span>
+              ) : (
+                <Link to={item.path} className="breadcrumb-link">
+                  {item.label}
+                </Link>
+              )}
+            </span>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
 function AppLayout() {
   const location = useLocation();
 
@@ -69,6 +151,7 @@ function AppLayout() {
 </div>
 
           <AlertBanner />
+          <Breadcrumbs />
         </>
       )}
 
@@ -89,6 +172,8 @@ function AppLayout() {
           <Route path="/chay-rung" element={<ChayRungPage />} />
           <Route path="/quiz/:topic" element={<QuizGame />} />
           <Route path="/bau-cu" element={<Baucu />} />
+          <Route path="/te-nan" element={<TeNanXaHoiPage />} />
+          <Route path="/phap-luat" element={<PhapLuatPage />} />
           <Route path="/:category" element={<AllFeaturesPage />} />
           <Route path="/alert" element={<TTSButton />} />
           <Route path="/drag-drop" element={<DragDrop />} />
@@ -106,6 +191,40 @@ function AppLayout() {
     </>
   );
 }
+function ScrollToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+  return (
+    <button
+      className={`scroll-to-top-btn ${isVisible ? "visible" : ""}`}
+      onClick={scrollToTop}
+      aria-label="Cuộn lên đầu trang"
+      title="Cuộn lên đầu trang"
+    >
+      ▲
+    </button>
+  );
+}
+
 function App() {
   return (
     <LanguageProvider>
@@ -114,6 +233,7 @@ function App() {
           <Router>
             <AppLayout />
             <FloatingChatBot />
+            <ScrollToTop />
           </Router>
         </div>
       </FontSizeProvider>
