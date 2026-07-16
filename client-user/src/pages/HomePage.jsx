@@ -4,6 +4,7 @@ import axios from 'axios';
 import './HomePage.css';
 import './HomeChoice.css';
 import ChuyenTrangThongTin from './ChuyenTrangThongTin';
+import Footer from './Footer';
 
 const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
@@ -18,7 +19,7 @@ export default function HomePage() {
     axios.get(`${API}/bai-viet`, { params: { limit: 20, page: 1 } })
       .then(r => {
         const items = r.data.data || [];
-        
+
         // 1. Lọc video nạp cho Video Hub
         const filtered = items.filter(bv => bv.video && bv.video.trim() !== '');
         setVideoList(filtered);
@@ -66,14 +67,14 @@ export default function HomePage() {
               <h4>🆕 TIN MỚI CẬP NHẬT TRONG NGÀY</h4>
               <span className="urgent-timer-desc">Nội dung này sẽ tự động dừng nổi bật sau 24 giờ kể từ khi đăng</span>
             </div>
-            
+
             <div className="urgent-cards-container">
               {newReleases.map(bv => {
                 const isVideo = bv.video && bv.video.trim() !== '';
                 const timeStr = new Date(bv.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
                 return (
-                  <div 
-                    key={bv._id} 
+                  <div
+                    key={bv._id}
                     className={`urgent-card-item ${isVideo ? 'urgent-card--video' : 'urgent-card--article'}`}
                     onClick={() => {
                       if (isVideo) {
@@ -87,7 +88,7 @@ export default function HomePage() {
                       <span className="badge-pulse">🔴</span>
                       MỚI ĐĂNG ({timeStr})
                     </div>
-                    
+
                     <div className="urgent-card-thumb-wrap">
                       {bv.anh_dai_dien ? (
                         <img src={bv.anh_dai_dien} alt="" />
@@ -230,8 +231,9 @@ export default function HomePage() {
           </div>
 
         </aside>
-
       </div>
+
+      <Footer />
 
     </div>
   );

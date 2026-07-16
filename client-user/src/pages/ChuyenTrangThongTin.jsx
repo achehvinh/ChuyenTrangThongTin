@@ -7,41 +7,41 @@ const API =
   'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
 const DANH_MUC_LIST = [
-  { value: 'tat-ca',   label: 'Tất cả' },
-  { value: 'bau-cu',   label: 'Bầu cử' },
-  { value: 'su-kien',  label: 'Sự kiện' },
+  { value: 'tat-ca', label: 'Tất cả' },
+  { value: 'bau-cu', label: 'Bầu cử' },
+  { value: 'su-kien', label: 'Sự kiện' },
   { value: 'the-thao', label: 'Thể thao' },
-  { value: 'le-hoi',   label: 'Lễ hội' },
-  { value: 'tin-tuc',  label: 'Tin tức' },
+  { value: 'le-hoi', label: 'Lễ hội' },
+  { value: 'tin-tuc', label: 'Tin tức' },
 ];
 
 const DM_COLOR = {
-  'bau-cu':   '#c8102e',
-  'su-kien':  '#003087',
+  'bau-cu': '#c8102e',
+  'su-kien': '#003087',
   'the-thao': '#15803d',
-  'le-hoi':   '#b45309',
-  'tin-tuc':  '#0369a1',
-  'thong-bao':'#6d28d9',
-  'khac':     '#475569',
+  'le-hoi': '#b45309',
+  'tin-tuc': '#0369a1',
+  'thong-bao': '#6d28d9',
+  'khac': '#475569',
 };
 
 const DM_LABEL = {
-  'bau-cu':   'Bầu cử',
-  'su-kien':  'Sự kiện',
+  'bau-cu': 'Bầu cử',
+  'su-kien': 'Sự kiện',
   'the-thao': 'Thể thao',
-  'le-hoi':   'Lễ hội',
-  'tin-tuc':  'Tin tức',
-  'thong-bao':'Thông báo',
-  'khac':     'Khác',
+  'le-hoi': 'Lễ hội',
+  'tin-tuc': 'Tin tức',
+  'thong-bao': 'Thông báo',
+  'khac': 'Khác',
 };
 
 function fmtDate(iso) {
   const d = new Date(iso);
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
 }
 
 function fmtViews(n) {
-  if (n >= 1000) return `${(n/1000).toFixed(1)}K`;
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
   return String(n);
 }
 
@@ -115,8 +115,8 @@ function NormalCard({ bv, onClick }) {
           <span className="ct-normal-card-views">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="2">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <circle cx="12" cy="12" r="3"/>
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
             </svg>
             {fmtViews(bv.luot_xem)}
           </span>
@@ -128,7 +128,7 @@ function NormalCard({ bv, onClick }) {
 
 /* ── Modal đọc bài ── */
 function BaiVietModal({ id, onClose }) {
-  const [bv, setBv]         = useState(null);
+  const [bv, setBv] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -200,12 +200,12 @@ function BaiVietModal({ id, onClose }) {
 ════════════════════════════════════ */
 export default function ChuyenTrangThongTin() {
   const [featured, setFeatured] = useState([]); // 3 bài nổi bật
-  const [list, setList]         = useState([]);
-  const [total, setTotal]       = useState(0);
-  const [stats, setStats]       = useState({ bai: 0, luotXem: 0, danhMuc: 0 });
-  const [danhMuc, setDanhMuc]   = useState('tat-ca');
-  const [page, setPage]         = useState(1);
-  const [loading, setLoading]   = useState(true);
+  const [list, setList] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [stats, setStats] = useState({ bai: 0, luotXem: 0, danhMuc: 0 });
+  const [danhMuc, setDanhMuc] = useState('tat-ca');
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const LIMIT = 9;
 
   /* Load bài nổi bật + stats 1 lần khi mount */
@@ -218,7 +218,7 @@ export default function ChuyenTrangThongTin() {
         const allViews = (r.data.data || []).reduce((s, b) => s + (b.luot_xem || 0), 0);
         setStats({ bai: t, luotXem: allViews, danhMuc: 7 });
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   /* Load danh sách theo filter */
@@ -266,7 +266,7 @@ export default function ChuyenTrangThongTin() {
             <div className="ct-section-label">Nổi bật</div>
             <div className="ct-featured-grid">
               {featured[0] && (
-                <HeroCardBig bv={featured[0]} onClick={b =>window.open(`/tin-tuc/${b._id}`, '_blank')} />
+                <HeroCardBig bv={featured[0]} onClick={b => window.open(`/tin-tuc/${b._id}`, '_blank')} />
               )}
               <div className="ct-featured-right">
                 {featured.slice(1, 3).map(bv => (
@@ -325,10 +325,10 @@ export default function ChuyenTrangThongTin() {
                 p === '...'
                   ? <span key={`e${i}`} className="ct-pagination-ellipsis">…</span>
                   : <button
-                      key={p}
-                      className={page === p ? 'is-active' : ''}
-                      onClick={() => setPage(p)}
-                    >{p}</button>
+                    key={p}
+                    className={page === p ? 'is-active' : ''}
+                    onClick={() => setPage(p)}
+                  >{p}</button>
               )}
             <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>
               Sau ›
@@ -336,35 +336,6 @@ export default function ChuyenTrangThongTin() {
           </div>
         )}
       </div>
-
-      {/* ── STATS BAR ── */}
-      <div className="ct-stats-bar">
-        <div className="ct-stats-inner">
-          <div className="ct-stat">
-            <strong>{stats.bai}</strong>
-            <span>Bài viết đã đăng</span>
-          </div>
-          <div className="ct-stat-divider" />
-          <div className="ct-stat">
-            <strong>{stats.luotXem >= 1000
-              ? `${(stats.luotXem/1000).toFixed(1)}K`
-              : stats.luotXem}
-            </strong>
-            <span>Lượt xem</span>
-          </div>
-          <div className="ct-stat-divider" />
-          <div className="ct-stat">
-            <strong>{stats.danhMuc}</strong>
-            <span>Chuyên mục</span>
-          </div>
-          <div className="ct-stat-divider" />
-          <div className="ct-stat">
-            <strong>2026</strong>
-            <span>Năm hoạt động</span>
-          </div>
-        </div>
-      </div>
-
     </div>
   );
 }
