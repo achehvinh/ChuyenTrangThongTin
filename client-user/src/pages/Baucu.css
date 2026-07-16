@@ -232,6 +232,51 @@
     overflow: hidden;
 }
 
+/* Thẻ nổi bật chuyên nghiệp dùng cho hình thức biểu quyết duy nhất */
+.method-card--featured {
+    box-shadow: 0 16px 36px rgba(34, 197, 94, 0.08);
+    border: 3px solid #22c55e; /* Viền dày hơn */
+    display: flex;
+    flex-direction: row; /* Đưa chữ sang bên phải ảnh */
+    align-items: stretch;
+}
+
+.method-card--featured .method-image-box {
+    width: 46%; /* Ảnh chiếm 46% */
+    height: auto;
+    min-height: 380px; /* Ảnh to, cao rõ ràng */
+    flex-shrink: 0;
+}
+
+.method-card--featured .method-content-wrap {
+    width: 54%; /* Chữ chiếm 54% nằm bên phải */
+    padding: 42px 48px; /* Tăng padding cực rộng rãi */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.method-card--featured .method-content-wrap h3 {
+    font-size: 32px; /* Tiêu đề cực to */
+    color: #15803d;
+    margin-bottom: 12px;
+    font-weight: 900;
+}
+
+.method-card--featured .method-content-wrap p {
+    font-size: 20px; /* Chữ cực to dễ đọc */
+    color: #0f172a;
+    line-height: 1.9;
+}
+
+.method-card--featured .method-badge.success {
+    font-size: 14.5px; /* Badge to hơn */
+    padding: 8px 16px;
+    top: 16px;
+    left: 16px; /* Đưa badge sang trái để không che chữ */
+    right: auto;
+}
+
 .method-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -598,6 +643,34 @@
 
     .method-image-box {
         height: 150px;
+    }
+
+    .method-card--featured {
+        flex-direction: column;
+    }
+
+    .method-card--featured .method-image-box {
+        width: 100%;
+        height: 200px;
+        min-height: unset;
+    }
+
+    .method-card--featured .method-content-wrap {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .method-card--featured .method-content-wrap h3 {
+        font-size: 20px;
+    }
+
+    .method-card--featured .method-content-wrap p {
+        font-size: 15px;
+    }
+
+    .method-card--featured .method-badge.success {
+        left: auto;
+        right: 12px;
     }
 
     .method-content-wrap {

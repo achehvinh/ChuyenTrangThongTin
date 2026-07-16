@@ -6,8 +6,8 @@ export default function Baucu() {
     const navigate = useNavigate();
     const [speaking, setSpeaking] = useState(false);
     const [showInviteBanner, setShowInviteBanner] = useState(true);
-    // Sử dụng tệp âm thanh ghi âm riêng (giong-doc-bau-cu.mp3 trong thư mục public/video)
-    const [audio] = useState(() => new Audio('/video/dakpxi-baucu.mp3'));
+    // Sử dụng tệp âm thanh ghi âm riêng (QUY TRINH BAU CU TRUONG THON-PXI.mp3 trong thư mục public/video)
+    const [audio] = useState(() => new Audio('/video/QUY TRINH BAU CU TRUONG THON-PXI.mp3'));
 
     const [copied, setCopied] = useState(false);
     const [currentUrl, setCurrentUrl] = useState('');
@@ -34,7 +34,7 @@ export default function Baucu() {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'QR-Tuyen-Truyen-Bau-Cu-DakPxi.png';
+            a.download = 'QR-Tuyen-Truyen-Bieu-Quyet-DakPxi.png';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -54,7 +54,7 @@ export default function Baucu() {
                     setSpeaking(true);
                 })
                 .catch((err) => {
-                    alert("Tính năng đọc giọng nói: Bà con vui lòng đặt tệp âm thanh 'dakpxi-baucu.mp3' vào thư mục public/video/ để nghe giọng đọc nhé!");
+                    alert("Tính năng đọc giọng nói: Bà con vui lòng đặt tệp âm thanh 'QUY TRINH BAU CU TRUONG THON-PXI.mp3' vào thư mục public/video/ để nghe giọng đọc nhé!");
                     console.error("Audio play error:", err);
                 });
         }
@@ -85,12 +85,12 @@ export default function Baucu() {
 
     return (
         <div className="baucu-container">
-            {/* Banner mời nghe tuyên truyền bầu cử */}
+            {/* Banner mời nghe tuyên truyền biểu quyết */}
             {showInviteBanner && (
                 <div className={`baucu-invite-banner ${speaking ? 'playing' : ''}`}>
                     <div className="banner-icon-pulse">📢</div>
                     <div className="banner-text">
-                        <strong>Kính mời bà con lắng nghe tuyên truyền bầu cử!</strong>
+                        <strong>Kính mời bà con lắng nghe hướng dẫn biểu quyết!</strong>
                         <p>{speaking ? 'Hệ thống đang tự động phát thanh hướng dẫn...' : 'Bấm nút "Nghe hướng dẫn" bên dưới nếu loa chưa phát.'}</p>
                     </div>
                     {speaking && (
@@ -112,9 +112,9 @@ export default function Baucu() {
 
             {/* Header Quốc kỳ & Huy hiệu */}
             <header className="baucu-header">
-                <div className="baucu-header-logo">🗳️</div>
+                <div className="baucu-header-logo">🙋‍♂️</div>
                 <h1 className="baucu-main-title">
-                    HƯỚNG DẪN QUY TRÌNH BẦU CỬ TRƯỞNG THÔN
+                    HƯỚNG DẪN QUY TRÌNH BIỂU QUYẾT TẠI HỘI NGHỊ CỬ TRI
                 </h1>
                 <p className="baucu-subtitle">
                     Các làng trên địa bàn xã Đăk Pxi - Nhiệm kỳ 2025 - 2030
@@ -132,49 +132,36 @@ export default function Baucu() {
 
             {/* Khung 4 nguyên tắc vàng */}
             <section className="baucu-principles">
-                <h2 className="baucu-section-title">4 Nguyên Tắc Vàng Khi Bỏ Phiếu</h2>
+                <h2 className="baucu-section-title">4 Nguyên Tắc Vàng Khi Biểu Quyết</h2>
                 <div className="baucu-principles-grid">
                     <div className="principle-card">
                         <span className="principle-icon">🌍</span>
                         <h3>Phổ thông</h3>
-                        <p>Mọi công dân từ đủ 18 tuổi đều có quyền bầu cử.</p>
+                        <p>Mọi cử tri đại diện hộ gia đình đều có quyền tham gia biểu quyết.</p>
                     </div>
                     <div className="principle-card">
                         <span className="principle-icon">⚖️</span>
-                        <h3>Bình đẳng</h3>
-                        <p>Mỗi cử tri có một lá phiếu và giá trị như nhau.</p>
+                        <h3>Dân chủ</h3>
+                        <p>Mỗi cử tri đại diện hộ gia đình có một quyền biểu quyết ngang nhau.</p>
                     </div>
                     <div className="principle-card">
-                        <span className="principle-icon">🤝</span>
+                        <span className="principle-icon">🙋‍♂️</span>
                         <h3>Trực tiếp</h3>
-                        <p>Cử tri phải tự tay bỏ phiếu, không nhờ người khác.</p>
+                        <p>Cử tri phải tự mình giơ tay biểu quyết trực tiếp tại hội nghị.</p>
                     </div>
                     <div className="principle-card">
-                        <span className="principle-icon">🔒</span>
-                        <h3>Bỏ phiếu kín</h3>
-                        <p>Bảo mật tuyệt đối lựa chọn của cử tri trong buồng kín.</p>
+                        <span className="principle-icon">👁️</span>
+                        <h3>Công khai</h3>
+                        <p>Thực hiện biểu quyết công khai dưới sự chứng kiến của toàn thể hội nghị.</p>
                     </div>
                 </div>
             </section>
 
             {/* Các hình thức bỏ phiếu */}
             <section className="baucu-methods">
-                <h2 className="baucu-section-title">Các Hình Thức Bỏ Phiếu Hợp Lệ</h2>
-                <div className="baucu-methods-grid">
-                    <div className="method-card">
-                        <div className="method-image-box">
-                            <img src="/huong-dan/hinh-thuc-1.png" alt="Bỏ Phiếu Kín" className="method-img" />
-                            <span className="method-badge primary">PHỔ BIẾN NHẤT</span>
-                        </div>
-                        <div className="method-content-wrap">
-                            <h3>Bỏ Phiếu Kín</h3>
-                            <p>
-                                Cử tri nhận phiếu bầu, <strong>vào phòng gạch phiếu độc lập</strong> để thực hiện lựa chọn bảo mật cá nhân, sau đó <strong>tự tay bỏ phiếu</strong> vào hòm phiếu chính.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="method-card">
+                <h2 className="baucu-section-title">Hình Thức Biểu Quyết Hợp Lệ</h2>
+                <div className="baucu-methods-grid" style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div className="method-card method-card--featured" style={{ maxWidth: '960px', width: '100%' }}>
                         <div className="method-image-box">
                             <img src="/huong-dan/hinh-thuc-2.png" alt="Biểu Quyết Giơ Tay" className="method-img" />
                             <span className="method-badge success">HỘI NGHỊ THÔN</span>
@@ -186,19 +173,6 @@ export default function Baucu() {
                             </p>
                         </div>
                     </div>
-
-                    <div className="method-card">
-                        <div className="method-image-box">
-                            <img src="/huong-dan/hinh-thuc-3.png" alt="Hòm Phiếu Phụ" className="method-img" />
-                            <span className="method-badge warning">HỖ TRỢ ĐẶC BIỆT</span>
-                        </div>
-                        <div className="method-content-wrap">
-                            <h3>Hòm Phiếu Phụ</h3>
-                            <p>
-                                Dành riêng cho cử tri <strong>già yếu, khuyết tật hoặc đau ốm</strong> không thể đến Nhà rông. Thành viên Tổ bầu cử <strong>mang hòm phiếu phụ và phiếu bầu đến tận nhà</strong> hỗ trợ.
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -207,9 +181,9 @@ export default function Baucu() {
                 <div className="fb-link-card">
                     <div className="fb-link-icon">📱</div>
                     <div className="fb-link-content">
-                        <h3>Xem & Chia Sẻ Tuyên Truyền Bầu Cử Trên Facebook Xã Đăk Pxi</h3>
+                        <h3>Xem & Chia Sẻ Tuyên Truyền Biểu Quyết Trên Facebook Xã Đăk Pxi</h3>
                         <p>
-                            Thông tin chính thức về ngày hội bầu cử, danh sách ứng cử viên và hướng dẫn quy trình bỏ phiếu đã được đăng tải trên Trang cộng đồng của xã. Kính mời bà con truy cập Facebook để theo dõi, tương tác và chia sẻ thông tin đến mọi người dân trong thôn!
+                            Thông tin chính thức về hội nghị biểu quyết, nội dung chương trình và quy trình biểu quyết bằng hình thức giơ tay đã được đăng tải trên Trang cộng đồng của xã. Kính mời bà con truy cập Facebook để theo dõi, tương tác và chia sẻ thông tin đến mọi người dân trong thôn!
                         </p>
                         <a 
                             href="https://www.facebook.com/share/p/1DwY7F2kzy/" 
@@ -225,19 +199,19 @@ export default function Baucu() {
 
             {/* Quy trình 4 bước với 4 hình ảnh minh họa */}
             <section className="baucu-steps">
-                <h2 className="baucu-section-title">Quy Trình 4 Bước Bỏ Phiếu Đúng Quy Định</h2>
+                <h2 className="baucu-section-title">Quy Trình 4 Bước Biểu Quyết Đúng Quy Định</h2>
 
                 <div className="baucu-steps-list">
                     {/* Bước 1 */}
                     <div className="baucu-step-row step-row-1">
                         <div className="baucu-step-info">
                             <span className="step-badge">BƯỚC 1</span>
-                            <h3>Nhận thẻ cử tri &amp; Kiểm tra thông tin</h3>
+                            <h3>Ổn định tổ chức &amp; Kiểm tra tư cách cử tri</h3>
                             <p>
-                                Bà con đến địa điểm niêm yết danh sách cử tri tại nhà rông hoặc nhà văn hóa thôn mình để kiểm tra kỹ họ tên, ngày sinh. Sau đó nhận Thẻ cử tri từ thành viên Tổ bầu cử cấp phát.
+                                Bà con đến địa điểm tổ chức hội nghị tại nhà rông hoặc nhà văn hóa thôn mình đúng giờ để đăng ký tham dự, ổn định tổ chức và kiểm tra tư cách cử tri đại diện cho hộ gia đình tham gia biểu quyết.
                             </p>
                             <div className="step-alert">
-                                💡 Lưu ý: Mang theo căn cước công dân khi đi nhận thẻ và đối chiếu.
+                                💡 Lưu ý: Mang theo căn cước công dân hoặc giấy mời của Ủy ban nhân dân xã/thôn để đối chiếu.
                             </div>
                         </div>
                         <div className="baucu-step-image">
@@ -246,7 +220,7 @@ export default function Baucu() {
                                 alt="Niêm yết danh sách cử tri và phát thẻ"
                                 onError={(e) => { e.target.src = 'https://picsum.photos/600/400?random=1'; }}
                             />
-                            <span className="image-caption">Hình 1: Danh sách cử tri được niêm yết công khai tại địa phương</span>
+                            <span className="image-caption">Hình 1: Ban tổ chức đối chiếu danh sách cử tri tham gia hội nghị</span>
                         </div>
                     </div>
 
@@ -254,12 +228,12 @@ export default function Baucu() {
                     <div className="baucu-step-row reverse step-row-2">
                         <div className="baucu-step-info">
                             <span className="step-badge">BƯỚC 2</span>
-                            <h3>Tìm hiểu về các ứng cử viên</h3>
+                            <h3>Lắng nghe báo cáo &amp; Đề cử nhân sự</h3>
                             <p>
-                                Bà con dành thời gian đọc kỹ bảng tiểu sử tóm tắt, quá trình học tập, công tác và chương trình hành động của các ứng cử viên được dán tại khu vực bỏ phiếu để lựa chọn người đại biểu xứng đáng nhất.
+                                Bà con lắng nghe kỹ báo cáo kết quả công tác nhiệm kỳ vừa qua của trưởng thôn cũ, đồng thời xem xét danh sách nhân sự đề cử trưởng thôn mới do chi bộ hoặc ban công tác mặt trận thôn giới thiệu trước hội nghị.
                             </p>
                             <div className="step-alert">
-                                💡 Lưu ý: Hãy thảo luận và xem kỹ để chọn ra người có đức có tài.
+                                💡 Lưu ý: Tập trung thảo luận dân chủ, thẳng thắn về năng lực và đạo đức của người được giới thiệu.
                             </div>
                         </div>
                         <div className="baucu-step-image">
@@ -268,7 +242,7 @@ export default function Baucu() {
                                 alt="Tìm hiểu tiểu sử ứng cử viên"
                                 onError={(e) => { e.target.src = 'https://picsum.photos/600/400?random=2'; }}
                             />
-                            <span className="image-caption">Hình 2: Cử tri tìm hiểu tiểu sử tóm tắt của các ứng cử viên</span>
+                            <span className="image-caption">Hình 2: Cử tri thảo luận và đề xuất ý kiến về nhân sự trưởng thôn mới</span>
                         </div>
                     </div>
 
@@ -276,12 +250,12 @@ export default function Baucu() {
                     <div className="baucu-step-row step-row-3">
                         <div className="baucu-step-info">
                             <span className="step-badge">BƯỚC 3</span>
-                            <h3>Xuất trình thẻ &amp; Nhận phiếu bầu</h3>
+                            <h3>Thảo luận công khai &amp; Thống nhất phương án</h3>
                             <p>
-                                Vào ngày chủ nhật bầu cử, bà con đến đúng phòng bỏ phiếu quy định của thôn. Xuất trình Thẻ cử tri cho ban tiếp nhận đóng dấu xác nhận và nhận phiếu bầu cử tương ứng cho các cấp.
+                                Toàn thể hội nghị tiến hành thảo luận công khai các nội dung đề cử. Bà con có thể tự ứng cử hoặc đề cử thêm nhân sự khác có đủ tài đức ngoài danh sách dự kiến để đưa ra thống nhất trước khi tiến hành biểu quyết.
                             </p>
                             <div className="step-alert">
-                                💡 Lưu ý: Giữ gìn phiếu phẳng phiu, không làm rách hoặc bẩn phiếu.
+                                💡 Lưu ý: Phát huy tinh thần dân chủ, đoàn kết để chọn ra người có tài có đức gánh vác việc chung.
                             </div>
                         </div>
                         <div className="baucu-step-image">
@@ -290,7 +264,7 @@ export default function Baucu() {
                                 alt="Cử tri nhận phiếu bầu"
                                 onError={(e) => { e.target.src = 'https://picsum.photos/600/400?random=3'; }}
                             />
-                            <span className="image-caption">Hình 3: Xuất trình thẻ cử tri để nhận phiếu bỏ bầu cử</span>
+                            <span className="image-caption">Hình 3: Cử tri thảo luận thống nhất danh sách nhân sự trước khi biểu quyết</span>
                         </div>
                     </div>
 
@@ -298,12 +272,12 @@ export default function Baucu() {
                     <div className="baucu-step-row reverse step-row-4">
                         <div className="baucu-step-info">
                             <span className="step-badge">BƯỚC 4</span>
-                            <h3>Gạch phiếu &amp; Tự tay bỏ phiếu</h3>
+                            <h3>Tiến hành biểu quyết bằng giơ tay</h3>
                             <p>
-                                Bà con vào phòng gạch phiếu độc lập. Dùng bút gạch ngang qua họ tên những người không tín nhiệm (để lại những người tín nhiệm). Sau đó đi ra khu vực hòm phiếu và tự tay bỏ lá phiếu của mình vào hòm phiếu.
+                                Khi chủ trì hội nghị lấy ý kiến biểu quyết, bà con thực hiện quyền biểu quyết bằng cách giơ tay (Đồng ý, Không đồng ý hoặc có ý kiến khác). Ban thư ký hội nghị sẽ tiến hành quan sát, kiểm đếm và ghi biên bản chính xác kết quả.
                             </p>
                             <div className="step-alert warning">
-                                ⚠️ Cực kỳ quan trọng: Tuyệt đối không bỏ phiếu hộ hoặc nhờ người khác bỏ phiếu thay mình.
+                                ⚠️ Cực kỳ quan trọng: Mỗi hộ gia đình chỉ được biểu quyết đại diện một lần, tuyệt đối không biểu quyết hộ cho hộ gia đình khác.
                             </div>
                         </div>
                         <div className="baucu-step-image">
@@ -312,7 +286,7 @@ export default function Baucu() {
                                 alt="Bỏ phiếu vào hòm phiếu"
                                 onError={(e) => { e.target.src = 'https://picsum.photos/600/400?random=4'; }}
                             />
-                            <span className="image-caption">Hình 4: Cử tri tự tay bỏ phiếu vào hòm phiếu niêm phong</span>
+                            <span className="image-caption">Hình 4: Cử tri biểu quyết thống nhất nhân sự trưởng thôn bằng hình thức giơ tay</span>
                         </div>
                     </div>
                 </div>
@@ -325,17 +299,17 @@ export default function Baucu() {
                     <div className="notice-box danger">
                         <h4>🔴 Các hành vi bị CẤM nghiêm ngặt:</h4>
                         <ul>
-                            <li>Không bỏ phiếu hộ, bỏ phiếu thay người khác dưới mọi hình thức.</li>
-                            <li>Không mang điện thoại, máy ảnh vào trong buồng gạch phiếu để chụp ảnh phiếu bầu.</li>
-                            <li>Không được ký hoặc ghi bất kỳ ký hiệu lạ nào khác ngoài việc gạch tên người không tín nhiệm lên phiếu bầu.</li>
+                            <li>Tuyệt đối không giơ tay biểu quyết hộ, biểu quyết thay cho hộ gia đình khác dưới mọi hình thức.</li>
+                            <li>Không gây mất trật tự, tranh cãi hoặc cản trở tiến trình tổ chức hội nghị biểu quyết.</li>
+                            <li>Nghiêm cấm mọi hành vi gian lận hoặc can thiệp sai lệch vào quá trình kiểm đếm số lượng giơ tay của thư ký hội nghị.</li>
                         </ul>
                     </div>
                     <div className="notice-box info">
                         <h4>🔵 Thời gian và Địa điểm:</h4>
                         <ul>
-                            <li><strong>Thời gian bỏ phiếu:</strong> Bắt đầu từ lúc 07 giờ 00 phút, ngày 19 tháng 7 năm 2026.</li>
-                            <li><strong>Địa điểm bỏ phiếu:</strong> Tại Nhà rông các thôn trên địa bàn xã Đăk Pxi.</li>
-                            <li>Trường hợp bà con già yếu, khuyết tật không tự đi bỏ phiếu được, Tổ bầu cử sẽ mang hòm phiếu phụ đến tận nhà hỗ trợ.</li>
+                            <li><strong>Thời gian tổ chức hội nghị:</strong> Bắt đầu từ lúc 07 giờ 30 phút, ngày 19 tháng 7 năm 2026.</li>
+                            <li><strong>Địa điểm tổ chức:</strong> Tại Nhà rông hoặc Nhà văn hóa các thôn trên địa bàn xã Đăk Pxi.</li>
+                            <li>Kính mời toàn thể cử tri đại diện cho các hộ gia đình sắp xếp công việc tham dự đầy đủ, đúng giờ để bảo đảm quyền dân chủ của mình.</li>
                         </ul>
                     </div>
                 </div>
@@ -343,12 +317,12 @@ export default function Baucu() {
 
             {/* Chia sẻ & Tạo mã QR */}
             <section className="baucu-share-section">
-                <h2 className="baucu-section-title">Chia Sẻ & Tuyên Truyền Bầu Cử</h2>
+                <h2 className="baucu-section-title">Chia Sẻ & Tuyên Truyền Biểu Quyết</h2>
                 <div className="share-container-card">
                     <div className="share-info-col">
                         <h3>📢 Gửi hướng dẫn đến người thân &amp; hàng xóm</h3>
                         <p>
-                            Bà con hãy chung tay tuyên truyền ngày hội bầu cử bằng cách chia sẻ đường liên kết hướng dẫn này đến nhóm Zalo, Facebook của gia đình, dòng họ hoặc làng mình để mọi người cùng nắm vững quy trình gạch phiếu và tự tay bỏ phiếu đúng quy định pháp luật.
+                            Bà con hãy chung tay tuyên truyền quy trình biểu quyết bằng cách chia sẻ đường liên kết hướng dẫn này đến các nhóm Zalo, Facebook của gia đình, dòng họ hoặc làng mình để mọi người cùng nắm vững quy trình và chủ động tham gia biểu quyết đúng quy định pháp luật.
                         </p>
                         <div className="share-actions-buttons">
                             <button 
@@ -383,7 +357,7 @@ export default function Baucu() {
                             {currentUrl && (
                                 <img 
                                     src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentUrl)}`} 
-                                    alt="Mã QR Bầu cử" 
+                                    alt="Mã QR Biểu quyết" 
                                     className="qr-code-img"
                                 />
                             )}
@@ -403,7 +377,7 @@ export default function Baucu() {
                         <h3>Xác Thực Thông Tin Chính Thống</h3>
                     </div>
                     <p className="verification-desc">
-                        Đây là thông tin tuyên truyền hướng dẫn bầu cử chính thức, đúng sự thật của Ủy ban nhân dân xã Đăk Pxi. Bà con có thể nhấn vào liên kết chính thức dưới đây để kiểm chứng và xem chi tiết bài đăng gốc trên Trang thông tin điện tử xã Đăk Pxi, tỉnh Quảng Ngãi:
+                        Đây là thông tin tuyên truyền hướng dẫn quy trình biểu quyết tại hội nghị cử tri chính thức, đúng sự thật của Ủy ban nhân dân xã Đăk Pxi. Bà con có thể nhấn vào liên kết chính thức dưới đây để kiểm chứng và xem chi tiết bài đăng gốc trên Trang thông tin điện tử xã Đăk Pxi, tỉnh Quảng Ngãi:
                     </p>
                     <a 
                         href="https://dakpxi.quangngai.gov.vn/gioi-thieu/tin-chi-dao-dieu-hanh/dak-pxi-san-sang-cho-cuoc-bau-cu-truong-thon-nhiem-ky-2025-20302.html"
@@ -418,7 +392,7 @@ export default function Baucu() {
 
             {/* Khẩu hiệu tuyên truyền chân trang */}
             <footer className="baucu-footer">
-                <p className="slogan">"TÍCH CỰC THAM GIA BẦU CỬ TRƯỞNG THÔN – PHÁT HUY QUYỀN LÀM CHỦ CỦA NHÂN DÂN!"</p>
+                <p className="slogan">"TÍCH CỰC THAM GIA HỘI NGHỊ CỬ TRI – PHÁT HUY DÂN CHỦ TRONG BIỂU QUYẾT TRƯỞNG THÔN!"</p>
             </footer>
         </div>
     );
