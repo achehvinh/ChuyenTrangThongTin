@@ -260,29 +260,6 @@ export default function ChuyenTrangThongTin() {
 
       <div className="ct-body">
 
-        {/* ── NỔI BẬT ── */}
-        {featured.length > 0 && (
-          <section className="ct-featured">
-            <div className="ct-section-label">Nổi bật</div>
-            <div className="ct-featured-grid">
-              {featured[0] && (
-                <HeroCardBig bv={featured[0]} onClick={b => window.open(`/tin-tuc/${b._id}`, '_blank')} />
-              )}
-              <div className="ct-featured-right">
-                {featured.slice(1, 3).map(bv => (
-                  <HeroCardSmall key={bv._id} bv={bv} onClick={b => window.open(`/tin-tuc/${b._id}`, '_blank')} />
-                ))}
-              </div>
-            </div>
-            <a className="ct-see-all" href="#all">Xem tất cả →</a>
-          </section>
-        )}
-
-        {/* ── DIVIDER ── */}
-        <div className="ct-divider" id="all">
-          <span>TẤT CẢ BÀI VIẾT</span>
-        </div>
-
         {/* ── GRID BÀI THƯỜNG ── */}
         {loading ? (
           <div className="ct-grid">

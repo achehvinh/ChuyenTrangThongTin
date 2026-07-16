@@ -21,6 +21,7 @@ const DANH_MUC_LIST = [
 const EMPTY_FORM = {
   tieu_de: '', mo_ta: '', noi_dung: '',
   danh_muc: 'su-kien', trang_thai: 'nhap', nguoi_dang: 'Admin',
+  chu_chay: '',
 };
 
 function getToken() {
@@ -165,6 +166,7 @@ function openEdit(bv) {
     danh_muc: bv.danh_muc || 'su-kien',
     trang_thai: bv.trang_thai || 'nhap',
     nguoi_dang: bv.nguoi_dang || 'Admin',
+    chu_chay: bv.chu_chay || '',
   });
   setAnh(null);
   setAnhPreview(bv.anh_dai_dien || '');
@@ -482,6 +484,12 @@ async function handleSubmit(e) {
         placeholder="Mô tả ngắn (hiện ở danh sách)"
         value={form.mo_ta}
         onChange={e => setForm(p => ({ ...p, mo_ta: e.target.value }))}
+      />
+      <input
+        className="bv-input"
+        placeholder="Dòng chữ chạy nổi bật trên trang chủ (bỏ trống nếu không muốn chạy)"
+        value={form.chu_chay}
+        onChange={e => setForm(p => ({ ...p, chu_chay: e.target.value }))}
       />
       <input
         className="bv-input"

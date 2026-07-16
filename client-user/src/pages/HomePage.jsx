@@ -13,101 +13,167 @@ export default function HomePage() {
   const [showTraCuu, setShowTraCuu] = useState(false);
   const [videoList, setVideoList] = useState([]);
   const [activeVideo, setActiveVideo] = useState(null);
-  const [newReleases, setNewReleases] = useState([]); // 🆕 Danh sách tin mới nổi bật trong 24h qua
+  const [latestArticles, setLatestArticles] = useState([]); // Danh sách tin mới tổng hợp
 
   useEffect(() => {
-    axios.get(`${API}/bai-viet`, { params: { limit: 20, page: 1 } })
+    axios.get(`${API}/bai-viet`, { params: { limit: 30, page: 1 } })
       .then(r => {
         const items = r.data.data || [];
 
-        // 1. Lọc video nạp cho Video Hub
-        const filtered = items.filter(bv => bv.video && bv.video.trim() !== '');
-        setVideoList(filtered);
-        if (filtered.length > 0) {
-          setActiveVideo(filtered[0]);
+        // 1. Lọc video nạp cho Video Hub bên phải
+        const filteredVideos = items.filter(bv => bv.video && bv.video.trim() !== '');
+        setVideoList(filteredVideos);
+        if (filteredVideos.length > 0) {
+          setActiveVideo(filteredVideos[0]);
         }
 
-        // 2. Lọc các bài viết / video đăng trong vòng 24 giờ qua
-        const now = new Date();
-        const freshItems = items.filter(bv => {
-          const createdAt = new Date(bv.createdAt);
-          const diffMs = now - createdAt;
-          const diffHours = diffMs / (1000 * 60 * 60);
-          return diffHours <= 24; // chưa đủ 24 tiếng
-        });
-        setNewReleases(freshItems);
+        // 2. Tải bài viết tin tức (tất cả bài viết)
+        setLatestArticles(items);
       })
       .catch(err => console.error("Lỗi tải tin tức trang chủ:", err));
   }, []);
 
+  const featuredArticle = latestArticles[0];
+  const timelineArticles = latestArticles.slice(1, 6);
+
   return (
     <div className="home">
 
-      {/* ── BẢN TIN NỔI BẬT KHẨN CẤP / MỚI ĐĂNG TRONG 24H ── */}
-      {newReleases.length > 0 && (
-        <section className="home-urgent-banner">
-          {/* Dòng chữ chạy (Marquee) thông báo tin mới chưa quá 24h */}
-          <div className="urgent-marquee-bar">
-            <span className="urgent-marquee-label">🔥 TIN NÓNG 24H:</span>
-            <div className="urgent-marquee-track">
-              <span className="urgent-marquee-text" dangerouslySetInnerHTML={{
-                __html: newReleases.map(bv => {
-                  const time = new Date(bv.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-                  const date = new Date(bv.createdAt).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
-                  const typeLabel = (bv.video && bv.video.trim() !== '') ? 'Xem video mới' : 'Xem bài viết mới';
-                  return `[Đăng lúc ${time} ${date}] ${bv.tieu_de.toUpperCase()} (${typeLabel}) &nbsp;&nbsp;&nbsp;&nbsp;`;
-                }).join(' &nbsp;&nbsp;·&nbsp;&nbsp; ')
-              }} />
+      {/* ── PHÂN KHU TIN MỚI 3 CỘT (THEO ẢNH MẪU CỦA USER) ── */}
+      {latestArticles.length > 0 && (
+        <section className="home-news-hub">
+          <div className="news-hub-header">
+            <div className="news-hub-header-left">
+              <span>TIN MỚI</span>
+            </div>
+
+            <div className="news-hub-header-marquee">
+              <marquee
+                behavior="scroll"
+                direction="left"
+                scrollamount="5"
+                onMouseOver={(e) => e.currentTarget.stop()}
+                onMouseOut={(e) => e.currentTarget.start()}
+              >
+                {latestArticles
+                  .slice(0, 6)
+                  .map((bv, idx, arr) => {
+                    const txt = bv.chu_chay && bv.chu_chay.trim() !== '' ? bv.chu_chay : bv.tieu_de;
+                    return (
+                      <span key={bv._id} className="home-marquee-item">
+                        <span
+                          className="home-marquee-link"
+                          onClick={() => window.open(`/tin-tuc/${bv._id}`, '_blank')}
+                        >
+                          {txt}
+                        </span>
+                        {idx < arr.length - 1 && <span className="home-marquee-sep"> &nbsp; &nbsp; &nbsp; &nbsp; · &nbsp; &nbsp; &nbsp; &nbsp; </span>}
+                      </span>
+                    );
+                  })
+                }
+              </marquee>
             </div>
           </div>
 
-          {/* Grid các thẻ bài viết/video mới nổi bật */}
-          <div className="urgent-grid-box">
-            <div className="urgent-header-row">
-              <h4>🆕 TIN MỚI CẬP NHẬT TRONG NGÀY</h4>
-              <span className="urgent-timer-desc">Nội dung này sẽ tự động dừng nổi bật sau 24 giờ kể từ khi đăng</span>
+          <div className="news-hub-grid">
+            {/* 1. CỘT TRÁI: BÀI VIẾT NỔI BẬT LỚN */}
+            <div className="news-hub-featured-column">
+              {featuredArticle && (
+                <div
+                  className="featured-article-card"
+                  onClick={() => window.open(`/tin-tuc/${featuredArticle._id}`, '_blank')}
+                >
+                  <div className="featured-article-img-wrap">
+                    {featuredArticle.anh_dai_dien ? (
+                      <img src={featuredArticle.anh_dai_dien} alt={featuredArticle.tieu_de} />
+                    ) : (
+                      <div className="featured-article-img-placeholder">📰</div>
+                    )}
+                  </div>
+                  <h3 className="featured-article-title">
+                    {featuredArticle.tieu_de}
+                  </h3>
+                </div>
+              )}
             </div>
 
-            <div className="urgent-cards-container">
-              {newReleases.map(bv => {
-                const isVideo = bv.video && bv.video.trim() !== '';
-                const timeStr = new Date(bv.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-                return (
+            {/* 2. CỘT GIỮA: DÒNG THỜI GIAN TIN TỨC (TIMELINE) */}
+            <div className="news-hub-timeline-column">
+              <div className="timeline-line"></div>
+              <div className="timeline-items-list">
+                {timelineArticles.map(bv => {
+                  const dateObj = new Date(bv.createdAt);
+                  const day = String(dateObj.getDate()).padStart(2, '0');
+                  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                  return (
+                    <div
+                      key={bv._id}
+                      className="timeline-item"
+                      onClick={() => window.open(`/tin-tuc/${bv._id}`, '_blank')}
+                    >
+                      <div className="timeline-dot-wrapper">
+                        <div className="timeline-dot"></div>
+                      </div>
+                      <div className="timeline-date-block">
+                        <span className="timeline-day">{day}</span>
+                        <span className="timeline-month">Tháng {month}</span>
+                      </div>
+                      <div className="timeline-title-block">
+                        <p className="timeline-article-title">{bv.tieu_de}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 3. CỘT PHẢI: VIDEO & PHÁT THANH */}
+            <div className="news-hub-video-column">
+              {activeVideo ? (
+                <div className="video-hub-player-wrapper">
+                  <video
+                    key={activeVideo._id}
+                    src={activeVideo.video}
+                    poster={activeVideo.anh_dai_dien || ''}
+                    controls
+                    className="video-hub-media"
+                  />
+                </div>
+              ) : (
+                <div className="video-hub-player-wrapper-empty">
+                  🎥 Chưa có video phát thanh
+                </div>
+              )}
+
+              <div className="video-hub-playlist">
+                {videoList.slice(0, 3).map(v => (
                   <div
-                    key={bv._id}
-                    className={`urgent-card-item ${isVideo ? 'urgent-card--video' : 'urgent-card--article'}`}
-                    onClick={() => {
-                      if (isVideo) {
-                        navigate('/video', { state: { activeVideoId: bv._id } });
-                      } else {
-                        window.open(`/tin-tuc/${bv._id}`, '_blank');
-                      }
-                    }}
+                    key={v._id}
+                    className={`video-hub-playlist-item ${v._id === activeVideo?._id ? 'active' : ''}`}
+                    onClick={() => setActiveVideo(v)}
+                    title={v.tieu_de}
                   >
-                    <div className="urgent-card-badge">
-                      <span className="badge-pulse">🔴</span>
-                      MỚI ĐĂNG ({timeStr})
-                    </div>
-
-                    <div className="urgent-card-thumb-wrap">
-                      {bv.anh_dai_dien ? (
-                        <img src={bv.anh_dai_dien} alt="" />
+                    <div className="video-hub-playlist-thumb">
+                      {v.anh_dai_dien ? (
+                        <img src={v.anh_dai_dien} alt={v.tieu_de} />
                       ) : (
-                        <div className="urgent-card-thumb-empty">{isVideo ? '🎥 Video' : '📝 Tin tức'}</div>
+                        <div className="video-hub-playlist-thumb-empty">🎥</div>
                       )}
-                      {isVideo && <div className="urgent-play-overlay-icon">▶</div>}
+                      <div className="video-hub-playlist-thumb-overlay">▶</div>
                     </div>
-
-                    <div className="urgent-card-info">
-                      <span className="urgent-card-category-label">
-                        {isVideo ? '🎥 Video tuyên truyền' : '📝 Bài viết mới'}
-                      </span>
-                      <h5 className="urgent-card-title">{bv.tieu_de}</h5>
-                      <span className="urgent-card-click-cta">Nhấn vào đây để xem chi tiết →</span>
+                    <div className="video-hub-playlist-info">
+                      <p className="video-hub-playlist-title">{v.tieu_de}</p>
                     </div>
                   </div>
-                );
-              })}
+                ))}
+              </div>
+
+              <div className="video-hub-see-all-wrapper">
+                <span className="video-hub-see-all-link" onClick={() => navigate('/video')}>
+                  Xem tất cả video →
+                </span>
+              </div>
             </div>
           </div>
         </section>
@@ -116,8 +182,8 @@ export default function HomePage() {
       {/* ── KHU VỰC CHỌN NHANH: Tuyên truyền / Hỗ trợ dịch vụ công ── */}
       <section className="home-choice">
         <h2 className="home-choice-title">
-          Chào mừng bà con đến với Trang Tuyên truyền & Hỗ trợ Dịch vụ Công xã Đăk Pxi!<br />
-          Bà con muốn hỗ trợ gì?
+          Chào mừng bà con đến với Trang thông tin điện tử Phòng Văn hóa - Xã hội xã Đăk Pxi!<br />
+          Bà con cần hỗ trợ về thông tin hay nội dung tuyên truyền nào?
         </h2>
         <div className="home-choice-grid">
           <button

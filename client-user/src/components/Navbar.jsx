@@ -37,8 +37,8 @@ export default function Navbar() {
             className="navbar-logo"
           />
           <div className="navbar-title">
-            <span className="navbar-sub">Phòng Văn hóa Xã hội — Xã Đăk Pxi</span>
-            <span className="navbar-main">Tuyên truyền & Hỗ trợ Dịch vụ Công</span>
+
+            <span className="navbar-main">TRANG THÔNG TIN ĐIỆN TỬ PHÒNG VĂN HÓA - XÃ HỘI XÃ ĐĂK PXI</span>
           </div>
         </NavLink>
 

@@ -32,7 +32,7 @@ export default function Footer() {
                         Cổng thông tin điện tử xã Đăk Pxi:{' '}
 
                         <a
-                            href="https://dakpxi.gov.vn"
+                            href="https://dakpxi.quangngai.gov.vn/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="footer-link"

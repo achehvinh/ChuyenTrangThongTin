@@ -7,6 +7,7 @@ const BaiVietSchema = new mongoose.Schema({
   anh_dai_dien: { type: String, default: '' },      // URL ảnh đại diện
   anh_phu: { type: [String], default: [] },          // 👈 mảng ảnh phụ, không giới hạn số lượng
   video: { type: String, default: '' },
+  chu_chay: { type: String, default: '' },          // 👈 chữ chạy tùy chọn hiển thị trên trang chủ
   anh_phu: [{ type: String }],
 
   danh_muc: {

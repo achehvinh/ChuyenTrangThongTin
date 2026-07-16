@@ -64,7 +64,7 @@ router.get('/admin/all', authAdmin, async (req, res) => {
 
 router.post('/', authAdmin, uploadFields, async (req, res) => {
   try {
-    const { tieu_de, mo_ta, noi_dung, danh_muc, trang_thai, nguoi_dang, video_url } = req.body;
+    const { tieu_de, mo_ta, noi_dung, danh_muc, trang_thai, nguoi_dang, video_url, chu_chay } = req.body;
 
     if (!tieu_de?.trim() || !noi_dung?.trim()) {
       return res.status(400).json({ message: 'Tiêu đề và nội dung không được trống.' });
@@ -84,6 +84,7 @@ router.post('/', authAdmin, uploadFields, async (req, res) => {
       anh_dai_dien,
       anh_phu,
       video,
+      chu_chay: (chu_chay || '').trim(),
     });
 
     res.status(201).json({ data: bv });
