@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ChatWindow.css';
+import { useLang } from '../../LanguageContext';
 
 // ── Map từ khóa → trang ──
 const SUGGESTIONS_MAP = [
@@ -82,7 +83,7 @@ function findSuggestions(text) {
 }
 
 // ── Gợi ý câu hỏi nhanh ban đầu ──
-const QUICK_QUESTIONS = [
+const QUICK_QUESTIONS_VI = [
   'Tra cứu thẻ BHYT bằng điện thoại như thế nào?',
   'Làm khai sinh cần giấy tờ gì?',
   'Đăng ký VNeID ở đâu?',
@@ -90,27 +91,215 @@ const QUICK_QUESTIONS = [
   'Lịch họp thôn gần nhất?',
 ];
 
+const QUICK_QUESTIONS_EN = [
+  'How to lookup Health Insurance card on phone?',
+  'What documents are needed for birth registration?',
+  'Where to register for VNeID?',
+  'What is the procedure for poor households?',
+  'When is the nearest village meeting?',
+];
+
 export default function ChatWindow() {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState([
-    {
-      text: 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đăk Pxi. Bà con cần hỗ trợ gì?',
-      sender: 'ai',
-      suggestions: [],
-    },
-  ]);
+  const { lang } = useLang();
+  const isEn = lang === 'xd';
+
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cw_chat_history');
+      const defaultWelcome = document.cookie.includes('googtrans=/vi/en')
+        ? 'Hello! 👋 I am the AI Assistant of Dak Pxi Commune. How can I help you?'
+        : 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đăk Pxi. Bà con cần hỗ trợ gì?';
+
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.length > 0 && parsed[0].sender === 'ai') {
+          parsed[0].text = defaultWelcome;
+        }
+        return parsed;
+      }
+    } catch (e) {
+      console.error('Lỗi đọc lịch sử chat:', e);
+    }
+    return [
+      {
+        text: document.cookie.includes('googtrans=/vi/en')
+          ? 'Hello! 👋 I am the AI Assistant of Dak Pxi Commune. How can I help you?'
+          : 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đăk Pxi. Bà con cần hỗ trợ gì?',
+        sender: 'ai',
+        suggestions: [],
+      },
+    ];
+  });
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [autoRead, setAutoRead] = useState(() => localStorage.getItem('cw_auto_read') === 'true');
+  const [isListening, setIsListening] = useState(false);
+  const [activeSpeechIndex, setActiveSpeechIndex] = useState(null);
   const endRef = useRef(null);
+  const recognitionRef = useRef(null);
+
+  // Lưu lịch sử chat mỗi khi tin nhắn thay đổi
+  useEffect(() => {
+    localStorage.setItem('cw_chat_history', JSON.stringify(messages));
+  }, [messages]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Đồng bộ cài đặt Tự động đọc vào localStorage
+  useEffect(() => {
+    localStorage.setItem('cw_auto_read', autoRead);
+  }, [autoRead]);
+
+  // Đăng ký sự kiện thay đổi danh sách giọng đọc của trình duyệt
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      const handleVoicesChanged = () => {};
+      window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+      return () => {
+        window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+      };
+    }
+  }, []);
+
+  // Khởi tạo Speech Recognition (Nhận diện giọng nói)
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = 'vi-VN';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        setInput(prev => (prev ? prev + ' ' + text : text));
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Lỗi nhận diện giọng nói:', event.error);
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+  }, []);
+
+  // Dọn dẹp tiến trình nói/nghe khi component bị hủy
+  useEffect(() => {
+    return () => {
+      stopSpeaking();
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+    };
+  }, []);
+
+  const speakText = (text, index) => {
+    if (!window.speechSynthesis) {
+      alert('Trình duyệt của bạn không hỗ trợ đọc văn bản.');
+      return;
+    }
+
+    if (activeSpeechIndex === index) {
+      stopSpeaking();
+      return;
+    }
+
+    stopSpeaking();
+
+    // Loại bỏ ký tự Markdown để giọng đọc tự nhiên hơn
+    const cleanedText = text
+      .replace(/[*#_`~]/g, '')
+      .replace(/-\s+/g, '')
+      .trim();
+
+    const utterance = new SpeechSynthesisUtterance(cleanedText);
+    utterance.lang = 'vi-VN';
+
+    const voices = window.speechSynthesis.getVoices();
+    const viVoice = voices.find(voice => voice.lang.includes('vi') || voice.lang.includes('VI'));
+    if (viVoice) {
+      utterance.voice = viVoice;
+    }
+
+    utterance.onend = () => {
+      setActiveSpeechIndex(null);
+    };
+
+    utterance.onerror = () => {
+      setActiveSpeechIndex(null);
+    };
+
+    setActiveSpeechIndex(index);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setActiveSpeechIndex(null);
+  };
+
+  const clearHistory = () => {
+    const confirmMsg = isEn 
+      ? 'Are you sure you want to clear the chat history?' 
+      : 'Bà con có chắc chắn muốn xóa lịch sử trò chuyện này không?';
+    if (window.confirm(confirmMsg)) {
+      stopSpeaking();
+      const defaultMsg = [
+        {
+          text: isEn
+            ? 'Hello! 👋 I am the AI Assistant of Dak Pxi Commune. How can I help you?'
+            : 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đăk Pxi. Bà con cần hỗ trợ gì?',
+          sender: 'ai',
+          suggestions: [],
+        },
+      ];
+      setMessages(defaultMsg);
+      localStorage.setItem('cw_chat_history', JSON.stringify(defaultMsg));
+    }
+  };
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      alert(
+        isEn
+          ? 'Your browser does not support speech recognition. Please use Google Chrome or Microsoft Edge.'
+          : 'Trình duyệt của bạn không hỗ trợ nhận diện giọng nói. Hãy dùng Google Chrome hoặc Microsoft Edge nhé!'
+      );
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      stopSpeaking();
+      try {
+        recognitionRef.current.start();
+      } catch (err) {
+        console.error('Không khởi động được micro:', err);
+      }
+    }
+  };
+
   const sendMessage = async (text) => {
     const msg = text || input.trim();
     if (!msg) return;
     setInput('');
+    stopSpeaking(); // Dừng phát âm thanh khi có câu hỏi mới
 
     // Thêm tin nhắn người dùng
     setMessages(prev => [...prev, { text: msg, sender: 'user', suggestions: [] }]);
@@ -121,19 +310,40 @@ export default function ChatWindow() {
         'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/chat',
         { message: msg }
       );
-      const reply = res.data.reply || 'Xin lỗi, tôi chưa hiểu câu hỏi. Bà con thử hỏi lại nhé!';
+      const reply = res.data.reply || (isEn ? 'Sorry, I did not understand that. Please try again.' : 'Xin lỗi, tôi chưa hiểu câu hỏi. Bà con thử hỏi lại nhé!');
 
       // Tìm gợi ý từ cả câu hỏi và câu trả lời
       const suggestions = findSuggestions(msg + ' ' + reply);
 
-      setMessages(prev => [...prev, { text: reply, sender: 'ai', suggestions }]);
+      setMessages(prev => {
+        const newMsgs = [...prev, { text: reply, sender: 'ai', suggestions }];
+        if (autoRead) {
+          const newIndex = newMsgs.length - 1;
+          setTimeout(() => {
+            speakText(reply, newIndex);
+          }, 100);
+        }
+        return newMsgs;
+      });
     } catch {
       const suggestions = findSuggestions(msg);
-      setMessages(prev => [...prev, {
-        text: 'Xin lỗi, hệ thống đang bận. Bà con thử lại sau hoặc xem trực tiếp nội dung bên dưới nhé!',
-        sender: 'ai',
-        suggestions,
-      }]);
+      setMessages(prev => {
+        const reply = isEn
+          ? 'Sorry, the server is busy. Please try again later.'
+          : 'Xin lỗi, hệ thống đang bận. Bà con thử lại sau hoặc xem trực tiếp nội dung bên dưới nhé!';
+        const newMsgs = [...prev, {
+          text: reply,
+          sender: 'ai',
+          suggestions,
+        }];
+        if (autoRead) {
+          const newIndex = newMsgs.length - 1;
+          setTimeout(() => {
+            speakText(reply, newIndex);
+          }, 100);
+        }
+        return newMsgs;
+      });
     } finally {
       setLoading(false);
     }
@@ -147,21 +357,51 @@ export default function ChatWindow() {
   };
 
   const handleSuggestionClick = (path) => {
+    stopSpeaking();
     navigate(path);
   };
+
+  const quickQuestionsList = isEn ? QUICK_QUESTIONS_EN : QUICK_QUESTIONS_VI;
 
   return (
     <div className="cw-window">
 
       {/* ── Header ── */}
       <div className="cw-header">
-        <div className="cw-header-avatar">🤖</div>
-        <div>
-          <div className="cw-header-name">Trợ lý AI UBND xã Đăk Pxi</div>
-          <div className="cw-header-status">
-            <span className="cw-status-dot" />
-            Sẵn sàng hỗ trợ
+        <div className="cw-header-left">
+          <div className="cw-header-avatar">🤖</div>
+          <div>
+            <div className="cw-header-name">
+              {isEn ? 'AI Assistant Dak Pxi' : 'Trợ lý AI UBND xã Đăk Pxi'}
+            </div>
+            <div className="cw-header-status">
+              <span className="cw-status-dot" />
+              {isEn ? 'Ready to assist' : 'Sẵn sàng hỗ trợ'}
+            </div>
           </div>
+        </div>
+        <div className="cw-header-actions">
+          <label className="cw-toggle-label" title={isEn ? 'Auto-read AI responses' : 'Tự động đọc to câu trả lời của AI'}>
+            <span className="cw-toggle-text">
+              {isEn ? 'Auto Read' : 'Đọc tự động'}
+            </span>
+            <input
+              type="checkbox"
+              checked={autoRead}
+              onChange={e => setAutoRead(e.target.checked)}
+              className="cw-toggle-checkbox"
+            />
+            <span className="cw-toggle-slider" />
+          </label>
+          {messages.length > 1 && (
+            <button
+              className="cw-clear-btn"
+              onClick={clearHistory}
+              title={isEn ? 'Clear chat history' : 'Xóa lịch sử trò chuyện'}
+            >
+              🗑️
+            </button>
+          )}
         </div>
       </div>
 
@@ -171,14 +411,25 @@ export default function ChatWindow() {
           <div key={i} className={`cw-msg-group ${m.sender}`}>
             {m.sender === 'ai' && <div className="cw-avatar">🤖</div>}
             <div className="cw-msg-content">
-              <div className={`cw-bubble cw-bubble--${m.sender}`}>
-                {m.text}
+              <div className="cw-bubble-wrapper">
+                <div className={`cw-bubble cw-bubble--${m.sender}`}>
+                  {m.text}
+                </div>
+                {m.sender === 'ai' && (
+                  <button
+                    className={`cw-speaker-btn ${activeSpeechIndex === i ? 'speaking' : ''}`}
+                    onClick={() => speakText(m.text, i)}
+                    title={activeSpeechIndex === i ? (isEn ? 'Stop speaking' : 'Dừng đọc') : (isEn ? 'Read response' : 'Đọc câu trả lời này')}
+                  >
+                    {activeSpeechIndex === i ? '⏸' : '🔊'}
+                  </button>
+                )}
               </div>
 
               {/* Gợi ý trang liên quan */}
               {m.sender === 'ai' && m.suggestions?.length > 0 && (
                 <div className="cw-suggestions">
-                  <div className="cw-suggestions-label">📌 Nội dung liên quan:</div>
+                  <div className="cw-suggestions-label">📌 {isEn ? 'Related Content:' : 'Nội dung liên quan:'}</div>
                   {m.suggestions.map((s, j) => (
                     <button
                       key={j}
@@ -212,9 +463,11 @@ export default function ChatWindow() {
       {/* ── Câu hỏi nhanh ── */}
       {messages.length <= 1 && (
         <div className="cw-quick">
-          <div className="cw-quick-label">Câu hỏi thường gặp:</div>
+          <div className="cw-quick-label">
+            {isEn ? 'Frequently Asked Questions:' : 'Câu hỏi thường gặp:'}
+          </div>
           <div className="cw-quick-list">
-            {QUICK_QUESTIONS.map((q, i) => (
+            {quickQuestionsList.map((q, i) => (
               <button
                 key={i}
                 className="cw-quick-btn"
@@ -228,22 +481,42 @@ export default function ChatWindow() {
       )}
 
       {/* ── Input ── */}
-      <div className="cw-input-area">
-        <input
-          className="cw-input"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKey}
-          placeholder="Bà con hỏi gì cứ nhập vào đây..."
-          disabled={loading}
-        />
-        <button
-          className="cw-send-btn"
-          onClick={() => sendMessage()}
-          disabled={loading || !input.trim()}
-        >
-          ➤
-        </button>
+      <div className="cw-input-container">
+        {isListening && (
+          <div className="cw-waveform">
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+          </div>
+        )}
+        <div className="cw-input-area">
+          <button
+            className={`cw-mic-btn ${isListening ? 'listening' : ''}`}
+            onClick={toggleListening}
+            title={isListening ? (isEn ? 'Stop recording' : 'Dừng ghi âm') : (isEn ? 'Speak to ask' : 'Nói để nhập câu hỏi')}
+            disabled={loading}
+            type="button"
+          >
+            {isListening ? '🔴' : '🎤'}
+          </button>
+          <input
+            className="cw-input"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKey}
+            placeholder={isListening ? (isEn ? 'Listening to you...' : 'Hệ thống đang lắng nghe bà con...') : (isEn ? 'Ask me anything...' : 'Bà con hỏi gì cứ nhập vào đây...')}
+            disabled={loading}
+          />
+          <button
+            className="cw-send-btn"
+            onClick={() => sendMessage()}
+            disabled={loading || !input.trim()}
+          >
+            ➤
+          </button>
+        </div>
       </div>
 
     </div>

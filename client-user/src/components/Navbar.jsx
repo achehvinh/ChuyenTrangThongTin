@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 import { useLang } from '../LanguageContext';
@@ -41,14 +42,25 @@ export default function Navbar() {
         </div>
 
         <div className="navbar-actions">
-          <div className="font-size-controls">
+          <div className="font-size-controls notranslate">
             <button className="font-btn" onClick={decrease} disabled={sizeIndex === 0} title="Giảm cỡ chữ">A−</button>
             <span className="font-label">{currentLabel}</span>
             <button className="font-btn" onClick={increase} disabled={sizeIndex === max} title="Tăng cỡ chữ">A+</button>
           </div>
-          <button className="lang-btn" onClick={toggleLang}>
-            {lang === 'vi' ? 'Xê Đăng' : 'Tiếng Việt'}
-          </button>
+          
+          <div className="lang-toggle-wrapper notranslate">
+            <button 
+              className="lang-toggle-btn"
+              onClick={toggleLang}
+              title={lang === 'vi' ? 'Switch to English / Chuyển sang Tiếng Anh' : 'Chuyển sang Tiếng Việt / Switch to Vietnamese'}
+            >
+              <img 
+                src={lang === 'vi' ? '/flag-vi.png' : '/flag-en.png'} 
+                alt={lang === 'vi' ? 'Tiếng Việt' : 'English'} 
+                className="lang-flag-img"
+              />
+            </button>
+          </div>
         </div>
       </div>
 

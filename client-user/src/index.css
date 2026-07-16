@@ -132,3 +132,27 @@ code {
 .quick-type-item:hover { background: #f1f5f9; }
 .quick-type-item.active { background: #eff6ff; color: #2563eb; font-weight: 600; }
 .quick-type-arrow { margin-left: auto; font-size: 18px; }
+
+/* ── HIDE GOOGLE TRANSLATE BANNER & UI ELEMENTS ── */
+body {
+  top: 0 !important;
+}
+.skiptranslate {
+  display: none !important;
+}
+.goog-te-banner-frame {
+  display: none !important;
+}
+.goog-te-gadget {
+  display: none !important;
+}
+.goog-te-balloon-frame {
+  display: none !important;
+}
+#goog-gt-tt {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
