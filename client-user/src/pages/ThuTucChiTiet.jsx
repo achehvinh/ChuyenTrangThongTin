@@ -204,11 +204,7 @@ export default function ThuTucChiTiet() {
 
         {!loading && !error && procedure && (
           <>
-            {usingMock && (
-              <div className="tthc-mock-banner">
-                Đang hiển thị dữ liệu mẫu — chưa kết nối được máy chủ thật.
-              </div>
-            )}
+
 
             {/* Tiêu đề, mô tả ngắn, nút nghe hướng dẫn */}
             <section className="tthc-detail-hero">

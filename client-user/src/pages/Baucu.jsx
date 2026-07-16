@@ -157,6 +157,51 @@ export default function Baucu() {
                 </div>
             </section>
 
+            {/* Các hình thức bỏ phiếu */}
+            <section className="baucu-methods">
+                <h2 className="baucu-section-title">Các Hình Thức Bỏ Phiếu Hợp Lệ</h2>
+                <div className="baucu-methods-grid">
+                    <div className="method-card">
+                        <div className="method-image-box">
+                            <img src="/huong-dan/hinh-thuc-1.png" alt="Bỏ Phiếu Kín" className="method-img" />
+                            <span className="method-badge primary">PHỔ BIẾN NHẤT</span>
+                        </div>
+                        <div className="method-content-wrap">
+                            <h3>Bỏ Phiếu Kín</h3>
+                            <p>
+                                Cử tri nhận phiếu bầu, <strong>vào phòng gạch phiếu độc lập</strong> để thực hiện lựa chọn bảo mật cá nhân, sau đó <strong>tự tay bỏ phiếu</strong> vào hòm phiếu chính.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="method-card">
+                        <div className="method-image-box">
+                            <img src="/huong-dan/hinh-thuc-2.png" alt="Biểu Quyết Giơ Tay" className="method-img" />
+                            <span className="method-badge success">HỘI NGHỊ THÔN</span>
+                        </div>
+                        <div className="method-content-wrap">
+                            <h3>Biểu Quyết Giơ Tay</h3>
+                            <p>
+                                Áp dụng trực tiếp tại <strong>Hội nghị cử tri của thôn</strong>. Cử tri thực hiện quyền biểu quyết đồng ý hoặc không đồng ý công khai bằng cách <strong>giơ tay biểu quyết trực tiếp</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="method-card">
+                        <div className="method-image-box">
+                            <img src="/huong-dan/hinh-thuc-3.png" alt="Hòm Phiếu Phụ" className="method-img" />
+                            <span className="method-badge warning">HỖ TRỢ ĐẶC BIỆT</span>
+                        </div>
+                        <div className="method-content-wrap">
+                            <h3>Hòm Phiếu Phụ</h3>
+                            <p>
+                                Dành riêng cho cử tri <strong>già yếu, khuyết tật hoặc đau ốm</strong> không thể đến Nhà rông. Thành viên Tổ bầu cử <strong>mang hòm phiếu phụ và phiếu bầu đến tận nhà</strong> hỗ trợ.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Hộp liên kết Facebook Tuyên truyền */}
             <section className="baucu-fb-link-section">
                 <div className="fb-link-card">
@@ -288,8 +333,8 @@ export default function Baucu() {
                     <div className="notice-box info">
                         <h4>🔵 Thời gian và Địa điểm:</h4>
                         <ul>
-                            <li><strong>Thời gian bỏ phiếu:</strong> Từ 07h00 sáng đến 19h00 tối ngày Chủ Nhật bầu cử.</li>
-                            <li><strong>Địa điểm:</strong> Tại phòng bỏ phiếu của Tổ bầu cử đặt ở Nhà rông/Nhà văn hóa các thôn thuộc xã Đăk Pxi.</li>
+                            <li><strong>Thời gian bỏ phiếu:</strong> Bắt đầu từ lúc 07 giờ 00 phút, ngày 19 tháng 7 năm 2026.</li>
+                            <li><strong>Địa điểm bỏ phiếu:</strong> Tại Nhà rông các thôn trên địa bàn xã Đăk Pxi.</li>
                             <li>Trường hợp bà con già yếu, khuyết tật không tự đi bỏ phiếu được, Tổ bầu cử sẽ mang hòm phiếu phụ đến tận nhà hỗ trợ.</li>
                         </ul>
                     </div>
@@ -347,6 +392,27 @@ export default function Baucu() {
                             📥 Tải ảnh mã QR về điện thoại / máy tính
                         </button>
                     </div>
+                </div>
+            </section>
+
+            {/* Cổng thông tin kiểm chứng chính thức */}
+            <section className="baucu-source-verification">
+                <div className="verification-card">
+                    <div className="verification-header-info">
+                        <span className="verification-badge-icon">🛡️</span>
+                        <h3>Xác Thực Thông Tin Chính Thống</h3>
+                    </div>
+                    <p className="verification-desc">
+                        Đây là thông tin tuyên truyền hướng dẫn bầu cử chính thức, đúng sự thật của Ủy ban nhân dân xã Đăk Pxi. Bà con có thể nhấn vào liên kết chính thức dưới đây để kiểm chứng và xem chi tiết bài đăng gốc trên Trang thông tin điện tử xã Đăk Pxi, tỉnh Quảng Ngãi:
+                    </p>
+                    <a 
+                        href="https://dakpxi.quangngai.gov.vn/gioi-thieu/tin-chi-dao-dieu-hanh/dak-pxi-san-sang-cho-cuoc-bau-cu-truong-thon-nhiem-ky-2025-20302.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="verification-link-btn"
+                    >
+                        🌐 Xem bài viết gốc tại dakpxi.quangngai.gov.vn
+                    </a>
                 </div>
             </section>
 

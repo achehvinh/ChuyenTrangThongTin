@@ -37,6 +37,8 @@ import ChayRungPage from './pages/ChayRungPage';
 import Baucu from './pages/Baucu';
 import TeNanXaHoiPage from './pages/TeNanXaHoiPage';
 import PhapLuatPage from './pages/PhapLuatPage';
+import VideoPage from './pages/VideoPage';
+
 function Breadcrumbs() {
   const location = useLocation();
   const path = location.pathname;
@@ -88,7 +90,8 @@ function Breadcrumbs() {
       "thu-vien-anh": "Thư viện ảnh",
       "lien-he": "Liên hệ UBND xã",
       "Ban-do": "Bản đồ xã Đăk Pxi",
-      "gia-nong-san": "Giá nông sản hôm nay"
+      "gia-nong-san": "Giá nông sản hôm nay",
+      "video": "Kênh Video Tuyên Truyền"
     };
     breadcrumbsList.push({ label: labels[segments[0]] || segments[0], path: path });
   }
@@ -128,28 +131,6 @@ function AppLayout() {
         <>
           <Navbar />
 
-          <div className="gov-notice-wrapper">
-  <div className="gov-notice">
-    
-    <span className="gov-notice-label">
-      Tin mới:
-    </span>
-
-    <div className="gov-notice-track">
-      <span className="gov-notice-text">
-        THÔNG BÁO: Người dân thực hiện thủ tục hành chính trực tuyến trên Cổng Dịch vụ công Quốc gia.
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        CẢNH BÁO CHÁY RỪNG: Nguy cơ cháy rừng cao trong mùa khô, người dân cần đề cao cảnh giác.
-      </span>
-    </div>
-
-    <Link to="/thong-bao" className="gov-notice-more">
-      Xem thêm →
-    </Link>
-
-  </div>
-</div>
-
           <AlertBanner />
           <Breadcrumbs />
         </>
@@ -184,6 +165,7 @@ function AppLayout() {
           <Route path="/chuyen-muc" element={<ChuyenMucPage />} />
           <Route path="/tin-tuc" element={<ChuyenTrangThongTin />} />
           <Route path="/tin-tuc/:id" element={<BaiVietDetailPage />} />
+          <Route path="/video" element={<VideoPage />} />
           <Route path="/chat" element={<ChatWindow />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

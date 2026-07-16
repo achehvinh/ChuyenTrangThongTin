@@ -774,11 +774,7 @@ export default function ProcedureDetailPage() {
 
           {!loading && !error && procedure && (
             <>
-              {usingMock && (
-                <div className="pdp-mock-banner">
-                  Đang hiển thị dữ liệu mẫu — chưa kết nối được máy chủ thật.
-                </div>
-              )}
+
 
               {/* Tiêu đề + đọc hướng dẫn */}
               <section className="pdp-hero">

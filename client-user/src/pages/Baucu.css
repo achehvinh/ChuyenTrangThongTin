@@ -207,6 +207,114 @@
     line-height: 1.5;
 }
 
+/* Các hình thức bỏ phiếu */
+.baucu-methods {
+    margin-bottom: 50px;
+}
+
+.baucu-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.method-card {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    overflow: hidden;
+}
+
+.method-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-color: #cbd5e1;
+}
+
+.method-image-box {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+.method-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.method-card:hover .method-img {
+    transform: scale(1.06);
+}
+
+.method-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    z-index: 2;
+}
+
+.method-badge.primary {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #dbeafe;
+}
+
+.method-badge.success {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #dcfce7;
+}
+
+.method-badge.warning {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #ffedd5;
+}
+
+.method-content-wrap {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.method-content-wrap h3 {
+    font-size: 19px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+
+.method-content-wrap p {
+    font-size: 15.5px;
+    color: #1e293b;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.method-content-wrap p strong {
+    color: #0f172a;
+    font-weight: 800;
+}
+
 /* 4 bước bỏ phiếu */
 .baucu-steps {
     margin-bottom: 60px;
@@ -477,9 +585,33 @@
         margin-bottom: 4px;
     }
 
-    .principle-card p {
-        font-size: 11.5px;
-        line-height: 1.4;
+    /* Các hình thức bỏ phiếu trên di động */
+    .baucu-methods-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .method-card {
+        padding: 0;
+        border-radius: 16px;
+    }
+
+    .method-image-box {
+        height: 150px;
+    }
+
+    .method-content-wrap {
+        padding: 16px;
+        gap: 8px;
+    }
+
+    .method-content-wrap h3 {
+        font-size: 17px;
+    }
+
+    .method-content-wrap p {
+        font-size: 14.5px;
+        line-height: 1.6;
     }
 
     /* Các bước bỏ phiếu trên di động */
@@ -937,6 +1069,70 @@
     border-color: #94a3b8;
 }
 
+/* Xác thực nguồn thông tin chính thống */
+.baucu-source-verification {
+    margin-bottom: 50px;
+}
+
+.verification-card {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-left: 5px solid #0284c7;
+    border-radius: 16px;
+    padding: 24px 32px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.03);
+}
+
+.verification-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.verification-badge-icon {
+    font-size: 24px;
+}
+
+.verification-header-info h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0369a1;
+    margin: 0;
+}
+
+.verification-desc {
+    font-size: 14.5px;
+    color: #334155;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.verification-link-btn {
+    align-self: flex-start;
+    background: #0284c7;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid #0284c7;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.verification-link-btn:hover {
+    background: #0369a1;
+    border-color: #0369a1;
+    transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
     .share-container-card {
         grid-template-columns: 1fr;
@@ -952,5 +1148,15 @@
     .share-qr-col {
         align-items: center;
         text-align: center;
+    }
+
+    .verification-card {
+        padding: 20px 16px;
+    }
+    
+    .verification-link-btn {
+        width: 100%;
+        justify-content: center;
+        align-self: stretch;
     }
 }

@@ -605,3 +605,177 @@
     print-color-adjust: exact;
   }
 }
+
+/* ── KIDS GAME THEME & DECORATIONS ── */
+
+.quiz-card.children-theme, .quiz-start-container.children-theme {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #ffffff, #f0f9ff);
+  border: 3px solid #7dd3fc;
+  box-shadow: 0 10px 30px rgba(125, 211, 252, 0.2);
+}
+
+/* Floating bubbles on welcome screen */
+.decor-bubble {
+  position: absolute;
+  font-size: 32px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  animation: floatBubble 6s infinite alternate ease-in-out;
+}
+
+.bubble-1 { top: 10%; left: 8%; animation-delay: 0s; }
+.bubble-2 { top: 75%; left: 12%; animation-delay: 1.5s; font-size: 40px; }
+.bubble-3 { top: 15%; right: 10%; animation-delay: 3s; }
+.bubble-4 { top: 70%; right: 12%; animation-delay: 4.5s; font-size: 28px; }
+.bubble-5 { top: 45%; left: 85%; animation-delay: 2s; }
+
+@keyframes floatBubble {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+  100% { transform: translateY(-20px) rotate(15deg); opacity: 0.95; }
+}
+
+/* Wavy badges on gameplay card */
+.decor-badge {
+  position: absolute;
+  font-size: 36px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  opacity: 0.15;
+}
+
+.corner-1 { bottom: 12px; left: 16px; transform: rotate(-15deg); }
+.corner-2 { top: 60px; right: 20px; transform: rotate(15deg); }
+
+/* Swimming progress bar swimmer */
+.quiz-bar-bg {
+  position: relative;
+  height: 12px; /* Thử độ dày dày hơn cho trẻ em */
+  border-radius: 6px;
+}
+
+.quiz-bar-fill {
+  position: relative;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #38bdf8, #0284c7);
+}
+
+.progress-swimmer-emoji {
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  font-size: 18px;
+  animation: swimPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes swimPulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.15); }
+}
+
+/* Bouncy welcome icon */
+.quiz-badge-icon-bouncy {
+  font-size: 64px;
+  display: inline-block;
+  animation: bounceBadge 2s infinite;
+}
+
+@keyframes bounceBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Bouncy Button */
+.bouncy-btn {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+}
+
+.bouncy-btn:hover {
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+}
+
+.bouncy-btn:active {
+  transform: scale(0.98) translateY(0);
+}
+
+/* Music Control Widget */
+.quiz-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.music-toggle-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.music-toggle-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.music-toggle-btn.active {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #16a34a;
+}
+
+/* Option-specific pastel colors for children */
+.quiz-option.opt-a { background: #f0f9ff; border-color: #bae6fd; }
+.quiz-option.opt-a:hover { background: #e0f2fe; border-color: #7dd3fc; }
+
+.quiz-option.opt-b { background: #f0fdf4; border-color: #bbf7d0; }
+.quiz-option.opt-b:hover { background: #dcfce7; border-color: #86efac; }
+
+.quiz-option.opt-c { background: #fffbeb; border-color: #fef3c7; }
+.quiz-option.opt-c:hover { background: #fef3c7; border-color: #fde047; }
+
+.quiz-option.opt-d { background: #faf5ff; border-color: #f3e8ff; }
+.quiz-option.opt-d:hover { background: #f3e8ff; border-color: #e9d5ff; }
+
+/* Disabled states keep the colors soft but unclickable */
+.quiz-option.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.quiz-option.correct {
+  background: #dcfce7 !important;
+  border-color: #22c55e !important;
+  color: #15803d !important;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.15);
+  opacity: 1 !important;
+}
+
+.quiz-option.incorrect {
+  background: #fee2e2 !important;
+  border-color: #ef4444 !important;
+  color: #b91c1c !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);
+  opacity: 1 !important;
+}
+
+/* Animated FadeIn for Explanation Box */
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

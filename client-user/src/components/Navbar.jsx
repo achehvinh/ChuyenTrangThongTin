@@ -9,13 +9,13 @@ const NAV_ITEMS = [
   { to: '/chuyen-doi-so', label: 'Chuyển đổi số' },
   { to: '/ban-do', label: 'Bản đồ' },
   {
-    label: 'Hỗ trợ',
+    label: 'Khác',
     dropdown: [
-      { to: '/huong-dan',    label: 'Hướng dẫn sử dụng' },
-      { to: '/lien-he',      label: 'Liên hệ' },
-      { to: '/video',        label: 'Video' },
+      { to: '/huong-dan', label: 'Hướng dẫn sử dụng' },
+      { to: '/lien-he', label: 'Liên hệ' },
+      { to: '/video', label: 'Video' },
       { to: '/thu-vien-anh', label: 'Hình ảnh' },
-      { to: '/gioi-thieu',   label: 'Giới thiệu' },
+      { to: '/gioi-thieu', label: 'Giới thiệu' },
     ]
   }
 ];
@@ -47,16 +47,16 @@ export default function Navbar() {
             <span className="font-label">{currentLabel}</span>
             <button className="font-btn" onClick={increase} disabled={sizeIndex === max} title="Tăng cỡ chữ">A+</button>
           </div>
-          
+
           <div className="lang-toggle-wrapper notranslate">
-            <button 
+            <button
               className="lang-toggle-btn"
               onClick={toggleLang}
               title={lang === 'vi' ? 'Switch to English / Chuyển sang Tiếng Anh' : 'Chuyển sang Tiếng Việt / Switch to Vietnamese'}
             >
-              <img 
-                src={lang === 'vi' ? '/flag-vi.png' : '/flag-en.png'} 
-                alt={lang === 'vi' ? 'Tiếng Việt' : 'English'} 
+              <img
+                src={lang === 'vi' ? '/flag-vi.png' : '/flag-en.png'}
+                alt={lang === 'vi' ? 'Tiếng Việt' : 'English'}
                 className="lang-flag-img"
               />
             </button>

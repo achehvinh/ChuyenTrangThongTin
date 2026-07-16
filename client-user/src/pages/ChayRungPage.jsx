@@ -3,7 +3,7 @@ import './ChayRungPage.css';
 
 const DATA = {
   title: 'Phòng chống cháy rừng',
-  subtitle: 'Ủy ban nhân dân xã Đăk Pxi — Huyện Đăk Hà',
+  subtitle: 'Ủy ban nhân dân xã Đăk Pxi — Tỉnh Quảng Ngãi',
   images: [
     {
       src: '/huong-dan/chay-rung-1.png',
@@ -73,14 +73,14 @@ export default function ChayRungPage() {
             <section className="cr-section gallery-card">
               <h2 className="cr-section-title orange">📸 Hình ảnh thực tế phòng chống cháy rừng</h2>
               <p className="cr-section-desc">Bấm vào các ảnh nhỏ bên dưới để xem hình to rõ nét hơn:</p>
-              
+
               <div className="cr-gallery-wrapper">
                 {/* Ảnh to chính */}
                 <div className="cr-featured-image-box">
-                  <img 
-                    src={DATA.images[activeImgIndex].src} 
-                    alt="Phóng to thực tế" 
-                    className="cr-featured-img" 
+                  <img
+                    src={DATA.images[activeImgIndex].src}
+                    alt="Phóng to thực tế"
+                    className="cr-featured-img"
                   />
                   <div className="cr-featured-caption">
                     {DATA.images[activeImgIndex].caption}
@@ -90,8 +90,8 @@ export default function ChayRungPage() {
                 {/* Các ảnh nhỏ chọn lựa */}
                 <div className="cr-thumbnails-grid">
                   {DATA.images.map((img, i) => (
-                    <div 
-                      key={i} 
+                    <div
+                      key={i}
                       className={`cr-thumbnail-wrap ${activeImgIndex === i ? 'active' : ''}`}
                       onClick={() => setActiveImgIndex(i)}
                     >

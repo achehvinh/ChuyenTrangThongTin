@@ -458,11 +458,7 @@ export default function Thutuchanhchinh() {
               </div>
             </section>
 
-            {usingMock && (
-              <div className="tthc-mock-banner">
-                Đang hiển thị dữ liệu mẫu — chưa kết nối được máy chủ thật.
-              </div>
-            )}
+
             {error && <div className="tthc-alert">{error}</div>}
             {detailLoading && <div className="tthc-alert">Đang mở chi tiết...</div>}
 

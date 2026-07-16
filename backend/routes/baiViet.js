@@ -35,6 +35,7 @@ const upload = multer({
 const uploadFields = upload.fields([
   { name: 'anh', maxCount: 1 },
   { name: 'anh_phu', maxCount: 20 },
+  { name: 'video', maxCount: 1 },
 ]);
 
 /* ════════════════════════════════════════
@@ -71,6 +72,7 @@ router.post('/', authAdmin, uploadFields, async (req, res) => {
 
     const anh_dai_dien = req.files?.anh?.[0]?.path || '';
     const anh_phu = (req.files?.anh_phu || []).map(f => f.path);
+    const video = req.files?.video?.[0]?.path || video_url || '';
 
     const bv = await BaiViet.create({
       tieu_de: tieu_de.trim(),
@@ -81,7 +83,7 @@ router.post('/', authAdmin, uploadFields, async (req, res) => {
       nguoi_dang: nguoi_dang || 'Admin',
       anh_dai_dien,
       anh_phu,
-      video: video_url || '',
+      video,
     });
 
     res.status(201).json({ data: bv });
@@ -101,7 +103,9 @@ router.put('/:id', authAdmin, uploadFields, async (req, res) => {
     if (req.files?.anh_phu?.length) {
       update.anh_phu = req.files.anh_phu.map(f => f.path);
     }
-    if (req.body.video_url !== undefined) {
+    if (req.files?.video?.[0]) {
+      update.video = req.files.video[0].path;
+    } else if (req.body.video_url !== undefined) {
       update.video = req.body.video_url;
     }
 

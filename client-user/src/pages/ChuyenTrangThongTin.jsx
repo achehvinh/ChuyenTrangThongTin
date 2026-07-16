@@ -130,9 +130,6 @@ function NormalCard({ bv, onClick }) {
 function BaiVietModal({ id, onClose }) {
   const [bv, setBv]         = useState(null);
   const [loading, setLoading] = useState(true);
-  {bv.video && (
-  <video src={bv.video} controls className="ct-modal-video" style={{ width: '100%', maxHeight: 320, background: '#000' }} />
-)}
 
   useEffect(() => {
     setLoading(true);
@@ -166,7 +163,12 @@ function BaiVietModal({ id, onClose }) {
           <div className="ct-modal-err">Không tải được bài viết.</div>
         ) : (
           <>
-            {bv.anh_dai_dien && (
+            {bv.video && (
+              <div className="ct-modal-video-box" style={{ width: '100%', background: '#000' }}>
+                <video src={bv.video} controls className="ct-modal-video" style={{ width: '100%', maxHeight: 360, display: 'block' }} />
+              </div>
+            )}
+            {bv.anh_dai_dien && !bv.video && (
               <img className="ct-modal-img" src={bv.anh_dai_dien} alt={bv.tieu_de} />
             )}
             <div className="ct-modal-body">
@@ -208,6 +210,7 @@ export default function ChuyenTrangThongTin() {
 
   /* Load bài nổi bật + stats 1 lần khi mount */
   useEffect(() => {
+    // 1. Tải bài viết nổi bật & thống kê
     axios.get(`${API}/bai-viet`, { params: { limit: 3, page: 1 } })
       .then(r => {
         setFeatured(r.data.data || []);

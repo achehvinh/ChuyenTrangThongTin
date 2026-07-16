@@ -1,15 +1,116 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './HomePage.css';
 import './HomeChoice.css';
 import ChuyenTrangThongTin from './ChuyenTrangThongTin';
 
+const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
+
 export default function HomePage() {
   const navigate = useNavigate();
   const [showTraCuu, setShowTraCuu] = useState(false);
+  const [videoList, setVideoList] = useState([]);
+  const [activeVideo, setActiveVideo] = useState(null);
+  const [newReleases, setNewReleases] = useState([]); // 🆕 Danh sách tin mới nổi bật trong 24h qua
+
+  useEffect(() => {
+    axios.get(`${API}/bai-viet`, { params: { limit: 20, page: 1 } })
+      .then(r => {
+        const items = r.data.data || [];
+        
+        // 1. Lọc video nạp cho Video Hub
+        const filtered = items.filter(bv => bv.video && bv.video.trim() !== '');
+        setVideoList(filtered);
+        if (filtered.length > 0) {
+          setActiveVideo(filtered[0]);
+        }
+
+        // 2. Lọc các bài viết / video đăng trong vòng 24 giờ qua
+        const now = new Date();
+        const freshItems = items.filter(bv => {
+          const createdAt = new Date(bv.createdAt);
+          const diffMs = now - createdAt;
+          const diffHours = diffMs / (1000 * 60 * 60);
+          return diffHours <= 24; // chưa đủ 24 tiếng
+        });
+        setNewReleases(freshItems);
+      })
+      .catch(err => console.error("Lỗi tải tin tức trang chủ:", err));
+  }, []);
 
   return (
     <div className="home">
+
+      {/* ── BẢN TIN NỔI BẬT KHẨN CẤP / MỚI ĐĂNG TRONG 24H ── */}
+      {newReleases.length > 0 && (
+        <section className="home-urgent-banner">
+          {/* Dòng chữ chạy (Marquee) thông báo tin mới chưa quá 24h */}
+          <div className="urgent-marquee-bar">
+            <span className="urgent-marquee-label">🔥 TIN NÓNG 24H:</span>
+            <div className="urgent-marquee-track">
+              <span className="urgent-marquee-text" dangerouslySetInnerHTML={{
+                __html: newReleases.map(bv => {
+                  const time = new Date(bv.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                  const date = new Date(bv.createdAt).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+                  const typeLabel = (bv.video && bv.video.trim() !== '') ? 'Xem video mới' : 'Xem bài viết mới';
+                  return `[Đăng lúc ${time} ${date}] ${bv.tieu_de.toUpperCase()} (${typeLabel}) &nbsp;&nbsp;&nbsp;&nbsp;`;
+                }).join(' &nbsp;&nbsp;·&nbsp;&nbsp; ')
+              }} />
+            </div>
+          </div>
+
+          {/* Grid các thẻ bài viết/video mới nổi bật */}
+          <div className="urgent-grid-box">
+            <div className="urgent-header-row">
+              <h4>🆕 TIN MỚI CẬP NHẬT TRONG NGÀY</h4>
+              <span className="urgent-timer-desc">Nội dung này sẽ tự động dừng nổi bật sau 24 giờ kể từ khi đăng</span>
+            </div>
+            
+            <div className="urgent-cards-container">
+              {newReleases.map(bv => {
+                const isVideo = bv.video && bv.video.trim() !== '';
+                const timeStr = new Date(bv.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                return (
+                  <div 
+                    key={bv._id} 
+                    className={`urgent-card-item ${isVideo ? 'urgent-card--video' : 'urgent-card--article'}`}
+                    onClick={() => {
+                      if (isVideo) {
+                        navigate('/video', { state: { activeVideoId: bv._id } });
+                      } else {
+                        window.open(`/tin-tuc/${bv._id}`, '_blank');
+                      }
+                    }}
+                  >
+                    <div className="urgent-card-badge">
+                      <span className="badge-pulse">🔴</span>
+                      MỚI ĐĂNG ({timeStr})
+                    </div>
+                    
+                    <div className="urgent-card-thumb-wrap">
+                      {bv.anh_dai_dien ? (
+                        <img src={bv.anh_dai_dien} alt="" />
+                      ) : (
+                        <div className="urgent-card-thumb-empty">{isVideo ? '🎥 Video' : '📝 Tin tức'}</div>
+                      )}
+                      {isVideo && <div className="urgent-play-overlay-icon">▶</div>}
+                    </div>
+
+                    <div className="urgent-card-info">
+                      <span className="urgent-card-category-label">
+                        {isVideo ? '🎥 Video tuyên truyền' : '📝 Bài viết mới'}
+                      </span>
+                      <h5 className="urgent-card-title">{bv.tieu_de}</h5>
+                      <span className="urgent-card-click-cta">Nhấn vào đây để xem chi tiết →</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── KHU VỰC CHỌN NHANH: Tuyên truyền / Hỗ trợ dịch vụ công ── */}
       <section className="home-choice">
