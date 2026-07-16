@@ -1,0 +1,121 @@
+/* ── DangNhap.css ── */
+.user-login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 40px 20px;
+    background: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.user-login-box {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
+    padding: 40px 32px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 25px -5px rgba(26, 58, 92, 0.05);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.user-login-logo {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.user-login-box h2 {
+    font-size: 20px;
+    color: #1a3a5c;
+    font-weight: 800;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+}
+
+.user-login-sub {
+    font-size: 13.5px;
+    color: #64748b;
+    margin: 0 0 28px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Form Fields */
+.user-login-field {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.user-login-field label {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.user-login-field input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+}
+
+.user-login-field input:focus {
+    outline: none;
+    border-color: #1a3a5c;
+    box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.08);
+}
+
+/* Submit Button */
+.user-login-btn-submit {
+    background: #1a3a5c;
+    color: #ffffff;
+    border: none;
+    padding: 12.5px;
+    border-radius: 8px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.user-login-btn-submit:hover {
+    background: #112840;
+}
+
+.user-login-btn-submit:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Error */
+.user-login-error {
+    background: #fff5f5;
+    color: #b02a37;
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+/* Footer */
+.user-login-footer {
+    margin-top: 28px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 18px;
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+}

@@ -16,6 +16,8 @@ import HuongDanBHXHPage from './pages/HuongDanBHXHPage';
 import HuongDanVNeIDPage from './pages/HuongDanVNeIDPage';
 import ThuVienAnh from './pages/Thuvienanh.jsx';
 import { ThongTinPage, ThongBaoPage, LienHePage } from './pages/InfoPages';
+import CoCauToChucPage from './pages/CoCauToChucPage';
+import DangNhap from './pages/DangNhap';
 import AllFeaturesPage from './pages/AllFeaturesPage';
 import LichHopPage from './pages/LichHopPage';
 import ChuyenDoiSoPage from './pages/ChuyenDoiSoPage';
@@ -80,6 +82,8 @@ function Breadcrumbs() {
   } else {
     // Các trang thông thường khác
     const labels = {
+      "co-cau-to-chuc": "Cơ cấu tổ chức",
+      "dang-nhap": "Đăng nhập Cán bộ",
       "thong-bao": "Thông báo từ UBND",
       "thong-tin": "Chuyên trang thông tin",
       "tra-cuu": "Tra cứu thông tin",
@@ -139,9 +143,11 @@ function AppLayout() {
       <main className="app-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/dang-nhap" element={<DangNhap />} />
           <Route path="/thong-bao" element={<ThongBaoPage />} />
           <Route path="/thong-tin" element={<ThongTinPage />} />
           <Route path="/tra-cuu" element={<TraCuuPage />} />
+          <Route path="/co-cau-to-chuc" element={<CoCauToChucPage />} />
           <Route path="/huong-dan-bhxh" element={<HuongDanBHXHPage />} />
           <Route path="/huong-dan-vneid" element={<HuongDanVNeIDPage />} />
           <Route path="/lich-hop" element={<LichHopPage />} />

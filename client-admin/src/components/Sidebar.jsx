@@ -35,9 +35,15 @@ const MENU_GROUPS = [
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const role = localStorage.getItem('admin_role');
+  const fullName = localStorage.getItem('admin_fullname');
+  const showUserManagement = role === 'admin' || role === 'truongphong';
 
   const handleLogout = () => {
     localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_role');
+    localStorage.removeItem('admin_username');
+    localStorage.removeItem('admin_fullname');
     navigate('/dang-nhap');
   };
 
@@ -61,25 +67,42 @@ export default function Sidebar() {
           </NavLink>
         </div>
 
+        {/* Mục Quản lý cán bộ */}
+        {showUserManagement && (
+          <div className="sidebar-group">
+            <div className="sidebar-group-label">Hệ thống</div>
+            <NavLink to="/quan-ly-can-bo" className={({isActive}) => `sidebar-item ${isActive ? 'active' : ''}`}>
+              <span className="sidebar-item-icon">👥</span>
+              <span>Quản lý cán bộ</span>
+            </NavLink>
+          </div>
+        )}
+
         {/* Các mục menu khác */}
         {MENU_GROUPS.map((group) => (
           <div className="sidebar-group" key={group.group}>
             <div className="sidebar-group-label">{group.group}</div>
             {group.items.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
-              >
-                <span className="sidebar-item-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </NavLink>
+               <NavLink
+                 key={item.to}
+                 to={item.to}
+                 className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
+               >
+                 <span className="sidebar-item-icon">{item.icon}</span>
+                 <span>{item.label}</span>
+               </NavLink>
             ))}
           </div>
         ))}
       </nav>
 
       <div className="sidebar-footer">
+        {fullName && (
+          <div className="sidebar-user-info" style={{ marginBottom: '12px', padding: '0 8px', fontSize: '13px', color: '#94a3b8', textAlign: 'left' }}>
+            <div style={{ fontWeight: 'bold', color: '#f8fafc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>👤 {fullName}</div>
+            <div style={{ fontSize: '11px', marginTop: '2px' }}>Vai trò: {role === 'admin' ? 'Quản trị viên' : role === 'truongphong' ? 'Trưởng phòng' : role === 'phophong' ? 'Phó phòng' : 'Cán bộ'}</div>
+          </div>
+        )}
         <button className="sidebar-logout" onClick={handleLogout}>
           🔐 Đăng xuất
         </button>

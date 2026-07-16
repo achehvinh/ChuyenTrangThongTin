@@ -21,77 +21,72 @@ export default function DangNhap() {
 
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
-  username,
-  password,
-});
+        username,
+        password,
+      });
 
-      const token = response.data.token;
+      const { token, role, fullName } = response.data;
       localStorage.setItem("admin_token", token);
-      localStorage.setItem("admin_role", response.data.role);
+      localStorage.setItem("admin_role", role);
       localStorage.setItem("admin_username", response.data.username);
-      localStorage.setItem("admin_fullname", response.data.fullName);
-      navigate("/dashboard");
-    } catch (err) {
-  console.log(err.response?.data);
-  console.log(err);
+      localStorage.setItem("admin_fullname", fullName);
 
-  setError(
-    err.response?.data?.message ||
-    err.message ||
-    "Không kết nối được máy chủ"
-  );
-} finally {
+      // Đăng nhập thành công, về trang chủ
+      navigate("/");
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Sai tài khoản hoặc mật khẩu"
+      );
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-box">
-
-        <div className="login-logo">🏛️</div>
-        <h2>UBND Xã Đăk Pxi</h2>
-        <p className="login-sub">Hệ thống quản lý nội dung</p>
+    <div className="user-login-page">
+      <div className="user-login-box">
+        <div className="user-login-logo">🏛️</div>
+        <h2>CỔNG THÔNG TIN XÃ ĐĂK PXI</h2>
+        <p className="user-login-sub">Đăng nhập dành cho Cán bộ</p>
 
         <form onSubmit={handleLogin}>
-          <div className="login-field">
+          <div className="user-login-field">
             <label>Tên đăng nhập</label>
             <input
               type="text"
               placeholder="Nhập tên đăng nhập"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
               autoFocus
             />
           </div>
 
-          <div className="login-field">
+          <div className="user-login-field">
             <label>Mật khẩu</label>
             <input
               type="password"
               placeholder="Nhập mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 
-          {error && (
-            <div className="login-error">⚠️ {error}</div>
-          )}
+          {error && <div className="user-login-error">⚠️ {error}</div>}
 
-          <button
-            type="submit"
-            className="login-btn"
-            disabled={loading}
-          >
-            {loading ? '⏳ Đang đăng nhập...' : '🔐 Đăng nhập'}
+          <button type="submit" className="user-login-btn-submit" disabled={loading}>
+            {loading ? "⏳ Đang đăng nhập..." : "🔐 Đăng nhập"}
           </button>
         </form>
 
-        <div className="login-footer">
+        <div className="user-login-footer">
           UBND Xã Đăk Pxi — Quảng Ngãi © 2026
         </div>
-
       </div>
     </div>
   );

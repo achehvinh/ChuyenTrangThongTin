@@ -214,8 +214,19 @@
 }
 
 .nav-dropdown-item:hover {
-  background: #f0f4f8;
+  background: #1a3a5c;
+  color: #ffffff; /* Đổi màu chữ hover thành trắng */
+}
+
+.nav-dropdown-item.active {
+  background: #f3f4f6;
   color: #1a3a5c;
+  font-weight: 700;
+}
+
+.nav-dropdown-item.active:hover {
+  background: #1a3a5c;
+  color: #ffffff;
 }
 
 /* ── Responsive ── */
@@ -277,6 +288,93 @@
   opacity: 0.8;
   text-decoration: none;
 }
+
+/* Dropdown thông tin cán bộ đăng nhập */
+.nav-user-dropdown {
+  margin-left: auto;
+  position: relative;
+  height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-user-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.nav-user-dropdown:hover .nav-user-trigger {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-user-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-top: 3px solid #1a3a5c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  border-radius: 0 0 8px 8px;
+  padding: 8px 0;
+}
+
+.nav-user-dropdown:hover .nav-user-menu {
+  display: block;
+}
+
+.nav-user-role-label {
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #6b7280;
+  border-bottom: 1px solid #f3f4f6;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nav-user-item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #1f2937;
+  text-decoration: none;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.nav-user-item:hover {
+  background: #1a3a5c;
+  color: #ffffff;
+}
+
+.nav-user-item.logout-btn {
+  color: #dc2626;
+  border-top: 1px solid #f3f4f6;
+}
+
+.nav-user-item.logout-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
 
 .navbar-brand {
   text-decoration: none;

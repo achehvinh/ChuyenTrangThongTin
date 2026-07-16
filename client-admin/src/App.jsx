@@ -12,6 +12,7 @@ import BaiVietPage from "./pages/BaiVietPage";
 import GopY from "./pages/GopY";
 import UserApp from "./user-app/App.jsx";
 import KnowledgeManager from "./pages/KnowledgeManager";
+import QuanLyCanBo from "./pages/QuanLyCanBo";
 // ❌ Xóa dòng này: import BaiViet from './pages/BaiViet';
 
 function Layout() {
@@ -35,6 +36,7 @@ function Layout() {
           <Route path="/chuyen-muc" element={<ProtectedRoute><ChuyenMuc /></ProtectedRoute>} />
           <Route path="/thu-vien" element={<ProtectedRoute><ThuVien /></ProtectedRoute>} />
           <Route path="/gop-y" element={<ProtectedRoute><GopY /></ProtectedRoute>} />
+          <Route path="/quan-ly-can-bo" element={<ProtectedRoute><QuanLyCanBo /></ProtectedRoute>} />
           <Route path="/admin/knowledge" element={<ProtectedRoute><KnowledgeManager /></ProtectedRoute>} />
           <Route path="/user/*" element={<ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>} />
           <Route path="/KnowledgeManager" element={<KnowledgeManager />} />

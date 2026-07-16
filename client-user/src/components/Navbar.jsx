@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   {
     label: 'GIỚI THIỆU',
     dropdown: [
-      { to: '/huong-dan', label: 'Cơ cấu tổ chức' },
+      { to: '/co-cau-to-chuc', label: 'Cơ cấu tổ chức' },
       { to: '/lien-he', label: 'Lãnh đạo' },
     ]
   },
@@ -30,6 +30,18 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const { lang, toggleLang } = useLang();
   const { increase, decrease, sizeIndex, max, currentLabel } = useFontSize();
+
+  const isLoggedIn = !!localStorage.getItem("admin_token");
+  const userFullName = localStorage.getItem("admin_fullname") || localStorage.getItem("admin_username") || "Cán bộ";
+  const userRole = localStorage.getItem("admin_role");
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_role");
+    localStorage.removeItem("admin_username");
+    localStorage.removeItem("admin_fullname");
+    window.location.reload();
+  };
 
   return (
     <header className="navbar">
@@ -96,10 +108,30 @@ export default function Navbar() {
             )
           )}
 
-          <NavLink to="/dang-nhap" className="nav-login-btn">
-            <User size={18} strokeWidth={2} />
-            <span>Đăng nhập</span>
-          </NavLink>
+          {isLoggedIn ? (
+            <div className="nav-user-dropdown">
+              <span className="nav-user-trigger">
+                <User size={18} strokeWidth={2} />
+                <span>{userFullName}</span>
+              </span>
+              <div className="nav-user-menu">
+                <div className="nav-user-role-label">
+                  Chức danh: {userRole === 'admin' ? 'Quản trị viên' : userRole === 'truongphong' ? 'Trưởng phòng' : userRole === 'phophong' ? 'Phó phòng' : 'Cán bộ'}
+                </div>
+                <a href="http://localhost:5173" target="_blank" rel="noopener noreferrer" className="nav-user-item">
+                  ⚙️ Trang quản trị
+                </a>
+                <button onClick={handleLogout} className="nav-user-item logout-btn">
+                  🔐 Đăng xuất
+                </button>
+              </div>
+            </div>
+          ) : (
+            <NavLink to="/dang-nhap" className="nav-login-btn">
+              <User size={18} strokeWidth={2} />
+              <span>Đăng nhập</span>
+            </NavLink>
+          )}
         </nav>
       </div>
 
