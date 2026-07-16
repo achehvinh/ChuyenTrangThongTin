@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 import { useLang } from '../LanguageContext';
 import { useFontSize } from '../FontSizeContext';
+import { User } from 'lucide-react';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Trang chủ' },
@@ -29,7 +30,7 @@ export default function Navbar() {
 
       {/* Hàng 1 — Logo + Tên + Cỡ chữ */}
       <div className="navbar-top">
-        <div className="navbar-brand">
+        <NavLink to="/" className="navbar-brand">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjZ1BrruhiReTVU_7ul40Ev2emExnG9Moo4A&s"
             alt="Logo UBND"
@@ -39,7 +40,7 @@ export default function Navbar() {
             <span className="navbar-sub">Phòng Văn hóa Xã hội — Xã Đăk Pxi</span>
             <span className="navbar-main">Tuyên truyền & Hỗ trợ Dịch vụ Công</span>
           </div>
-        </div>
+        </NavLink>
 
         <div className="navbar-actions">
           <div className="font-size-controls notranslate">
@@ -88,6 +89,11 @@ export default function Navbar() {
               </NavLink>
             )
           )}
+
+          <NavLink to="/dang-nhap" className="nav-login-btn">
+            <User size={18} strokeWidth={2} />
+            <span>Đăng nhập</span>
+          </NavLink>
         </nav>
       </div>
 
