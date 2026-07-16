@@ -6,17 +6,23 @@ import { useFontSize } from '../FontSizeContext';
 import { User } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Trang chủ' },
-  { to: '/chuyen-doi-so', label: 'Chuyển đổi số' },
-  { to: '/ban-do', label: 'Bản đồ' },
+  { to: '/', label: 'TRANG CHỦ' },
   {
-    label: 'Khác',
+    label: 'GIỚI THIỆU',
+    dropdown: [
+      { to: '/huong-dan', label: 'Cơ cấu tổ chức' },
+      { to: '/lien-he', label: 'Lãnh đạo' },
+    ]
+  },
+  { to: '/chuyen-doi-so', label: 'CHUYỂN ĐỔI SỐ' },
+  { to: '/ban-do', label: 'BẢN ĐỒ' },
+  {
+    label: 'KHÁC',
     dropdown: [
       { to: '/huong-dan', label: 'Hướng dẫn sử dụng' },
       { to: '/lien-he', label: 'Liên hệ' },
       { to: '/video', label: 'Video' },
       { to: '/thu-vien-anh', label: 'Hình ảnh' },
-      { to: '/gioi-thieu', label: 'Giới thiệu' },
     ]
   }
 ];

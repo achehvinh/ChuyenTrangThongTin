@@ -23,7 +23,7 @@ export default function Footer() {
                     <p>Trụ sở: Thôn Pa cheng, Xã Đăk Pxi, Tỉnh Quảng Ngãi.</p>
                     <p>
                         Điện thoại: <strong>0339.310.915</strong>{' '}
-                        &nbsp;–&nbsp; Email: <strong>ubnddakpxi@kontum.gov.vn</strong>
+                        &nbsp;–&nbsp; Email: <strong>vhxh-dakpxi@quangngai.gov.vn</strong>
                     </p>
                     <p>
                         Đơn vị quản lý nội dung: <strong>Phòng Văn hóa – Xã hội.</strong>

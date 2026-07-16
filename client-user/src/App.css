@@ -206,7 +206,7 @@ button { font-family: inherit; }
 /* ── Nút Cuộn Lên Đầu Trang (Scroll to Top) ── */
 .scroll-to-top-btn {
   position: fixed;
-  bottom: 100px; /* Nằm ngay phía trên nút Trợ lý AI */
+  bottom: 160px; /* Nằm phía trên bong bóng chào mời của Trợ lý AI */
   right: 24px;
   width: 48px;
   height: 48px;
