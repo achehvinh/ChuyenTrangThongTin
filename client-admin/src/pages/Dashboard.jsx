@@ -1,18 +1,94 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import api from "../services/api";
+import TruongPhongDashboard from "./TruongPhongDashboard";
 import './Dashboard.css';
 
-export default function Dashboard() {
-  const navigate = useNavigate();
-  const now = new Date().toLocaleString('vi-VN');
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1";
 
-  // Giả lập dữ liệu — sau này thay bằng API thật
+export default function Dashboard() {
+  const role = localStorage.getItem("admin_role");
+  if (role === "truongphong") {
+    return <TruongPhongDashboard />;
+  }
+
+  const navigate = useNavigate();
+  const [now, setNow] = useState(new Date().toLocaleString('vi-VN'));
+
+  // State counts
+  const [citizensCount, setCitizensCount] = useState(150);
+  const [insurancesCount, setInsurancesCount] = useState(128);
+  const [staffCount, setStaffCount] = useState(5);
+  const [noticesCount, setNoticesCount] = useState(12);
+  const [postsCount, setPostsCount] = useState(28);
+  const [meetingsCount, setMeetingsCount] = useState(8);
+
+  useEffect(() => {
+    // Clock
+    const timer = setInterval(() => {
+      setNow(new Date().toLocaleString('vi-VN'));
+    }, 1000);
+
+    // Fetch stats
+    const fetchStats = async () => {
+      try {
+        const token = localStorage.getItem("admin_token");
+        const headers = { Authorization: `Bearer ${token}` };
+
+        // Citizens
+        const resCitizens = await axios.get(`${API_URL}/citizens`, { headers }).catch(() => null);
+        if (resCitizens && Array.isArray(resCitizens.data)) {
+          setCitizensCount(resCitizens.data.length);
+        }
+
+        // Insurances
+        const resInsurances = await axios.get(`${API_URL}/insurances`, { headers }).catch(() => null);
+        if (resInsurances && Array.isArray(resInsurances.data)) {
+          setInsurancesCount(resInsurances.data.length);
+        }
+
+        // Staff
+        const resUsers = await axios.get(`${API_URL}/auth/users`, { headers }).catch(() => null);
+        if (resUsers && Array.isArray(resUsers.data)) {
+          setStaffCount(resUsers.data.length);
+        }
+
+        // Thong bao
+        const resNotices = await api.get('/thong-bao').catch(() => null);
+        if (resNotices && Array.isArray(resNotices.data)) {
+          setNoticesCount(resNotices.data.length);
+        }
+
+        // Bai viet
+        const resPosts = await api.get('/').catch(() => null);
+        if (resPosts && Array.isArray(resPosts.data)) {
+          setPostsCount(resPosts.data.length);
+        }
+
+        // Lich hop
+        const resMeetings = await axios.get(`${API_URL}/lich-hop`, { headers }).catch(() => null);
+        if (resMeetings && Array.isArray(resMeetings.data)) {
+          setMeetingsCount(resMeetings.data.length);
+        }
+      } catch (err) {
+        console.error("Lỗi khi tải dữ liệu thống kê:", err);
+      }
+    };
+
+    fetchStats();
+    return () => clearInterval(timer);
+  }, []);
+
   const stats = [
-    { label: 'Thông báo', count: 12, route: '/thong-bao', color: '#005bac' },
-    { label: 'Bài viết', count: 28, route: '/bai-viet', color: '#16a34a' },
-    { label: 'Cảnh báo khẩn', count: 2, route: '/canh-bao', color: '#ea580c' },
-    { label: 'Lịch họp', count: 8, route: '/lich-hop', color: '#7c3aed' },
-    { label: 'Chuyên mục', count: 11, route: '/chuyen-muc', color: '#0891b2' },
-    { label: 'Thư viện ảnh', count: 45, route: '/thu-vien', color: '#d97706' },
+    { label: 'Tổng Công dân', count: citizensCount, route: '/quan-ly-nguoi-dung', color: '#1a3a5c' },
+    { label: 'Thẻ BHYT đã cấp', count: insurancesCount, route: '/quan-ly-nguoi-dung', color: '#1a3a5c' },
+    { label: 'Cán bộ hệ thống', count: staffCount, route: '/quan-ly-can-bo', color: '#1a3a5c' },
+    { label: 'Thông báo đã đăng', count: noticesCount, route: '/thong-bao', color: '#1a3a5c' },
+    { label: 'Bài viết tuyên truyền', count: postsCount, route: '/bai-viet', color: '#1a3a5c' },
+    { label: 'Lịch họp thôn', count: meetingsCount, route: '/lich-hop', color: '#1a3a5c' },
   ];
 
   const recentItems = [

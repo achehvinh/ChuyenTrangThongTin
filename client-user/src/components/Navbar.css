@@ -139,9 +139,16 @@
 .navbar-nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
   max-width: 1550px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 8px 0 24px;
+}
+
+.nav-links-left {
+  display: flex;
+  align-items: center;
 }
 
 .nav-link {
@@ -282,10 +289,49 @@
   white-space: nowrap;
   text-decoration: none;
   transition: opacity 0.2s;
+  position: relative;
+}
+
+/* Tooltip hiển thị bên trái biểu tượng đăng nhập */
+.nav-login-tooltip {
+  position: absolute;
+  right: 120%; /* Đặt bên trái logo */
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background-color: #1e293b;
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mũi tên nhỏ trỏ về phía logo */
+.nav-login-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #1e293b;
+}
+
+.nav-login-btn:hover .nav-login-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
 }
 
 .nav-login-btn:hover {
-  opacity: 0.8;
   text-decoration: none;
 }
 
@@ -322,7 +368,7 @@
   position: absolute;
   top: 100%;
   right: 0;
-  min-width: 220px;
+  min-width: 270px;
   background: #ffffff;
   border: 1px solid #d1d5db;
   border-top: 3px solid #1a3a5c;
@@ -384,4 +430,145 @@
 .navbar-brand:hover {
   text-decoration: none;
   color: inherit;
+}
+
+/* ── Hàng 2: Menu Utilities (Cỡ chữ, Ngôn ngữ, Đăng nhập) ── */
+.nav-actions-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-actions-right .font-size-controls {
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  padding: 4px 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+}
+
+.nav-actions-right .font-btn {
+  color: #ffffff;
+}
+
+.nav-actions-right .font-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.nav-actions-right .font-btn:disabled {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-actions-right .font-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nav-actions-right .lang-toggle-btn {
+  border: none;
+  background: transparent;
+  padding: 5px 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  height: 30px;
+}
+
+.nav-actions-right .lang-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-user-actions {
+  display: flex;
+  align-items: center;
+}
+
+.header-login-btn {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 30px;
+  box-sizing: border-box;
+  padding: 5px 2px;
+}
+
+.header-login-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  gap: 8px;
+  padding: 5px 12px;
+}
+
+.header-login-btn .login-text {
+  color: #ffffff;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.header-login-btn:hover .login-text {
+  max-width: 80px;
+  opacity: 1;
+}
+
+.navbar-user-logged-in-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  padding: 5px 8px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 30px;
+  box-sizing: border-box;
+}
+
+.header-user-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.header-logout-btn {
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  padding: 5px 8px;
+  font-size: 14px;
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.header-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-radius: 4px;
 }

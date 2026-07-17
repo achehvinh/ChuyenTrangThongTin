@@ -40,6 +40,7 @@ import Baucu from './pages/Baucu';
 import TeNanXaHoiPage from './pages/TeNanXaHoiPage';
 import PhapLuatPage from './pages/PhapLuatPage';
 import VideoPage from './pages/VideoPage';
+import TruongPhongDashboard from './pages/TruongPhongDashboard';
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -126,8 +127,9 @@ function Breadcrumbs() {
 function AppLayout() {
   const location = useLocation();
 
+  const isLoginPage = location.pathname === "/dang-nhap";
   const hideLayout =
-    location.pathname.startsWith("/thu-tuc-hanh-chinh");
+    location.pathname.startsWith("/thu-tuc-hanh-chinh") || isLoginPage;
 
   return (
     <>
@@ -173,9 +175,17 @@ function AppLayout() {
           <Route path="/tin-tuc/:id" element={<BaiVietDetailPage />} />
           <Route path="/video" element={<VideoPage />} />
           <Route path="/chat" element={<ChatWindow />} />
+          <Route path="/truong-phong" element={<TruongPhongDashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
+      {!isLoginPage && (
+        <>
+          <FloatingChatBot />
+          <ScrollToTop />
+        </>
+      )}
     </>
   );
 }
@@ -207,6 +217,7 @@ function ScrollToTop() {
       onClick={scrollToTop}
       aria-label="Cuộn lên đầu trang"
       title="Cuộn lên đầu trang"
+      type="button"
     >
       ▲
     </button>
@@ -220,8 +231,6 @@ function App() {
         <div className="app-shell">
           <Router>
             <AppLayout />
-            <FloatingChatBot />
-            <ScrollToTop />
           </Router>
         </div>
       </FontSizeProvider>

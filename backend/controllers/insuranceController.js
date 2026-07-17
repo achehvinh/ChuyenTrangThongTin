@@ -63,9 +63,32 @@ const deleteInsurance = async (req, res) => {
   }
 };
 
+// 5. Lấy danh sách tất cả thẻ BHYT
+const getInsurances = async (req, res) => {
+  try {
+    const insurances = await Insurance.find().populate("citizenId").sort({ createdAt: -1 });
+    res.status(200).json(insurances);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy danh sách bảo hiểm", error: error.message });
+  }
+};
+
+// 6. Lấy thẻ BHYT theo ID công dân
+const getInsuranceByCitizenId = async (req, res) => {
+  try {
+    const insurance = await Insurance.findOne({ citizenId: req.params.citizenId }).populate("citizenId");
+    if (!insurance) return res.status(404).json({ message: "Chưa cấp thẻ BHYT." });
+    res.status(200).json(insurance);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy bảo hiểm của công dân", error: error.message });
+  }
+};
+
 module.exports = {
   createInsurance,
   searchInsurance,
   updateInsurance,
-  deleteInsurance
+  deleteInsurance,
+  getInsurances,
+  getInsuranceByCitizenId
 };

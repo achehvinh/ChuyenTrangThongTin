@@ -67,16 +67,20 @@ export default function Sidebar() {
           </NavLink>
         </div>
 
-        {/* Mục Quản lý cán bộ */}
-        {showUserManagement && (
-          <div className="sidebar-group">
-            <div className="sidebar-group-label">Hệ thống</div>
+        {/* Mục Hệ thống quản lý */}
+        <div className="sidebar-group">
+          <div className="sidebar-group-label">Hệ thống</div>
+          <NavLink to="/quan-ly-nguoi-dung" className={({isActive}) => `sidebar-item ${isActive ? 'active' : ''}`}>
+            <span className="sidebar-item-icon">👥</span>
+            <span>Quản lý người dùng BHYT</span>
+          </NavLink>
+          {showUserManagement && (
             <NavLink to="/quan-ly-can-bo" className={({isActive}) => `sidebar-item ${isActive ? 'active' : ''}`}>
-              <span className="sidebar-item-icon">👥</span>
+              <span className="sidebar-item-icon">🔑</span>
               <span>Quản lý cán bộ</span>
             </NavLink>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Các mục menu khác */}
         {MENU_GROUPS.map((group) => (

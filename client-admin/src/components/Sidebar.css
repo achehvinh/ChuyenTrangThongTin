@@ -4,7 +4,7 @@
   left: 0;
   width: 250px;
   height: 100vh;
-  background: linear-gradient(180deg, #003d73 0%, #114d93 100%);
+  background: #1a3a5c;
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -85,7 +85,7 @@
 .sidebar-item.active {
   background: rgba(255,255,255,0.18);
   color: white;
-  border-left-color: var(--accent-contrast);
+  border-left-color: #3b82f6;
   font-weight: 700;
 }
 

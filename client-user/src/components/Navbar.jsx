@@ -60,77 +60,90 @@ export default function Navbar() {
           </div>
         </NavLink>
 
-        <div className="navbar-actions">
-          <div className="font-size-controls notranslate">
-            <button className="font-btn" onClick={decrease} disabled={sizeIndex === 0} title="Giảm cỡ chữ">A−</button>
-            <span className="font-label">{currentLabel}</span>
-            <button className="font-btn" onClick={increase} disabled={sizeIndex === max} title="Tăng cỡ chữ">A+</button>
-          </div>
-
-          <div className="lang-toggle-wrapper notranslate">
-            <button
-              className="lang-toggle-btn"
-              onClick={toggleLang}
-              title={lang === 'vi' ? 'Switch to English / Chuyển sang Tiếng Anh' : 'Chuyển sang Tiếng Việt / Switch to Vietnamese'}
-            >
-              <img
-                src={lang === 'vi' ? '/flag-vi.png' : '/flag-en.png'}
-                alt={lang === 'vi' ? 'Tiếng Việt' : 'English'}
-                className="lang-flag-img"
-              />
-            </button>
-          </div>
-        </div>
+        {/* Các nút tiện ích đã được chuyển xuống cuối thanh menu chính */}
       </div>
 
       {/* Hàng 2 — Menu */}
       <div className="navbar-bottom">
         <nav className="navbar-nav">
-          {NAV_ITEMS.map(item =>
-            item.dropdown ? (
-              <div className="nav-dropdown" key={item.label}>
-                <span className="nav-link nav-dropdown-trigger">{item.label} ▾</span>
-                <div className="nav-dropdown-menu">
-                  {item.dropdown.map(sub => (
-                    <NavLink key={sub.to} to={sub.to} className="nav-dropdown-item">{sub.label}</NavLink>
-                  ))}
+          <div className="nav-links-left">
+            {NAV_ITEMS.map(item =>
+              item.dropdown ? (
+                <div className="nav-dropdown" key={item.label}>
+                  <span className="nav-link nav-dropdown-trigger">{item.label} ▾</span>
+                  <div className="nav-dropdown-menu">
+                    {item.dropdown.map(sub => (
+                      <NavLink key={sub.to} to={sub.to} className="nav-dropdown-item">{sub.label}</NavLink>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === '/'}
-                className={({ isActive }) => `nav-link${isActive ? ' nav-link--active' : ''}`}
-              >
-                {item.label}
-              </NavLink>
-            )
-          )}
+              ) : (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.to === '/'}
+                  className={({ isActive }) => `nav-link${isActive ? ' nav-link--active' : ''}`}
+                >
+                  {item.label}
+                </NavLink>
+              )
+            )}
+          </div>
 
-          {isLoggedIn ? (
-            <div className="nav-user-dropdown">
-              <span className="nav-user-trigger">
-                <User size={18} strokeWidth={2} />
-                <span>{userFullName}</span>
-              </span>
-              <div className="nav-user-menu">
-                <div className="nav-user-role-label">
-                  Chức danh: {userRole === 'admin' ? 'Quản trị viên' : userRole === 'truongphong' ? 'Trưởng phòng' : userRole === 'phophong' ? 'Phó phòng' : 'Cán bộ'}
-                </div>
-                <a href="http://localhost:5173" target="_blank" rel="noopener noreferrer" className="nav-user-item">
-                  ⚙️ Trang quản trị
-                </a>
-                <button onClick={handleLogout} className="nav-user-item logout-btn">
-                  🔐 Đăng xuất
-                </button>
-              </div>
+          <div className="nav-actions-right">
+            {/* 1. Cỡ chữ */}
+            <div className="font-size-controls notranslate">
+              <button className="font-btn" onClick={decrease} disabled={sizeIndex === 0} title="Giảm cỡ chữ">A−</button>
+              <span className="font-label">{currentLabel}</span>
+              <button className="font-btn" onClick={increase} disabled={sizeIndex === max} title="Tăng cỡ chữ">A+</button>
             </div>
-          ) : (
-            <NavLink to="/dang-nhap" className="nav-login-btn">
-              <User size={18} strokeWidth={2} />
-            </NavLink>
-          )}
+
+            {/* 2. Ngôn ngữ */}
+            <div className="lang-toggle-wrapper notranslate">
+              <button
+                className="lang-toggle-btn"
+                onClick={toggleLang}
+                title={lang === 'vi' ? 'Switch to English / Chuyển sang Tiếng Anh' : 'Chuyển sang Tiếng Việt / Switch to Vietnamese'}
+              >
+                <img
+                  src={lang === 'vi' ? '/flag-vi.png' : '/flag-en.png'}
+                  alt={lang === 'vi' ? 'Tiếng Việt' : 'English'}
+                  className="lang-flag-img"
+                />
+              </button>
+            </div>
+
+            {/* 3. Đăng nhập */}
+            <div className="navbar-user-actions">
+              {isLoggedIn ? (
+                <div className="navbar-user-logged-in-group">
+                  <a
+                    href="/truong-phong"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="header-user-btn"
+                    title={`Chức danh: ${
+                      userRole === 'admin'
+                        ? 'Quản trị viên'
+                        : userRole === 'truongphong'
+                        ? 'Trưởng phòng'
+                        : userRole === 'phophong'
+                        ? 'Phó phòng'
+                        : 'Cán bộ'
+                    } — Nhấp để mở không gian làm việc chuyên trách`}
+                  >
+                    <User size={18} strokeWidth={2} />
+                    <span>{userFullName}</span>
+                  </a>
+                </div>
+              ) : (
+                <NavLink to="/dang-nhap" className="header-login-btn">
+                  <span className="login-text">Đăng nhập</span>
+                  <User size={18} strokeWidth={2} />
+                </NavLink>
+              )}
+            </div>
+          </div>
         </nav>
       </div>
 
