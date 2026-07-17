@@ -5,7 +5,7 @@ import "./DangNhap.css";
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
-  "https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1";
+  "http://localhost:5000/api/v1";
 
 export default function DangNhap() {
   const navigate = useNavigate();

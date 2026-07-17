@@ -1,5 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
@@ -41,6 +42,7 @@ import TeNanXaHoiPage from './pages/TeNanXaHoiPage';
 import PhapLuatPage from './pages/PhapLuatPage';
 import VideoPage from './pages/VideoPage';
 import TruongPhongDashboard from './pages/TruongPhongDashboard';
+import CuocHopTrucTuyen from './pages/CuocHopTrucTuyen';
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -128,8 +130,29 @@ function AppLayout() {
   const location = useLocation();
 
   const isLoginPage = location.pathname === "/dang-nhap";
+  const isMeetingRoom = location.pathname.startsWith("/cuoc-hop-truc-tuyen");
+  const isDashboardPage = location.pathname === "/truong-phong";
   const hideLayout =
-    location.pathname.startsWith("/thu-tuc-hanh-chinh") || isLoginPage;
+    location.pathname.startsWith("/thu-tuc-hanh-chinh") || isLoginPage || isMeetingRoom;
+
+  useEffect(() => {
+    const sendVisitorHit = async () => {
+      try {
+        const username = localStorage.getItem("admin_username") || "citizen";
+        const role = localStorage.getItem("admin_role") || "citizen";
+        const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+        const visitorUrl = apiBase.replace("/api/v1", "/api/visitor/hit");
+        await axios.post(visitorUrl, { username, role, pathname: location.pathname });
+      } catch (err) {
+        console.error("Heartbeat visitor error:", err);
+      }
+    };
+
+    sendVisitorHit();
+
+    const interval = setInterval(sendVisitorHit, 60000);
+    return () => clearInterval(interval);
+  }, [location.pathname]);
 
   return (
     <>
@@ -176,11 +199,12 @@ function AppLayout() {
           <Route path="/video" element={<VideoPage />} />
           <Route path="/chat" element={<ChatWindow />} />
           <Route path="/truong-phong" element={<TruongPhongDashboard />} />
+          <Route path="/cuoc-hop-truc-tuyen/:id" element={<CuocHopTrucTuyen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 
-      {!isLoginPage && (
+      {!isLoginPage && !isMeetingRoom && !isDashboardPage && (
         <>
           <FloatingChatBot />
           <ScrollToTop />

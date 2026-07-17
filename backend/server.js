@@ -33,6 +33,7 @@ const { router: authRouter } = require("./middleware/auth");
 const aiRoutes = require("./routes/aiRoutes");
 const knowledgeRoutes = require('./routes/knowledgeRoutes');
 const chatRoutes = require("./routes/chatRoutes");
+const visitorRoutes = require("./routes/visitorRoutes");
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
@@ -46,6 +47,7 @@ app.use("/api/v1/bai-viet",       baiVietRoutes);
 app.use("/api/v1/ai", aiRoutes);
 app.use('/api/v1/knowledge', knowledgeRoutes);
 app.use("/api/v1/chat", chatRoutes);
+app.use("/api/visitor", visitorRoutes);
 
 app.get("/api/v1", (req, res) => {
   res.json({ message: "UBND Dak Pxi API is running" });
@@ -70,3 +72,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+// Force nodemon reload to refresh LichHop schema in memory

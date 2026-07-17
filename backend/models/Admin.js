@@ -29,6 +29,12 @@ const adminSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+
+    status: {
+      type: String,
+      enum: ["active", "suspended"],
+      default: "active",
+    },
   },
   {
     timestamps: true,

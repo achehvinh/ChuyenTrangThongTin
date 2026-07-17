@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import axios from "axios";
 import "./TTSButton.css";
 
 const TTS_TEXTS = {
@@ -23,13 +24,14 @@ export default function TTSButton({ type = "child", label = "Nhấn để nghe",
       setProgress(0);
       return;
     }
-    <TTSButton
-      text={`
-      ${event.title}
-      ${event.description}
-      ${event.note}
- `}
-/>
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+      const visitorUrl = apiBase.replace("/api/v1", "/api/visitor/hit");
+      const username = localStorage.getItem("admin_username") || "citizen";
+      const role = localStorage.getItem("admin_role") || "citizen";
+      axios.post(visitorUrl, { username, role, pathname: "/nghe-dai" }).catch(() => {});
+    } catch (err) {}
 
     window.speechSynthesis.cancel();
     const utt = new SpeechSynthesisUtterance(TTS_TEXTS[type]);

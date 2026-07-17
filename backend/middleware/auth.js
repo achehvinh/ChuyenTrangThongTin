@@ -31,6 +31,11 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Sai tài khoản hoặc mật khẩu" });
     }
 
+    // Kiểm tra tài khoản có bị tạm dừng hoạt động hay không
+    if (user.status === "suspended") {
+      return res.status(403).json({ message: "Tài khoản của bạn đã bị tạm dừng hoạt động" });
+    }
+
     // So khớp mật khẩu đã mã hóa
     const isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
@@ -149,6 +154,69 @@ router.post("/users", authAdmin, async (req, res) => {
   } catch (err) {
     console.error("Lỗi tạo tài khoản:", err);
     return res.status(500).json({ message: "Lỗi hệ thống khi tạo tài khoản" });
+  }
+});
+
+// ── PUT: Cập nhật tài khoản (Thông tin hoặc Trạng thái Tạm dừng) ──
+router.put("/users/:id", authAdmin, async (req, res) => {
+  try {
+    const targetUser = await Admin.findById(req.params.id);
+    if (!targetUser) {
+      return res.status(404).json({ message: "Không tìm thấy tài khoản cán bộ" });
+    }
+
+    const currentUser = req.user;
+
+    // Quyền cập nhật tài khoản
+    if (currentUser.role === "admin") {
+      if (targetUser.role !== "truongphong") {
+        return res.status(403).json({ message: "Admin chỉ được phép cập nhật tài khoản Trưởng phòng" });
+      }
+    } else if (currentUser.role === "truongphong") {
+      if (targetUser.createdBy !== currentUser.username) {
+        return res.status(403).json({ message: "Bạn chỉ có quyền cập nhật các tài khoản cán bộ do chính mình tạo ra" });
+      }
+    } else {
+      return res.status(403).json({ message: "Bạn không có quyền cập nhật tài khoản" });
+    }
+
+    const { fullName, role, password, status } = req.body;
+
+    if (fullName !== undefined) targetUser.fullName = fullName;
+    if (role !== undefined) {
+      if (currentUser.role === "admin" && role !== "truongphong") {
+        return res.status(400).json({ message: "Admin chỉ được sửa vai trò thành Trưởng phòng" });
+      }
+      if (currentUser.role === "truongphong" && role !== "phophong" && role !== "canbo") {
+        return res.status(400).json({ message: "Trưởng phòng chỉ được sửa vai trò thành Phó phòng hoặc Cán bộ" });
+      }
+      targetUser.role = role;
+    }
+    if (password) {
+      targetUser.password = bcrypt.hashSync(password, 10);
+    }
+    if (status !== undefined) {
+      if (status !== "active" && status !== "suspended") {
+        return res.status(400).json({ message: "Trạng thái không hợp lệ (chỉ chấp nhận active hoặc suspended)" });
+      }
+      targetUser.status = status;
+    }
+
+    await targetUser.save();
+    return res.json({
+      success: true,
+      message: "Cập nhật tài khoản cán bộ thành công",
+      user: {
+        _id: targetUser._id,
+        username: targetUser.username,
+        role: targetUser.role,
+        fullName: targetUser.fullName,
+        status: targetUser.status,
+      }
+    });
+  } catch (err) {
+    console.error("Lỗi cập nhật tài khoản:", err);
+    return res.status(500).json({ message: "Lỗi hệ thống khi cập nhật tài khoản" });
   }
 });
 

@@ -6,7 +6,7 @@ const LichHopSchema = new mongoose.Schema({
   time: { type: String, required: true },
   location: { type: String, required: true },
   thon: { type: String, required: true },
-  type: { type: String, enum: ['hop-dan', 'tiem-chung', 'phat-ho-tro', 'tap-huan', 'khac'], default: 'hop-dan' },
+  type: { type: String, enum: ['giao-ban', 'hop-khan', 'chuyen-de', 'tap-huan', 'hop-dan', 'tiem-chung', 'phat-ho-tro', 'khac'], default: 'giao-ban' },
   note: { type: String, default: '' },
 }, { timestamps: true });
 
