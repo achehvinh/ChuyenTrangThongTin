@@ -129,7 +129,6 @@ export default function Navbar() {
           ) : (
             <NavLink to="/dang-nhap" className="nav-login-btn">
               <User size={18} strokeWidth={2} />
-              <span>Đăng nhập</span>
             </NavLink>
           )}
         </nav>

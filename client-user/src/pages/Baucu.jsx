@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Baucu.css';
 
@@ -6,8 +6,10 @@ export default function Baucu() {
     const navigate = useNavigate();
     const [speaking, setSpeaking] = useState(false);
     const [showInviteBanner, setShowInviteBanner] = useState(true);
-    // Sử dụng tệp âm thanh ghi âm riêng (QUY TRINH BAU CU TRUONG THON-PXI.mp3 trong thư mục public/video)
-    const [audio] = useState(() => new Audio('/video/QUY TRINH BAU CU TRUONG THON-PXI.mp3'));
+    // Sử dụng tệp âm thanh ghi âm riêng (dakpxi-baucu.mp3 và QUY TRINH BAU CU TRUONG THON-PXI.mp3 trong thư mục public/video)
+    const [introAudio] = useState(() => new Audio('/video/dakpxi-baucu.mp3'));
+    const [mainAudio] = useState(() => new Audio('/video/QUY TRINH BAU CU TRUONG THON-PXI.mp3'));
+    const activeAudioRef = useRef(introAudio);
 
     const [copied, setCopied] = useState(false);
     const [currentUrl, setCurrentUrl] = useState('');
@@ -46,15 +48,15 @@ export default function Baucu() {
 
     function handleSpeak() {
         if (speaking) {
-            audio.pause();
+            activeAudioRef.current.pause();
             setSpeaking(false);
         } else {
-            audio.play()
+            activeAudioRef.current.play()
                 .then(() => {
                     setSpeaking(true);
                 })
                 .catch((err) => {
-                    alert("Tính năng đọc giọng nói: Bà con vui lòng đặt tệp âm thanh 'QUY TRINH BAU CU TRUONG THON-PXI.mp3' vào thư mục public/video/ để nghe giọng đọc nhé!");
+                    alert("Tính năng đọc giọng nói: Bà con vui lòng đặt tệp âm thanh 'dakpxi-baucu.mp3' và 'QUY TRINH BAU CU TRUONG THON-PXI.mp3' vào thư mục public/video/ để nghe giọng đọc nhé!");
                     console.error("Audio play error:", err);
                 });
         }
@@ -62,12 +64,32 @@ export default function Baucu() {
 
     // Tự động phát âm thanh khi vào trang & đăng ký các sự kiện
     useEffect(() => {
-        const handleEnded = () => setSpeaking(false);
-        audio.addEventListener('ended', handleEnded);
+        const handleIntroEnded = () => {
+            activeAudioRef.current = mainAudio;
+            mainAudio.play()
+                .then(() => {
+                    setSpeaking(true);
+                })
+                .catch((err) => {
+                    console.error("Main audio play error:", err);
+                    setSpeaking(false);
+                });
+        };
+
+        const handleMainEnded = () => {
+            setSpeaking(false);
+            // Reset về âm thanh intro cho lần bấm tiếp theo
+            activeAudioRef.current = introAudio;
+            introAudio.currentTime = 0;
+            mainAudio.currentTime = 0;
+        };
+
+        introAudio.addEventListener('ended', handleIntroEnded);
+        mainAudio.addEventListener('ended', handleMainEnded);
 
         // Kích hoạt tự động phát sau khi load xong trang
         const autoPlayTimer = setTimeout(() => {
-            audio.play()
+            introAudio.play()
                 .then(() => {
                     setSpeaking(true);
                 })
@@ -78,10 +100,12 @@ export default function Baucu() {
 
         return () => {
             clearTimeout(autoPlayTimer);
-            audio.removeEventListener('ended', handleEnded);
-            audio.pause();
+            introAudio.removeEventListener('ended', handleIntroEnded);
+            mainAudio.removeEventListener('ended', handleMainEnded);
+            introAudio.pause();
+            mainAudio.pause();
         };
-    }, [audio]);
+    }, [introAudio, mainAudio]);
 
     return (
         <div className="baucu-container">
@@ -185,10 +209,10 @@ export default function Baucu() {
                         <p>
                             Thông tin chính thức về hội nghị biểu quyết, nội dung chương trình và quy trình biểu quyết bằng hình thức giơ tay đã được đăng tải trên Trang cộng đồng của xã. Kính mời bà con truy cập Facebook để theo dõi, tương tác và chia sẻ thông tin đến mọi người dân trong thôn!
                         </p>
-                        <a 
-                            href="https://www.facebook.com/share/p/1DwY7F2kzy/" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                        <a
+                            href="https://www.facebook.com/share/p/1DwY7F2kzy/"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="fb-link-btn"
                         >
                             🔵 Xem bài viết trên Facebook UBND xã Đăk Pxi
@@ -325,39 +349,39 @@ export default function Baucu() {
                             Bà con hãy chung tay tuyên truyền quy trình biểu quyết bằng cách chia sẻ đường liên kết hướng dẫn này đến các nhóm Zalo, Facebook của gia đình, dòng họ hoặc làng mình để mọi người cùng nắm vững quy trình và chủ động tham gia biểu quyết đúng quy định pháp luật.
                         </p>
                         <div className="share-actions-buttons">
-                            <button 
+                            <button
                                 className={`share-btn copy-btn ${copied ? 'copied' : ''}`}
                                 onClick={handleCopyLink}
                             >
                                 {copied ? '✅ Đã sao chép liên kết!' : '🔗 Sao chép liên kết chia sẻ'}
                             </button>
-                            <a 
+                            <a
                                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
-                                target="_blank" 
-                                rel="noopener noreferrer" 
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="share-btn facebook-btn"
                             >
                                 👥 Chia sẻ lên Facebook
                             </a>
-                            <a 
+                            <a
                                 href={`https://sp.zalo.me/share_to_zalo?url=${encodeURIComponent(currentUrl)}`}
-                                target="_blank" 
-                                rel="noopener noreferrer" 
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="share-btn zalo-btn"
                             >
                                 💬 Chia sẻ qua Zalo
                             </a>
                         </div>
                     </div>
-                    
+
                     <div className="share-qr-col">
                         <h3>📲 Quét mã QR truy cập nhanh</h3>
                         <p className="qr-sub">Dùng camera điện thoại hoặc Zalo quét mã dưới đây để xem hướng dẫn trực tiếp:</p>
                         <div className="qr-code-box">
                             {currentUrl && (
-                                <img 
-                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentUrl)}`} 
-                                    alt="Mã QR Biểu quyết" 
+                                <img
+                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentUrl)}`}
+                                    alt="Mã QR Biểu quyết"
                                     className="qr-code-img"
                                 />
                             )}
@@ -379,7 +403,7 @@ export default function Baucu() {
                     <p className="verification-desc">
                         Đây là thông tin tuyên truyền hướng dẫn quy trình biểu quyết tại hội nghị cử tri chính thức, đúng sự thật của Ủy ban nhân dân xã Đăk Pxi. Bà con có thể nhấn vào liên kết chính thức dưới đây để kiểm chứng và xem chi tiết bài đăng gốc trên Trang thông tin điện tử xã Đăk Pxi, tỉnh Quảng Ngãi:
                     </p>
-                    <a 
+                    <a
                         href="https://dakpxi.quangngai.gov.vn/gioi-thieu/tin-chi-dao-dieu-hanh/dak-pxi-san-sang-cho-cuoc-bau-cu-truong-thon-nhiem-ky-2025-20302.html"
                         target="_blank"
                         rel="noopener noreferrer"
