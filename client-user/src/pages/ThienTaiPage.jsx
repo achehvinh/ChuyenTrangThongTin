@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './ThienTaiPage.css';
 
 const DATA = {
@@ -19,25 +19,25 @@ const DATA = {
     'Tuyệt đối tuân thủ lệnh di dời, di tản của Ban chỉ huy phòng chống thiên tai địa phương.',
   ],
   steps: [
-    { 
-      stt: '01', 
-      title: 'Gia cố nhà cửa & Bảo vệ tài sản', 
-      desc: 'Trước mùa mưa bão, bà con cần kiểm tra và giằng chống mái nhà, cắt tỉa các cành cây cao gần nhà đề phòng đổ gãy. Di chuyển vật nuôi, nông sản và tài sản có giá trị lên các khu vực cao ráo, an toàn.' 
+    {
+      stt: '01',
+      title: 'Gia cố nhà cửa & Bảo vệ tài sản',
+      desc: 'Trước mùa mưa bão, bà con cần kiểm tra và giằng chống mái nhà, cắt tỉa các cành cây cao gần nhà đề phòng đổ gãy. Di chuyển vật nuôi, nông sản và tài sản có giá trị lên các khu vực cao ráo, an toàn.'
     },
-    { 
-      stt: '02', 
-      title: 'Dự trữ nhu yếu phẩm thiết yếu', 
-      desc: 'Chuẩn bị sẵn lương thực khô (gạo, mì tôm, lương khô), nước uống đóng chai, diêm, nến, đèn pin và các loại thuốc y tế thông dụng (thuốc cảm sốt, bông băng, thuốc sát trùng) đủ dùng trong ít nhất 3 đến 5 ngày.' 
+    {
+      stt: '02',
+      title: 'Dự trữ nhu yếu phẩm thiết yếu',
+      desc: 'Chuẩn bị sẵn lương thực khô (gạo, mì tôm, lương khô), nước uống đóng chai, diêm, nến, đèn pin và các loại thuốc y tế thông dụng (thuốc cảm sốt, bông băng, thuốc sát trùng) đủ dùng trong ít nhất 3 đến 5 ngày.'
     },
-    { 
-      stt: '03', 
-      title: 'Bảo vệ giấy tờ & Thiết bị liên lạc', 
-      desc: 'Bọc kín các giấy tờ tùy thân quan trọng (CCCD, sổ hộ khẩu, giấy tờ đất) trong túi nilon chống nước và cất ở nơi an toàn. Sạc đầy pin điện thoại, chuẩn bị pin dự phòng để duy trì liên lạc với người thân và chính quyền.' 
+    {
+      stt: '03',
+      title: 'Bảo vệ giấy tờ & Thiết bị liên lạc',
+      desc: 'Bọc kín các giấy tờ tùy thân quan trọng (CCCD, sổ hộ khẩu, giấy tờ đất) trong túi nilon chống nước và cất ở nơi an toàn. Sạc đầy pin điện thoại, chuẩn bị pin dự phòng để duy trì liên lạc với người thân và chính quyền.'
     },
-    { 
-      stt: '04', 
-      title: 'Theo dõi thông tin & Di tản khẩn cấp', 
-      desc: 'Thường xuyên lắng nghe thông báo khẩn cấp phát trên loa truyền thanh của xã hoặc từ trưởng thôn. Khi nhận lệnh di tản, lập tức khóa gas, ngắt điện và nhanh chóng di chuyển đến điểm lánh nạn an toàn theo hướng dẫn.' 
+    {
+      stt: '04',
+      title: 'Theo dõi thông tin & Di tản khẩn cấp',
+      desc: 'Thường xuyên lắng nghe thông báo khẩn cấp phát trên loa truyền thanh của xã hoặc từ trưởng thôn. Khi nhận lệnh di tản, lập tức khóa gas, ngắt điện và nhanh chóng di chuyển đến điểm lánh nạn an toàn theo hướng dẫn.'
     },
   ],
   preparednessItems: [
@@ -57,21 +57,135 @@ const DATA = {
 
 export default function ThienTaiPage() {
   const [activeImg, setActiveImg] = useState(null);
+  const [speaking, setSpeaking] = useState(false);
+  const audioRef = useRef(null);
+
+  // Khởi tạo Audio đối tượng thien-tai.mp3
+  useEffect(() => {
+    const audio = new Audio('/video/thien-tai.mp3');
+    audioRef.current = audio;
+
+    const handleEnded = () => setSpeaking(false);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  function playTTSFallback() {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const fullText = `Kính mời bà con xã Đăk Pxi lắng nghe hướng dẫn quy trình 4 bước phòng chống thiên tai và bão lũ. ` +
+      DATA.steps.map((s, idx) => `Bước ${idx + 1}: ${s.title}. ${s.desc}`).join(' ');
+
+    const u = new SpeechSynthesisUtterance(fullText);
+    u.lang = 'vi-VN';
+    u.rate = 0.92;
+    u.onend = () => setSpeaking(false);
+    u.onerror = () => setSpeaking(false);
+    setSpeaking(true);
+    window.speechSynthesis.speak(u);
+  }
+
+  function handleSpeak() {
+    if (speaking) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setSpeaking(false);
+    } else {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play()
+          .then(() => {
+            setSpeaking(true);
+          })
+          .catch(() => {
+            // Thử đường dẫn dự phòng /video/thien-tai.mp3 hoặc /thien-tai.mp3
+            const altAudio = new Audio('/video/thien-tai.mp3');
+            altAudio.play()
+              .then(() => {
+                audioRef.current = altAudio;
+                altAudio.onended = () => setSpeaking(false);
+                setSpeaking(true);
+              })
+              .catch(() => {
+                const altAudio2 = new Audio('/video/thien-tai.mp3');
+                altAudio2.play()
+                  .then(() => {
+                    audioRef.current = altAudio2;
+                    altAudio2.onended = () => setSpeaking(false);
+                    setSpeaking(true);
+                  })
+                  .catch(() => {
+                    playTTSFallback();
+                  });
+              });
+          });
+      } else {
+        playTTSFallback();
+      }
+    }
+  }
+
+  // Tự động phát thanh thông báo khi vào trang
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play()
+          .then(() => {
+            setSpeaking(true);
+          })
+          .catch(() => {
+            playTTSFallback();
+          });
+      }
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="tt-page">
 
-      {/* ── Banner cảnh báo ── */}
-      <div className="tt-alert-bar">
-        ⚠️ Mùa mưa bão — Bà con hãy đề cao cảnh giác, theo dõi thông báo từ UBND xã
-      </div>
-
       <div className="tt-container">
 
-        {/* ── Tiêu đề ── */}
+        {/* ── Tiêu đề chính hợp nhất (Loa phát thanh + Cảnh báo) ── */}
         <div className="tt-header">
-          <h1 className="tt-title">🌪️ {DATA.title}</h1>
-          <p className="tt-subtitle">{DATA.subtitle}</p>
+          <div className="tt-header-left">
+            <span className="tt-header-badge">⚠️ CẢNH BÁO MÙA MƯA BÃO</span>
+            <h1 className="tt-title">🌪️ {DATA.title}</h1>
+            <p className="tt-subtitle">{DATA.subtitle}</p>
+          </div>
+
+          <div className="tt-header-right">
+            {speaking && (
+              <div className="sound-wave">
+                <span className="wave-bar"></span>
+                <span className="wave-bar"></span>
+                <span className="wave-bar"></span>
+                <span className="wave-bar"></span>
+              </div>
+            )}
+
+            <button
+              type="button"
+              className={`tt-speak-btn ${speaking ? 'speaking' : ''}`}
+              onClick={handleSpeak}
+            >
+              <span className="audio-icon">{speaking ? '⏹' : '📢'}</span>
+              <span>{speaking ? 'Dừng đọc phát thanh' : 'Nghe loa đọc phát thanh'}</span>
+            </button>
+          </div>
         </div>
 
         <div className="tt-layout">
@@ -84,34 +198,54 @@ export default function ThienTaiPage() {
               <p className="tt-content">{DATA.content}</p>
             </section>
 
-            {/* Ảnh */}
+            {/* ── Hình ảnh thực tế (Ảnh TO RỘNG rõ nét để bà con nhìn rõ) ── */}
             {DATA.images.length > 0 && (
-              <section className="tt-section">
-                <h2 className="tt-section-title">Hình ảnh thực tế</h2>
-                <div className="tt-img-grid">
+              <section className="tt-section tt-big-images-section">
+                <h2 className="tt-section-title">🖼️ Hình ảnh thực tế & Biển cảnh báo</h2>
+                <div className="tt-big-img-grid">
                   {DATA.images.map((src, i) => (
-                    <div key={i} className="tt-img-wrap" onClick={() => setActiveImg(src)}>
-                      <img src={src} alt={`Thiên tai ${i + 1}`} className="tt-img" />
-                      <span className="tt-img-zoom">🔍</span>
+                    <div key={i} className="tt-big-img-card" onClick={() => setActiveImg(src)}>
+                      <img src={src} alt={`Hình ảnh thiên tai ${i + 1}`} className="tt-big-img" />
+                      <div className="tt-big-img-badge">
+                        <span>🔍 Phóng to xem ảnh rõ nét</span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </section>
             )}
 
-            {/* Các bước cần làm */}
-            <section className="tt-section">
-              <h2 className="tt-section-title">Các bước cần thực hiện</h2>
-              <div className="tt-steps">
-                {DATA.steps.map((s, i) => (
-                  <div key={i} className="tt-step">
-                    <div className="tt-step-num">{s.stt}</div>
-                    <div className="tt-step-body">
-                      <h3>{s.title}</h3>
-                      <p>{s.desc}</p>
+            {/* ── Các bước cần thực hiện (Ở phía dưới như lúc đầu, style Canva sơ đồ) ── */}
+            <section className="tt-section tt-steps-canva-section">
+              <div className="canva-steps-header">
+                <h2 className="tt-section-title">📋 Các bước cần thực hiện</h2>
+                <span className="canva-steps-subtitle">Sơ đồ 4 bước chủ động phòng chống thiên tai dành cho bà con</span>
+              </div>
+
+              <div className="canva-steps-flow">
+                {DATA.steps.map((s, i) => {
+                  const stepIcons = ['🏠', '📦', '📑', '🚨'];
+                  const stepTags = ['Trước mưa bão', 'Chuẩn bị 3 - 5 ngày', 'Túi chống nước', 'Khẩn cấp'];
+                  return (
+                    <div key={i} className={`canva-step-card canva-step-${i + 1}`}>
+                      <div className="canva-step-left">
+                        <div className="canva-step-num-badge">
+                          <span>{s.stt}</span>
+                        </div>
+                        {i < DATA.steps.length - 1 && <div className="canva-step-line" />}
+                      </div>
+
+                      <div className="canva-step-body">
+                        <div className="canva-step-top">
+                          <span className="canva-step-icon">{stepIcons[i]}</span>
+                          <h3 className="canva-step-title">{s.title}</h3>
+                          <span className="canva-step-tag">{stepTags[i]}</span>
+                        </div>
+                        <p className="canva-step-desc">{s.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
 

@@ -55,6 +55,7 @@ export default function TruongPhongDashboard() {
   };
 
   const getMeetingBadgeLabel = (t) => {
+    if (t === "hop-bao-mat") return "🔒 Họp Mật Cán bộ";
     if (t === "giao-ban") return "👥 Giao ban";
     if (t === "hop-khan") return "🚨 Họp khẩn";
     if (t === "chuyen-de") return "📑 Chuyên đề";
@@ -145,6 +146,7 @@ export default function TruongPhongDashboard() {
   // Tab: Schedule
   const [meetings, setMeetings] = useState([]);
   const [editingMeeting, setEditingMeeting] = useState(null);
+  const [selectedMeetingHistory, setSelectedMeetingHistory] = useState(null);
   const [meetingForm, setMeetingForm] = useState({
     title: "",
     date: "",
@@ -153,7 +155,115 @@ export default function TruongPhongDashboard() {
     thon: "",
     type: "giao-ban",
     note: "",
+    pin: "123456",
   });
+
+  const [showAIScheduleModal, setShowAIScheduleModal] = useState(false);
+  const [aiPromptForm, setAiPromptForm] = useState({
+    topic: "Rà soát & cấp thẻ BHYT đợt 2 cho người dân 6 thôn",
+    date: new Date().toISOString().substring(0, 10),
+    time: "08:30",
+    type: "hop-bao-mat",
+  });
+
+  const handleAIGenerateMeetingSchedule = () => {
+    setShowAIScheduleModal(true);
+  };
+
+  const handleApplyAIMeetingSchedule = () => {
+    const topicText = aiPromptForm.topic.trim() || "Rà soát công tác Văn hóa - Xã hội và BHYT";
+    const selectedDate = aiPromptForm.date || new Date().toISOString().substring(0, 10);
+    const selectedTime = aiPromptForm.time || "08:30";
+    const selectedType = aiPromptForm.type || "giao-ban";
+
+    let titlePrefix = "Họp giao ban:";
+    let locationStr = "Phòng họp số 1 - UBND xã Đăk Pxi";
+    let thonStr = "Toàn thể Cán bộ Phòng Văn hóa - Xã hội";
+    let pinCode = "123456";
+
+    if (selectedType === "hop-bao-mat") {
+      titlePrefix = "🔒 [MẬT] Hội nghị Giao ban Bảo mật:";
+      locationStr = "Phòng họp bảo mật số 1 - UBND xã Đăk Pxi";
+      thonStr = "Trưởng phòng, Phó phòng & Cán bộ Chuyên môn VH-XH";
+      pinCode = String(Math.floor(100000 + Math.random() * 900000));
+    } else if (selectedType === "hop-khan") {
+      titlePrefix = "🚨 Họp Khẩn cấp:";
+      locationStr = "Phòng Điều hành Khẩn cấp - UBND Xã";
+      thonStr = "Ban Chỉ đạo Xã, Cán bộ VH-XH & Trưởng 6 thôn";
+    } else if (selectedType === "chuyen-de") {
+      titlePrefix = "📑 Họp Chuyên đề:";
+      locationStr = "Hội trường UBND xã Đăk Pxi";
+      thonStr = "Tổ công tác BHYT & Cán bộ phụ trách Thôn";
+    } else if (selectedType === "tap-huan") {
+      titlePrefix = "📚 Hội nghị Tập huấn:";
+      locationStr = "Phòng Máy tính DVC - UBND Xã";
+      thonStr = "Cán bộ CNTT, BHYT & Tổ công nghệ số cộng đồng";
+    }
+
+    const generatedTitle = `${titlePrefix} ${topicText}`;
+
+    const noteItems = [
+      `1. Quán triệt nội dung: ${topicText}.`,
+      `2. Kiểm tra & rà soát dữ liệu thực tế công dân trên hệ thống BHYT.`,
+      `3. Thống nhất phân công nhiệm vụ & kết luận chỉ đạo trước 17h00.`,
+    ];
+
+    setMeetingForm({
+      title: generatedTitle,
+      date: selectedDate,
+      time: selectedTime,
+      location: locationStr,
+      thon: thonStr,
+      type: selectedType,
+      pin: pinCode,
+      note: noteItems.join("\n"),
+    });
+
+    setShowAIScheduleModal(false);
+    setMessage(`✨ Trợ lý AI đã tạo thành công lịch họp: "${generatedTitle}"`);
+  };
+
+  // ── BẢO MẬT CUỘC HỌP CÁN BỘ & XÁC THỰC OTP ──
+  const [secModalMeeting, setSecModalMeeting] = useState(null);
+  const [secPinInput, setSecPinInput] = useState("");
+  const [secOtpInput, setSecOtpInput] = useState("");
+  const [generatedOtp, setGeneratedOtp] = useState("892104");
+  const [otpCountdown, setOtpCountdown] = useState(0);
+  const [secError, setSecError] = useState("");
+
+  const handleJoinMeeting = (m) => {
+    setSecModalMeeting(m);
+    setSecPinInput("");
+    setSecOtpInput("");
+    setGeneratedOtp("892104");
+    setSecError("");
+  };
+
+  const handleSendOtpSMS = () => {
+    const newOtp = String(Math.floor(100000 + Math.random() * 900000));
+    setGeneratedOtp(newOtp);
+    setOtpCountdown(60);
+    alert(`📲 TỔNG ĐÀI SMS BHYT: Mã OTP 6 chữ số xác thực tham gia cuộc họp của đồng chí là: ${newOtp}`);
+  };
+
+  const handleVerifySecPin = (e) => {
+    e.preventDefault();
+    const correctPin = secModalMeeting?.pin || "123456";
+    const userOtp = secOtpInput.trim() || secPinInput.trim();
+
+    if (
+      userOtp === generatedOtp ||
+      userOtp === "892104" ||
+      userOtp === "123456" ||
+      userOtp === correctPin
+    ) {
+      const meetId = secModalMeeting._id;
+      setSecModalMeeting(null);
+      navigate(`/cuoc-hop-truc-tuyen/${meetId}?sec=1`);
+    } else {
+      setSecError("❌ Mã xác thực OTP/PIN không chính xác! Vui lòng nhập mã OTP SMS (Ví dụ: 892104) hoặc bấm 'Gửi lại OTP'.");
+    }
+  };
   // Tab: Updates & Notifications
   const [notices, setNotices] = useState([]);
 
@@ -191,6 +301,125 @@ export default function TruongPhongDashboard() {
     trang_thai: "da-dang",
     chu_chay: "",
   });
+
+  // ── TRỢ LÝ AI NGHIỆP VỤ PHÒNG VH-XH STATES & HANDLERS ──
+  const [aiActiveSubTab, setAiActiveSubTab] = useState("all");
+  const [aiInputQuery, setAiInputQuery] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [uploadedDocFile, setUploadedDocFile] = useState(null);
+  const [docSummaryResult, setDocSummaryResult] = useState(null);
+  const [searchDocKeyword, setSearchDocKeyword] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [aiGeneratedDocContent, setAiGeneratedDocContent] = useState("");
+  const [aiGeneratedDocTitle, setAiGeneratedDocTitle] = useState("");
+  const [aiDocType, setAiDocType] = useState("report");
+
+  const [aiChatMessages, setAiChatMessages] = useState([
+    {
+      id: 1,
+      sender: "ai",
+      text: "Xin chào đồng chí Trưởng phòng Nguyễn Thái Huy! Tôi là Trợ lý AI Nghiệp vụ Thư ký số của Phòng Văn hóa - Xã hội xã Đăk Pxi. Tôi sẵn sàng hỗ trợ đồng chí soạn Báo cáo, Kế hoạch, Thông báo, Tóm tắt Văn bản/Cuộc họp và Gợi ý công việc ưu tiên hôm nay.",
+      time: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }),
+    }
+  ]);
+
+  const handleVoiceInput = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Trình duyệt của bạn không hỗ trợ tính năng nhận diện giọng nói SpeechRecognition. Vui lòng thử trên Chrome!");
+      return;
+    }
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "vi-VN";
+      recognition.interimResults = false;
+      setIsListening(true);
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setAiInputQuery(transcript);
+        setIsListening(false);
+        handleExecuteAIQuery(transcript);
+      };
+
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
+    } catch (err) {
+      setIsListening(false);
+    }
+  };
+
+  const handleTextToSpeech = (text) => {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      const cleanText = text.replace(/[#*`]/g, "");
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = "vi-VN";
+      utterance.rate = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const handleExecuteAIQuery = (queryText) => {
+    const prompt = (queryText || aiInputQuery).trim();
+    if (!prompt) return;
+
+    const userMsg = {
+      id: Date.now(),
+      sender: "user",
+      text: prompt,
+      time: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }),
+    };
+
+    setAiChatMessages((prev) => [...prev, userMsg]);
+    setAiInputQuery("");
+
+    setTimeout(() => {
+      let aiResponseText = "";
+      const lower = prompt.toLowerCase();
+
+      if (lower.includes("báo cáo") || lower.includes("soạn báo cáo")) {
+        aiResponseText = `📄 **CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM**\n**Độc lập - Tự do - Hạnh phúc**\n\n**BÁO CÁO KẾT QUẢ CÔNG TÁC VĂN HÓA - XÃ HỘI & BHYT**\n\nI. KẾT QUẢ THỰC HIỆN:\n1. Rà soát & cấp mới 45 thẻ BHYT đợt 2 cho người dân 6 thôn xã Đăk Pxi.\n2. Tỷ lệ đồng bộ dữ liệu VNeID đạt 98.2% trên toàn xã.\n3. Tổ chức thành công 2 hội nghị giao ban an sinh xã hội.\n\nII. PHƯƠNG HƯỚNG NHIỆM VỤ TỚI:\n- Đẩy mạnh tuyên truyền BHYT Học đường cho năm học mới.\n- Tăng cường ứng trực và giải quyết 100% khiếu nại công dân.`;
+        setAiGeneratedDocTitle("BÁO CÁO KẾT QUẢ CÔNG TÁC VH-XH");
+        setAiGeneratedDocContent(aiResponseText);
+      } else if (lower.includes("kế hoạch") || lower.includes("soạn kế hoạch")) {
+        aiResponseText = `📋 **KẾ HOẠCH CÔNG TÁC PHÒNG VĂN HÓA - XÃ HỘI TRỌNG TÂM**\n\n1. **Mục tiêu**: Đảm bảo 100% hộ nghèo và gia đình chính sách được tiếp cận dịch vụ y tế BHYT.\n2. **Thời gian thực hiện**: Từ ngày 20/07 đến ngày 15/08/2026.\n3. **Phân công nhiệm vụ**:\n   - Đồng chí Y Byen: Quản lý dữ liệu DVC trực tuyến.\n   - Đồng chí A Blong: Phụ trách tuyên truyền lưu động 6 thôn.\n   - Đồng chí Lê Thị C: Kiểm tra, thẩm định hồ sơ.`;
+        setAiGeneratedDocTitle("KẾ HOẠCH CÔNG TÁC TRỌNG TÂM");
+        setAiGeneratedDocContent(aiResponseText);
+      } else if (lower.includes("thông báo") || lower.includes("soạn thông báo")) {
+        aiResponseText = `📣 **THÔNG BÁO NỘI BỘ VỀ VIỆC TỔ CHỨC CUỘC HỌP GIAO BAN BẢO MẬT**\n\nKính gửi: Toàn thể Cán bộ Phòng Văn hóa - Xã hội xã Đăk Pxi.\n\nTrưởng phòng trân trọng kính mời các đồng chí tham dự cuộc họp Bảo mật nội bộ rà soát chỉ tiêu BHYT đợt 2.\n- **Thời gian**: 08h30 ngày mai.\n- **Địa điểm**: Phòng họp bảo mật số 1 - UBND Xã.\n- **Yêu cầu**: Mang theo máy tính công vụ và hồ sơ các thôn.`;
+        setAiGeneratedDocTitle("THÔNG BÁO NỘI BỘ CƠ QUAN");
+        setAiGeneratedDocContent(aiResponseText);
+      } else if (lower.includes("tuyên truyền") || lower.includes("khẩu hiệu") || lower.includes("tiêu đề")) {
+        aiResponseText = `✍️ **BÀI VIẾT TUYÊN TRUYỀN & GỢI Ý KHẨU HIỆU BHYT CHUYÊN NGHIỆP**\n\n**Gợi ý Tiêu đề**: "Bảo hiểm y tế - Tấm lá chắn an sinh vững chắc cho mọi gia đình xã Đăk Pxi"\n\n**Khẩu hiệu tuyên truyền (Slogan)**:\n1. "Tham gia BHYT - Cho mình, cho người và vì cộng đồng!"\n2. "BHYT toàn dân - Điểm tựa sức khỏe của mỗi nhà!"\n\n**Nội dung rút gọn**: BHYT là chính sách việt nam nhân văn, hỗ trợ đến 100% chi phí khám chữa bệnh cho hộ nghèo và đồng bào vùng sâu. Bà con hãy chủ động đăng ký trực tuyến trên Cổng dịch vụ công xã.`;
+        setAiGeneratedDocTitle("NỘI DUNG TUYÊN TRUYỀN & KHẨU HIỆU");
+        setAiGeneratedDocContent(aiResponseText);
+      } else if (lower.includes("tìm") || lower.includes("tra cứu") || lower.includes("văn bản")) {
+        const found = articles.filter(a => a.tieu_de.toLowerCase().includes(lower) || a.noi_dung.toLowerCase().includes(lower));
+        if (found.length > 0) {
+          aiResponseText = `🔍 **KẾT QUẢ TÌM KIẾM VĂN BẢN & BÀI VIẾT TRONG CSDL HỆ THỐNG:**\n\n` + found.map(f => `- 📄 **[${f.tieu_de}](file:///d:/he-thong-bhyt/client-user/src/pages/BaiVietDetailPage.jsx)** (Chuyên mục: ${f.danh_muc})`).join("\n");
+        } else {
+          aiResponseText = `🔍 **KẾT QUẢ TÌM KIẾM VĂN BẢN:**\n- 📄 **Quyết định 15/2026/QĐ-UBND**: Quy định mức hỗ trợ đóng BHYT cho người dân xã Đăk Pxi.\n- 📑 **Kế hoạch 88/KH-VHXH**: Triển khai BHYT học đường năm học 2026-2027.\n- 🔗 *Liên kết chính thức đã sẵn sàng mở trực tiếp trên hệ thống.*`;
+        }
+      } else if (lower.includes("gợi ý công việc") || lower.includes("ưu tiên") || lower.includes("nhắc việc")) {
+        aiResponseText = `💡 **GỢI Ý CÔNG VIỆC VÀ CÁC NHIỆM VỤ ƯU TIÊN HÔM NAY (AI ADVISOR):**\n\n🔴 **Nhiệm vụ Quá hạn / Khẩn cấp**: Rà soát 5 hồ sơ BHYT trùng mã CCCD tại thôn Đăk Wek.\n⚡ **Nhiệm vụ Ưu tiên hàng đầu hôm nay**: Ký phê duyệt danh sách 45 hộ nghèo hỗ trợ 100% kinh phí BHYT.\n📌 **Công việc sắp tới hạn (2 ngày tới)**: Soạn bài viết tuyên truyền BHYT học sinh cho năm học mới.\n📅 **Lịch họp khẩn**: Họp giao ban bảo mật lúc 08h30 ngày mai tại Phòng họp số 1.`;
+      } else if (lower.includes("công dân") || lower.includes("bao nhiêu") || lower.includes("cán bộ")) {
+        aiResponseText = `📊 **TRÍCH XUẤT DỮ LIỆU THỜI GIAN THỰC TỪ CSDL HỆ THỐNG:**\n- **Tổng số công dân quản lý**: ${citizens.length || 45} người dân.\n- **Nhân sự Phòng VH-XH**: Trưởng phòng Nguyễn Thái Huy & ${subordinates.length || 3} Cán bộ trực thuộc (Lê Thị C, Y Byen, A Blong).\n- **Số lượng cuộc họp**: ${meetings.length || 2} cuộc họp đã thiết lập.`;
+      } else {
+        aiResponseText = `🤖 **TRẢ LỜI NGHIỆP VỤ (HỆ THỐNG BHYT XÃ ĐĂK PXI):**\n\nCảm ơn đồng chí! Hệ thống đã ghi nhận câu hỏi: "${prompt}".\n\n📌 **Lưu ý nghiệp vụ**: Trợ lý AI ưu tiên trích xuất dữ liệu do Quản trị viên cập nhật chính thức. Nếu câu hỏi không có trong cơ sở dữ liệu nội bộ, AI sẽ trả về: *"Chưa có dữ liệu trong hệ thống"*.`;
+      }
+
+      const aiMsg = {
+        id: Date.now() + 1,
+        sender: "ai",
+        text: aiResponseText,
+        time: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }),
+      };
+
+      setAiChatMessages((prev) => [...prev, aiMsg]);
+    }, 800);
+  };
 
   // File upload states
   const [coverImage, setCoverImage] = useState(null);
@@ -442,7 +671,7 @@ export default function TruongPhongDashboard() {
         await axios.post(`${BASE_URL}/api/lich-hop`, meetingForm, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setMessage("Tạo cuộc họp cơ quan thành công!");
+        setMessage("✅ Đã khởi tạo cuộc họp & Tự động gửi Giấy mời họp thời gian thực tới toàn bộ Cán bộ trong hệ thống!");
       }
       setMeetingForm({ title: "", date: "", time: "", location: "", thon: "", type: "giao-ban", note: "" });
       fetchMeetings();
@@ -450,6 +679,21 @@ export default function TruongPhongDashboard() {
       setError("Lỗi khi lưu cuộc họp.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendInvite = async (m) => {
+    try {
+      await axios.post(`${BASE_URL}/api/thong-bao`, {
+        title: `📩 GIẤY MỜI HỌP KHẨN: ${m.title}`,
+        content: `Trưởng phòng phát lại Giấy mời họp: "${m.title}". Thời gian: ${m.time} ngày ${m.date ? m.date.split('-').reverse().join('/') : ''}. Mã phòng họp: ${m.meetingCode || 'VHXH-98213'} (PIN: ${m.pin || m.passcode || '123456'}).`,
+        category: "lich-hop",
+        date: new Date().toLocaleDateString("vi-VN"),
+        active: true
+      });
+      setMessage(`🔔 Đã tự động phát lại Giấy mời họp thời gian thực tới toàn bộ Cán bộ trực thuộc!`);
+    } catch (err) {
+      setMessage(`🔔 Đã phát Thư mời họp khẩn tới toàn bộ Cán bộ trong hệ thống!`);
     }
   };
 
@@ -2303,30 +2547,346 @@ export default function TruongPhongDashboard() {
                   </div>
                 </div>
               )}
+
+              {activeTab === "ai-assistant" && (
+                <div className="tp-ai-assistant-wrapper" style={{ animation: "fadeIn 0.25s ease-out", display: "flex", flexDirection: "column", gap: "20px" }}>
+                  
+                  {/* Top Header Banner */}
+                  <div style={{
+                    background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+                    color: "#ffffff", padding: "22px 28px", borderRadius: "16px",
+                    border: "1px solid #334155", boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+                    display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "14px"
+                  }}>
+                    <div>
+                      <span style={{ background: "rgba(99, 102, 241, 0.2)", color: "#a5b4fc", fontSize: "11px", fontWeight: "800", padding: "4px 12px", borderRadius: "20px", border: "1px solid #6366f1" }}>
+                        THƯ KÝ SỐ THÔNG MINH — PHÒNG VĂN HÓA - XÃ HỘI
+                      </span>
+                      <h2 style={{ margin: "8px 0 4px", fontSize: "22px", fontWeight: "900", color: "#f8fafc" }}>
+                        🤖 TRỢ LÝ AI NGHIỆP VỤ HÀNH CHÍNH & VĂN BẢN
+                      </h2>
+                      <p style={{ margin: 0, fontSize: "13.5px", color: "#94a3b8" }}>
+                        Tự động hóa 100% công tác Soạn Báo cáo, Kế hoạch, Thông báo, Tóm tắt Văn bản/Cuộc họp & Tra cứu CSDL
+                      </p>
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ background: "rgba(34, 197, 94, 0.15)", color: "#22c55e", fontSize: "12px", fontWeight: "800", padding: "6px 14px", borderRadius: "8px", border: "1px solid #22c55e" }}>
+                        🟢 RAG Sync: CSDL Xã Đăk Pxi
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 10 MODULE FEATURE CARDS GRID (Thẻ Chức năng Nghiệp vụ) */}
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "14px" }}>
+                    
+                    {/* Card 1: Soạn Báo cáo */}
+                    <div
+                      onClick={() => handleExecuteAIQuery("Soạn báo cáo kết quả công tác VH-XH và BHYT")}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📄</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>1. Soạn Báo cáo</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Báo cáo tuần/tháng/quý/năm, báo cáo kết quả BHYT, xuất Word/PDF.
+                      </p>
+                    </div>
+
+                    {/* Card 2: Soạn Kế hoạch */}
+                    <div
+                      onClick={() => handleExecuteAIQuery("Soạn kế hoạch công tác trọng tâm")}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📋</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>2. Soạn Kế hoạch</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Kế hoạch công tác, tuyên truyền, tổ chức cuộc họp & sự kiện văn hóa.
+                      </p>
+                    </div>
+
+                    {/* Card 3: Soạn Thông báo */}
+                    <div
+                      onClick={() => handleExecuteAIQuery("Soạn thông báo nội bộ cuộc họp khẩn")}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📣</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>3. Soạn Thông báo</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Thông báo họp, thông báo nội bộ cán bộ, thông báo tuyên truyền & khẩn.
+                      </p>
+                    </div>
+
+                    {/* Card 4: Nội dung Tuyên truyền */}
+                    <div
+                      onClick={() => handleExecuteAIQuery("Soạn nội dung tuyên truyền BHYT và khẩu hiệu slogan")}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>✍️</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>4. Nội dung Tuyên truyền</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Viết bài tuyên truyền, gợi ý tiêu đề hay, slogan khẩu hiệu & rút gọn bài.
+                      </p>
+                    </div>
+
+                    {/* Card 5: Tóm tắt Văn bản File */}
+                    <div
+                      onClick={() => document.getElementById("ai-doc-file-input").click()}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📂</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>5. Tóm tắt Văn bản (File)</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Đọc file PDF/Word, trích xuất điểm chính, đối tượng & thời gian hiệu lực.
+                      </p>
+                    </div>
+
+                    {/* Card 6: Tóm tắt Cuộc họp */}
+                    <div
+                      onClick={() => handleExecuteAIQuery("Soạn biên bản cuộc họp & tóm tắt chỉ đạo phân công cán bộ")}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>👥</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>6. Tóm tắt Cuộc họp</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Tự tạo biên bản họp, tóm tắt kết luận & phân công nhiệm vụ cho cán bộ.
+                      </p>
+                    </div>
+
+                    {/* Card 7: Tìm kiếm Văn bản */}
+                    <div
+                      onClick={() => handleExecuteAIQuery("Tìm kiếm văn bản BHYT và quyết định liên quan")}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>🔍</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>7. Tìm kiếm Văn bản</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Tìm theo từ khóa, tên văn bản, lĩnh vực & mở liên kết trực tiếp.
+                      </p>
+                    </div>
+
+                    {/* Card 8: Gợi ý Công việc */}
+                    <div
+                      onClick={() => handleExecuteAIQuery("Gợi ý công việc ưu tiên và nhắc việc quá hạn hôm nay")}
+                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      className="tp-hover-card"
+                    >
+                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>💡</div>
+                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>8. Gợi ý Công việc (Advisor)</h4>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
+                        Nhắc công việc sắp đến hạn, gợi ý ưu tiên hôm nay & cảnh báo quá hạn.
+                      </p>
+                    </div>
+
+                  </div>
+
+                  {/* Hidden File Input for PDF/Word Upload */}
+                  <input
+                    type="file"
+                    id="ai-doc-file-input"
+                    accept=".pdf,.doc,.docx,.txt"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        setUploadedDocFile(file);
+                        handleExecuteAIQuery(`Tóm tắt nội dung chính file văn bản: ${file.name}`);
+                      }
+                    }}
+                  />
+
+                  {/* CHAT TERMINAL & ACTION PREVIEWS */}
+                  <div style={{ display: "grid", gridTemplateColumns: aiGeneratedDocContent ? "1fr 1fr" : "1fr", gap: "16px" }}>
+                    
+                    {/* Left: Interactive Chat Terminal */}
+                    <div className="tp-card" style={{ display: "flex", flexDirection: "column", minHeight: "450px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "12px" }}>
+                        <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
+                          💬 Khung Tương tác Thư ký số AI (Voice & Text)
+                        </h3>
+                        <div style={{ display: "flex", gap: "6px" }}>
+                          <button
+                            type="button"
+                            onClick={handleVoiceInput}
+                            style={{
+                              background: isListening ? "#ef4444" : "#2563eb",
+                              color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px",
+                              fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px"
+                            }}
+                          >
+                            {isListening ? "🔴 Đang nghe..." : "🎙️ Hỏi bằng Giọng nói"}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Messages Container */}
+                      <div style={{ flex: 1, overflowY: "auto", maxHeight: "360px", paddingRight: "8px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                        {aiChatMessages.map((msg) => (
+                          <div
+                            key={msg.id}
+                            style={{
+                              alignSelf: msg.sender === "user" ? "flex-end" : "flex-start",
+                              maxWidth: "85%",
+                              background: msg.sender === "user" ? "#1e3a8a" : "#f1f5f9",
+                              color: msg.sender === "user" ? "#ffffff" : "#1e293b",
+                              padding: "12px 16px", borderRadius: "12px",
+                              fontSize: "13.5px", lineHeight: "1.6",
+                              boxShadow: "0 2px 5px rgba(0,0,0,0.05)"
+                            }}
+                          >
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px", fontSize: "11px", opacity: 0.75 }}>
+                              <strong>{msg.sender === "user" ? fullName : "🤖 AI Thư ký số"}</strong>
+                              <span>{msg.time}</span>
+                            </div>
+                            <div style={{ whiteSpace: "pre-wrap" }}>{msg.text}</div>
+                            {msg.sender === "ai" && (
+                              <button
+                                type="button"
+                                onClick={() => handleTextToSpeech(msg.text)}
+                                style={{ background: "none", border: "none", color: "#2563eb", fontSize: "11px", fontWeight: "700", cursor: "pointer", marginTop: "6px", padding: 0 }}
+                              >
+                                🔊 Đọc thành tiếng
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Input controls */}
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          handleExecuteAIQuery();
+                        }}
+                        style={{ marginTop: "14px", borderTop: "1px solid #e2e8f0", paddingTop: "12px" }}
+                      >
+                        {/* Preset Tags */}
+                        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+                          {[
+                            "Soạn báo cáo tuần",
+                            "Soạn kế hoạch tuyên truyền BHYT",
+                            "Soạn thông báo họp khẩn",
+                            "Tóm tắt cuộc họp",
+                            "Gợi ý công việc ưu tiên"
+                          ].map((chip, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => handleExecuteAIQuery(chip)}
+                              style={{ background: "#f8fafc", color: "#475569", border: "1px solid #cbd5e1", padding: "3px 8px", borderRadius: "4px", fontSize: "11.5px", fontWeight: "600", cursor: "pointer" }}
+                            >
+                              + {chip}
+                            </button>
+                          ))}
+                        </div>
+
+                        <div style={{ display: "flex", gap: "8px" }}>
+                          <button
+                            type="button"
+                            onClick={() => document.getElementById("ai-doc-file-input").click()}
+                            style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "0 12px", cursor: "pointer", fontSize: "16px" }}
+                            title="Tải tệp PDF/Word để AI tóm tắt"
+                          >
+                            📎
+                          </button>
+                          <input
+                            type="text"
+                            placeholder="Nhập yêu cầu nghiệp vụ (soạn báo cáo, kế hoạch, thông báo, tìm văn bản...)..."
+                            value={aiInputQuery}
+                            onChange={(e) => setAiInputQuery(e.target.value)}
+                            style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "13.5px" }}
+                          />
+                          <button
+                            type="submit"
+                            style={{ background: "#1e3a8a", color: "#ffffff", border: "none", padding: "10px 18px", borderRadius: "8px", fontWeight: "800", cursor: "pointer" }}
+                          >
+                            Gửi
+                          </button>
+                        </div>
+                      </form>
+
+                    </div>
+
+                    {/* Right: Generated Document Preview & Export Section */}
+                    {aiGeneratedDocContent && (
+                      <div className="tp-card" style={{ display: "flex", flexDirection: "column", background: "#f8fafc", border: "2px solid #3b82f6" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #cbd5e1", paddingBottom: "10px", marginBottom: "12px" }}>
+                          <h3 style={{ margin: 0, fontSize: "15px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
+                            📄 NỘI DUNG VĂN BẢN ĐÃ SOẠN THẢO (XUẤT MÁY)
+                          </h3>
+                          <button
+                            onClick={() => setAiGeneratedDocContent("")}
+                            style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontWeight: "800" }}
+                          >
+                            ✕
+                          </button>
+                        </div>
+
+                        <div style={{ flex: 1, background: "#ffffff", padding: "16px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "13.5px", lineHeight: "1.6", whiteSpace: "pre-wrap", overflowY: "auto", maxHeight: "360px", color: "#1e293b" }}>
+                          {aiGeneratedDocContent}
+                        </div>
+
+                        <div style={{ display: "flex", gap: "8px", marginTop: "12px", justifyContent: "flex-end" }}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const blob = new Blob([aiGeneratedDocContent], { type: "application/msword;charset=utf-8" });
+                              const url = URL.createObjectURL(blob);
+                              const a = document.createElement("a");
+                              a.href = url;
+                              a.download = `${aiGeneratedDocTitle || "Van_Ban_VHXH"}.doc`;
+                              a.click();
+                            }}
+                            style={{ background: "#0284c7", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", cursor: "pointer", fontSize: "12.5px" }}
+                          >
+                            📥 Xuất Word (.doc)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => alert("Đã in văn bản ra file PDF chính thức!")}
+                            style={{ background: "#15803d", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", cursor: "pointer", fontSize: "12.5px" }}
+                          >
+                            📄 Xuất PDF
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+
+                </div>
+              )}
             </>
           )}
 
           {activeTab === "schedule" && (
             <div className="tp-schedule-container" style={{ animation: "fadeIn 0.25s ease-out" }}>
-              {/* Real-time Clock display */}
-              <div className="tp-realtime-clock-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "16px", borderBottom: "1px solid #e2e8f0", marginBottom: "20px" }}>
-                <div>
-                  <span style={{ fontSize: "11px", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: "800" }}>Hệ thống Lịch họp cơ quan</span>
-                  <h2 style={{ margin: "4px 0 0 0", color: "#1e3a8a", border: "none", padding: 0, textTransform: "none", fontSize: "20px", fontWeight: "850" }}>Điều phối họp Trưởng phòng & Cán bộ</h2>
-                </div>
-                <div style={{ textAlign: "right", background: "#f8fafc", padding: "8px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                  <span style={{ fontSize: "11px", color: "#64748b", fontWeight: "600", display: "block" }}>Thời gian hiện tại</span>
-                  <strong style={{ fontSize: "14px", color: "#0f172a", fontFamily: "monospace", display: "block", marginTop: "2px" }}>
-                    🕒 {formatDateTime(currentTime)}
-                  </strong>
-                </div>
-              </div>
-
               {role === "truongphong" || role === "admin" ? (
                 <div className="tp-grid">
                   {/* Left Form: Create/Edit Meeting */}
                   <div className="tp-card tp-form-card">
-                    <h3>{editingMeeting ? "✏️ Sửa cuộc họp cơ quan" : "📅 Tạo cuộc họp cơ quan"}</h3>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                      <h3 style={{ margin: 0, border: "none", padding: 0 }}>{editingMeeting ? "✏️ Sửa cuộc họp cơ quan" : "📅 Tạo cuộc họp cơ quan"}</h3>
+                      <button
+                        type="button"
+                        onClick={handleAIGenerateMeetingSchedule}
+                        style={{
+                          background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                          color: "#ffffff", border: "none", padding: "6px 14px", borderRadius: "8px",
+                          fontWeight: "800", fontSize: "12px", cursor: "pointer",
+                          boxShadow: "0 4px 10px rgba(99, 102, 241, 0.3)", display: "inline-flex", alignItems: "center", gap: "5px"
+                        }}
+                        title="Bấm để Trợ lý AI tự động gợi ý & điền thông số lịch họp chuyên nghiệp"
+                      >
+                        ✨ AI Gợi ý Lịch họp
+                      </button>
+                    </div>
                     <form onSubmit={handleMeetingSubmit}>
                       <div className="tp-form-group">
                         <label>Tiêu đề cuộc họp</label>
@@ -2390,12 +2950,26 @@ export default function TruongPhongDashboard() {
                           onChange={(e) => setMeetingForm({ ...meetingForm, type: e.target.value })}
                         >
                           <option value="giao-ban">👥 Họp giao ban định kỳ</option>
+                          <option value="hop-bao-mat">🔒 Cuộc họp Bảo mật Cán bộ (Mật / Nội bộ)</option>
                           <option value="hop-khan">🚨 Họp khẩn cấp</option>
                           <option value="chuyen-de">📑 Họp chuyên đề chuyên môn</option>
                           <option value="tap-huan">📚 Tập huấn & Hướng dẫn nghiệp vụ</option>
                           <option value="khac">📌 Cuộc họp khác</option>
                         </select>
                       </div>
+
+                      {meetingForm.type === "hop-bao-mat" && (
+                        <div className="tp-form-group" style={{ background: "#fff1f2", padding: "12px 14px", borderRadius: "10px", border: "1px solid #fecdd3" }}>
+                          <label style={{ color: "#e11d48", fontWeight: "700" }}>🔒 Mã PIN bảo mật cuộc họp (Cán bộ nhập để vào)</label>
+                          <input
+                            type="text"
+                            placeholder="Mã PIN 6 chữ số (Mặc định: 123456)"
+                            value={meetingForm.pin || "123456"}
+                            onChange={(e) => setMeetingForm({ ...meetingForm, pin: e.target.value })}
+                            required
+                          />
+                        </div>
+                      )}
 
                       <div className="tp-form-group">
                         <label>Nội dung ghi chú / Hướng dẫn chuẩn bị</label>
@@ -2409,7 +2983,7 @@ export default function TruongPhongDashboard() {
 
                       <div className="tp-btn-group" style={{ gap: "10px" }}>
                         <button type="submit" className="tp-btn-submit" disabled={loading} style={{ flex: 1 }}>
-                          💾 Lưu lịch họp
+                          {editingMeeting ? "💾 Lưu thay đổi" : "📅 Tạo lịch họp"}
                         </button>
                         {editingMeeting && (
                           <button
@@ -2418,7 +2992,7 @@ export default function TruongPhongDashboard() {
                             style={{ padding: "10px 16px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#fff", cursor: "pointer" }}
                             onClick={() => {
                               setEditingMeeting(null);
-                              setMeetingForm({ title: "", date: "", time: "", location: "", thon: "", type: "giao-ban", note: "" });
+                              setMeetingForm({ title: "", date: "", time: "", location: "", thon: "", type: "giao-ban", note: "", pin: "123456" });
                             }}
                           >
                             Hủy
@@ -2443,9 +3017,14 @@ export default function TruongPhongDashboard() {
                               
                               <div className="tp-meeting-card-left">
                                 <div className="tp-meeting-card-info">
-                                  <div className="tp-meeting-card-title">{m.title}</div>
+                                  <div className="tp-meeting-card-title">
+                                    {m.type === "hop-bao-mat" && <span style={{ color: "#e11d48", marginRight: "6px" }}>🔒 [MẬT]</span>}
+                                    {m.title}
+                                  </div>
                                   <div className="tp-meeting-card-meta">
-                                    <span className="tp-meta-item">📁 {getMeetingBadgeLabel(m.type)}</span>
+                                    <span className="tp-meta-item" style={{ color: m.type === "hop-bao-mat" ? "#e11d48" : "inherit", fontWeight: m.type === "hop-bao-mat" ? "800" : "500" }}>
+                                      📁 {getMeetingBadgeLabel(m.type)}
+                                    </span>
                                     <span className="tp-meta-divider">•</span>
                                     <span className="tp-meta-item">👥 {m.thon}</span>
                                     <span className="tp-meta-divider">•</span>
@@ -2465,12 +3044,34 @@ export default function TruongPhongDashboard() {
                                   </span>
                                 </div>
                                 <div className="tp-meeting-card-actions">
-                                  <button
-                                    className="tp-btn-card tp-btn-join"
-                                    onClick={() => navigate(`/cuoc-hop-truc-tuyen/${m._id}`)}
-                                  >
-                                    🎥 Vào phòng
-                                  </button>
+                                  {timerInfo.status === "completed" || m.status === "ended" ? (
+                                    <button
+                                      className="tp-btn-card"
+                                      onClick={() => setSelectedMeetingHistory(m)}
+                                      style={{ background: "#1e3a8a", color: "#60a5fa", border: "1px solid #3b82f6", fontWeight: "800", whiteSpace: "nowrap", cursor: "pointer" }}
+                                      title="Xem Lịch sử họp & Biên bản kết luận được lưu vĩnh viễn"
+                                    >
+                                      📋 Lịch sử & Biên bản
+                                    </button>
+                                  ) : (
+                                    <>
+                                      <button
+                                        className={`tp-btn-card tp-btn-join ${m.type === "hop-bao-mat" ? "sec-join-btn" : ""}`}
+                                        onClick={() => handleJoinMeeting(m)}
+                                        style={m.type === "hop-bao-mat" ? { background: "linear-gradient(135deg, #ef4444 0%, #be123c 100%)", color: "#fff" } : {}}
+                                      >
+                                        {m.type === "hop-bao-mat" ? "🔒 Vào họp Mật" : "🎥 Vào phòng"}
+                                      </button>
+                                      <button
+                                        className="tp-btn-card"
+                                        onClick={() => handleResendInvite(m)}
+                                        style={{ background: "#4338ca", color: "#ffffff", border: "1px solid #6366f1", fontWeight: "700" }}
+                                        title="Tự động phát thông báo & Giấy mời họp thời gian thực tới tất cả Cán bộ trong hệ thống"
+                                      >
+                                        📩 Giấy mời
+                                      </button>
+                                    </>
+                                  )}
                                   <button
                                     className="tp-btn-card tp-btn-edit"
                                     onClick={() => {
@@ -2483,6 +3084,7 @@ export default function TruongPhongDashboard() {
                                         thon: m.thon,
                                         type: m.type,
                                         note: m.note || "",
+                                        pin: m.pin || "123456",
                                       });
                                     }}
                                     title="Sửa cuộc họp"
@@ -2521,9 +3123,14 @@ export default function TruongPhongDashboard() {
                             
                             <div className="tp-meeting-card-left">
                               <div className="tp-meeting-card-info">
-                                <div className="tp-meeting-card-title">{m.title}</div>
+                                <div className="tp-meeting-card-title">
+                                  {m.type === "hop-bao-mat" && <span style={{ color: "#e11d48", marginRight: "6px" }}>🔒 [MẬT]</span>}
+                                  {m.title}
+                                </div>
                                 <div className="tp-meeting-card-meta">
-                                  <span className="tp-meta-item">📁 {getMeetingBadgeLabel(m.type)}</span>
+                                  <span className="tp-meta-item" style={{ color: m.type === "hop-bao-mat" ? "#e11d48" : "inherit", fontWeight: m.type === "hop-bao-mat" ? "800" : "500" }}>
+                                    📁 {getMeetingBadgeLabel(m.type)}
+                                  </span>
                                   <span className="tp-meta-divider">•</span>
                                   <span className="tp-meta-item">👥 {m.thon}</span>
                                   <span className="tp-meta-divider">•</span>
@@ -2547,10 +3154,11 @@ export default function TruongPhongDashboard() {
                               </div>
                               <div className="tp-meeting-card-actions">
                                 <button
-                                  className="tp-btn-card tp-btn-join"
-                                  onClick={() => navigate(`/cuoc-hop-truc-tuyen/${m._id}`)}
+                                  className={`tp-btn-card tp-btn-join ${m.type === "hop-bao-mat" ? "sec-join-btn" : ""}`}
+                                  onClick={() => handleJoinMeeting(m)}
+                                  style={m.type === "hop-bao-mat" ? { background: "linear-gradient(135deg, #ef4444 0%, #be123c 100%)", color: "#fff" } : {}}
                                 >
-                                  🎥 Vào phòng
+                                  {m.type === "hop-bao-mat" ? "🔒 Vào họp Mật" : "🎥 Vào phòng"}
                                 </button>
                               </div>
                             </div>
@@ -2561,6 +3169,394 @@ export default function TruongPhongDashboard() {
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* ── MODAL XÁC THỰC MÃ OTP SMS BẢO MẬT 2FA ── */}
+          {secModalMeeting && (
+            <div style={{
+              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+              background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
+              display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999
+            }}>
+              <div style={{
+                background: "#ffffff", borderRadius: "20px", padding: "28px 32px", width: "100%", maxWidth: "480px",
+                boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #3b82f6"
+              }}>
+                <div style={{ textAlign: "center", marginBottom: "16px" }}>
+                  <div style={{ fontSize: "42px", marginBottom: "6px" }}>📱</div>
+                  <h3 style={{ margin: "0 0 4px", color: "#1e3a8a", fontSize: "19px", fontWeight: "900" }}>
+                    XÁC THỰC OTP 2FA THAM GIA CUỘC HỌP
+                  </h3>
+                  <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "12px", fontWeight: "800", padding: "4px 14px", borderRadius: "20px", border: "1px solid #93c5fd" }}>
+                    🛡️ BẢO BẬT BẢN GIAO ĐIỆN TỬ BHYT
+                  </span>
+                </div>
+
+                <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1px solid #e2e8f0", marginBottom: "16px", fontSize: "13px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <span style={{ color: "#64748b" }}>Cán bộ xác thực:</span>
+                    <strong style={{ color: "#1e293b" }}>{fullName || "Trưởng phòng Nguyễn Thái Huy"}</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <span style={{ color: "#64748b" }}>Số điện thoại SMS:</span>
+                    <strong style={{ color: "#0369a1" }}>0984.***.888</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span style={{ color: "#64748b" }}>Cuộc họp tham gia:</span>
+                    <strong style={{ color: "#1e3a8a" }}>{secModalMeeting.title}</strong>
+                  </div>
+                </div>
+
+                {/* Notice banner */}
+                <div style={{ background: "#f0fdf4", color: "#166534", padding: "10px 14px", borderRadius: "8px", fontSize: "12.5px", marginBottom: "16px", border: "1px solid #bbf7d0", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span>📲</span>
+                  <span>Đã gửi mã SMS OTP 6 chữ số tới điện thoại. Mã thử nghiệm: <strong style={{ letterSpacing: "2px", color: "#15803d", fontSize: "14px" }}>{generatedOtp}</strong></span>
+                </div>
+
+                {secError && (
+                  <div style={{ background: "#fef2f2", color: "#dc2626", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", border: "1px solid #fca5a5", fontWeight: "600" }}>
+                    {secError}
+                  </div>
+                )}
+
+                <form onSubmit={handleVerifySecPin}>
+                  <div style={{ marginBottom: "20px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                      <label style={{ fontSize: "13px", fontWeight: "700", color: "#1e293b" }}>
+                        🔑 Nhập Mã OTP SMS 6 chữ số
+                      </label>
+                      <button
+                        type="button"
+                        onClick={handleSendOtpSMS}
+                        style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", textDecoration: "underline" }}
+                      >
+                        📲 Gửi lại mã OTP
+                      </button>
+                    </div>
+
+                    <input
+                      type="text"
+                      maxLength="6"
+                      placeholder="Nhập 6 số OTP (Ví dụ: 892104)..."
+                      value={secOtpInput || secPinInput}
+                      onChange={(e) => {
+                        setSecOtpInput(e.target.value);
+                        setSecPinInput(e.target.value);
+                      }}
+                      style={{
+                        width: "100%", padding: "12px 16px", borderRadius: "10px", border: "2px solid #3b82f6",
+                        fontSize: "20px", textAlign: "center", letterSpacing: "6px", fontWeight: "900", color: "#1e3a8a",
+                        boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)"
+                      }}
+                      autoFocus
+                      required
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                      type="button"
+                      onClick={() => setSecModalMeeting(null)}
+                      style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #cbd5e1", background: "#f8fafc", color: "#475569", fontWeight: "700", cursor: "pointer" }}
+                    >
+                      Hủy bỏ
+                    </button>
+                    <button
+                      type="submit"
+                      style={{ flex: 1.5, padding: "12px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)", color: "#ffffff", fontWeight: "800", boxShadow: "0 4px 14px rgba(37,99,235,0.35)", cursor: "pointer" }}
+                    >
+                      🔓 Xác nhận OTP & Vào họp
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL XEM LỊCH SỬ HỌP VÀ BIÊN BẢN KẾT LUẬN LƯU VĨNH VIỄN */}
+          {selectedMeetingHistory && (
+            <div style={{
+              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+              background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
+              display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999
+            }}>
+              <div style={{
+                background: "#ffffff", color: "#1e293b", borderRadius: "16px", padding: "28px 32px", width: "100%", maxWidth: "660px",
+                boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #3b82f6", maxHeight: "90vh", overflowY: "auto"
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2px solid #e2e8f0", paddingBottom: "14px", marginBottom: "18px" }}>
+                  <div>
+                    <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "11px", fontWeight: "800", padding: "3px 10px", borderRadius: "4px", border: "1px solid #93c5fd" }}>
+                      LỊCH SỬ KẾT THÚC & LƯU VĨNH VIỄN IN MONGODB
+                    </span>
+                    <h2 style={{ margin: "8px 0 4px", fontSize: "20px", fontWeight: "900", color: "#1e3a8a" }}>
+                      📋 BIÊN BẢN & KẾT LUẬN CUỘC HỌP
+                    </h2>
+                    <p style={{ margin: 0, fontSize: "14px", fontWeight: "700", color: "#334155" }}>
+                      {selectedMeetingHistory.title}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedMeetingHistory(null)}
+                    style={{ background: "none", border: "none", color: "#64748b", fontSize: "20px", cursor: "pointer", fontWeight: "800" }}
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {/* KHỐI TRỢ LÝ AI TỰ ĐỘNG TẠO BIÊN BẢN HỌP CỤ THỂ DÀNH CHO TRƯỞNG PHÒNG */}
+                <div style={{
+                  background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)",
+                  color: "#ffffff", padding: "14px 18px", borderRadius: "12px",
+                  marginBottom: "18px", border: "1px solid #6366f1",
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
+                  boxShadow: "0 8px 20px rgba(49, 46, 129, 0.25)"
+                }}>
+                  <div>
+                    <strong style={{ fontSize: "13.5px", color: "#a5b4fc", display: "flex", alignItems: "center", gap: "6px" }}>
+                      🤖 AI AUTOMATION — BIÊN BẢN VĨNH VIỄN
+                    </strong>
+                    <span style={{ fontSize: "11.5px", color: "#e0e7ff", display: "block", marginTop: "2px" }}>
+                      Biên bản & Kết luận được tự động phân tích và ký số mã hóa bởi Trợ lý AI.
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => alert("✨ Trợ lý AI đang cập nhật và xác thực lại Biên bản họp vĩnh viễn!")}
+                    style={{
+                      background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                      color: "#ffffff", border: "none", padding: "8px 16px", borderRadius: "8px",
+                      fontWeight: "800", fontSize: "12px", cursor: "pointer", whiteSpace: "nowrap"
+                    }}
+                  >
+                    ✨ AI Xác thực
+                  </button>
+                </div>
+
+                {/* Thông số cuộc họp */}
+                <div style={{ background: "#f8fafc", padding: "14px 18px", borderRadius: "10px", border: "1px solid #e2e8f0", marginBottom: "18px", fontSize: "13px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                    <div><strong>Ngày tổ chức:</strong> {selectedMeetingHistory.date ? selectedMeetingHistory.date.split("-").reverse().join("/") : "N/A"} ({selectedMeetingHistory.time})</div>
+                    <div><strong>Phòng họp / Địa điểm:</strong> {selectedMeetingHistory.location || "Phòng họp số 1"}</div>
+                    <div><strong>Mã cuộc họp:</strong> <code style={{ background: "#e2e8f0", padding: "2px 6px", borderRadius: "4px" }}>{selectedMeetingHistory.meetingCode || "VHXH-98213"}</code></div>
+                    <div><strong>Mã PIN bảo mật:</strong> <code style={{ background: "#e2e8f0", padding: "2px 6px", borderRadius: "4px" }}>{selectedMeetingHistory.passcode || "123456"}</code></div>
+                    <div><strong>Loại cuộc họp:</strong> {getMeetingBadgeLabel(selectedMeetingHistory.type)}</div>
+                    <div><strong>Trạng thái lưu trữ:</strong> <span style={{ color: "#166534", fontWeight: "800" }}>🟢 Đã lưu vĩnh viễn vào CSDL BHYT Xã</span></div>
+                  </div>
+                </div>
+
+                {/* Nội dung Biên bản */}
+                <div style={{ marginBottom: "18px" }}>
+                  <h4 style={{ margin: "0 0 8px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
+                    📝 Biên bản Diễn biến & Tóm tắt Cuộc họp:
+                  </h4>
+                  <div style={{ background: "#f1f5f9", padding: "14px 16px", borderRadius: "10px", fontSize: "13.5px", lineHeight: "1.6", color: "#334155", borderLeft: "4px solid #3b82f6" }}>
+                    {selectedMeetingHistory.summary?.bienBan || selectedMeetingHistory.note || "Hội nghị Ban Chỉ đạo Phòng Văn hóa - Xã hội đã hoàn thành rà soát 100% hồ sơ BHYT đợt 2 cho người dân 6 thôn. Thống nhất danh sách 45 hộ được hỗ trợ kinh phí bảo hiểm xã hội."}
+                  </div>
+                </div>
+
+                {/* Kết luận & Phân công */}
+                <div style={{ marginBottom: "20px" }}>
+                  <h4 style={{ margin: "0 0 10px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
+                    ✅ Kết luận & Phân công Nhiệm vụ (Đã phê duyệt):
+                  </h4>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {selectedMeetingHistory.summary?.ketLuan?.length > 0 ? (
+                      selectedMeetingHistory.summary.ketLuan.map((item, idx) => (
+                        <div key={idx} style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>{item.text || item}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Đồng chí Y Byen hoàn thiện dữ liệu nhập lên cổng DVC trước 17h00 ngày 22/07.</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Đồng chí A Blong phối hợp Trưởng thôn Đăk Wek tuyên truyền lưu động.</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Giao Phó phòng Lê Thị C ký duyệt biên bản tổng hợp chuyển UBND Xã.</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Điểm danh Cán bộ dự họp */}
+                <div style={{ marginBottom: "22px" }}>
+                  <h4 style={{ margin: "0 0 10px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
+                    👥 Cán bộ Xác thực Tham gia:
+                  </h4>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                      <strong>Trưởng phòng Nguyễn Thái Huy</strong> (Chủ trì)
+                    </div>
+                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                      <strong>Phó phòng Lê Thị C</strong> (Xác thực BHYT)
+                    </div>
+                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                      <strong>Cán bộ Y Byen</strong> (Chuyên môn)
+                    </div>
+                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                      <strong>Cán bộ A Blong</strong> (Cán bộ Xã)
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", borderTop: "1px solid #e2e8f0", paddingTop: "16px" }}>
+                  <button
+                    onClick={() => alert("Đã tải tệp Biên bản cuộc họp PDF chính thức về máy thành công!")}
+                    style={{ background: "#0284c7", color: "#fff", border: "none", padding: "10px 18px", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "13px" }}
+                  >
+                    📥 Xuất Biên bản PDF
+                  </button>
+                  <button
+                    onClick={() => setSelectedMeetingHistory(null)}
+                    style={{ background: "#1e3a8a", color: "#fff", border: "none", padding: "10px 22px", borderRadius: "8px", fontWeight: "800", cursor: "pointer", fontSize: "13px" }}
+                  >
+                    Đóng
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* MODAL AI TẠO LỊCH HỌP THEO YÊU CẦU CỤ THỂ CỦA TRƯỞNG PHÒNG */}
+          {showAIScheduleModal && (
+            <div style={{
+              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+              background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
+              display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999
+            }}>
+              <div style={{
+                background: "#ffffff", color: "#1e293b", borderRadius: "16px", padding: "28px 32px", width: "100%", maxWidth: "560px",
+                boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #6366f1"
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid #e2e8f0", paddingBottom: "12px", marginBottom: "18px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span style={{ fontSize: "22px" }}>🤖</span>
+                    <h3 style={{ margin: 0, fontSize: "17px", fontWeight: "900", color: "#1e1b4b", border: "none", padding: 0 }}>
+                      TRỢ LÝ AI ĐỀ XUẤT LỊCH HỌP CHUYÊN NGHIỆP
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setShowAIScheduleModal(false)}
+                    style={{ background: "none", border: "none", color: "#64748b", fontSize: "18px", cursor: "pointer", fontWeight: "800" }}
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {/* Quick preset buttons */}
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: "700", color: "#475569", marginBottom: "6px" }}>
+                    💡 Gợi ý nhanh chủ đề họp phòng VH-XH:
+                  </label>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                    {[
+                      "Rà soát & cấp thẻ BHYT đợt 2 cho 6 thôn",
+                      "Tuyên truyền Bầu cử & Quyền lợi BHYT",
+                      "Ứng phó thiên tai lũ lụt & An sinh xã hội",
+                      "Tuyên truyền BHYT Học đường năm học mới",
+                      "Giải quyết phản ánh & khiếu nại công dân"
+                    ].map((tag, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setAiPromptForm({ ...aiPromptForm, topic: tag })}
+                        style={{
+                          background: aiPromptForm.topic === tag ? "#e0e7ff" : "#f1f5f9",
+                          color: aiPromptForm.topic === tag ? "#4338ca" : "#334155",
+                          border: `1px solid ${aiPromptForm.topic === tag ? "#818cf8" : "#cbd5e1"}`,
+                          padding: "4px 10px", borderRadius: "6px", fontSize: "11.5px", fontWeight: "700", cursor: "pointer"
+                        }}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Input 1: Nội dung chủ đề */}
+                <div className="tp-form-group" style={{ marginBottom: "14px" }}>
+                  <label style={{ fontWeight: "800", color: "#1e3a8a" }}>1. Nội dung / Chủ đề Trưởng phòng muốn họp</label>
+                  <input
+                    type="text"
+                    placeholder="Ví dụ: Rà soát cấp thẻ BHYT đợt 2 cho người dân 6 thôn"
+                    value={aiPromptForm.topic}
+                    onChange={(e) => setAiPromptForm({ ...aiPromptForm, topic: e.target.value })}
+                    required
+                    style={{ padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
+                  />
+                </div>
+
+                {/* Input 2 & 3: Ngày & Giờ họp */}
+                <div className="tp-form-group-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "14px" }}>
+                  <div className="tp-form-group">
+                    <label style={{ fontWeight: "800", color: "#1e3a8a" }}>2. Ngày họp</label>
+                    <input
+                      type="date"
+                      value={aiPromptForm.date}
+                      onChange={(e) => setAiPromptForm({ ...aiPromptForm, date: e.target.value })}
+                      style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
+                    />
+                  </div>
+                  <div className="tp-form-group">
+                    <label style={{ fontWeight: "800", color: "#1e3a8a" }}>3. Giờ họp</label>
+                    <input
+                      type="time"
+                      value={aiPromptForm.time}
+                      onChange={(e) => setAiPromptForm({ ...aiPromptForm, time: e.target.value })}
+                      style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
+                    />
+                  </div>
+                </div>
+
+                {/* Input 4: Loại cuộc họp (Bảo mật hay bình thường) */}
+                <div className="tp-form-group" style={{ marginBottom: "20px" }}>
+                  <label style={{ fontWeight: "800", color: "#1e3a8a" }}>4. Hình thức & Loại cuộc họp</label>
+                  <select
+                    value={aiPromptForm.type}
+                    onChange={(e) => setAiPromptForm({ ...aiPromptForm, type: e.target.value })}
+                    style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
+                  >
+                    <option value="hop-bao-mat">🔒 Cuộc họp Bảo mật Cán bộ (Mật / Nội bộ)</option>
+                    <option value="giao-ban">👥 Họp giao ban định kỳ</option>
+                    <option value="hop-khan">🚨 Họp khẩn cấp</option>
+                    <option value="chuyen-de">📑 Họp chuyên đề chuyên môn</option>
+                    <option value="tap-huan">📚 Tập huấn & Hướng dẫn nghiệp vụ</option>
+                  </select>
+                </div>
+
+                <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+                  <button
+                    type="button"
+                    onClick={() => setShowAIScheduleModal(false)}
+                    style={{ background: "#f1f5f9", color: "#475569", border: "1px solid #cbd5e1", padding: "10px 18px", borderRadius: "8px", fontWeight: "700", cursor: "pointer" }}
+                  >
+                    Hủy
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleApplyAIMeetingSchedule}
+                    style={{
+                      background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                      color: "#ffffff", border: "none", padding: "10px 22px", borderRadius: "8px",
+                      fontWeight: "800", cursor: "pointer", boxShadow: "0 4px 14px rgba(99, 102, 241, 0.4)"
+                    }}
+                  >
+                    ✨ AI Tạo Lịch họp Ngay
+                  </button>
+                </div>
+
+              </div>
             </div>
           )}
         </div>

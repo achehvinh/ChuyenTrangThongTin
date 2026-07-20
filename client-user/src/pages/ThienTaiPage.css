@@ -9,45 +9,153 @@
 }
 
 /* ── Banner cảnh báo ── */
-.tt-alert-bar {
-  background: #dc2626;
-  color: #fff;
-  text-align: center;
-  padding: 12px 16px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.15);
-}
-
 /* ── Container ── */
 .tt-container {
   max-width: 1550px;
   margin: 0 auto;
-  padding: 36px 24px 64px;
+  padding: 32px 24px 64px;
 }
 
-/* ── Header ── */
+/* ── Header chính hợp nhất (Màu sắc đẹp mắt & Sang trọng) ── */
 .tt-header {
-  border-left: 5px solid #1a3a5c;
-  padding: 8px 18px;
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e40af 100%);
+  border-radius: 20px;
+  padding: 26px 32px;
   margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  box-shadow: 0 10px 30px rgba(30, 58, 138, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 6px solid #f59e0b;
+  overflow: hidden;
+}
+
+/* Ánh sáng mờ trang trí phía sau */
+.tt-header::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.tt-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  font-size: 12.5px;
+  font-weight: 800;
+  padding: 5px 14px;
+  border-radius: 30px;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.tt-header-left {
+  flex: 1;
+  z-index: 1;
+}
+
+.tt-header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  z-index: 1;
 }
 
 .tt-title {
-  font-size: 28px;
-  font-weight: 800;
-  color: #1a3a5c;
+  font-size: 30px;
+  font-weight: 900;
+  color: #ffffff;
   margin: 0 0 6px;
   font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
   letter-spacing: -0.02em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .tt-subtitle {
-  font-size: 15.5px;
-  color: #4b5563;
+  font-size: 15px;
+  color: rgba(226, 232, 240, 0.92);
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+/* Sóng âm thanh động */
+.sound-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 24px;
+  padding: 0 6px;
+}
+
+.wave-bar {
+  display: block;
+  width: 4px;
+  background: #facc15;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.6);
+  animation: bar-jump 0.7s infinite alternate ease-in-out;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0.1s; height: 10px; }
+.wave-bar:nth-child(2) { animation-delay: 0.3s; height: 20px; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; height: 24px; }
+.wave-bar:nth-child(4) { animation-delay: 0.4s; height: 14px; }
+
+@keyframes bar-jump {
+  0% { height: 4px; }
+  100% { height: 24px; }
+}
+
+/* Nút loa phát thanh */
+.tt-speak-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.tt-speak-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.tt-speak-btn.speaking {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-color: rgba(254, 202, 202, 0.6);
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+  animation: blink-speak 1.5s infinite;
+}
+
+@keyframes blink-speak {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.92; transform: scale(1.03); }
 }
 
 /* ── Layout 2 cột ── */
@@ -85,115 +193,363 @@
   margin: 0;
 }
 
-/* ── Lưới ảnh (Mở rộng to hẳn 1 cột để đọc rõ biển cảnh báo) ── */
-.tt-img-grid {
+/* ── Lưới ảnh TO RỘNG RÕ NÉT để bà con đọc biển cảnh báo ── */
+.tt-big-images-section {
+  background: #ffffff;
+}
+
+.tt-big-img-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
+  grid-template-columns: 1fr; /* Mỗi ảnh xếp 1 hàng to đùng siêu rõ nét */
+  gap: 32px;
+  margin-top: 20px;
 }
 
-.tt-img-wrap {
+.tt-big-img-card {
   position: relative;
-  cursor: pointer;
+  border-radius: 20px;
   overflow: hidden;
-  aspect-ratio: 16/9;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  height: 480px; /* Chiều cao to lớn 480px giúp đọc rõ nội dung biển cảnh báo */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e2e8f0;
+  transition: all 0.35s ease;
+  background: #f8fafc;
 }
 
-.tt-img-wrap:hover {
+.tt-big-img-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+  border-color: #2563eb;
 }
 
-.tt-img {
+.tt-big-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.3s;
+  transition: transform 0.4s ease;
 }
 
-.tt-img-wrap:hover .tt-img {
-  transform: scale(1.05);
+.tt-big-img-card:hover .tt-big-img {
+  transform: scale(1.03);
 }
 
-.tt-img-zoom {
+.tt-big-img-badge {
   position: absolute;
-  bottom: 10px;
-  right: 12px;
-  font-size: 18px;
-  opacity: 0;
-  transition: opacity 0.2s;
-  background: rgba(255, 255, 255, 0.9);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  bottom: 16px;
+  right: 16px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 800;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background 0.3s ease;
 }
 
-.tt-img-wrap:hover .tt-img-zoom {
-  opacity: 1;
+.tt-big-img-card:hover .tt-big-img-badge {
+  background: #2563eb;
 }
 
-/* ── Các bước cần làm (Chữ to, rõ, chuyên nghiệp) ── */
-.tt-steps {
+/* ══════════════════════════════════════════
+   CANVA-STYLE INFOGRAPHIC FLOWCHART (SƠ ĐỒ ĐẸP NHƯ CANVA)
+   ══════════════════════════════════════════ */
+
+.canva-steps-header {
+  margin-bottom: 20px;
+}
+
+.canva-steps-subtitle {
+  display: block;
+  font-size: 13.5px;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.canva-steps-flow {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.tt-step {
-  display: flex;
   gap: 20px;
-  align-items: flex-start;
-  padding: 20px 22px;
-  background: #f8fafc;
-  border-radius: 12px;
-  border-left: 4px solid #1a3a5c;
-  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
 }
 
-.tt-step:hover {
-  transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+.canva-step-card {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
 }
 
-.tt-step-num {
+.canva-step-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+}
+
+.canva-step-card.is-speaking {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2), 0 12px 30px rgba(0, 0, 0, 0.1);
+  animation: audio-pulse 1.8s infinite alternate;
+}
+
+@keyframes audio-pulse {
+  0% { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+  100% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.4); }
+}
+
+/* ── CỘT ẢNH TO RỘNG CỰC KỲ RÕ NÉT (360px - 380px) ── */
+.canva-step-img-col {
+  width: 360px;
+  min-height: 220px;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  background: #1a3a5c;
-  color: #fff;
-  font-size: 18px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.canva-step-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.canva-step-img-col:hover .canva-step-img {
+  transform: scale(1.06);
+}
+
+.canva-step-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 12px;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.canva-step-img-zoom {
+  font-size: 12.5px;
   font-weight: 800;
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  padding: 5px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ── CỘT NỘI DUNG BƯỚC ── */
+.canva-step-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.canva-step-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.canva-step-num-badge {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(26, 58, 92, 0.2);
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-.tt-step-body h3 {
-  font-size: 17px;
-  font-weight: 700;
-  color: #1a3a5c;
-  margin: 0 0 6px;
+.canva-step-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f1f5f9;
+}
+
+.canva-step-tag {
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+.canva-step-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 6px 0;
   font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
+  line-height: 1.35;
 }
 
-.tt-step-body p {
-  font-size: 15px;
+.canva-step-desc {
+  font-size: 15.5px;
   color: #334155;
+  line-height: 1.75;
   margin: 0;
-  line-height: 1.65;
+  font-weight: 500;
+}
+
+/* ── NÚT LOA ĐỌC PHÁT THANH CHO BÀ CON ── */
+.canva-step-audio-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 2px solid #1d4ed8;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 14.5px;
+  font-weight: 800;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.1);
+}
+
+.canva-step-audio-btn:hover {
+  background: #1d4ed8;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(29, 78, 216, 0.25);
+}
+
+.canva-step-audio-btn.active {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+  animation: pulse-red 1.2s infinite alternate;
+}
+
+@keyframes pulse-red {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.03); }
+}
+
+/* ══════════════════════════════════════════
+   BẢNG MÀU ĐẸP RỰC RỠ NHƯ CANVA CHO TỪNG BƯỚC
+   ══════════════════════════════════════════ */
+
+/* ── Bước 1: Xanh Dương (Ocean Blue) ── */
+.canva-step-1 {
+  background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+  border-color: #bfdbfe;
+}
+.canva-step-1 .canva-step-num-badge {
+  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+}
+.canva-step-1 .canva-step-line {
+  background: linear-gradient(to bottom, #3b82f6, #f59e0b);
+}
+.canva-step-1 .canva-step-icon {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.canva-step-1 .canva-step-title {
+  color: #1e3a8a;
+}
+.canva-step-1 .canva-step-tag {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* ── Bước 2: Vàng Cam (Sunset Amber) ── */
+.canva-step-2 {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  border-color: #fde68a;
+}
+.canva-step-2 .canva-step-num-badge {
+  background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+}
+.canva-step-2 .canva-step-line {
+  background: linear-gradient(to bottom, #f59e0b, #10b981);
+}
+.canva-step-2 .canva-step-icon {
+  background: #fef3c7;
+  color: #92400e;
+}
+.canva-step-2 .canva-step-title {
+  color: #78350f;
+}
+.canva-step-2 .canva-step-tag {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ── Bước 3: Xanh Ngọc (Emerald Mint) ── */
+.canva-step-3 {
+  background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+  border-color: #a7f3d0;
+}
+.canva-step-3 .canva-step-num-badge {
+  background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+}
+.canva-step-3 .canva-step-line {
+  background: linear-gradient(to bottom, #10b981, #ef4444);
+}
+.canva-step-3 .canva-step-icon {
+  background: #d1fae5;
+  color: #065f46;
+}
+.canva-step-3 .canva-step-title {
+  color: #064e3b;
+}
+.canva-step-3 .canva-step-tag {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* ── Bước 4: Đỏ Khẩn Cấp (Crimson Red) ── */
+.canva-step-4 {
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+  border-color: #fca5a5;
+}
+.canva-step-4 .canva-step-num-badge {
+  background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+}
+.canva-step-4 .canva-step-icon {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.canva-step-4 .canva-step-title {
+  color: #7f1d1d;
+}
+.canva-step-4 .canva-step-tag {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 /* ── Nhu yếu phẩm khẩn cấp ── */
@@ -425,6 +781,30 @@
   }
 }
 
+@media (max-width: 768px) {
+  .canva-step-card {
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+  }
+  .canva-step-img-col {
+    width: 100%;
+    height: 180px;
+  }
+  .canva-step-left {
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+  }
+  .canva-step-line {
+    display: none;
+  }
+  .canva-step-tag {
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}
+
 @media (max-width: 600px) {
   .tt-container {
     padding: 20px 16px 40px;
@@ -435,4 +815,4 @@
   .tt-title {
     font-size: 22px;
   }
-}
+}

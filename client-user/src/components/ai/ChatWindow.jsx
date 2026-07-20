@@ -136,13 +136,81 @@ export default function ChatWindow() {
   const [autoRead, setAutoRead] = useState(() => localStorage.getItem('cw_auto_read') === 'true');
   const [isListening, setIsListening] = useState(false);
   const [activeSpeechIndex, setActiveSpeechIndex] = useState(null);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+
+  const [sessions, setSessions] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cw_chat_sessions');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error('Lỗi đọc danh sách phiên chat:', e);
+      return [];
+    }
+  });
+
+  const [currentSessionId, setCurrentSessionId] = useState(() => {
+    return localStorage.getItem('cw_current_session_id') || Date.now().toString();
+  });
+
   const endRef = useRef(null);
   const recognitionRef = useRef(null);
+  const menuRef = useRef(null);
+  const menuBtnRef = useRef(null);
 
-  // Lưu lịch sử chat mỗi khi tin nhắn thay đổi
+  // Lắng nghe click bên ngoài để đóng menu tùy chọn
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        menuBtnRef.current &&
+        !menuBtnRef.current.contains(event.target)
+      ) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Lưu tin nhắn hiện tại và lưu vào lịch sử các phiên chat (sessions)
   useEffect(() => {
     localStorage.setItem('cw_chat_history', JSON.stringify(messages));
-  }, [messages]);
+
+    if (messages.length > 1) {
+      const firstUserMsg = messages.find(m => m.sender === 'user')?.text || '';
+      const preview = firstUserMsg.length > 40 ? firstUserMsg.substring(0, 40) + '...' : firstUserMsg;
+
+      setSessions(prevSessions => {
+        const existingIdx = prevSessions.findIndex(s => s.id === currentSessionId);
+        const nowStr = new Date().toLocaleString('vi-VN', {
+          hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit'
+        });
+
+        const updatedSession = {
+          id: currentSessionId,
+          title: preview || (isEn ? 'Conversation' : 'Cuộc trò chuyện'),
+          updatedAt: nowStr,
+          timestamp: Date.now(),
+          messages: messages
+        };
+
+        let nextSessions;
+        if (existingIdx >= 0) {
+          nextSessions = [...prevSessions];
+          nextSessions[existingIdx] = updatedSession;
+        } else {
+          nextSessions = [updatedSession, ...prevSessions];
+        }
+
+        localStorage.setItem('cw_chat_sessions', JSON.stringify(nextSessions));
+        return nextSessions;
+      });
+    }
+  }, [messages, currentSessionId, isEn]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -253,23 +321,62 @@ export default function ChatWindow() {
     setActiveSpeechIndex(null);
   };
 
+  const handleNewChat = () => {
+    stopSpeaking();
+    const newId = Date.now().toString();
+    const defaultMsg = [
+      {
+        text: isEn
+          ? 'Hello! 👋 I am the AI Assistant of Dak Pxi Commune. How can I help you?'
+          : 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đăk Pxi. Bà con cần hỗ trợ gì?',
+        sender: 'ai',
+        suggestions: [],
+      },
+    ];
+    setMessages(defaultMsg);
+    setCurrentSessionId(newId);
+    localStorage.setItem('cw_current_session_id', newId);
+    localStorage.setItem('cw_chat_history', JSON.stringify(defaultMsg));
+    setShowMenu(false);
+  };
+
+  const handleSelectSession = (session) => {
+    stopSpeaking();
+    setMessages(session.messages);
+    setCurrentSessionId(session.id);
+    localStorage.setItem('cw_current_session_id', session.id);
+    localStorage.setItem('cw_chat_history', JSON.stringify(session.messages));
+    setShowHistoryModal(false);
+  };
+
+  const handleDeleteSession = (sessionId, e) => {
+    e.stopPropagation();
+    const filtered = sessions.filter(s => s.id !== sessionId);
+    setSessions(filtered);
+    localStorage.setItem('cw_chat_sessions', JSON.stringify(filtered));
+    if (currentSessionId === sessionId) {
+      handleNewChat();
+    }
+  };
+
+  const handleClearAllSessions = () => {
+    const confirmMsg = isEn
+      ? 'Are you sure you want to delete all chat history?'
+      : 'Bà con có chắc chắn muốn xóa toàn bộ lịch sử trò chuyện không?';
+    if (window.confirm(confirmMsg)) {
+      setSessions([]);
+      localStorage.removeItem('cw_chat_sessions');
+      handleNewChat();
+      setShowHistoryModal(false);
+    }
+  };
+
   const clearHistory = () => {
     const confirmMsg = isEn 
-      ? 'Are you sure you want to clear the chat history?' 
-      : 'Bà con có chắc chắn muốn xóa lịch sử trò chuyện này không?';
+      ? 'Are you sure you want to clear the current chat history?' 
+      : 'Bà con có chắc chắn muốn xóa trò chuyện hiện tại không?';
     if (window.confirm(confirmMsg)) {
-      stopSpeaking();
-      const defaultMsg = [
-        {
-          text: isEn
-            ? 'Hello! 👋 I am the AI Assistant of Dak Pxi Commune. How can I help you?'
-            : 'Xin chào bà con! 👋 Tôi là trợ lý AI của UBND xã Đăk Pxi. Bà con cần hỗ trợ gì?',
-          sender: 'ai',
-          suggestions: [],
-        },
-      ];
-      setMessages(defaultMsg);
-      localStorage.setItem('cw_chat_history', JSON.stringify(defaultMsg));
+      handleNewChat();
     }
   };
 
@@ -381,26 +488,77 @@ export default function ChatWindow() {
           </div>
         </div>
         <div className="cw-header-actions">
-          <label className="cw-toggle-label" title={isEn ? 'Auto-read AI responses' : 'Tự động đọc to câu trả lời của AI'}>
-            <span className="cw-toggle-text">
-              {isEn ? 'Auto Read' : 'Đọc tự động'}
-            </span>
-            <input
-              type="checkbox"
-              checked={autoRead}
-              onChange={e => setAutoRead(e.target.checked)}
-              className="cw-toggle-checkbox"
-            />
-            <span className="cw-toggle-slider" />
-          </label>
-          {messages.length > 1 && (
-            <button
-              className="cw-clear-btn"
-              onClick={clearHistory}
-              title={isEn ? 'Clear chat history' : 'Xóa lịch sử trò chuyện'}
-            >
-              🗑️
-            </button>
+          <button
+            ref={menuBtnRef}
+            className={`cw-menu-btn ${showMenu ? 'active' : ''}`}
+            onClick={() => setShowMenu(prev => !prev)}
+            title={isEn ? 'Options' : 'Tùy chọn'}
+            type="button"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+            </svg>
+          </button>
+
+          {showMenu && (
+            <div ref={menuRef} className="cw-dropdown-menu">
+              {/* Item 1: Đọc tự động */}
+              <div
+                className="cw-dropdown-item cw-dropdown-toggle-item"
+                onClick={() => setAutoRead(!autoRead)}
+              >
+                <div className="cw-dropdown-item-left">
+                  <span className="cw-dropdown-icon">🔊</span>
+                  <span>{isEn ? 'Auto Read' : 'Đọc tự động'}</span>
+                </div>
+                <label className="cw-toggle-label-mini" onClick={e => e.stopPropagation()}>
+                  <input
+                    type="checkbox"
+                    checked={autoRead}
+                    onChange={e => setAutoRead(e.target.checked)}
+                    className="cw-toggle-checkbox"
+                  />
+                  <span className="cw-toggle-slider" />
+                </label>
+              </div>
+
+              <div className="cw-dropdown-divider" />
+
+              {/* Item 2: Lịch sử chat */}
+              <div
+                className="cw-dropdown-item"
+                onClick={() => {
+                  setShowMenu(false);
+                  setShowHistoryModal(true);
+                }}
+              >
+                <span className="cw-dropdown-icon">📜</span>
+                <span>{isEn ? 'Chat History' : 'Lịch sử chat'}</span>
+              </div>
+
+              {/* Item 3: Cuộc trò chuyện mới */}
+              <div
+                className="cw-dropdown-item"
+                onClick={handleNewChat}
+              >
+                <span className="cw-dropdown-icon">➕</span>
+                <span>{isEn ? 'New Chat' : 'Cuộc trò chuyện mới'}</span>
+              </div>
+
+              {/* Item 4: Xóa trò chuyện hiện tại */}
+              {messages.length > 1 && (
+                <div
+                  className="cw-dropdown-item cw-dropdown-danger"
+                  onClick={() => {
+                    setShowMenu(false);
+                    clearHistory();
+                  }}
+                >
+                  <span className="cw-dropdown-icon">🗑️</span>
+                  <span>{isEn ? 'Clear Current Chat' : 'Xóa trò chuyện hiện tại'}</span>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -518,6 +676,68 @@ export default function ChatWindow() {
           </button>
         </div>
       </div>
+
+      {/* ── Modal Lịch Sử Chat ── */}
+      {showHistoryModal && (
+        <div className="cw-history-modal-overlay" onClick={() => setShowHistoryModal(false)}>
+          <div className="cw-history-modal" onClick={e => e.stopPropagation()}>
+            <div className="cw-history-header">
+              <div className="cw-history-title">
+                <span>📜</span> {isEn ? 'Chat History' : 'Lịch sử trò chuyện'}
+              </div>
+              <button className="cw-history-close-btn" onClick={() => setShowHistoryModal(false)}>×</button>
+            </div>
+
+            <div className="cw-history-body">
+              <div className="cw-history-top-actions">
+                <button className="cw-history-new-btn" onClick={handleNewChat}>
+                  <span>➕</span> {isEn ? 'Start New Chat' : 'Cuộc trò chuyện mới'}
+                </button>
+                {sessions.length > 0 && (
+                  <button className="cw-history-clear-all-btn" onClick={handleClearAllSessions}>
+                    <span>🗑️</span> {isEn ? 'Clear All History' : 'Xóa tất cả'}
+                  </button>
+                )}
+              </div>
+
+              {sessions.length === 0 ? (
+                <div className="cw-history-empty">
+                  <span className="cw-history-empty-icon">💬</span>
+                  <p>{isEn ? 'No previous chat history recorded.' : 'Chưa có lịch sử trò chuyện nào được ghi nhận.'}</p>
+                </div>
+              ) : (
+                <div className="cw-history-list">
+                  {sessions.map(s => (
+                    <div
+                      key={s.id}
+                      className={`cw-history-card ${s.id === currentSessionId ? 'active' : ''}`}
+                      onClick={() => handleSelectSession(s)}
+                    >
+                      <div className="cw-history-card-content">
+                        <div className="cw-history-card-title">{s.title}</div>
+                        <div className="cw-history-card-meta">
+                          <span>🕒 {s.updatedAt}</span>
+                          <span>• {s.messages ? s.messages.length : 0} {isEn ? 'messages' : 'tin nhắn'}</span>
+                          {s.id === currentSessionId && (
+                            <span className="cw-history-badge">{isEn ? 'Current' : 'Đang mở'}</span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        className="cw-history-delete-item-btn"
+                        onClick={e => handleDeleteSession(s.id, e)}
+                        title={isEn ? 'Delete conversation' : 'Xóa cuộc trò chuyện này'}
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

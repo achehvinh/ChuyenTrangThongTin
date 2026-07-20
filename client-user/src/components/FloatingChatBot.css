@@ -1,8 +1,30 @@
 .chatbot-wrapper { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
 .chatbot-trigger { position: relative; background: #1a3a5c; color: white; border: none; padding: 15px 25px; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 12px rgba(26, 58, 92, 0.3); transition: background-color 0.2s ease, transform 0.2s ease; }
 .chatbot-trigger:hover { background: #112840; transform: scale(1.05); }
-.chatbot-popup { position: absolute; bottom: 70px; right: 0; width: 350px; height: 500px; background: #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden; }
-.close-btn { position: absolute; top: 5px; right: 5px; background: none; border: none; font-size: 20px; cursor: pointer; }
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
+}
 
 /* Vòng tròn sóng xung mạch nhấp nháy */
 .chatbot-pulse-ring {

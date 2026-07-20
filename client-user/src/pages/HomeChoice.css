@@ -1,27 +1,25 @@
 /* ============================================================
    KHU VỰC CHỌN NHANH TRÊN TRANG CHỦ
-   "Bà con muốn hỗ trợ gì?" — 2 lựa chọn lớn, rõ ràng, dễ bấm.
-   Đặt tên class riêng (home-choice-*) để không trùng với
-   CSS hiện có của HomePage.
+   "Bà con muốn hỗ trợ gì?" — Thẻ tùy chọn hiện đại, nổi bật, dễ hiểu
    ============================================================ */
 
 .home-choice {
   max-width: 1550px;
-  margin: 0 auto 24px;
+  margin: 0 auto 28px;
   padding: 28px 20px 32px;
 }
 
 .home-choice-title {
   text-align: center;
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: #1a3a5c;
   margin: 0 auto 32px;
   padding: 18px 24px;
   background: linear-gradient(135deg, #f0f4f8 0%, #e8edf4 100%);
   border-radius: 12px;
-  border-left: 5px solid #b91c1c; /* Chỉ đỏ truyền thống bên trái */
-  border-right: 5px solid #b91c1c; /* Chỉ đỏ truyền thống bên phải */
+  border-left: 5px solid #b91c1c;
+  border-right: 5px solid #b91c1c;
   max-width: 960px;
   box-shadow: 0 4px 15px rgba(26, 58, 92, 0.03);
   line-height: 1.6;
@@ -30,117 +28,242 @@
 .home-choice-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 
+/* ── THẺ CARD CHÍNH ── */
 .home-choice-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
   text-align: left;
 
   background: #ffffff;
-  border: 2px solid #e2e6ec;
-  border-radius: 16px;
-  padding: 28px 26px;
+  border: 2px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 26px 24px;
 
   cursor: pointer;
   font-family: inherit;
 
-  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.03), 0 1px 3px rgba(16, 24, 40, 0.02);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.02);
+  transition: all 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
+  user-select: none;
 }
 
-.home-choice-card:hover,
-.home-choice-card:focus-visible {
-  transform: translateY(-6px);
-  outline: none;
+.home-choice-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2px;
 }
 
 .home-choice-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  margin-bottom: 4px;
-  transition: transform 0.3s ease;
+  transition: all 0.35s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
 }
 
-/* Biểu tượng nảy nhẹ khi hover vào thẻ */
-.home-choice-card:hover .home-choice-icon {
-  animation: choice-icon-bounce 0.6s ease infinite alternate;
-}
-
-@keyframes choice-icon-bounce {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-5px); }
+.home-choice-tag {
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+  transition: all 0.35s ease;
+  background: #f1f5f9;
+  color: #475569;
 }
 
 .home-choice-name {
-  font-size: 1.28rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  color: #14171f;
+  color: #0f172a;
+  transition: color 0.35s ease;
 }
 
 .home-choice-desc {
-  font-size: 0.98rem;
-  color: #55606f;
-  line-height: 1.55;
+  font-size: 0.96rem;
+  color: #475569;
+  line-height: 1.6;
+  flex: 1;
+  transition: color 0.35s ease;
+}
+
+.home-choice-cta-wrap {
+  margin-top: 10px;
+  width: 100%;
 }
 
 .home-choice-cta {
-  margin-top: 10px;
-  font-size: 0.98rem;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  padding: 7px 16px;
+  border-radius: 30px;
+  transition: all 0.35s ease;
 }
 
-/* ---- Thẻ "Tuyên truyền": tông xanh dương ---- */
+.home-choice-cta .arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+/* ══════════════════════════════════════════
+   HIỆU ỨNG ĐỔI MÀU RẤT ĐẸP KHI RÊ CHUỘT (HOVER)
+   ══════════════════════════════════════════ */
+
+/* ---- 1. Thẻ "Tuyên truyền": Xanh Ocean rực rỡ ---- */
 .home-choice-card--tuyentruyen .home-choice-icon {
-  background: linear-gradient(135deg, #e8f0f8 0%, #d0e1f3 100%);
-  color: #14497d;
+  background: #eff6ff;
+  color: #1d4ed8;
 }
 .home-choice-card--tuyentruyen .home-choice-cta {
-  color: #14497d;
-}
-.home-choice-card--tuyentruyen:hover {
-  border-color: #14497d;
-  box-shadow: 0 12px 28px rgba(20, 73, 125, 0.12);
+  color: #1d4ed8;
+  background: #eff6ff;
 }
 
-/* ---- Thẻ "Hỗ trợ dịch vụ công": tông đỏ ---- */
+.home-choice-card--tuyentruyen:hover {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  border-color: #3b82f6;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.35);
+}
+
+.home-choice-card--tuyentruyen:hover .home-choice-icon {
+  background: #ffffff;
+  transform: scale(1.1) rotate(-6deg);
+}
+
+.home-choice-card--tuyentruyen:hover .home-choice-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.home-choice-card--tuyentruyen:hover .home-choice-name {
+  color: #ffffff;
+}
+
+.home-choice-card--tuyentruyen:hover .home-choice-desc {
+  color: #e0e7ff;
+}
+
+.home-choice-card--tuyentruyen:hover .home-choice-cta {
+  background: #ffffff;
+  color: #1e3a8a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.home-choice-card--tuyentruyen:hover .home-choice-cta .arrow {
+  transform: translateX(5px);
+}
+
+/* ---- 2. Thẻ "Hỗ trợ dịch vụ công": Đỏ Crimson sang trọng ---- */
 .home-choice-card--dichvucong .home-choice-icon {
-  background: linear-gradient(135deg, #fdeceb 0%, #f9d2d0 100%);
-  color: #c0272d;
+  background: #fef2f2;
+  color: #dc2626;
 }
 .home-choice-card--dichvucong .home-choice-cta {
-  color: #c0272d;
-}
-.home-choice-card--dichvucong:hover {
-  border-color: #c0272d;
-  box-shadow: 0 12px 28px rgba(192, 39, 45, 0.12);
+  color: #dc2626;
+  background: #fef2f2;
 }
 
-/* ---- Thẻ "Hướng dẫn Tra cứu": tông vàng cam ---- */
+.home-choice-card--dichvucong:hover {
+  background: linear-gradient(135deg, #991b1b 0%, #ef4444 100%);
+  border-color: #f87171;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(239, 68, 68, 0.35);
+}
+
+.home-choice-card--dichvucong:hover .home-choice-icon {
+  background: #ffffff;
+  transform: scale(1.1) rotate(-6deg);
+}
+
+.home-choice-card--dichvucong:hover .home-choice-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.home-choice-card--dichvucong:hover .home-choice-name {
+  color: #ffffff;
+}
+
+.home-choice-card--dichvucong:hover .home-choice-desc {
+  color: #fee2e2;
+}
+
+.home-choice-card--dichvucong:hover .home-choice-cta {
+  background: #ffffff;
+  color: #991b1b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.home-choice-card--dichvucong:hover .home-choice-cta .arrow {
+  transform: translateX(5px);
+}
+
+/* ---- 3. Thẻ "Hướng dẫn Tra cứu": Vàng Hổ Phách ấm áp ---- */
 .home-choice-card--tracuu .home-choice-icon {
-  background: linear-gradient(135deg, #fff3d9 0%, #ffe4ad 100%);
-  color: #a15c00;
+  background: #fffbeb;
+  color: #d97706;
 }
 .home-choice-card--tracuu .home-choice-cta {
-  color: #a15c00;
-}
-.home-choice-card--tracuu:hover {
-  border-color: #d97706;
-  box-shadow: 0 12px 28px rgba(217, 119, 6, 0.12);
+  color: #d97706;
+  background: #fffbeb;
 }
 
-/* ---- Responsive: máy tính bảng 2 cột, điện thoại 1 cột dễ bấm ---- */
+.home-choice-card--tracuu:hover {
+  background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+  border-color: #fbbf24;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(245, 158, 11, 0.35);
+}
+
+.home-choice-card--tracuu:hover .home-choice-icon {
+  background: #ffffff;
+  transform: scale(1.1) rotate(-6deg);
+}
+
+.home-choice-card--tracuu:hover .home-choice-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.home-choice-card--tracuu:hover .home-choice-name {
+  color: #ffffff;
+}
+
+.home-choice-card--tracuu:hover .home-choice-desc {
+  color: #fef3c7;
+}
+
+.home-choice-card--tracuu:hover .home-choice-cta {
+  background: #ffffff;
+  color: #b45309;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.home-choice-card--tracuu:hover .home-choice-cta .arrow {
+  transform: translateX(5px);
+}
+
+/* ── RESPONSIVE ── */
 @media (max-width: 980px) {
   .home-choice-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -149,7 +272,7 @@
     grid-template-columns: 1fr;
   }
   .home-choice-title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
   }
   .home-choice-card {
     padding: 22px 20px;

@@ -289,10 +289,11 @@
 
 .meet-status-indicator {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  bottom: 6px;
+  right: 6px;
   display: flex;
   gap: 4px;
+  z-index: 5;
 }
 
 .meet-badge-status {
@@ -449,12 +450,21 @@
   font-size: 13.5px;
   color: #94a3b8;
   font-weight: 600;
+  white-space: nowrap !important;
+  flex-shrink: 0;
 }
 
 .meet-controls-center {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 0;
+  max-width: 100%;
+}
+
+.meet-controls-center::-webkit-scrollbar {
+  display: none;
 }
 
 .meet-btn-control {
@@ -506,6 +516,8 @@
   font-size: 13.5px;
   font-weight: 750;
   cursor: pointer;
+  white-space: nowrap !important;
+  flex-shrink: 0;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -521,6 +533,7 @@
 .meet-controls-right {
   display: flex;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 /* Tooltips */
@@ -567,10 +580,10 @@
   animation: none !important; /* disable CSS keyframes when mic is active */
 }
 
-/* Sleek Flat Text-labeled HTML buttons */
+/* Sleek Flat Text-labeled HTML buttons (Single Line - No Wrap) */
 .meet-btn-control-flat {
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
   border: 1px solid #475569;
   background: #1e293b;
   color: #cbd5e1;
@@ -579,7 +592,9 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   transition: all 0.15s ease;
   font-family: inherit;
 }
@@ -611,4 +626,10 @@
 .meet-btn-control-flat.share-active:hover {
   background: #059669;
   border-color: #059669;
+}
+
+@keyframes blink-speak {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
 }

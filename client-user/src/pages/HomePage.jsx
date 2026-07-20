@@ -191,12 +191,17 @@ export default function HomePage() {
             className="home-choice-card home-choice-card--tuyentruyen"
             onClick={() => navigate('/chuyen-muc')}
           >
-            <span className="home-choice-icon">📢</span>
+            <div className="home-choice-card-header">
+              <span className="home-choice-icon">📢</span>
+              <span className="home-choice-tag">Tin tức & Pháp luật</span>
+            </div>
             <span className="home-choice-name">Tuyên truyền</span>
             <span className="home-choice-desc">
               Tin tức, chủ trương, chính sách và tuyên truyền pháp luật của xã Đăk Pxi.
             </span>
-            <span className="home-choice-cta">Xem ngay →</span>
+            <div className="home-choice-cta-wrap">
+              <span className="home-choice-cta">Xem ngay <span className="arrow">→</span></span>
+            </div>
           </button>
 
           <button
@@ -204,12 +209,17 @@ export default function HomePage() {
             className="home-choice-card home-choice-card--dichvucong"
             onClick={() => navigate('/thu-tuc-hanh-chinh')}
           >
-            <span className="home-choice-icon">🧾</span>
+            <div className="home-choice-card-header">
+              <span className="home-choice-icon">🧾</span>
+              <span className="home-choice-tag">Thủ tục trực tuyến</span>
+            </div>
             <span className="home-choice-name">Hỗ trợ dịch vụ công</span>
             <span className="home-choice-desc">
               Tra cứu, chuẩn bị hồ sơ và thực hiện thủ tục hành chính trực tuyến.
             </span>
-            <span className="home-choice-cta">Xem ngay →</span>
+            <div className="home-choice-cta-wrap">
+              <span className="home-choice-cta">Xem ngay <span className="arrow">→</span></span>
+            </div>
           </button>
 
           <button
@@ -217,12 +227,17 @@ export default function HomePage() {
             className="home-choice-card home-choice-card--tracuu"
             onClick={() => navigate('/tra-cuu')}
           >
-            <span className="home-choice-icon">🔍</span>
+            <div className="home-choice-card-header">
+              <span className="home-choice-icon">🔍</span>
+              <span className="home-choice-tag">BHYT · BHXH · VNeID</span>
+            </div>
             <span className="home-choice-name">Hướng dẫn Tra cứu</span>
             <span className="home-choice-desc">
               Hướng dẫn tra cứu BHYT, BHXH và các thông tin cần thiết khác.
             </span>
-            <span className="home-choice-cta">Xem ngay →</span>
+            <div className="home-choice-cta-wrap">
+              <span className="home-choice-cta">Xem ngay <span className="arrow">→</span></span>
+            </div>
           </button>
         </div>
       </section>

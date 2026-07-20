@@ -6,23 +6,23 @@ import './BaiVietDetailPage.css';
 const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
 const DM_COLOR = {
-  'bau-cu':    '#c8102e',
-  'su-kien':   '#003087',
-  'the-thao':  '#15803d',
-  'le-hoi':    '#b45309',
-  'tin-tuc':   '#0369a1',
+  'bau-cu': '#c8102e',
+  'su-kien': '#003087',
+  'the-thao': '#15803d',
+  'le-hoi': '#b45309',
+  'tin-tuc': '#0369a1',
   'thong-bao': '#6d28d9',
-  'khac':      '#475569',
+  'khac': '#475569',
 };
 
 const DM_LABEL = {
-  'bau-cu':    'Bầu cử',
-  'su-kien':   'Sự kiện',
-  'the-thao':  'Thể thao',
-  'le-hoi':    'Lễ hội',
-  'tin-tuc':   'Tin tức',
+  'bau-cu': 'Bầu cử',
+  'su-kien': 'Sự kiện',
+  'the-thao': 'Thể thao',
+  'le-hoi': 'Lễ hội',
+  'tin-tuc': 'Tin tức',
   'thong-bao': 'Thông báo',
-  'khac':      'Khác',
+  'khac': 'Khác',
 };
 
 function fmtDate(iso) {
@@ -33,7 +33,7 @@ function fmtDate(iso) {
 
 function fmtDateShort(iso) {
   const d = new Date(iso);
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
 }
 
 /* ── Ticker chạy chữ ── */
@@ -92,17 +92,17 @@ function RelatedCard({ bv, onClick }) {
    Route: /bai-viet/:id
 ════════════════════════════════════ */
 export default function BaiVietDetailPage() {
-  const { id }    = useParams();
-  const navigate  = useNavigate();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const [bv,      setBv]      = useState(null);
+  const [bv, setBv] = useState(null);
   const [related, setRelated] = useState([]);
-  const [ticker,  setTicker]  = useState([]);
+  const [ticker, setTicker] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState('');
-  const [copied,  setCopied]  = useState(false);
-   const [lightboxIdx, setLightboxIdx] = useState(null);
-  const topRef                = useRef(null);
+  const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [lightboxIdx, setLightboxIdx] = useState(null);
+  const topRef = useRef(null);
 
   /* Load bài chính + bài liên quan */
   useEffect(() => {
@@ -130,19 +130,19 @@ export default function BaiVietDetailPage() {
   useEffect(() => {
     axios.get(`${API}/bai-viet`, { params: { limit: 6, page: 1 } })
       .then(r => setTicker((r.data.data || []).map(b => b.tieu_de)))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
-  if (lightboxIdx === null || !bv?.anh_phu) return;
-  function onKey(e) {
-    if (e.key === 'Escape') setLightboxIdx(null);
-    if (e.key === 'ArrowRight') setLightboxIdx(i => (i + 1) % bv.anh_phu.length);
-    if (e.key === 'ArrowLeft') setLightboxIdx(i => (i - 1 + bv.anh_phu.length) % bv.anh_phu.length);
-  }
-  window.addEventListener('keydown', onKey);
-  return () => window.removeEventListener('keydown', onKey);
-}, [lightboxIdx, bv]);
+    if (lightboxIdx === null || !bv?.anh_phu) return;
+    function onKey(e) {
+      if (e.key === 'Escape') setLightboxIdx(null);
+      if (e.key === 'ArrowRight') setLightboxIdx(i => (i + 1) % bv.anh_phu.length);
+      if (e.key === 'ArrowLeft') setLightboxIdx(i => (i - 1 + bv.anh_phu.length) % bv.anh_phu.length);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightboxIdx, bv]);
 
   function copyLink() {
     navigator.clipboard?.writeText(window.location.href).then(() => {
@@ -151,7 +151,7 @@ export default function BaiVietDetailPage() {
     });
   }
 
-  const color    = bv ? (DM_COLOR[bv.danh_muc] || '#003087') : '#003087';
+  const color = bv ? (DM_COLOR[bv.danh_muc] || '#003087') : '#003087';
   const readTime = bv
     ? Math.max(1, Math.ceil((bv.noi_dung || '').split(/\s+/).length / 200))
     : 0;
@@ -214,9 +214,9 @@ export default function BaiVietDetailPage() {
           <div className="bvd-error-box">
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none"
               stroke="#c8102e" strokeWidth="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8"  x2="12"    y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <p>{error}</p>
             <button onClick={() => navigate('/chuyen-trang')}>
@@ -268,56 +268,63 @@ export default function BaiVietDetailPage() {
               {/* Đường kẻ màu theo danh mục */}
               <div className="bvd-rule" style={{ background: color }} />
 
-              {/* Ảnh banner */}
-{bv.anh_dai_dien && (
-  <figure className="bvd-figure">
-    <img src={bv.anh_dai_dien} alt={bv.tieu_de} className="bvd-banner" />
-    <figcaption className="bvd-caption">
-      {bv.mo_ta || bv.tieu_de} — Ảnh: {bv.nguoi_dang}
-    </figcaption>
-  </figure>
-)}
+              {/* Video */}
+              {bv.video && (
+                <div className="bvd-video-wrap">
+                  <video src={bv.video} controls className="bvd-video" />
+                </div>
+              )}
 
-{/* Video */}
-{bv.video && (
-  <div className="bvd-video-wrap">
-    <video src={bv.video} controls className="bvd-video" />
-  </div>
-)}
+              {/* Phần Ảnh & Chữ: Tất cả ảnh to rộng bằng nhau - Bên ảnh bên chữ */}
+              {(() => {
+                const allImages = [
+                  ...(bv.anh_dai_dien ? [bv.anh_dai_dien] : []),
+                  ...(Array.isArray(bv.anh_phu) ? bv.anh_phu.filter(url => url !== bv.anh_dai_dien) : [])
+                ];
 
-{/* Gallery ảnh phụ */}
-{Array.isArray(bv.anh_phu) && bv.anh_phu.length > 0 && (
-  <div className="bvd-gallery">
-    {bv.anh_phu.map((url, i) => (
-      <button key={i} className="bvd-gallery-item" onClick={() => setLightboxIdx(i)}>
-        <img src={url} alt={`${bv.tieu_de} - ảnh ${i + 1}`} />
-      </button>
-    ))}
-  </div>
-)}
+                return (
+                  <div className={`bvd-media-text-flex ${allImages.length > 0 ? 'has-images' : ''}`}>
+                    {/* Cột bên ảnh (Ảnh to rộng bằng nhau) */}
+                    {allImages.length > 0 && (
+                      <div className="bvd-media-block">
+                        <div className={`bvd-gallery count-${Math.min(allImages.length, 4)}`}>
+                          {allImages.map((url, i) => (
+                            <button key={i} className="bvd-gallery-item" onClick={() => setLightboxIdx(i)}>
+                              <img src={url} alt={`${bv.tieu_de} - ảnh ${i + 1}`} />
+                            </button>
+                          ))}
+                        </div>
+                        <figcaption className="bvd-caption">
+                          📷 <i>Ảnh minh họa — Nguồn: {bv.nguoi_dang || 'UBND xã Đăk Pxi'}</i>
+                        </figcaption>
+                      </div>
+                    )}
 
-{/* Lightbox */}
-{lightboxIdx !== null && (
-  <div className="bvd-lightbox" onClick={() => setLightboxIdx(null)}>
-    <button className="bvd-lightbox-close" onClick={() => setLightboxIdx(null)}>✕</button>
-    <button className="bvd-lightbox-nav bvd-lightbox-prev"
-      onClick={e => { e.stopPropagation(); setLightboxIdx(i => (i - 1 + bv.anh_phu.length) % bv.anh_phu.length); }}>
-      ‹
-    </button>
-    <img src={bv.anh_phu[lightboxIdx]} alt="" className="bvd-lightbox-img" onClick={e => e.stopPropagation()} />
-    <button className="bvd-lightbox-nav bvd-lightbox-next"
-      onClick={e => { e.stopPropagation(); setLightboxIdx(i => (i + 1) % bv.anh_phu.length); }}>
-      ›
-    </button>
-  </div>
-)}
+                    {/* Cột bên chữ */}
+                    <div className="bvd-content">
+                      {paragraphs.map((para, i) => (
+                        <p key={i}>{para.trim()}</p>
+                      ))}
+                    </div>
 
-              {/* Nội dung */}
-              <div className="bvd-content">
-                {paragraphs.map((para, i) => (
-                  <p key={i}>{para.trim()}</p>
-                ))}
-              </div>
+                    {/* Lightbox xem ảnh toàn màn hình */}
+                    {lightboxIdx !== null && allImages.length > 0 && (
+                      <div className="bvd-lightbox" onClick={() => setLightboxIdx(null)}>
+                        <button className="bvd-lightbox-close" onClick={() => setLightboxIdx(null)}>✕</button>
+                        <button className="bvd-lightbox-nav bvd-lightbox-prev"
+                          onClick={e => { e.stopPropagation(); setLightboxIdx(i => (i - 1 + allImages.length) % allImages.length); }}>
+                          ‹
+                        </button>
+                        <img src={allImages[lightboxIdx]} alt="" className="bvd-lightbox-img" onClick={e => e.stopPropagation()} />
+                        <button className="bvd-lightbox-nav bvd-lightbox-next"
+                          onClick={e => { e.stopPropagation(); setLightboxIdx(i => (i + 1) % allImages.length); }}>
+                          ›
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Chia sẻ */}
               <div className="bvd-share">
@@ -331,15 +338,15 @@ export default function BaiVietDetailPage() {
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                       aria-hidden="true">
-                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                     </svg>
                     Facebook
                   </a>
                   <button className="bvd-share-copy" onClick={copyLink}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                       stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                      <rect x="9" y="9" width="13" height="13" rx="2"/>
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                     </svg>
                     {copied ? '✓ Đã sao chép!' : 'Sao chép link'}
                   </button>
@@ -425,7 +432,7 @@ export default function BaiVietDetailPage() {
       {/* ══ FOOTER ══ */}
       <footer className="bvd-footer">
         <div className="bvd-footer-inner">
-          <span>© 2026 UBND xã Đăk Pxi — Chuyên trang thông tin điện tử</span>
+          <span>© 2026 PHÒNG VĂN HÓA XÃ HỘI, XÃ ĐĂK PXI — Chuyên trang thông tin điện tử</span>
           <Link to="/chuyen-trang" className="bvd-footer-link">
             Xem tất cả bài viết →
           </Link>
