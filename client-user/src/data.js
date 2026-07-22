@@ -1,25 +1,25 @@
 export const FEATURES = [
   {
     title: 'Tuyên truyền Bầu cử',
-    image: 'https://cdn.nhandan.vn/images/80834a129cc0a9c3d08d8d3b8ad76c706dbb592bcf4e0774ec49e34c1286ff5dc33f245e867906187941565fe2c87580/bau-cu-212.jpg',
+    image: '/huong-dan/anh-bau-cu-2.png',
     desc: 'Thông tin, hướng dẫn cử tri thực hiện quyền và nghĩa vụ bầu cử Đại biểu Quốc hội & HĐND các cấp.',
     path: '/bau-cu',
   },
   {
     title: 'Phòng chống Thiên tai',
-    image: 'https://file3.qdnd.vn/data/images/0/2024/08/24/upload_2083/2408202vthuy9.jpg?dpi=150&quality=100&w=870',
+    image: '/huong-dan/phongchongthien-tai.png',
     desc: 'Hướng dẫn phòng tránh và ứng phó với các loại thiên tai thường gặp.',
     path: '/thien-tai',
   },
   {
     title: 'Phòng chống đuối nước',
-    image: 'https://cdc.ninhbinh.gov.vn/upload/100765/20240719/Canh-bao-duoi-nuoc-mua-he-1_c06c0.jpg',
+    image: '/huong-dan/phongchongduoinuoc.png',
     desc: 'Tuyên truyền kỹ năng phòng tránh đuối nước cho trẻ em.',
     path: '/duoi-nuoc',
   },
   {
     title: 'Phòng chống cháy rừng',
-    image: 'https://png.pngtree.com/png-vector/20230808/ourmid/pngtree-wildfire-clipart-doodle-cartoon-image-of-forest-fire-and-trees-vector-png-image_6827485.png',
+    image: '/huong-dan/phongchongchayrung.png',
     desc: 'Hướng dẫn bảo vệ rừng và phòng chống cháy mùa khô.',
     path: '/chay-rung',
   },
@@ -35,8 +35,21 @@ export const FEATURES = [
     desc: 'Cách đăng ký, kích hoạt và sử dụng tài khoản VNeID.',
     path: '/huong-dan-vneid',
   },
+  {
+    title: 'Tuyên truyền An toàn Giao thông',
+    image: '/huong-dan/atgt-1.png',
+    desc: 'Hướng dẫn và tuyên truyền pháp luật giao thông đường bộ. Vì một cộng đồng giao thông văn minh, an toàn.',
+    path: '/an-toan-giao-thong',
+  },
+  {
+    title: 'Tuyên truyền Phòng, chống Lừa đảo Không gian mạng',
+    image: '/huong-dan/phong-chong-lua-dao-1.png',
+    desc: 'Nâng cao nhận thức, chủ động phòng ngừa các hành vi lừa đảo qua điện thoại, mạng xã hội, ngân hàng.',
+    path: '/phong-chong-lua-dao',
+  },
 
 ];
+
 export const DETAILS = {
   '/bau-cu': {
     title: '🗳️ Tuyên truyền Bầu cử',

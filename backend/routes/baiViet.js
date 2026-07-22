@@ -7,7 +7,7 @@ const { authAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-/* ── Cấu hình upload ảnh + video lên Cloudinary ── */
+/* ── Cấu hình upload ảnh + video + PDF lên Cloudinary ── */
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
@@ -16,6 +16,13 @@ const storage = new CloudinaryStorage({
         folder: 'baiviet/video',
         resource_type: 'video',
         allowed_formats: ['mp4', 'mov', 'webm'],
+      };
+    }
+    if (file.fieldname === 'tai_lieu_files') {
+      return {
+        folder: 'baiviet/tai-lieu',
+        resource_type: 'raw',
+        allowed_formats: ['pdf', 'doc', 'docx'],
       };
     }
     return {
@@ -29,14 +36,18 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB — đủ cho video ~5 phút
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
 });
 
 const uploadFields = upload.fields([
   { name: 'anh', maxCount: 1 },
   { name: 'anh_phu', maxCount: 20 },
   { name: 'video', maxCount: 1 },
+  { name: 'tai_lieu_files', maxCount: 10 }, // 📄 Upload PDF/DOCX
 ]);
+
+/* ── ATGT prefix list ── */
+const ATGT_PREFIXES = ['atgt-tin-tuc','atgt-phap-luat','atgt-hoc-sinh','atgt-duong-nong-thon','atgt-mua-mua','atgt-van-hoa','atgt-van-ban'];
 
 /* ════════════════════════════════════════
    ADMIN routes — đặt TRƯỚC /:id
@@ -74,6 +85,20 @@ router.post('/', authAdmin, uploadFields, async (req, res) => {
     const anh_phu = (req.files?.anh_phu || []).map(f => f.path);
     const video = req.files?.video?.[0]?.path || video_url || '';
 
+    // Parse tai_lieu từ JSON string hoặc từ file upload
+    let tai_lieu = [];
+    if (req.body.tai_lieu) {
+      try { tai_lieu = JSON.parse(req.body.tai_lieu); } catch {}
+    }
+    if (req.files?.tai_lieu_files?.length) {
+      const uploaded = req.files.tai_lieu_files.map((f, i) => ({
+        ten:  (req.body[`tai_lieu_ten_${i}`] || f.originalname).trim(),
+        url:  f.path,
+        loai: f.originalname.split('.').pop().toLowerCase(),
+      }));
+      tai_lieu = [...tai_lieu, ...uploaded];
+    }
+
     const bv = await BaiViet.create({
       tieu_de: tieu_de.trim(),
       mo_ta:   (mo_ta || '').trim(),
@@ -81,10 +106,9 @@ router.post('/', authAdmin, uploadFields, async (req, res) => {
       danh_muc:   danh_muc   || 'su-kien',
       trang_thai: trang_thai || 'da-dang',
       nguoi_dang: nguoi_dang || 'Admin',
-      anh_dai_dien,
-      anh_phu,
-      video,
+      anh_dai_dien, anh_phu, video,
       chu_chay: (chu_chay || '').trim(),
+      tai_lieu,
     });
 
     res.status(201).json({ data: bv });
@@ -139,9 +163,22 @@ router.get('/', async (req, res) => {
     const page     = Math.max(1, parseInt(req.query.page)  || 1);
     const limit    = Math.max(1, parseInt(req.query.limit) || 9);
     const danh_muc = req.query.danh_muc;
+    const nhom     = req.query.nhom; // 'atgt' để lọc toàn bộ nhóm ATGT
+    const search   = req.query.search || '';
 
     const filter = { trang_thai: 'da-dang' };
-    if (danh_muc && danh_muc !== 'tat-ca') filter.danh_muc = danh_muc;
+
+    // Lọc theo nhóm ATGT
+    if (nhom === 'atgt') {
+      filter.danh_muc = { $in: ATGT_PREFIXES };
+    } else if (danh_muc && danh_muc !== 'tat-ca') {
+      filter.danh_muc = danh_muc;
+    }
+
+    // Tìm kiếm theo tiêu đề
+    if (search.trim()) {
+      filter.tieu_de = { $regex: search.trim(), $options: 'i' };
+    }
 
     const [rows, total] = await Promise.all([
       BaiViet.find(filter)

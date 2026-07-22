@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TruongPhongDashboard.css";
-import ChatWindow from "../components/ai/ChatWindow";
 
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -1005,6 +1004,16 @@ export default function TruongPhongDashboard() {
                 📅 Lịch họp cơ quan
               </button>
               <button
+                className={`tp-nav-item ${activeTab === "articles" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("articles");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                ✍️ Viết bài tuyên truyền
+              </button>
+              <button
                 className={`tp-nav-item ${activeTab === "updates" ? "active" : ""}`}
                 onClick={() => {
                   setActiveTab("updates");
@@ -1022,7 +1031,7 @@ export default function TruongPhongDashboard() {
                   setError("");
                 }}
               >
-                🤖 Trợ lý AI nghiệp vụ
+                🤖 Trợ lý AI Hành chính & Văn bản
               </button>
             </>
           )}
@@ -1071,6 +1080,16 @@ export default function TruongPhongDashboard() {
                 👥 Quản lý người dân BHYT
               </button>
               <button
+                className={`tp-nav-item ${activeTab === "articles" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("articles");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                ✍️ Viết bài tuyên truyền
+              </button>
+              <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
                 onClick={() => {
                   setActiveTab("ai-assistant");
@@ -1078,7 +1097,7 @@ export default function TruongPhongDashboard() {
                   setError("");
                 }}
               >
-                🤖 Trợ lý AI nghiệp vụ
+                🤖 Trợ lý AI Hành chính & Văn bản
               </button>
             </>
           )}
@@ -1136,6 +1155,7 @@ export default function TruongPhongDashboard() {
               >
                 ✍️ Viết bài tuyên truyền
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "feedback" ? "active" : ""}`}
                 onClick={() => {
@@ -1154,7 +1174,7 @@ export default function TruongPhongDashboard() {
                   setError("");
                 }}
               >
-                🤖 Trợ lý AI nghiệp vụ
+                🤖 Trợ lý AI Hành chính & Văn bản
               </button>
             </>
           )}
@@ -1169,31 +1189,31 @@ export default function TruongPhongDashboard() {
 
       {/* Right Main Content */}
       <main className="tp-main-content">
-        <header className="tp-content-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div>
-            <span className="tp-header-breadcrumb">Không gian làm việc / VH-XH</span>
-            <h2>
-              {activeTab === "dashboard" && "Trang tổng quan & Theo dõi hoạt động thời gian thực"}
-              {activeTab === "staff" && "Quản lý Cán bộ cấp dưới"}
-              {activeTab === "schedule" && "Lịch họp & Điều phối lịch công tác"}
-              {activeTab === "updates" && "Nhật ký Hệ thống & Thông báo UBND"}
-              {activeTab === "tasks" && "Chỉ thị & Nhiệm vụ được giao"}
-              {activeTab === "citizens" && "Quản lý dữ liệu Công dân & Cấp thẻ BHYT"}
-              {activeTab === "articles" && "Soạn thảo bài tuyên truyền cho bà con"}
-              {activeTab === "feedback" && "Phản hồi & Giải đáp góp ý từ người dân"}
-              {activeTab === "ai-assistant" && "Trợ lý AI hỗ trợ nghiệp vụ & Giải đáp thắc mắc"}
-            </h2>
-          </div>
-
-          {/* Đồng hồ thời gian hiện tại góc bên phải */}
-          <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "8px 16px", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <span style={{ fontSize: "11px", color: "#475569", fontWeight: "600", textAlign: "right", marginBottom: "2px" }}>Thời gian hiện tại</span>
-            <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
-              <span>🕒</span>
-              <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
+        {activeTab !== "ai-assistant" && (
+          <header className="tp-content-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div>
+              <h2>
+                {activeTab === "dashboard" && "Trang tổng quan & Theo dõi hoạt động thời gian thực"}
+                {activeTab === "staff" && "Quản lý Cán bộ cấp dưới"}
+                {activeTab === "schedule" && "Lịch họp & Điều phối lịch công tác"}
+                {activeTab === "updates" && "Nhật ký Hệ thống & Thông báo UBND"}
+                {activeTab === "tasks" && "Chỉ thị & Nhiệm vụ được giao"}
+                {activeTab === "citizens" && "Quản lý dữ liệu Công dân & Cấp thẻ BHYT"}
+                {activeTab === "articles" && "Soạn thảo bài tuyên truyền cho bà con"}
+                {activeTab === "feedback" && "Phản hồi & Giải đáp góp ý từ người dân"}
+              </h2>
             </div>
-          </div>
-        </header>
+
+            {/* Đồng hồ thời gian hiện tại góc bên phải */}
+            <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "8px 16px", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <span style={{ fontSize: "11px", color: "#475569", fontWeight: "600", textAlign: "right", marginBottom: "2px" }}>Thời gian hiện tại</span>
+              <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
+                <span>🕒</span>
+                <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
+              </div>
+            </div>
+          </header>
+        )}
 
         <div className="tp-content-body">
           {message && <div className="tp-alert-success">✅ {message}</div>}
@@ -1724,11 +1744,6 @@ export default function TruongPhongDashboard() {
             );
           })()}
 
-          {activeTab === "ai-assistant" && (
-            <div className="tp-card" style={{ height: "650px", padding: "0px", overflow: "hidden", border: "1px solid #cbd5e1", borderRadius: "12px" }}>
-              <ChatWindow />
-            </div>
-          )}
 
           {/* ──────────────────────────────────
               TRƯỞNG PHÒNG TAB CONTENTS
@@ -1929,9 +1944,9 @@ export default function TruongPhongDashboard() {
           )}
 
           {/* ──────────────────────────────────
-              CÁN BỘ TAB CONTENTS
+              CÁN BỘ, PHÓ PHÒNG & TRƯỞNG PHÒNG TAB CONTENTS
               ────────────────────────────────── */}
-          {(role === "canbo" || role === "phophong") && (
+          {(role === "canbo" || role === "phophong" || role === "truongphong" || role === "admin") && (
             <>
               {activeTab === "tasks" && (
                 <div className="tp-tasks-section">
@@ -2200,257 +2215,265 @@ export default function TruongPhongDashboard() {
               )}
 
               {activeTab === "articles" && (
-                <div className="tp-grid" style={{ gridTemplateColumns: "360px 1fr" }}>
-                  <div className="tp-card tp-form-card">
-                    <h3>{editingArticle ? "✏️ Sửa bài viết" : "✍️ Soạn bài viết"}</h3>
-                    <form onSubmit={handleArticleSubmit}>
-                      <div className="tp-form-group">
-                        <label>Tiêu đề bài viết</label>
-                        <input
-                          type="text"
-                          placeholder="Nhập tiêu đề..."
-                          value={articleForm.tieu_de}
-                          onChange={(e) => setArticleForm({ ...articleForm, tieu_de: e.target.value })}
-                          required
-                        />
-                      </div>
-
-                      <div className="tp-form-group">
-                        <label>Chuyên mục</label>
-                        <select
-                          value={articleForm.danh_muc}
-                          onChange={(e) => setArticleForm({ ...articleForm, danh_muc: e.target.value })}
+                <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                  {/* KHUNG SOẠN BÀI VIẾT TUYÊN TRUYỀN FULL MÀN HÌNH */}
+                  <div className="tp-card tp-form-card" style={{ width: "100%", padding: "24px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", pb: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
+                      <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#003d7a", display: "flex", alignItems: "center", gap: "8px" }}>
+                        ✍️ {editingArticle ? "Sửa bài viết tuyên truyền" : "Soạn thảo bài viết tuyên truyền mới"}
+                      </h3>
+                      {editingArticle && (
+                        <button
+                          type="button"
+                          style={{ background: "#fee2e2", color: "#dc2626", border: "none", padding: "6px 14px", borderRadius: "20px", fontSize: "13px", cursor: "pointer", fontWeight: "800" }}
+                          onClick={() => {
+                            setEditingArticle(null);
+                            setArticleForm({ tieu_de: "", mo_ta: "", noi_dung: "", danh_muc: "phong-chong-lua-dao", trang_thai: "da-dang", chu_chay: "" });
+                            setCoverImage(null); setCoverPreview("");
+                            setSecondaryImages([]); setSecondaryPreviews([]);
+                            setVideoFile(null); setVideoPreview("");
+                          }}
                         >
-                          <option value="su-kien">Sự kiện xã Đăk Pxi</option>
-                          <option value="the-thao">Thể thao phong trào</option>
-                          <option value="le-hoi">Lễ hội văn hóa truyền thống</option>
-                          <option value="bau-cu">Tuyên truyền bầu cử</option>
-                          <option value="khac">Khác</option>
-                        </select>
-                      </div>
+                          ✕ Hủy chế độ sửa bài
+                        </button>
+                      )}
+                    </div>
 
-                      <div className="tp-form-group">
-                        <label>Tóm tắt ngắn</label>
-                        <textarea
-                          rows="2"
-                          placeholder="Tóm tắt ngắn..."
-                          value={articleForm.mo_ta}
-                          onChange={(e) => setArticleForm({ ...articleForm, mo_ta: e.target.value })}
-                        />
-                      </div>
-
-                      <div className="tp-form-group">
-                        <label>Nội dung bài viết chi tiết</label>
-                        <textarea
-                          rows="6"
-                          placeholder="Viết nội dung tại đây..."
-                          value={articleForm.noi_dung}
-                          onChange={(e) => setArticleForm({ ...articleForm, noi_dung: e.target.value })}
-                          required
-                        />
-                      </div>
-
-                      <div className="tp-form-group">
-                        <label>Chữ chạy tùy chọn (Trang chủ)</label>
-                        <input
-                          type="text"
-                          placeholder="Nhập chữ chạy thông báo..."
-                          value={articleForm.chu_chay}
-                          onChange={(e) => setArticleForm({ ...articleForm, chu_chay: e.target.value })}
-                        />
-                      </div>
-
-                      {/* Cover Image Upload */}
-                      <div className="tp-form-group">
-                        <label>Ảnh đại diện bài tuyên truyền (Ảnh bìa)</label>
-                        <div className="tp-file-uploader-box">
+                    <form onSubmit={handleArticleSubmit}>
+                      {/* Hàng 1: Tiêu đề (60%) + Chuyên mục (40%) */}
+                      <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "16px", marginBottom: "14px" }}>
+                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
+                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Tiêu đề bài viết tuyên truyền <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files[0];
-                              if (file) {
-                                setCoverImage(file);
-                                setCoverPreview(URL.createObjectURL(file));
-                              }
-                            }}
-                            id="cover-upload-input"
-                            style={{ display: "none" }}
+                            type="text"
+                            placeholder="Nhập tiêu đề tuyên truyền (Ví dụ: Cảnh báo thủ đoạn giả danh Công an lừa đảo...)"
+                            value={articleForm.tieu_de}
+                            onChange={(e) => setArticleForm({ ...articleForm, tieu_de: e.target.value })}
+                            style={{ padding: "10px 14px", fontSize: "14px", borderRadius: "8px" }}
+                            required
                           />
-                          <label htmlFor="cover-upload-input" className="tp-uploader-label" style={{ display: "block", border: "1px dashed #cbd5e1", borderRadius: "8px", padding: "16px", textAlign: "center", cursor: "pointer", background: "#f8fafc" }}>
-                            {coverPreview ? (
-                              <div className="tp-uploader-preview-container" style={{ position: "relative" }}>
-                                <img src={coverPreview} alt="Cover Preview" className="tp-uploader-preview" style={{ maxWidth: "100%", maxHeight: "150px", borderRadius: "6px" }} />
-                                <button
-                                  type="button"
-                                  className="tp-uploader-remove-btn"
-                                  style={{ position: "absolute", top: "5px", right: "5px", background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", width: "24px", height: "24px", cursor: "pointer" }}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    setCoverImage(null);
-                                    setCoverPreview("");
-                                  }}
-                                >
-                                  ✕
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="tp-uploader-placeholder" style={{ color: "#64748b", fontSize: "13.5px" }}>
-                                🖼️ Chọn ảnh bìa bài viết
-                              </div>
-                            )}
-                          </label>
+                        </div>
+
+                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
+                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Chọn Chuyên mục tuyên truyền</label>
+                          <select
+                            value={articleForm.danh_muc}
+                            onChange={(e) => setArticleForm({ ...articleForm, danh_muc: e.target.value })}
+                            style={{ padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", fontWeight: "700", color: "#003d7a", height: "43px" }}
+                          >
+                            <optgroup label="🛡️ Tuyên truyền Trọng tâm">
+                              <option value="phong-chong-lua-dao">🛡️ Phòng, chống Lừa đảo Không gian mạng</option>
+                              <option value="an-toan-giao-thong">🚦 Tuyên truyền An toàn Giao thông</option>
+                              <option value="thien-tai">🌧️ Phòng chống Thiên tai & Bão lũ</option>
+                              <option value="bau-cu">🗳️ Tuyên truyền Bầu cử</option>
+                              <option value="huong-dan-vneid">🆔 Hướng dẫn VNeID Mức 2</option>
+                              <option value="te-nan">🛡️ Phòng chống Tệ nạn Xã hội</option>
+                              <option value="chay-rung">🔥 Phòng chống Cháy rừng</option>
+                              <option value="duoi-nuoc">🏊 Phòng chống Đuối nước</option>
+                              <option value="thu-tuc-hanh-chinh">📑 Thủ tục Hành chính & Dịch vụ công</option>
+                              <option value="tra-cuu">🏥 Tra cứu BHYT & BHXH</option>
+                            </optgroup>
+                            <optgroup label="📌 Tin tức & Sự kiện">
+                              <option value="su-kien">📌 Sự kiện xã Đăk Pxi</option>
+                              <option value="the-thao">⚽ Thể thao phong trào</option>
+                              <option value="le-hoi">🌾 Lễ hội văn hóa truyền thống</option>
+                              <option value="khac">📰 Khác</option>
+                            </optgroup>
+                          </select>
                         </div>
                       </div>
 
-                      {/* Multiple Images Upload */}
-                      <div className="tp-form-group">
-                        <label>Bộ sưu tập ảnh chi tiết (Nhiều ảnh đính kèm)</label>
-                        <div className="tp-file-uploader-box">
+                      {/* Hàng 2: Tóm tắt ngắn + Chữ chạy thông báo */}
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "14px" }}>
+                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
+                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Tóm tắt ngắn (Hiển thị xem trước bài viết)</label>
+                          <textarea
+                            rows="2"
+                            placeholder="Mô tả tóm tắt ngắn gọn nội dung chính..."
+                            value={articleForm.mo_ta}
+                            onChange={(e) => setArticleForm({ ...articleForm, mo_ta: e.target.value })}
+                            style={{ padding: "8px 12px", fontSize: "13.5px", borderRadius: "8px", resize: "none" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
+                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Chữ chạy thông báo (Nổi bật Trang chủ)</label>
                           <input
-                            type="file"
-                            accept="image/*"
-                            multiple
+                            type="text"
+                            placeholder="Nhập thông báo chữ chạy nổi bật trên trang chủ..."
+                            value={articleForm.chu_chay}
+                            onChange={(e) => setArticleForm({ ...articleForm, chu_chay: e.target.value })}
+                            style={{ padding: "10px 14px", fontSize: "14px", borderRadius: "8px" }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Hàng 3: Media Upload Mini Bar (Nút tải Ảnh bìa, Album, Video nằm ngang) */}
+                      <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1.5px dashed #cbd5e1", marginBottom: "14px" }}>
+                        <div style={{ fontSize: "13px", fontWeight: "800", color: "#334155", marginBottom: "10px" }}>
+                          📁 Đính kèm File phương tiện truyền thông (Ảnh bìa, Album nhiều ảnh, Video)
+                        </div>
+
+                        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+                          {/* Nút 1: Ảnh bìa */}
+                          <input
+                            type="file" accept="image/*"
+                            id="cover-upload-input" style={{ display: "none" }}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) { setCoverImage(file); setCoverPreview(URL.createObjectURL(file)); }
+                            }}
+                          />
+                          <label htmlFor="cover-upload-input" style={{ background: coverPreview ? "#e0f2fe" : "#ffffff", border: "1.5px solid #0284c7", padding: "8px 16px", borderRadius: "20px", fontSize: "13px", fontWeight: "800", cursor: "pointer", color: coverPreview ? "#0369a1" : "#0284c7", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
+                            🖼️ {coverPreview ? "Đã chọn Ảnh Bìa ✓" : "+ Chọn Ảnh Bìa đại diện"}
+                          </label>
+
+                          {/* Nút 2: Album ảnh */}
+                          <input
+                            type="file" accept="image/*" multiple
+                            id="multi-upload-input" style={{ display: "none" }}
                             onChange={(e) => {
                               const files = Array.from(e.target.files);
                               if (files.length > 0) {
                                 setSecondaryImages([...secondaryImages, ...files]);
-                                const newPreviews = files.map((f) => URL.createObjectURL(f));
-                                setSecondaryPreviews([...secondaryPreviews, ...newPreviews]);
+                                setSecondaryPreviews([...secondaryPreviews, ...files.map(f => URL.createObjectURL(f))]);
                               }
                             }}
-                            id="multi-upload-input"
-                            style={{ display: "none" }}
                           />
-                          <label htmlFor="multi-upload-input" className="tp-uploader-label-multi" style={{ display: "block", border: "1px dashed #cbd5e1", borderRadius: "8px", padding: "12px", textAlign: "center", cursor: "pointer", background: "#f8fafc", color: "#64748b", fontSize: "13px" }}>
-                            📁 Chọn nhiều ảnh đính kèm bài viết (Album)
+                          <label htmlFor="multi-upload-input" style={{ background: secondaryPreviews.length > 0 ? "#fef3c7" : "#ffffff", border: "1.5px solid #d97706", padding: "8px 16px", borderRadius: "20px", fontSize: "13px", fontWeight: "800", cursor: "pointer", color: secondaryPreviews.length > 0 ? "#b45309" : "#d97706", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
+                            📁 {secondaryPreviews.length > 0 ? `Đã đính kèm ${secondaryPreviews.length} ảnh album ✓` : "+ Thêm Album ảnh chi tiết"}
+                          </label>
+
+                          {/* Nút 3: Video */}
+                          <input
+                            type="file" accept="video/*"
+                            id="video-upload-input" style={{ display: "none" }}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) { setVideoFile(file); setVideoPreview(URL.createObjectURL(file)); }
+                            }}
+                          />
+                          <label htmlFor="video-upload-input" style={{ background: videoPreview ? "#fce7f3" : "#ffffff", border: "1.5px solid #db2777", padding: "8px 16px", borderRadius: "20px", fontSize: "13px", fontWeight: "800", cursor: "pointer", color: videoPreview ? "#be185d" : "#db2777", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
+                            📹 {videoPreview ? "Đã chọn Video ✓" : "+ Đính kèm Video tuyên truyền"}
                           </label>
                         </div>
-                        {secondaryPreviews.length > 0 && (
-                          <div className="tp-multi-previews-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginTop: "10px" }}>
-                            {secondaryPreviews.map((p, index) => (
-                              <div className="tp-multi-preview-item" key={index} style={{ position: "relative", width: "100%", paddingBottom: "100%", height: 0, borderRadius: "6px", overflow: "hidden", border: "1px solid #e2e8f0" }}>
-                                <img src={p} alt={`Preview ${index}`} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-                                <button
-                                  type="button"
-                                  className="tp-multi-preview-remove"
-                                  style={{ position: "absolute", top: "2px", right: "2px", background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", width: "18px", height: "18px", fontSize: "10px", display: "flex", alignItems: "center", justify: "center", cursor: "pointer" }}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    const newImages = [...secondaryImages];
-                                    newImages.splice(index, 1);
-                                    setSecondaryImages(newImages);
 
-                                    const newPreviews = [...secondaryPreviews];
-                                    newPreviews.splice(index, 1);
-                                    setSecondaryPreviews(newPreviews);
-                                  }}
-                                >
-                                  ✕
-                                </button>
+                        {/* Hiển thị Xem trước siêu nhỏ gọn */}
+                        {(coverPreview || secondaryPreviews.length > 0 || videoPreview) && (
+                          <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "12px", paddingTop: "8px", borderTop: "1px solid #e2e8f0", overflowX: "auto" }}>
+                            {coverPreview && (
+                              <div style={{ position: "relative", width: "55px", height: "55px", borderRadius: "8px", overflow: "hidden", border: "2px solid #0284c7", flexShrink: 0 }}>
+                                <img src={coverPreview} alt="Cover" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                <button type="button" onClick={() => { setCoverImage(null); setCoverPreview(""); }} style={{ position: "absolute", top: 0, right: 0, background: "rgba(0,0,0,0.8)", color: "#fff", border: "none", width: "18px", height: "18px", fontSize: "10px", cursor: "pointer" }}>✕</button>
+                              </div>
+                            )}
+                            {secondaryPreviews.map((p, idx) => (
+                              <div key={idx} style={{ position: "relative", width: "55px", height: "55px", borderRadius: "8px", overflow: "hidden", border: "1px solid #cbd5e1", flexShrink: 0 }}>
+                                <img src={p} alt={`sub-${idx}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                <button type="button" onClick={() => {
+                                  const imgCopy = [...secondaryImages]; imgCopy.splice(idx, 1); setSecondaryImages(imgCopy);
+                                  const prevCopy = [...secondaryPreviews]; prevCopy.splice(idx, 1); setSecondaryPreviews(prevCopy);
+                                }} style={{ position: "absolute", top: 0, right: 0, background: "rgba(0,0,0,0.8)", color: "#fff", border: "none", width: "18px", height: "18px", fontSize: "10px", cursor: "pointer" }}>✕</button>
                               </div>
                             ))}
+                            {videoPreview && (
+                              <div style={{ position: "relative", width: "90px", height: "55px", borderRadius: "8px", overflow: "hidden", border: "2px solid #db2777", background: "#000", flexShrink: 0 }}>
+                                <video src={videoPreview} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                <button type="button" onClick={() => { setVideoFile(null); setVideoPreview(""); }} style={{ position: "absolute", top: 0, right: 0, background: "rgba(0,0,0,0.8)", color: "#fff", border: "none", width: "18px", height: "18px", fontSize: "10px", cursor: "pointer" }}>✕</button>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
 
-                      {/* Video Upload */}
-                      <div className="tp-form-group">
-                        <label>Video tuyên truyền đính kèm (Nêu có)</label>
-                        <div className="tp-file-uploader-box">
-                          <input
-                            type="file"
-                            accept="video/*"
-                            onChange={(e) => {
-                              const file = e.target.files[0];
-                              if (file) {
-                                setVideoFile(file);
-                                setVideoPreview(URL.createObjectURL(file));
-                              }
-                            }}
-                            id="video-upload-input"
-                            style={{ display: "none" }}
-                          />
-                          <label htmlFor="video-upload-input" className="tp-uploader-label" style={{ display: "block", border: "1px dashed #cbd5e1", borderRadius: "8px", padding: "16px", textAlign: "center", cursor: "pointer", background: "#f8fafc" }}>
-                            {videoPreview ? (
-                              <div className="tp-uploader-preview-container" style={{ position: "relative" }}>
-                                <video src={videoPreview} controls className="tp-uploader-preview-video" style={{ maxWidth: "100%", maxHeight: "150px", borderRadius: "6px" }} />
-                                <button
-                                  type="button"
-                                  className="tp-uploader-remove-btn"
-                                  style={{ position: "absolute", top: "5px", right: "5px", background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", width: "24px", height: "24px", cursor: "pointer" }}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    setVideoFile(null);
-                                    setVideoPreview("");
-                                  }}
-                                >
-                                  ✕
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="tp-uploader-placeholder" style={{ color: "#64748b", fontSize: "13.5px" }}>
-                                📹 Chọn video đính kèm bài viết
-                              </div>
-                            )}
-                          </label>
-                        </div>
+                      {/* Hàng 4: Nội dung chi tiết */}
+                      <div className="tp-form-group" style={{ marginBottom: "16px" }}>
+                        <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Nội dung bài viết chi tiết <span style={{ color: "#dc2626" }}>*</span></label>
+                        <textarea
+                          rows="5"
+                          placeholder="Viết nội dung bài tuyên truyền chi tiết tại đây..."
+                          value={articleForm.noi_dung}
+                          onChange={(e) => setArticleForm({ ...articleForm, noi_dung: e.target.value })}
+                          style={{ padding: "10px 14px", fontSize: "14px", borderRadius: "8px" }}
+                          required
+                        />
                       </div>
 
-                      <div className="tp-btn-group">
-                        <button type="submit" className="tp-btn-submit" disabled={loading}>
-                          {editingArticle ? "💾 Lưu" : "📢 Đăng"}
-                        </button>
-                        {editingArticle && (
-                          <button
-                            type="button"
-                            className="tp-btn-cancel"
-                            onClick={() => {
-                              setEditingArticle(null);
-                              setArticleForm({ tieu_de: "", mo_ta: "", noi_dung: "", danh_muc: "su-kien", trang_thai: "da-dang", chu_chay: "" });
-                            }}
-                          >
-                            Hủy
-                          </button>
-                        )}
-                      </div>
+                      {/* Hàng 5: Nút Submit */}
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        style={{
+                          width: "100%",
+                          padding: "12px",
+                          background: "linear-gradient(135deg, #003d7a 0%, #005baa 100%)",
+                          color: "#ffffff",
+                          border: "none",
+                          borderRadius: "10px",
+                          fontSize: "15px",
+                          fontWeight: "900",
+                          cursor: "pointer",
+                          boxShadow: "0 4px 14px rgba(0,61,122,0.3)"
+                        }}
+                      >
+                        {editingArticle ? "💾 LƯU CẬP NHẬT BÀI VIẾT TUYÊN TRUYỀN" : "🚀 ĐĂNG BÀI VIẾT TUYÊN TRUYỀN MỚI NÀY"}
+                      </button>
                     </form>
                   </div>
 
-                  <div className="tp-card tp-list-card">
-                    <h3>📋 Danh sách bài viết đã đăng</h3>
-                    <div className="tp-table-wrapper">
-                      <table className="tp-table">
+                  {/* KHUNG DANH SÁCH BÀI VIẾT ĐÃ ĐĂNG FULL MÀN HÌNH Ở DƯỚI CÙNG */}
+                  <div className="tp-card tp-list-card" style={{ width: "100%", padding: "24px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", pb: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
+                      <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#003d7a" }}>
+                        📋 Danh sách toàn bộ bài viết đã đăng ({articles.length})
+                      </h3>
+                      <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>
+                        Quản lý & Chỉnh sửa bài viết
+                      </span>
+                    </div>
+
+                    <div className="tp-table-wrapper" style={{ overflowX: "auto" }}>
+                      <table className="tp-table" style={{ width: "100%" }}>
                         <thead>
                           <tr>
-                            <th>Tên bài viết</th>
-                            <th>Chuyên mục</th>
-                            <th>Ngày tạo</th>
-                            <th>Hành động</th>
+                            <th style={{ width: "45%" }}>Tên bài viết</th>
+                            <th style={{ width: "25%" }}>Chuyên mục</th>
+                            <th style={{ width: "15%" }}>Ngày tạo</th>
+                            <th style={{ width: "15%", textAlign: "center" }}>Hành động</th>
                           </tr>
                         </thead>
                         <tbody>
                           {articles.length === 0 ? (
                             <tr>
-                              <td colSpan="4">Chưa có bài viết nào.</td>
+                              <td colSpan="4" style={{ textAlign: "center", padding: "30px", color: "#64748b" }}>
+                                Chưa có bài viết nào được đăng. Hãy tạo bài viết tuyên truyền đầu tiên ở trên!
+                              </td>
                             </tr>
                           ) : (
                             articles.map((art) => (
                               <tr key={art._id}>
                                 <td>
-                                  <strong>{art.tieu_de}</strong>
+                                  <strong style={{ color: "#003d7a", fontSize: "14px" }}>{art.tieu_de}</strong>
+                                  {art.mo_ta && (
+                                    <div style={{ fontSize: "12.5px", color: "#64748b", marginTop: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "450px" }}>
+                                      {art.mo_ta}
+                                    </div>
+                                  )}
                                 </td>
                                 <td>
-                                  <span className={`tp-meeting-badge ${art.danh_muc}`}>
-                                    {art.danh_muc === "bau-cu" ? "🗳️ Bầu cử" : "📌 Chuyên mục"}
+                                  <span className={`tp-meeting-badge ${art.danh_muc}`} style={{ fontSize: "12.5px", padding: "4px 12px", borderRadius: "20px" }}>
+                                    {art.danh_muc === "phong-chong-lua-dao" ? "🛡️ Lừa đảo mạng" :
+                                     art.danh_muc === "an-toan-giao-thong" ? "🚦 An toàn giao thông" :
+                                     art.danh_muc === "thien-tai" ? "🌧️ Phòng chống thiên tai" :
+                                     art.danh_muc === "bau-cu" ? "🗳️ Bầu cử" :
+                                     art.danh_muc === "huong-dan-vneid" ? "🆔 VNeID" : "📌 " + (art.danh_muc || "Chuyên mục")}
                                   </span>
                                 </td>
-                                <td>{new Date(art.createdAt).toLocaleDateString("vi-VN")}</td>
+                                <td style={{ fontSize: "13.5px", color: "#475569" }}>
+                                  {new Date(art.createdAt).toLocaleDateString("vi-VN")}
+                                </td>
                                 <td>
-                                  <div className="tp-table-actions">
+                                  <div className="tp-table-actions" style={{ justifyContent: "center" }}>
                                     <button className="tp-edit-btn-small" onClick={() => handleEditArticle(art)}>
                                       ✏️ Sửa
                                     </button>
@@ -2464,6 +2487,217 @@ export default function TruongPhongDashboard() {
                           )}
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+
+              {/* ──────────────────────────────────
+                  TAB QUẢN LÝ TUYÊN TRUYỀN ATGT DÀNH CHO CÁN BỘ / PHÓ PHÒNG / TRƯỞNG PHÒNG
+                  ────────────────────────────────── */}
+              {activeTab === "atgt" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                  {/* Top Header Card */}
+                  <div className="tp-card" style={{ background: "linear-gradient(135deg, #003d7a 0%, #005baa 100%)", color: "#fff", border: "none", padding: "24px", borderRadius: "12px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+                      <div>
+                        <span style={{ background: "rgba(255,255,255,0.2)", padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", letterSpacing: "0.5px" }}>
+                          🏛️ UBND XÃ ĐĂK PXI — PHÒNG VH-XH
+                        </span>
+                        <h2 style={{ margin: "12px 0 6px", fontSize: "22px", fontWeight: "900", color: "#ffffff" }}>
+                          🚦 Quản lý Tuyên truyền An toàn Giao thông
+                        </h2>
+                        <p style={{ margin: 0, fontSize: "14px", opacity: 0.9 }}>
+                          Chức năng dành riêng cho Cán bộ, Phó phòng và Trưởng phòng biên soạn & công bố nội dung tuyên truyền ATGT.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => window.open("/an-toan-giao-thong", "_blank")}
+                        style={{ background: "#ffffff", color: "#003d7a", border: "none", padding: "10px 18px", borderRadius: "8px", fontWeight: "800", fontSize: "13.5px", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
+                      >
+                        🌐 Xem trang công khai →
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Form & Table Grid */}
+                  <div className="tp-grid" style={{ gridTemplateColumns: "380px 1fr" }}>
+                    {/* Form Card */}
+                    <div className="tp-card tp-form-card">
+                      <h3>{editingArticle && editingArticle.danh_muc.startsWith("atgt-") ? "✏️ Sửa bài ATGT" : "✍️ Soạn bài tuyên truyền ATGT"}</h3>
+                      <form onSubmit={(e) => {
+                        if (!articleForm.danh_muc.startsWith("atgt-")) {
+                          setArticleForm(f => ({ ...f, danh_muc: "atgt-tin-tuc" }));
+                        }
+                        handleArticleSubmit(e);
+                      }}>
+                        <div className="tp-form-group">
+                          <label>Tiêu đề bài tuyên truyền <span style={{ color: "#dc2626" }}>*</span></label>
+                          <input
+                            type="text"
+                            placeholder="Ví dụ: Tuyên truyền không uống rượu bia khi tham gia giao thông..."
+                            value={articleForm.tieu_de}
+                            onChange={(e) => setArticleForm({ ...articleForm, tieu_de: e.target.value })}
+                            required
+                          />
+                        </div>
+
+                        <div className="tp-form-group">
+                          <label>Chủ đề tuyên truyền <span style={{ color: "#dc2626" }}>*</span></label>
+                          <select
+                            value={articleForm.danh_muc.startsWith("atgt-") ? articleForm.danh_muc : "atgt-tin-tuc"}
+                            onChange={(e) => setArticleForm({ ...articleForm, danh_muc: e.target.value })}
+                          >
+                            <option value="atgt-tin-tuc">📰 Tin tuyên truyền</option>
+                            <option value="atgt-phap-luat">🛡️ Hướng dẫn an toàn</option>
+                            <option value="atgt-hoc-sinh">🎒 Học sinh</option>
+                            <option value="atgt-duong-nong-thon">🛤️ Đường nông thôn</option>
+                            <option value="atgt-mua-mua">🌧️ Mùa mưa bão</option>
+                            <option value="atgt-van-hoa">🚦 Văn hóa giao thông</option>
+                            <option value="atgt-van-ban">⚠️ Khuyến cáo</option>
+                          </select>
+                        </div>
+
+                        <div className="tp-form-group">
+                          <label>Mô tả ngắn (Tóm tắt)</label>
+                          <textarea
+                            rows="2"
+                            placeholder="Tóm tắt ngắn gọn nội dung bài viết..."
+                            value={articleForm.mo_ta}
+                            onChange={(e) => setArticleForm({ ...articleForm, mo_ta: e.target.value })}
+                          />
+                        </div>
+
+                        <div className="tp-form-group">
+                          <label>Nội dung tuyên truyền <span style={{ color: "#dc2626" }}>*</span></label>
+                          <textarea
+                            rows="6"
+                            placeholder="Nhập nội dung bài tuyên truyền..."
+                            value={articleForm.noi_dung}
+                            onChange={(e) => setArticleForm({ ...articleForm, noi_dung: e.target.value })}
+                            required
+                          />
+                        </div>
+
+                        {/* Cover Image Upload */}
+                        <div className="tp-form-group">
+                          <label>Ảnh minh họa (Ảnh bìa)</label>
+                          <div className="tp-file-uploader-box">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setCoverImage(file);
+                                  setCoverPreview(URL.createObjectURL(file));
+                                }
+                              }}
+                              id="atgt-cover-upload-tp"
+                              style={{ display: "none" }}
+                            />
+                            <label htmlFor="atgt-cover-upload-tp" className="tp-uploader-label" style={{ display: "block", border: "1px dashed #cbd5e1", borderRadius: "8px", padding: "14px", textAlign: "center", cursor: "pointer", background: "#f8fafc" }}>
+                              {coverPreview ? (
+                                <div style={{ position: "relative" }}>
+                                  <img src={coverPreview} alt="Cover" style={{ maxWidth: "100%", maxHeight: "120px", borderRadius: "6px" }} />
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setCoverImage(null); setCoverPreview(""); }}
+                                    style={{ position: "absolute", top: 2, right: 2, background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", width: "20px", height: "20px", cursor: "pointer" }}
+                                  >✕</button>
+                                </div>
+                              ) : (
+                                <div style={{ color: "#64748b", fontSize: "13px" }}>🖼️ Chọn ảnh bìa minh họa</div>
+                              )}
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="tp-btn-group">
+                          <button type="submit" className="tp-btn-submit" style={{ background: "#003d7a" }} disabled={loading}>
+                            {editingArticle ? "💾 Cập nhật bài ATGT" : "📢 Đăng bài ATGT"}
+                          </button>
+                          {editingArticle && (
+                            <button
+                              type="button"
+                              className="tp-btn-cancel"
+                              onClick={() => {
+                                setEditingArticle(null);
+                                setArticleForm({ tieu_de: "", mo_ta: "", noi_dung: "", danh_muc: "atgt-tin-tuc", trang_thai: "da-dang", chu_chay: "" });
+                              }}
+                            >
+                              Hủy
+                            </button>
+                          )}
+                        </div>
+                      </form>
+                    </div>
+
+                    {/* Table Card */}
+                    <div className="tp-card tp-list-card">
+                      <h3>📋 Danh sách bài tuyên truyền ATGT ({articles.filter(a => a.danh_muc && a.danh_muc.startsWith("atgt-")).length})</h3>
+                      <div className="tp-table-wrapper">
+                        <table className="tp-table">
+                          <thead>
+                            <tr>
+                              <th>Tiêu đề bài viết</th>
+                              <th>Chủ đề</th>
+                              <th>Ngày tạo</th>
+                              <th>Thao tác</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {articles.filter(a => a.danh_muc && a.danh_muc.startsWith("atgt-")).length === 0 ? (
+                              <tr>
+                                <td colSpan="4" style={{ textAlign: "center", padding: "36px", color: "#64748b" }}>
+                                  🚦 Chưa có bài tuyên truyền ATGT nào. Hãy soạn và đăng bài đầu tiên!
+                                </td>
+                              </tr>
+                            ) : (
+                              articles
+                                .filter(a => a.danh_muc && a.danh_muc.startsWith("atgt-"))
+                                .map((art) => {
+                                  const dmLabels = {
+                                    'atgt-tin-tuc': '📰 Tin tuyên truyền',
+                                    'atgt-phap-luat': '🛡️ Hướng dẫn an toàn',
+                                    'atgt-hoc-sinh': '🎒 Học sinh',
+                                    'atgt-duong-nong-thon': '🛤️ Đường nông thôn',
+                                    'atgt-mua-mua': '🌧️ Mùa mưa bão',
+                                    'atgt-van-hoa': '🚦 Văn hóa giao thông',
+                                    'atgt-van-ban': '⚠️ Khuyến cáo'
+                                  };
+                                  return (
+                                    <tr key={art._id}>
+                                      <td>
+                                        <strong>{art.tieu_de}</strong>
+                                        {art.mo_ta && <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>{art.mo_ta}</div>}
+                                      </td>
+                                      <td>
+                                        <span style={{ display: "inline-block", background: "#e8f0fb", color: "#003d7a", padding: "3px 8px", borderRadius: "12px", fontSize: "11.5px", fontWeight: "700" }}>
+                                          {dmLabels[art.danh_muc] || art.danh_muc}
+                                        </span>
+                                      </td>
+                                      <td style={{ fontSize: "12.5px", color: "#64748b", whiteSpace: "nowrap" }}>
+                                        {new Date(art.createdAt).toLocaleDateString("vi-VN")}
+                                      </td>
+                                      <td>
+                                        <div className="tp-table-actions">
+                                          <button className="tp-edit-btn-small" onClick={() => handleEditArticle(art)}>
+                                            ✏️ Sửa
+                                          </button>
+                                          <button className="tp-delete-btn-small" onClick={() => handleDeleteArticle(art._id)}>
+                                            🗑️ Xóa
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2554,137 +2788,235 @@ export default function TruongPhongDashboard() {
                   {/* Top Header Banner */}
                   <div style={{
                     background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-                    color: "#ffffff", padding: "22px 28px", borderRadius: "16px",
-                    border: "1px solid #334155", boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-                    display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "14px"
+                    color: "#ffffff", padding: "12px 18px", borderRadius: "10px",
+                    border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                    display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px"
                   }}>
                     <div>
-                      <span style={{ background: "rgba(99, 102, 241, 0.2)", color: "#a5b4fc", fontSize: "11px", fontWeight: "800", padding: "4px 12px", borderRadius: "20px", border: "1px solid #6366f1" }}>
+                      <span style={{ background: "rgba(99, 102, 241, 0.25)", color: "#c7d2fe", fontSize: "10.5px", fontWeight: "800", padding: "2px 8px", borderRadius: "12px", border: "1px solid #6366f1" }}>
                         THƯ KÝ SỐ THÔNG MINH — PHÒNG VĂN HÓA - XÃ HỘI
                       </span>
-                      <h2 style={{ margin: "8px 0 4px", fontSize: "22px", fontWeight: "900", color: "#f8fafc" }}>
+                      <h2 style={{ margin: "4px 0 2px", fontSize: "15px", fontWeight: "900", color: "#f8fafc" }}>
                         🤖 TRỢ LÝ AI NGHIỆP VỤ HÀNH CHÍNH & VĂN BẢN
                       </h2>
-                      <p style={{ margin: 0, fontSize: "13.5px", color: "#94a3b8" }}>
+                      <p style={{ margin: 0, fontSize: "11.5px", color: "#94a3b8" }}>
                         Tự động hóa 100% công tác Soạn Báo cáo, Kế hoạch, Thông báo, Tóm tắt Văn bản/Cuộc họp & Tra cứu CSDL
                       </p>
                     </div>
 
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span style={{ background: "rgba(34, 197, 94, 0.15)", color: "#22c55e", fontSize: "12px", fontWeight: "800", padding: "6px 14px", borderRadius: "8px", border: "1px solid #22c55e" }}>
-                        🟢 RAG Sync: CSDL Xã Đăk Pxi
-                      </span>
+                    <div style={{
+                      background: "rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255, 255, 255, 0.18)",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center"
+                    }}>
+                      <span style={{ fontSize: "9.5px", color: "#94a3b8", fontWeight: "600", textAlign: "right" }}>Thời gian hiện tại</span>
+                      <div style={{ fontSize: "13px", fontWeight: "800", color: "#38bdf8", display: "flex", alignItems: "center", gap: "5px" }}>
+                        <span>🕒</span>
+                        <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* 10 MODULE FEATURE CARDS GRID (Thẻ Chức năng Nghiệp vụ) */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "14px" }}>
+                  {/* 8 MODULE FEATURE FULL-WIDTH COMPACT 8-COLUMN GRID */}
+                  <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(8, 1fr)",
+                    gap: "4px",
+                    width: "100%"
+                  }}>
                     
                     {/* Card 1: Soạn Báo cáo */}
                     <div
                       onClick={() => handleExecuteAIQuery("Soạn báo cáo kết quả công tác VH-XH và BHYT")}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="1. Soạn Báo cáo kết quả công tác"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📄</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>1. Soạn Báo cáo</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Báo cáo tuần/tháng/quý/năm, báo cáo kết quả BHYT, xuất Word/PDF.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>📄</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>1. Soạn Báo cáo</span>
                     </div>
 
                     {/* Card 2: Soạn Kế hoạch */}
                     <div
                       onClick={() => handleExecuteAIQuery("Soạn kế hoạch công tác trọng tâm")}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="2. Soạn Kế hoạch công tác"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📋</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>2. Soạn Kế hoạch</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Kế hoạch công tác, tuyên truyền, tổ chức cuộc họp & sự kiện văn hóa.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>📋</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>2. Soạn Kế hoạch</span>
                     </div>
 
                     {/* Card 3: Soạn Thông báo */}
                     <div
                       onClick={() => handleExecuteAIQuery("Soạn thông báo nội bộ cuộc họp khẩn")}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="3. Soạn Thông báo nội bộ / khẩn"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📣</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>3. Soạn Thông báo</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Thông báo họp, thông báo nội bộ cán bộ, thông báo tuyên truyền & khẩn.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>📣</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>3. Soạn Thông báo</span>
                     </div>
 
                     {/* Card 4: Nội dung Tuyên truyền */}
                     <div
                       onClick={() => handleExecuteAIQuery("Soạn nội dung tuyên truyền BHYT và khẩu hiệu slogan")}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="4. Bài viết Tuyên truyền & Slogan"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>✍️</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>4. Nội dung Tuyên truyền</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Viết bài tuyên truyền, gợi ý tiêu đề hay, slogan khẩu hiệu & rút gọn bài.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>✍️</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>4. Tuyên truyền</span>
                     </div>
 
                     {/* Card 5: Tóm tắt Văn bản File */}
                     <div
                       onClick={() => document.getElementById("ai-doc-file-input").click()}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="5. Tóm tắt Văn bản PDF/Word"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>📂</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>5. Tóm tắt Văn bản (File)</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Đọc file PDF/Word, trích xuất điểm chính, đối tượng & thời gian hiệu lực.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>📂</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>5. Tóm tắt File</span>
                     </div>
 
                     {/* Card 6: Tóm tắt Cuộc họp */}
                     <div
                       onClick={() => handleExecuteAIQuery("Soạn biên bản cuộc họp & tóm tắt chỉ đạo phân công cán bộ")}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="6. Tóm tắt Cuộc họp & Biên bản"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>👥</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>6. Tóm tắt Cuộc họp</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Tự tạo biên bản họp, tóm tắt kết luận & phân công nhiệm vụ cho cán bộ.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>👥</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>6. Tóm tắt Họp</span>
                     </div>
 
                     {/* Card 7: Tìm kiếm Văn bản */}
                     <div
                       onClick={() => handleExecuteAIQuery("Tìm kiếm văn bản BHYT và quyết định liên quan")}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="7. Tìm kiếm Văn bản CSDL"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>🔍</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>7. Tìm kiếm Văn bản</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Tìm theo từ khóa, tên văn bản, lĩnh vực & mở liên kết trực tiếp.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>🔍</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>7. Tìm Văn bản</span>
                     </div>
 
                     {/* Card 8: Gợi ý Công việc */}
                     <div
                       onClick={() => handleExecuteAIQuery("Gợi ý công việc ưu tiên và nhắc việc quá hạn hôm nay")}
-                      style={{ background: "#ffffff", padding: "18px", borderRadius: "12px", border: "1px solid #e2e8f0", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}
+                      style={{
+                        background: "#ffffff",
+                        padding: "6px 2px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3px",
+                        transition: "all 0.2s",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                      }}
                       className="tp-hover-card"
+                      title="8. Gợi ý Công việc ưu tiên hôm nay"
                     >
-                      <div style={{ fontSize: "28px", marginBottom: "8px" }}>💡</div>
-                      <h4 style={{ margin: "0 0 6px", color: "#1e3a8a", fontSize: "15px", fontWeight: "800" }}>8. Gợi ý Công việc (Advisor)</h4>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>
-                        Nhắc công việc sắp đến hạn, gợi ý ưu tiên hôm nay & cảnh báo quá hạn.
-                      </p>
+                      <span style={{ fontSize: "13px" }}>💡</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>8. Gợi ý Việc</span>
                     </div>
 
                   </div>
+
+
+
 
                   {/* Hidden File Input for PDF/Word Upload */}
                   <input
@@ -2702,45 +3034,33 @@ export default function TruongPhongDashboard() {
                   />
 
                   {/* CHAT TERMINAL & ACTION PREVIEWS */}
-                  <div style={{ display: "grid", gridTemplateColumns: aiGeneratedDocContent ? "1fr 1fr" : "1fr", gap: "16px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: aiGeneratedDocContent ? "1fr 1fr" : "1fr", gap: "12px" }}>
                     
                     {/* Left: Interactive Chat Terminal */}
-                    <div className="tp-card" style={{ display: "flex", flexDirection: "column", minHeight: "450px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "12px" }}>
-                        <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
+                    <div className="tp-card" style={{ display: "flex", flexDirection: "column", minHeight: "340px", padding: "12px 14px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "8px", marginBottom: "8px" }}>
+                        <h3 style={{ margin: 0, fontSize: "13.5px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
                           💬 Khung Tương tác Thư ký số AI (Voice & Text)
                         </h3>
-                        <div style={{ display: "flex", gap: "6px" }}>
-                          <button
-                            type="button"
-                            onClick={handleVoiceInput}
-                            style={{
-                              background: isListening ? "#ef4444" : "#2563eb",
-                              color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px",
-                              fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px"
-                            }}
-                          >
-                            {isListening ? "🔴 Đang nghe..." : "🎙️ Hỏi bằng Giọng nói"}
-                          </button>
-                        </div>
                       </div>
 
+
                       {/* Messages Container */}
-                      <div style={{ flex: 1, overflowY: "auto", maxHeight: "360px", paddingRight: "8px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                      <div style={{ flex: 1, overflowY: "auto", maxHeight: "250px", paddingRight: "4px", display: "flex", flexDirection: "column", gap: "8px" }}>
                         {aiChatMessages.map((msg) => (
                           <div
                             key={msg.id}
                             style={{
                               alignSelf: msg.sender === "user" ? "flex-end" : "flex-start",
-                              maxWidth: "85%",
+                              maxWidth: "88%",
                               background: msg.sender === "user" ? "#1e3a8a" : "#f1f5f9",
                               color: msg.sender === "user" ? "#ffffff" : "#1e293b",
-                              padding: "12px 16px", borderRadius: "12px",
-                              fontSize: "13.5px", lineHeight: "1.6",
-                              boxShadow: "0 2px 5px rgba(0,0,0,0.05)"
+                              padding: "8px 12px", borderRadius: "8px",
+                              fontSize: "12px", lineHeight: "1.5",
+                              boxShadow: "0 1px 3px rgba(0,0,0,0.04)"
                             }}
                           >
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px", fontSize: "11px", opacity: 0.75 }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3px", fontSize: "10.5px", opacity: 0.75 }}>
                               <strong>{msg.sender === "user" ? fullName : "🤖 AI Thư ký số"}</strong>
                               <span>{msg.time}</span>
                             </div>
@@ -2749,7 +3069,7 @@ export default function TruongPhongDashboard() {
                               <button
                                 type="button"
                                 onClick={() => handleTextToSpeech(msg.text)}
-                                style={{ background: "none", border: "none", color: "#2563eb", fontSize: "11px", fontWeight: "700", cursor: "pointer", marginTop: "6px", padding: 0 }}
+                                style={{ background: "none", border: "none", color: "#2563eb", fontSize: "10.5px", fontWeight: "700", cursor: "pointer", marginTop: "4px", padding: 0 }}
                               >
                                 🔊 Đọc thành tiếng
                               </button>
@@ -2764,10 +3084,10 @@ export default function TruongPhongDashboard() {
                           e.preventDefault();
                           handleExecuteAIQuery();
                         }}
-                        style={{ marginTop: "14px", borderTop: "1px solid #e2e8f0", paddingTop: "12px" }}
+                        style={{ marginTop: "10px", borderTop: "1px solid #e2e8f0", paddingTop: "8px" }}
                       >
                         {/* Preset Tags */}
-                        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+                        <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginBottom: "6px" }}>
                           {[
                             "Soạn báo cáo tuần",
                             "Soạn kế hoạch tuyên truyền BHYT",
@@ -2779,18 +3099,18 @@ export default function TruongPhongDashboard() {
                               key={idx}
                               type="button"
                               onClick={() => handleExecuteAIQuery(chip)}
-                              style={{ background: "#f8fafc", color: "#475569", border: "1px solid #cbd5e1", padding: "3px 8px", borderRadius: "4px", fontSize: "11.5px", fontWeight: "600", cursor: "pointer" }}
+                              style={{ background: "#f8fafc", color: "#475569", border: "1px solid #cbd5e1", padding: "2px 6px", borderRadius: "4px", fontSize: "10.5px", fontWeight: "600", cursor: "pointer" }}
                             >
                               + {chip}
                             </button>
                           ))}
                         </div>
 
-                        <div style={{ display: "flex", gap: "8px" }}>
+                        <div style={{ display: "flex", gap: "6px" }}>
                           <button
                             type="button"
                             onClick={() => document.getElementById("ai-doc-file-input").click()}
-                            style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "0 12px", cursor: "pointer", fontSize: "16px" }}
+                            style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "6px", padding: "0 10px", cursor: "pointer", fontSize: "14px" }}
                             title="Tải tệp PDF/Word để AI tóm tắt"
                           >
                             📎
@@ -2800,11 +3120,11 @@ export default function TruongPhongDashboard() {
                             placeholder="Nhập yêu cầu nghiệp vụ (soạn báo cáo, kế hoạch, thông báo, tìm văn bản...)..."
                             value={aiInputQuery}
                             onChange={(e) => setAiInputQuery(e.target.value)}
-                            style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "13.5px" }}
+                            style={{ flex: 1, padding: "6px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}
                           />
                           <button
                             type="submit"
-                            style={{ background: "#1e3a8a", color: "#ffffff", border: "none", padding: "10px 18px", borderRadius: "8px", fontWeight: "800", cursor: "pointer" }}
+                            style={{ background: "#1e3a8a", color: "#ffffff", border: "none", padding: "6px 14px", borderRadius: "6px", fontSize: "12px", fontWeight: "800", cursor: "pointer" }}
                           >
                             Gửi
                           </button>
@@ -2813,26 +3133,28 @@ export default function TruongPhongDashboard() {
 
                     </div>
 
+
                     {/* Right: Generated Document Preview & Export Section */}
                     {aiGeneratedDocContent && (
-                      <div className="tp-card" style={{ display: "flex", flexDirection: "column", background: "#f8fafc", border: "2px solid #3b82f6" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #cbd5e1", paddingBottom: "10px", marginBottom: "12px" }}>
-                          <h3 style={{ margin: 0, fontSize: "15px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
+                      <div className="tp-card" style={{ display: "flex", flexDirection: "column", background: "#f8fafc", border: "1.5px solid #3b82f6", padding: "12px 14px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #cbd5e1", paddingBottom: "6px", marginBottom: "8px" }}>
+                          <h3 style={{ margin: 0, fontSize: "13px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
                             📄 NỘI DUNG VĂN BẢN ĐÃ SOẠN THẢO (XUẤT MÁY)
                           </h3>
                           <button
                             onClick={() => setAiGeneratedDocContent("")}
-                            style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontWeight: "800" }}
+                            style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontWeight: "800", fontSize: "12px" }}
                           >
                             ✕
                           </button>
                         </div>
 
-                        <div style={{ flex: 1, background: "#ffffff", padding: "16px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "13.5px", lineHeight: "1.6", whiteSpace: "pre-wrap", overflowY: "auto", maxHeight: "360px", color: "#1e293b" }}>
+                        <div style={{ flex: 1, background: "#ffffff", padding: "10px 12px", borderRadius: "6px", border: "1px solid #e2e8f0", fontSize: "12px", lineHeight: "1.5", whiteSpace: "pre-wrap", overflowY: "auto", maxHeight: "250px", color: "#1e293b" }}>
                           {aiGeneratedDocContent}
                         </div>
 
-                        <div style={{ display: "flex", gap: "8px", marginTop: "12px", justifyContent: "flex-end" }}>
+
+                        <div style={{ display: "flex", gap: "6px", marginTop: "8px", justifyContent: "flex-end" }}>
                           <button
                             type="button"
                             onClick={() => {
@@ -2843,20 +3165,21 @@ export default function TruongPhongDashboard() {
                               a.download = `${aiGeneratedDocTitle || "Van_Ban_VHXH"}.doc`;
                               a.click();
                             }}
-                            style={{ background: "#0284c7", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", cursor: "pointer", fontSize: "12.5px" }}
+                            style={{ background: "#0284c7", color: "#fff", border: "none", padding: "5px 10px", borderRadius: "5px", fontWeight: "700", cursor: "pointer", fontSize: "11.5px" }}
                           >
                             📥 Xuất Word (.doc)
                           </button>
                           <button
                             type="button"
                             onClick={() => alert("Đã in văn bản ra file PDF chính thức!")}
-                            style={{ background: "#15803d", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", cursor: "pointer", fontSize: "12.5px" }}
+                            style={{ background: "#15803d", color: "#fff", border: "none", padding: "5px 10px", borderRadius: "5px", fontWeight: "700", cursor: "pointer", fontSize: "11.5px" }}
                           >
                             📄 Xuất PDF
                           </button>
                         </div>
                       </div>
                     )}
+
 
                   </div>
 

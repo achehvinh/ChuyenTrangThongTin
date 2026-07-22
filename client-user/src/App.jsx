@@ -43,6 +43,8 @@ import PhapLuatPage from './pages/PhapLuatPage';
 import VideoPage from './pages/VideoPage';
 import TruongPhongDashboard from './pages/TruongPhongDashboard';
 import CuocHopTrucTuyen from './pages/CuocHopTrucTuyen';
+import AnToanGiaoThongPage from './pages/AnToanGiaoThongPage';
+import PhongChongLuaDaoPage from './pages/PhongChongLuaDaoPage';
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -65,7 +67,7 @@ function Breadcrumbs() {
     if (segments[1]) {
       breadcrumbsList.push({ label: "Chi tiết thủ tục", path: `/thu-tuc-hanh-chinh/${segments[1]}` });
     }
-  } else if (["bau-cu", "duoi-nuoc", "chay-rung", "thien-tai", "te-nan"].includes(segments[0])) {
+  } else if (["bau-cu", "duoi-nuoc", "chay-rung", "thien-tai", "te-nan", "an-toan-giao-thong", "phong-chong-lua-dao"].includes(segments[0])) {
     breadcrumbsList.push({ label: "Chuyên mục cho bà con", path: "/chuyen-muc" });
     
     // Label cho từng chuyên mục
@@ -74,7 +76,9 @@ function Breadcrumbs() {
       "duoi-nuoc": "Phòng chống đuối nước",
       "chay-rung": "Phòng chống cháy rừng",
       "thien-tai": "Phòng chống thiên tai",
-      "te-nan": "Phòng chống tệ nạn"
+      "te-nan": "Phòng chống tệ nạn",
+      "an-toan-giao-thong": "Tuyên truyền An toàn Giao thông",
+      "phong-chong-lua-dao": "Phòng chống Lừa đảo Mạng"
     };
     breadcrumbsList.push({ label: labels[segments[0]] || segments[0], path: path });
   } else if (segments[0] === "tin-tuc") {
@@ -199,6 +203,8 @@ function AppLayout() {
           <Route path="/video" element={<VideoPage />} />
           <Route path="/chat" element={<ChatWindow />} />
           <Route path="/truong-phong" element={<TruongPhongDashboard />} />
+          <Route path="/an-toan-giao-thong" element={<AnToanGiaoThongPage />} />
+          <Route path="/phong-chong-lua-dao" element={<PhongChongLuaDaoPage />} />
           <Route path="/cuoc-hop-truc-tuyen/:id" element={<CuocHopTrucTuyen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

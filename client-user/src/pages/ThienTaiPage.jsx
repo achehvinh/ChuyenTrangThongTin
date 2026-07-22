@@ -3,7 +3,6 @@ import './ThienTaiPage.css';
 
 const DATA = {
   title: 'Phòng chống Thiên tai & Bão lũ',
-  subtitle: 'Ban Chỉ huy PCTT & TKCN xã Đăk Pxi — Cẩm nang chủ động phòng chống mùa mưa bão',
   images: [
     '/huong-dan/thien-tai-1.png',
     '/huong-dan/thien-tai-2.png',

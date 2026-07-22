@@ -11,14 +11,15 @@ const MENU_GROUPS = [
   {
     group: 'Nội dung tuyên truyền',
     items: [
-      { to: '/thong-bao', icon: '📢', label: 'Thông báo' },
-      { to: '/bai-viet', icon: '📝', label: 'Bài viết' },
-      { to: '/canh-bao', icon: '🚨', label: 'Cảnh báo khẩn' },
-      { to: '/lich-hop', icon: '📅', label: 'Lịch họp thôn' },
+      { to: '/thong-bao',   icon: '📢', label: 'Thông báo' },
+      { to: '/bai-viet',    icon: '✍️', label: 'Viết bài tuyên truyền' },
+      { to: '/canh-bao',   icon: '🚨', label: 'Cảnh báo khẩn' },
+      { to: '/lich-hop',   icon: '📅', label: 'Lịch họp thôn' },
       { to: '/chuyen-muc', icon: '📋', label: 'Chuyên mục' },
-      { to: '/thu-vien', icon: '🖼️', label: 'Thư viện ảnh' },
+      { to: '/thu-vien',   icon: '🖼️', label: 'Thư viện ảnh' },
     ]
   },
+
   {
     group: 'Phản hồi',
     items: [
@@ -38,6 +39,8 @@ export default function Sidebar() {
   const role = localStorage.getItem('admin_role');
   const fullName = localStorage.getItem('admin_fullname');
   const showUserManagement = role === 'admin' || role === 'truongphong';
+  // Chỉ hiện ATGT với: cán bộ, phó phòng, trưởng phòng (KHÔNG hiện với admin hệ thống)
+  const showATGT = ['canbo', 'phophong', 'truongphong'].includes(role);
 
   const handleLogout = () => {
     localStorage.removeItem('admin_token');
@@ -98,6 +101,7 @@ export default function Sidebar() {
             ))}
           </div>
         ))}
+
       </nav>
 
       <div className="sidebar-footer">

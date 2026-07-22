@@ -48,9 +48,6 @@ export default function QuanLyNguoiDung() {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCitizens(res.data);
-    } catch (err) {
-      console.error(err);
-      setError("Không thể tải danh sách công dân.");
     } finally {
       setLoading(false);
     }

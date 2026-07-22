@@ -6,7 +6,16 @@ import './BaiVietDetailPage.css';
 const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
 const DM_COLOR = {
+  'phong-chong-lua-dao': '#c62828',
+  'an-toan-giao-thong': '#003d7a',
+  'thien-tai': '#0284c7',
   'bau-cu': '#c8102e',
+  'huong-dan-vneid': '#1e3a8a',
+  'te-nan': '#991b1b',
+  'chay-rung': '#c2410c',
+  'duoi-nuoc': '#0369a1',
+  'thu-tuc-hanh-chinh': '#0d9488',
+  'tra-cuu': '#15803d',
   'su-kien': '#003087',
   'the-thao': '#15803d',
   'le-hoi': '#b45309',
@@ -16,13 +25,49 @@ const DM_COLOR = {
 };
 
 const DM_LABEL = {
-  'bau-cu': 'Bầu cử',
+  'phong-chong-lua-dao': '🛡️ Phòng, chống Lừa đảo Mạng',
+  'an-toan-giao-thong': '🚦 An toàn Giao thông',
+  'thien-tai': '🌧️ Phòng chống Thiên tai',
+  'bau-cu': '🗳️ Bầu cử',
+  'huong-dan-vneid': '🆔 Hướng dẫn VNeID',
+  'te-nan': '🛡️ Phòng chống Tệ nạn',
+  'chay-rung': '🔥 Phòng chống Cháy rừng',
+  'duoi-nuoc': '🏊 Phòng chống Đuối nước',
+  'thu-tuc-hanh-chinh': '📑 Thủ tục Hành chính',
+  'tra-cuu': '🏥 Tra cứu BHYT & BHXH',
   'su-kien': 'Sự kiện',
   'the-thao': 'Thể thao',
   'le-hoi': 'Lễ hội',
   'tin-tuc': 'Tin tức',
   'thong-bao': 'Thông báo',
   'khac': 'Khác',
+  'atgt-tin-tuc': 'ATGT — Tin tuyên truyền',
+  'atgt-phap-luat': 'ATGT — Hướng dẫn an toàn',
+  'atgt-hoc-sinh': 'ATGT — Học sinh',
+  'atgt-duong-nong-thon': 'ATGT — Đường nông thôn',
+  'atgt-mua-mua': 'ATGT — Mùa mưa bão',
+  'atgt-van-hoa': 'ATGT — Văn hóa giao thông',
+  'atgt-van-ban': 'ATGT — Khuyến cáo',
+};
+
+const MAIN_CATEGORY_PATHS = {
+  'phong-chong-lua-dao': { path: '/phong-chong-lua-dao', label: '🛡️ Chuyên mục: Phòng chống Lừa đảo Không gian mạng', desc: 'Xem tất cả bài tuyên truyền, khuyến cáo & hotline tố giác lừa đảo 24/7' },
+  'an-toan-giao-thong': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'atgt-tin-tuc': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'atgt-phap-luat': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'atgt-hoc-sinh': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'atgt-duong-nong-thon': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'atgt-mua-mua': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'atgt-van-hoa': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'atgt-van-ban': { path: '/an-toan-giao-thong', label: '🚦 Chuyên mục: Tuyên truyền An toàn Giao thông', desc: 'Xem quy định an toàn giao thông đường đèo dốc & mức phạt NĐ 100' },
+  'thien-tai': { path: '/thien-tai', label: '🌧️ Chuyên mục: Phòng chống Thiên tai & Bão lũ', desc: 'Xem kỹ năng ứng phó sạt lở đá & điểm tránh trú khẩn cấp' },
+  'bau-cu': { path: '/bau-cu', label: '🗳️ Chuyên mục: Tuyên truyền Bầu cử', desc: 'Tra cứu danh sách cử tri, quy trình gạch phiếu & địa điểm bỏ phiếu' },
+  'huong-dan-vneid': { path: '/huong-dan-vneid', label: '🆔 Chuyên mục: Hướng dẫn VNeID Mức 2', desc: 'Xem hướng dẫn kích hoạt VNeID & tích hợp thẻ BHYT' },
+  'te-nan': { path: '/te-nan', label: '🛡️ Chuyên mục: Phòng chống Tệ nạn Xã hội', desc: 'Xem hướng dẫn phòng ngừa tệ nạn & hotline tố giác' },
+  'chay-rung': { path: '/phong-chong-chay-rung', label: '🔥 Chuyên mục: Phòng chống Cháy rừng', desc: 'Quy định kỹ thuật đốt rẫy mùa khô & số báo cháy khẩn cấp' },
+  'duoi-nuoc': { path: '/duoi-nuoc', label: '🏊 Chuyên mục: Phòng chống Đuối nước', desc: 'Kỹ năng sơ cứu đuối nước & an toàn sông hồ mùa hè' },
+  'thu-tuc-hanh-chinh': { path: '/Thu-tuc-hanh-chinh', label: '📑 Chuyên mục: Thủ tục Hành chính & Dịch vụ công', desc: 'Tra cứu hồ sơ khai sinh, kết hôn, đất đai & nộp trực tuyến' },
+  'tra-cuu': { path: '/tra-cuu', label: '🏥 Chuyên mục: Tra cứu BHYT & BHXH', desc: 'Hướng dẫn tra cứu thẻ BHYT & thời gian đóng BHXH' },
 };
 
 function fmtDate(iso) {
@@ -239,6 +284,59 @@ export default function BaiVietDetailPage() {
                 </span>
                 <h1 className="bvd-title">{bv.tieu_de}</h1>
                 {bv.mo_ta && <p className="bvd-lead">{bv.mo_ta}</p>}
+
+                {/* 📌 NÚT BẤM LIÊN KẾT TRỰC TIẾP TỚI CHUYÊN MỤC CHÍNH */}
+                {(() => {
+                  const mainCat = MAIN_CATEGORY_PATHS[bv.danh_muc];
+                  if (!mainCat) return null;
+                  return (
+                    <div style={{
+                      margin: '20px 0 10px',
+                      background: 'linear-gradient(135deg, #002d5a 0%, #005baa 100%)',
+                      color: '#ffffff',
+                      padding: '16px 20px',
+                      borderRadius: '14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap',
+                      gap: '12px',
+                      boxShadow: '0 6px 18px rgba(0, 45, 90, 0.25)',
+                      border: '1.5px solid #bfdbfe'
+                    }}>
+                      <div>
+                        <div style={{ fontSize: '11.5px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.8px', color: '#fca5a5' }}>
+                          📌 TRANG CHUYÊN MỤC TUYÊN TRUYỀN CHÍNH THỨC
+                        </div>
+                        <div style={{ fontSize: '16px', fontWeight: '900', marginTop: '3px', color: '#ffffff' }}>
+                          {mainCat.label}
+                        </div>
+                        <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.9)', marginTop: '2px' }}>
+                          {mainCat.desc}
+                        </div>
+                      </div>
+                      <Link
+                        to={mainCat.path}
+                        style={{
+                          background: '#ffffff',
+                          color: '#003d7a',
+                          padding: '10px 20px',
+                          borderRadius: '25px',
+                          fontWeight: '900',
+                          fontSize: '13.5px',
+                          textDecoration: 'none',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                          whiteSpace: 'nowrap',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        Bấm xem Chuyên mục chính ➔
+                      </Link>
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Meta bar */}
@@ -268,23 +366,64 @@ export default function BaiVietDetailPage() {
               {/* Đường kẻ màu theo danh mục */}
               <div className="bvd-rule" style={{ background: color }} />
 
-              {/* Video */}
+              {/* 🎬 KHUNG VIDEO TUYÊN TRUYỀN CHÍNH THỨC (NẾU CÓ VIDEO) */}
               {bv.video && (
-                <div className="bvd-video-wrap">
-                  <video src={bv.video} controls className="bvd-video" />
+                <div className="bvd-video-cinema-container" style={{
+                  margin: '22px 0 30px',
+                  background: 'linear-gradient(145deg, #0b1329 0%, #1e293b 100%)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.35)',
+                  border: '1.5px solid #334155'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    color: '#ffffff',
+                    fontSize: '13.5px',
+                    fontWeight: '800',
+                    marginBottom: '14px',
+                    paddingBottom: '10px',
+                    borderBottom: '1px solid rgba(255,255,255,0.12)'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '18px' }}>🎬</span>
+                      <span style={{ color: '#f8fafc', letterSpacing: '0.3px' }}>VIDEO TUYÊN TRUYỀN CHÍNH THỨC</span>
+                    </div>
+                    <span style={{ fontSize: '12px', color: '#38bdf8', background: 'rgba(56,189,248,0.18)', padding: '4px 12px', borderRadius: '20px', fontWeight: '800', border: '1px solid rgba(56,189,248,0.3)' }}>
+                      HD 1080p • Phát thanh công khai
+                    </span>
+                  </div>
+
+                  <div style={{ position: 'relative', width: '100%', borderRadius: '12px', overflow: 'hidden', background: '#000000', aspectRatio: '16/9', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
+                    <video
+                      src={bv.video}
+                      controls
+                      playsInline
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
+                  </div>
+
+                  <div style={{ marginTop: '12px', fontSize: '13px', color: 'rgba(255,255,255,0.85)', textAlign: 'center', fontStyle: 'italic', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                    <span>📹</span>
+                    <span>Kính mời bà con nhấn nút Phát (Play) để xem video tuyên truyền và nghe hướng dẫn chi tiết.</span>
+                  </div>
                 </div>
               )}
 
-              {/* Phần Ảnh & Chữ: Tất cả ảnh to rộng bằng nhau - Bên ảnh bên chữ */}
+              {/* Phần Ảnh & Nội dung Chữ: Tự động điều chỉnh khi chỉ có Video hoặc có cả Ảnh */}
               {(() => {
                 const allImages = [
                   ...(bv.anh_dai_dien ? [bv.anh_dai_dien] : []),
                   ...(Array.isArray(bv.anh_phu) ? bv.anh_phu.filter(url => url !== bv.anh_dai_dien) : [])
                 ];
 
+                const isOnlyVideo = bv.video && allImages.length === 0;
+
                 return (
-                  <div className={`bvd-media-text-flex ${allImages.length > 0 ? 'has-images' : ''}`}>
-                    {/* Cột bên ảnh (Ảnh to rộng bằng nhau) */}
+                  <div className={`bvd-media-text-flex ${allImages.length > 0 ? 'has-images' : 'no-images'}`}>
+                    {/* Cột bên ảnh (chỉ hiện khi có ảnh) */}
                     {allImages.length > 0 && (
                       <div className="bvd-media-block">
                         <div className={`bvd-gallery count-${Math.min(allImages.length, 4)}`}>
@@ -295,19 +434,38 @@ export default function BaiVietDetailPage() {
                           ))}
                         </div>
                         <figcaption className="bvd-caption">
-                          📷 <i>Ảnh minh họa — Nguồn: {bv.nguoi_dang || 'UBND xã Đăk Pxi'}</i>
+                          📷 <i>Ảnh minh họa — Nguồn: {bv.nguoi_dang || 'Phòng Văn hóa - Xã hội'}</i>
                         </figcaption>
                       </div>
                     )}
 
-                    {/* Cột bên chữ */}
-                    <div className="bvd-content">
+                    {/* Cột Nội dung văn bản chi tiết (Mở rộng full 100% khi chỉ đăng Video) */}
+                    <div className="bvd-content" style={{ width: isOnlyVideo ? '100%' : undefined }}>
+                      {isOnlyVideo && (
+                        <div style={{
+                          background: '#f0f9ff',
+                          borderLeft: '4px solid #0284c7',
+                          padding: '12px 16px',
+                          borderRadius: '0 8px 8px 0',
+                          marginBottom: '20px',
+                          fontSize: '13.5px',
+                          color: '#0369a1',
+                          fontWeight: '700',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          <span>📋</span>
+                          <span>Nội dung bài viết chi tiết đi kèm Video tuyên truyền:</span>
+                        </div>
+                      )}
+
                       {paragraphs.map((para, i) => (
-                        <p key={i}>{para.trim()}</p>
+                        <p key={i} style={{ fontSize: '15.5px', lineHeight: '1.8', color: '#1e293b', marginBottom: '16px' }}>{para.trim()}</p>
                       ))}
                     </div>
 
-                    {/* Lightbox xem ảnh toàn màn hình */}
+                    {/* Lightbox xem ảnh toàn màn hình (nếu có ảnh) */}
                     {lightboxIdx !== null && allImages.length > 0 && (
                       <div className="bvd-lightbox" onClick={() => setLightboxIdx(null)}>
                         <button className="bvd-lightbox-close" onClick={() => setLightboxIdx(null)}>✕</button>
@@ -325,6 +483,7 @@ export default function BaiVietDetailPage() {
                   </div>
                 );
               })()}
+
 
               {/* Chia sẻ */}
               <div className="bvd-share">

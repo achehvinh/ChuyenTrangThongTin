@@ -11,12 +11,30 @@ const API =
   'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
 
 const DANH_MUC_LIST = [
-  { value: 'su-kien',  label: 'Sự kiện' },
-  { value: 'the-thao', label: 'Thể thao' },
-  { value: 'le-hoi',   label: 'Lễ hội' },
-  { value: 'bau-cu',   label: 'Bầu cử' },
-  { value: 'khac',     label: 'Khác' },
+  { value: 'phong-chong-lua-dao', label: '🛡️ Phòng, chống Lừa đảo Không gian mạng' },
+  { value: 'an-toan-giao-thong',  label: '🚦 Tuyên truyền An toàn Giao thông' },
+  { value: 'thien-tai',           label: '🌧️ Phòng chống Thiên tai & Bão lũ' },
+  { value: 'bau-cu',              label: '🗳️ Tuyên truyền Bầu cử' },
+  { value: 'huong-dan-vneid',     label: '🆔 Hướng dẫn VNeID Mức 2' },
+  { value: 'te-nan',              label: '🛡️ Phòng chống Tệ nạn Xã hội' },
+  { value: 'chay-rung',           label: '🔥 Phòng chống Cháy rừng' },
+  { value: 'duoi-nuoc',           label: '🏊 Phòng chống Đuối nước' },
+  { value: 'thu-tuc-hanh-chinh',  label: '📑 Thủ tục Hành chính & Dịch vụ công' },
+  { value: 'tra-cuu',             label: '🏥 Tra cứu BHYT & BHXH' },
+  { value: 'su-kien',             label: '📌 Sự kiện địa phương' },
+  { value: 'the-thao',            label: '⚽ Thể thao phong trào' },
+  { value: 'le-hoi',              label: '🌾 Lễ hội văn hóa' },
+  { value: 'khac',                label: '📰 Khác' },
+  // ── An toàn Giao thông chi tiết ──
+  { value: 'atgt-tin-tuc',         label: '🚦 ATGT — Tin tuyên truyền' },
+  { value: 'atgt-phap-luat',       label: '🚦 ATGT — Hướng dẫn an toàn' },
+  { value: 'atgt-hoc-sinh',        label: '🚦 ATGT — Học sinh' },
+  { value: 'atgt-duong-nong-thon', label: '🚦 ATGT — Đường nông thôn' },
+  { value: 'atgt-mua-mua',         label: '🚦 ATGT — Mùa mưa bão' },
+  { value: 'atgt-van-hoa',         label: '🚦 ATGT — Văn hóa giao thông' },
+  { value: 'atgt-van-ban',         label: '🚦 ATGT — Khuyến cáo' },
 ];
+
 
 const EMPTY_FORM = {
   tieu_de: '', mo_ta: '', noi_dung: '',

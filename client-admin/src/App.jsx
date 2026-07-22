@@ -14,6 +14,7 @@ import UserApp from "./user-app/App.jsx";
 import KnowledgeManager from "./pages/KnowledgeManager";
 import QuanLyCanBo from "./pages/QuanLyCanBo";
 import QuanLyNguoiDung from "./pages/QuanLyNguoiDung";
+import QuanLyATGT from "./pages/QuanLyATGT";
 // ❌ Xóa dòng này: import BaiViet from './pages/BaiViet';
 
 function Layout() {
@@ -39,6 +40,7 @@ function Layout() {
           <Route path="/gop-y" element={<ProtectedRoute><GopY /></ProtectedRoute>} />
           <Route path="/quan-ly-can-bo" element={<ProtectedRoute><QuanLyCanBo /></ProtectedRoute>} />
           <Route path="/quan-ly-nguoi-dung" element={<ProtectedRoute><QuanLyNguoiDung /></ProtectedRoute>} />
+          <Route path="/quan-ly-atgt" element={<ProtectedRoute><QuanLyATGT /></ProtectedRoute>} />
           <Route path="/admin/knowledge" element={<ProtectedRoute><KnowledgeManager /></ProtectedRoute>} />
           <Route path="/user/*" element={<ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>} />
           <Route path="/KnowledgeManager" element={<KnowledgeManager />} />
