@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './PhongChongLuaDaoPage.css';
 
 // Danh mục lọc chủ đề
@@ -120,27 +120,78 @@ const CORE_WARNINGS = [
 
 export default function PhongChongLuaDaoPage() {
   const [selectedCategory, setSelectedCategory] = useState('Tất cả');
-  const [searchQuery, setSearchQuery]           = useState('');
-  const [speaking, setSpeaking]                   = useState(false);
-  const [activeArticle, setActiveArticle]         = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [speaking, setSpeaking] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [activeArticle, setActiveArticle] = useState(null);
+  const audioRef = useRef(null);
 
   // Lọc bài viết theo danh mục và ô tìm kiếm
   const filteredArticles = ARTICLES.filter(item => {
     const matchCategory = selectedCategory === 'Tất cả' || item.category === selectedCategory;
-    const matchSearch   = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.desc.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.desc.toLowerCase().includes(searchQuery.toLowerCase());
     return matchCategory && matchSearch;
   });
 
-  // Chức năng loa phát thanh tuyên truyền
-  function handleSpeak(customText) {
-    if (!('speechSynthesis' in window)) return;
+  // Tự động phát âm thanh khi vừa truy cập trang 🛡️ TUYÊN TRUYỀN PHÒNG CHỐNG LỪA ĐẢO MẠNG
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play()
+          .then(() => {
+            setIsPlayingAudio(true);
+            setSpeaking(true);
+          })
+          .catch(() => {
+            playTTS();
+          });
+      } else {
+        playTTS();
+      }
+    }, 600);
 
-    if (speaking) {
-      window.speechSynthesis.cancel();
+    return () => {
+      clearTimeout(timer);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  // Chức năng loa phát thanh tuyên truyền (Ưu tiên phát file am-thanh-lua-dao.mp3)
+  function handleSpeak(customText) {
+    if (isPlayingAudio || speaking) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setIsPlayingAudio(false);
       setSpeaking(false);
       return;
     }
+
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => {
+          setIsPlayingAudio(true);
+          setSpeaking(true);
+        })
+        .catch(() => {
+          playTTS(customText);
+        });
+    } else {
+      playTTS(customText);
+    }
+  }
+
+  function playTTS(customText) {
+    if (!('speechSynthesis' in window)) return;
 
     window.speechSynthesis.cancel();
     const textToRead = customText || (
@@ -153,8 +204,14 @@ export default function PhongChongLuaDaoPage() {
     const u = new SpeechSynthesisUtterance(textToRead);
     u.lang = 'vi-VN';
     u.rate = 0.92;
-    u.onend = () => setSpeaking(false);
-    u.onerror = () => setSpeaking(false);
+    u.onend = () => {
+      setSpeaking(false);
+      setIsPlayingAudio(false);
+    };
+    u.onerror = () => {
+      setSpeaking(false);
+      setIsPlayingAudio(false);
+    };
     setSpeaking(true);
     window.speechSynthesis.speak(u);
   }
@@ -167,6 +224,29 @@ export default function PhongChongLuaDaoPage() {
 
   return (
     <div className="pc-ld-page">
+      {/* Element Audio ẩn tự động phát file am-thanh-lua-dao.mp3 ngầm */}
+      <audio
+        ref={audioRef}
+        style={{ display: 'none' }}
+        preload="auto"
+        onPlay={() => {
+          setIsPlayingAudio(true);
+          setSpeaking(true);
+        }}
+        onPause={() => {
+          setIsPlayingAudio(false);
+          setSpeaking(false);
+        }}
+        onEnded={() => {
+          setIsPlayingAudio(false);
+          setSpeaking(false);
+        }}
+      >
+        <source src="/video/am-thanh-lua-dao.mp3" type="audio/mpeg" />
+        <source src="/audio/am-thanh-lua-dao.mp3" type="audio/mpeg" />
+        <source src="/am-thanh-lua-dao.mp3" type="audio/mpeg" />
+      </audio>
+
       <div className="pc-ld-container">
 
         {/* ── BANNER TOP CHÍNH PHỦ & UBND XÃ ĐĂK PXI ── */}
@@ -178,21 +258,10 @@ export default function PhongChongLuaDaoPage() {
             <h1 className="pc-ld-banner-title">
               Nâng cao nhận thức, chủ động phòng ngừa các hành vi lừa đảo trên môi trường mạng
             </h1>
-            <p className="pc-ld-banner-sub">
-              Trang thông tin tuyên truyền chính thức từ Phòng Văn hóa - Xã hội UBND xã Đăk Pxi, tỉnh Quảng Ngãi
-            </p>
-
-            <div className="pc-ld-meta-tags">
-              <span>🏛️ UBND xã Đăk Pxi</span>
-              <span className="sep">•</span>
-              <span>📋 Phòng Văn hóa - Xã hội</span>
-              <span className="sep">•</span>
-              <span>🏔️ Tỉnh Quảng Ngãi</span>
-            </div>
           </div>
 
           <div className="pc-ld-banner-right">
-            {speaking && (
+            {(speaking || isPlayingAudio) && (
               <div className="sound-wave">
                 <span className="wave-bar"></span>
                 <span className="wave-bar"></span>
@@ -202,11 +271,11 @@ export default function PhongChongLuaDaoPage() {
             )}
             <button
               type="button"
-              className={`pc-ld-speak-btn ${speaking ? 'speaking' : ''}`}
+              className={`pc-ld-speak-btn ${(speaking || isPlayingAudio) ? 'speaking' : ''}`}
               onClick={() => handleSpeak()}
             >
-              <span className="audio-icon">{speaking ? '⏹' : '📢'}</span>
-              <span>{speaking ? 'Dừng đọc phát thanh' : 'Nghe loa đọc tuyên truyền'}</span>
+              <span className="audio-icon">{(speaking || isPlayingAudio) ? '⏹' : '📢'}</span>
+              <span>{(speaking || isPlayingAudio) ? 'Dừng đọc phát thanh' : 'Nghe loa đọc tuyên truyền'}</span>
             </button>
           </div>
         </div>
@@ -234,7 +303,7 @@ export default function PhongChongLuaDaoPage() {
         ════════════════════════════════════════════════════════════════ */}
         {activeArticle ? (
           <div className="pc-ld-full-article-wrapper">
-            
+
             {/* Thanh công cụ điều hướng bài viết */}
             <div className="pc-ld-article-nav-top">
               <button className="pc-ld-back-btn" onClick={() => setActiveArticle(null)}>
@@ -249,7 +318,7 @@ export default function PhongChongLuaDaoPage() {
               {/* CỘT CHÍNH NỘI DUNG BÀI VIẾT TOÀN MÀN HÌNH */}
               <main className="pc-ld-main">
                 <article className="pc-ld-full-article-card">
-                  
+
                   <div className="pc-ld-full-header">
                     <span className="pc-ld-full-badge">{activeArticle.category}</span>
                     <h1 className="pc-ld-full-title">{activeArticle.title}</h1>
@@ -318,7 +387,7 @@ export default function PhongChongLuaDaoPage() {
 
           </div>
         ) : (
-          
+
           /* ════════════════════════════════════════════════════════════════
              TRƯỜNG HỢP 2: DANH SÁCH TẤT CẢ BÀI VIẾT
           ════════════════════════════════════════════════════════════════ */
@@ -354,7 +423,7 @@ export default function PhongChongLuaDaoPage() {
                 <div className="pc-ld-article-grid">
                   {filteredArticles.map(article => (
                     <div key={article.id} className="pc-ld-article-card">
-                      
+
                       <div className="pc-ld-card-img-wrap" onClick={() => handleOpenArticle(article)}>
                         <img src={article.image} alt={article.title} className="pc-ld-card-img" />
                         <span className="pc-ld-card-cat">{article.category}</span>
@@ -364,7 +433,7 @@ export default function PhongChongLuaDaoPage() {
                         <div className="pc-ld-card-date">🗓️ Ngày đăng: {article.date}</div>
                         <h3 className="pc-ld-card-title">{article.title}</h3>
                         <p className="pc-ld-card-desc">{article.desc}</p>
-                        
+
                         <button
                           className="pc-ld-card-btn"
                           onClick={() => handleOpenArticle(article)}
@@ -439,7 +508,7 @@ function SidebarComponent() {
       <div className="pc-ld-box pc-ld-box--law">
         <div className="pc-ld-box-title">🏛️ CỔNG CẢNH BÁO AN TOÀN MẠNG</div>
         <p className="law-desc">Tra cứu chính thức các danh sách trang web, số điện thoại lừa đảo đã bị cảnh báo:</p>
-        
+
         <a
           href="https://canhbao.khonggianmang.vn"
           target="_blank"

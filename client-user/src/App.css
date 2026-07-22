@@ -66,12 +66,13 @@ button { font-family: inherit; }
 }
 /* ── Ticker chạy chữ ── */
 .gov-notice-wrapper {
-  max-width: 1550px;
-  margin: 16px auto;
+  max-width: 100%;
+  margin: 12px 16px;
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 4px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .gov-notice {

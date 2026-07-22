@@ -19,25 +19,25 @@ export default function Footer() {
         <footer className="site-footer">
             <div className="footer-top">
                 <div className="footer-info">
-                    <h3 className="footer-org-name">UBND XÃ ĐĂK PXI</h3>
-                    <p>Trụ sở: Thôn Pa cheng, Xã Đăk Pxi, Tỉnh Quảng Ngãi.</p>
+                    <h3 className="footer-org-name">PHÒNG VĂN HÓA - XÃ HỘI XÃ ĐĂK PXI</h3>
+                    <p>Trụ sở: Thôn Pa cheng, Xã Đăk Pxi.</p>
                     <p>
                         Điện thoại: <strong>0339.310.915</strong>{' '}
-                        &nbsp;–&nbsp; Email: <strong>vhxh-dakpxi@quangngai.gov.vn</strong>
+                        &nbsp;–&nbsp; Email: <strong>vhxh.dakpxi@gmail.com</strong>
                     </p>
                     <p>
-                        Đơn vị quản lý nội dung: <strong>Phòng Văn hóa – Xã hội.</strong>
+                        Đơn vị quản lý & vận hành nội dung: <strong>Phòng Văn hóa – Xã hội xã Đăk Pxi.</strong>
                     </p>
                     <p>
-                        Cổng thông tin điện tử xã Đăk Pxi:{' '}
+                        Trang tuyên truyền chính thức xã Đăk Pxi:{' '}
 
                         <a
-                            href="https://dakpxi.quangngai.gov.vn/"
+                            href="https://dakpxi.gov.vn/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="footer-link"
                         >
-                            dakpxi.quangngai.gov.vn
+                            dakpxi.gov.vn
                         </a>
                     </p>
                 </div>

@@ -40,7 +40,7 @@ export default function ChuyenMucPage() {
           CHUYÊN MỤC TUYÊN TRUYỀN & HƯỚNG DẪN DÀNH CHO BÀ CON
         </h1>
         <p className="cm-hero-subtitle">
-          Tra cứu thông tin tuyên truyền chính thức, pháp luật, kỹ năng an toàn & hướng dẫn hành chính công xã Đăk Pxi, tỉnh Quảng Ngãi
+          Tra cứu thông tin tuyên truyền chính thức, pháp luật, kỹ năng an toàn & hướng dẫn hành chính công Phòng Văn hóa - Xã hội xã Đăk Pxi
         </p>
 
         {/* 🔍 Ô TÌM KIẾM CHUYÊN MỤC CHỮ TO RÕ */}

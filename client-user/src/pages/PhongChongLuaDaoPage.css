@@ -815,3 +815,91 @@
   .pc-ld-full-article-card { padding: 18px; }
   .pc-ld-full-img-box { max-height: 240px; }
 }
+
+/* ════════════════════════════════════
+   KHU VỰC PHÁT ÂM THANH (am-thanh-lua-dao.mp3)
+════════════════════════════════════ */
+.pc-ld-audio-player-box {
+  background: #ffffff;
+  border: 2px solid #bfdbfe;
+  border-left: 6px solid #005baa;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 16px rgba(0, 91, 170, 0.08);
+}
+
+.pc-ld-audio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.pc-ld-audio-badge {
+  display: inline-block;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.pc-ld-audio-title {
+  font-size: 17px;
+  font-weight: 850;
+  color: #003d7a;
+  margin: 0 0 4px;
+}
+
+.pc-ld-audio-desc {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+.pc-ld-audio-desc code {
+  background: #f1f5f9;
+  color: #c62828;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.pc-ld-audio-download-btn {
+  background: #005baa;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 12.5px;
+  font-weight: 800;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pc-ld-audio-download-btn:hover {
+  background: #003d7a;
+  transform: translateY(-1px);
+}
+
+.pc-ld-audio-controls-row {
+  width: 100%;
+}
+
+.pc-ld-html5-audio {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  outline: none;
+}
+

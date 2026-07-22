@@ -2,6 +2,10 @@
 .tp-workspace-layout {
   display: flex;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
   background: #f8fafc;
   font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
   color: #1e293b;
@@ -9,12 +13,12 @@
 
 /* Sidebar styling */
 .tp-sidebar {
-  width: 280px;
+  width: 250px;
   background: #ffffff;
   border-right: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
-  padding: 28px 20px;
+  padding: 24px 16px;
   box-sizing: border-box;
   flex-shrink: 0;
 }
@@ -129,9 +133,12 @@
 
 /* Main content workspace */
 .tp-main-content {
-  flex-grow: 1;
-  padding: 40px;
+  flex: 1;
+  min-width: 0;
+  padding: 24px 28px;
   box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .tp-content-header {
@@ -183,9 +190,11 @@
 /* Grids and Cards */
 .tp-grid {
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 28px;
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  gap: 24px;
   align-items: start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .tp-card {

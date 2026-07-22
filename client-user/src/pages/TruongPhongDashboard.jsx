@@ -266,6 +266,566 @@ export default function TruongPhongDashboard() {
   // Tab: Updates & Notifications
   const [notices, setNotices] = useState([]);
 
+  // ── QUẢN LÝ VĂN BẢN ĐẾN & VĂN BẢN ĐI (DÙNG CHUNG CHO CÁN BỘ, PHÓ PHÒNG & TRƯỞNG PHÒNG) ──
+  const [incomingDocs, setIncomingDocs] = useState([
+    {
+      id: "VBD-2026-001",
+      so_hieu: "128/UBND-VX",
+      co_quan_ban_hanh: "UBND huyện Tu Mơ Rông",
+      ngay_den: "2026-07-20",
+      trich_yeu: "Về việc tăng cường công tác rà soát, cấp thẻ BHYT và phòng chống đuối nước cho trẻ em mùa hè 2026",
+      do_khan: "Khẩn",
+      nguoi_xu_ly: "Nguyễn Thái Huy (Trưởng phòng)",
+      phong_phap: "Phòng Văn hóa - Xã hội",
+      han_xu_ly: "2026-07-28",
+      trang_thai: "Đang xử lý",
+      file_name: "128_UBND_CongVan_BHYT_DuoiNuoc.pdf",
+      chi_dao: "Giao cán bộ chuyên trách lập danh sách rà soát tại 6 thôn và gửi báo cáo trước 25/7.",
+      ket_qua: "Đã chỉ đạo các thôn Pa cheng, Đăk Wek rà soát xong đợt 1."
+    },
+    {
+      id: "VBD-2026-002",
+      so_hieu: "45/PA05-CAT",
+      co_quan_ban_hanh: "Phòng An ninh mạng PA05 - Công an Tỉnh",
+      ngay_den: "2026-07-18",
+      trich_yeu: "Thông báo phương thức thủ đoạn lừa đảo chiếm đoạt tài sản qua không gian mạng đợt 3/2026",
+      do_khan: "Mật",
+      nguoi_xu_ly: "Lê Văn Cường (Phó phòng)",
+      phong_phap: "Phòng Văn hóa - Xã hội",
+      han_xu_ly: "2026-07-25",
+      trang_thai: "Đã hoàn thành",
+      file_name: "45_PA05_CanhBaoLuaDaoMang.pdf",
+      chi_dao: "Đăng tải ngay bài viết tuyên truyền lên cổng thông tin xã và hệ thống đài phát thanh.",
+      ket_qua: "Đã đăng bài viết tuyên truyền phòng chống lừa đảo mạng ngày 19/7/2026."
+    },
+    {
+      id: "VBD-2026-003",
+      so_hieu: "89/SVHTT-TDTT",
+      co_quan_ban_hanh: "Sở Văn hóa, Thể thao và Du lịch",
+      ngay_den: "2026-07-15",
+      trich_yeu: "Hướng dẫn tổ chức Giải hội thao công chức viên chức xã Đăk Pxi năm 2026",
+      do_khan: "Thường",
+      nguoi_xu_ly: "Phạm Thị Mai (Cán bộ)",
+      phong_phap: "Phòng Văn hóa - Xã hội",
+      han_xu_ly: "2026-08-05",
+      trang_thai: "Chưa xử lý",
+      file_name: "89_SVHTT_KeHoachHoiThao.docx",
+      chi_dao: "Cán bộ Mai dự thảo kế hoạch kinh phí và thành phần vận động viên.",
+      ket_qua: ""
+    }
+  ]);
+  const [editingIncomingDoc, setEditingIncomingDoc] = useState(null);
+  const [showIncomingForm, setShowIncomingForm] = useState(false);
+  const [searchIncoming, setSearchIncoming] = useState("");
+  const [filterIncomingUrgency, setFilterIncomingUrgency] = useState("ALL");
+  const [incomingForm, setIncomingForm] = useState({
+    so_hieu: "",
+    co_quan_ban_hanh: "",
+    ngay_den: new Date().toISOString().substring(0, 10),
+    trich_yeu: "",
+    do_khan: "Thường",
+    nguoi_xu_ly: "Nguyễn Thái Huy (Trưởng phòng)",
+    han_xu_ly: "",
+    trang_thai: "Chưa xử lý",
+    file_name: "",
+    chi_dao: "",
+    ket_qua: ""
+  });
+
+  const [outgoingDocs, setOutgoingDocs] = useState([
+    {
+      id: "VBI-2026-001",
+      so_hieu: "34/BC-VHXH",
+      trich_yeu: "Báo cáo kết quả công tác rà soát BHYT người dân 6 thôn xã Đăk Pxi 6 tháng đầu năm 2026",
+      noi_nhan: "UBND Huyện, Phòng LĐTBXH, UBND Xã Đăk Pxi",
+      nguoi_soan: "Nguyễn Thái Huy (Trưởng phòng)",
+      nguoi_duyet: "Nguyễn Thái Huy",
+      ngay_ban_hanh: "2026-07-19",
+      loai_van_ban: "Báo cáo",
+      trang_thai: "Đã phát hành",
+      file_name: "34_BC_VHXH_KetQuaBHYT2026.pdf",
+      ghi_chu: "Đã phát hành qua Hệ thống Quản lý văn bản điều hành iOffice."
+    },
+    {
+      id: "VBI-2026-002",
+      so_hieu: "12/KH-VHXH",
+      trich_yeu: "Kế hoạch tổ chức tuyên truyền phòng chống lừa đảo mạng và an toàn giao thông quý III/2026",
+      noi_nhan: "Ban nhân dân 6 Thôn, Công an Xã, Các Trường học",
+      nguoi_soan: "Lê Văn Cường (Phó phòng)",
+      nguoi_duyet: "Nguyễn Thái Huy",
+      ngay_ban_hanh: "2026-07-12",
+      loai_van_ban: "Kế hoạch",
+      trang_thai: "Đã phát hành",
+      file_name: "12_KH_VHXH_TuyenTruyenQuy3.pdf",
+      ghi_chu: "Đã gửi tới 6 Ban nhân dân thôn."
+    },
+    {
+      id: "VBI-2026-003",
+      so_hieu: "Duthao-05",
+      trich_yeu: "Thông báo về việc tổ chức tập huấn công nghệ số cộng đồng cho người dân 6 thôn",
+      noi_nhan: "UBND Xã, 6 Tổ công nghệ số cộng đồng",
+      nguoi_soan: "Phạm Thị Mai (Cán bộ)",
+      nguoi_duyet: "Nguyễn Thái Huy",
+      ngay_ban_hanh: "2026-07-22",
+      loai_van_ban: "Thông báo",
+      trang_thai: "Dự thảo",
+      file_name: "DuThao_TB_TapHuanCNS.docx",
+      ghi_chu: "Đang trình Trưởng phòng duyệt."
+    }
+  ]);
+  const [editingOutgoingDoc, setEditingOutgoingDoc] = useState(null);
+  const [showOutgoingForm, setShowOutgoingForm] = useState(false);
+  const [searchOutgoing, setSearchOutgoing] = useState("");
+  const [filterOutgoingType, setFilterOutgoingType] = useState("ALL");
+  const [outgoingForm, setOutgoingForm] = useState({
+    so_hieu: "",
+    trich_yeu: "",
+    noi_nhan: "",
+    nguoi_soan: fullName || "Cán bộ chuyên trách",
+    nguoi_duyet: "Nguyễn Thái Huy (Trưởng phòng)",
+    ngay_ban_hanh: new Date().toISOString().substring(0, 10),
+    loai_van_ban: "Công văn",
+    trang_thai: "Dự thảo",
+    file_name: "",
+    ghi_chu: ""
+  });
+
+  // Handlers xử lý Văn bản đến & Văn bản đi
+  const handleIncomingSubmit = (e) => {
+    e.preventDefault();
+    if (!incomingForm.so_hieu || !incomingForm.trich_yeu) {
+      setError("Vui lòng nhập đầy đủ Số/Ký hiệu và Trích yếu văn bản đến.");
+      return;
+    }
+    if (editingIncomingDoc) {
+      setIncomingDocs(incomingDocs.map(doc => doc.id === editingIncomingDoc.id ? {
+        ...doc,
+        ...incomingForm
+      } : doc));
+      setMessage(`Đã cập nhật thông tin văn bản đến ${incomingForm.so_hieu} thành công!`);
+      setEditingIncomingDoc(null);
+    } else {
+      const newDoc = {
+        id: `VBD-2026-00${incomingDocs.length + 1}`,
+        ...incomingForm,
+        file_name: incomingForm.file_name || `VanBanDen_${Date.now()}.pdf`
+      };
+      setIncomingDocs([newDoc, ...incomingDocs]);
+      setMessage(`Tiếp nhận văn bản đến ${incomingForm.so_hieu} thành công!`);
+    }
+    setIncomingForm({
+      so_hieu: "",
+      co_quan_ban_hanh: "",
+      ngay_den: new Date().toISOString().substring(0, 10),
+      trich_yeu: "",
+      do_khan: "Thường",
+      nguoi_xu_ly: "Nguyễn Thái Huy (Trưởng phòng)",
+      han_xu_ly: "",
+      trang_thai: "Chưa xử lý",
+      file_name: "",
+      chi_dao: "",
+      ket_qua: ""
+    });
+  };
+
+  const handleEditIncomingDoc = (doc) => {
+    setEditingIncomingDoc(doc);
+    setIncomingForm({
+      so_hieu: doc.so_hieu || "",
+      co_quan_ban_hanh: doc.co_quan_ban_hanh || "",
+      ngay_den: doc.ngay_den || new Date().toISOString().substring(0, 10),
+      trich_yeu: doc.trich_yeu || "",
+      do_khan: doc.do_khan || "Thường",
+      nguoi_xu_ly: doc.nguoi_xu_ly || "",
+      han_xu_ly: doc.han_xu_ly || "",
+      trang_thai: doc.trang_thai || "Chưa xử lý",
+      file_name: doc.file_name || "",
+      chi_dao: doc.chi_dao || "",
+      ket_qua: doc.ket_qua || ""
+    });
+  };
+
+  const handleDeleteIncomingDoc = (id) => {
+    if (!window.confirm("Bạn có chắc muốn xóa bản ghi văn bản đến này?")) return;
+    setIncomingDocs(incomingDocs.filter(doc => doc.id !== id));
+    setMessage("Đã xóa văn bản đến thành công.");
+  };
+
+  const handleOutgoingSubmit = (e) => {
+    e.preventDefault();
+    if (!outgoingForm.so_hieu || !outgoingForm.trich_yeu) {
+      setError("Vui lòng nhập đầy đủ Số/Ký hiệu và Trích yếu văn bản đi.");
+      return;
+    }
+    if (editingOutgoingDoc) {
+      setOutgoingDocs(outgoingDocs.map(doc => doc.id === editingOutgoingDoc.id ? {
+        ...doc,
+        ...outgoingForm
+      } : doc));
+      setMessage(`Đã cập nhật văn bản đi ${outgoingForm.so_hieu} thành công!`);
+      setEditingOutgoingDoc(null);
+    } else {
+      const newDoc = {
+        id: `VBI-2026-00${outgoingDocs.length + 1}`,
+        ...outgoingForm,
+        file_name: outgoingForm.file_name || `VanBanDi_${Date.now()}.pdf`
+      };
+      setOutgoingDocs([newDoc, ...outgoingDocs]);
+      setMessage(`Tạo mới văn bản đi ${outgoingForm.so_hieu} thành công!`);
+    }
+    setOutgoingForm({
+      so_hieu: "",
+      trich_yeu: "",
+      noi_nhan: "",
+      nguoi_soan: fullName || "Cán bộ chuyên trách",
+      nguoi_duyet: "Nguyễn Thái Huy (Trưởng phòng)",
+      ngay_ban_hanh: new Date().toISOString().substring(0, 10),
+      loai_van_ban: "Công văn",
+      trang_thai: "Dự thảo",
+      file_name: "",
+      ghi_chu: ""
+    });
+  };
+
+  const handleEditOutgoingDoc = (doc) => {
+    setEditingOutgoingDoc(doc);
+    setOutgoingForm({
+      so_hieu: doc.so_hieu || "",
+      trich_yeu: doc.trich_yeu || "",
+      noi_nhan: doc.noi_nhan || "",
+      nguoi_soan: doc.nguoi_soan || "",
+      nguoi_duyet: doc.nguoi_duyet || "",
+      ngay_ban_hanh: doc.ngay_ban_hanh || new Date().toISOString().substring(0, 10),
+      loai_van_ban: doc.loai_van_ban || "Công văn",
+      trang_thai: doc.trang_thai || "Dự thảo",
+      file_name: doc.file_name || "",
+      ghi_chu: doc.ghi_chu || ""
+    });
+  };
+
+  const handleDeleteOutgoingDoc = (id) => {
+    if (!window.confirm("Bạn có chắc muốn xóa bản ghi văn bản đi này?")) return;
+    setOutgoingDocs(outgoingDocs.filter(doc => doc.id !== id));
+    setMessage("Đã xóa văn bản đi thành công.");
+  };
+
+  const handleApproveOutgoingDoc = (id) => {
+    setOutgoingDocs(outgoingDocs.map(doc => doc.id === id ? {
+      ...doc,
+      trang_thai: "Đã phát hành",
+      ghi_chu: "Đã phê duyệt & phát hành chính thức qua hệ thống."
+    } : doc));
+    setMessage("Đã phê duyệt & phát hành văn bản đi chính thức!");
+  };
+
+  // ── 📌 STATES & HANDLERS ĐIỀU HÀNH & GIAO VIỆC (THỰC TẾ ĐỒNG BỘ ALL CÁN BỘ) ──
+  const defaultInitialTasks = [
+    {
+      id: "NV-2026-001",
+      title: "Rà soát & lập danh sách hộ gia đình khó khăn chưa tham gia BHYT tại 6 thôn",
+      description: "Phối hợp với Trưởng thôn Pa cheng, Đăk Wek rà soát các hộ nghèo, cận nghèo để hỗ trợ cấp thẻ BHYT đợt 2/2026.",
+      assigner: "Nguyễn Thái Huy (Trưởng phòng)",
+      assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
+      unit: "Toàn thể Phòng Văn hóa - Xã hội",
+      priority: "Khẩn",
+      assignedDate: "2026-07-15",
+      dueDate: "2026-07-25",
+      progress: 75,
+      status: "Đang xử lý",
+      file_name: "KeHoach_RaSoat_BHYT_Thon.pdf",
+      note: "Đã hoàn thành rà soát tại 4/6 thôn. Đang tổng hợp dữ liệu 2 thôn còn lại.",
+      history: [
+        { time: "2026-07-15 08:30", author: "Nguyễn Thái Huy", action: "Chỉ đạo trực tiếp tới Toàn thể Cán bộ nhân viên Phòng VH-XH" },
+        { time: "2026-07-18 14:20", author: "Phạm Thị Mai", action: "Cập nhật tiến độ 50%: Đã xuống thôn Pa cheng lập danh sách đợt 1" },
+        { time: "2026-07-21 16:00", author: "Phạm Thị Mai", action: "Cập nhật tiến độ 75%: Hoàn tất rà soát thêm thôn Đăk Wek và Đăk Xe" }
+      ]
+    },
+    {
+      id: "NV-2026-002",
+      title: "Đăng tải bài viết cảnh báo thủ đoạn lừa đảo qua mạng trên Cổng thông tin xã",
+      description: "Biên tập nội dung tuyên truyền dựa trên Công văn 45/PA05 của Công an Tỉnh và phát qua hệ thống đài truyền thanh xã.",
+      assigner: "Nguyễn Thái Huy (Trưởng phòng)",
+      assignee: "Lê Văn Cường",
+      unit: "Tổ Công nghệ số & Tuyên truyền",
+      priority: "Cao",
+      assignedDate: "2026-07-18",
+      dueDate: "2026-07-20",
+      progress: 100,
+      status: "Hoàn thành",
+      file_name: "BaiViet_CanhBaoLuaDao.docx",
+      note: "Đã phát thanh đợt 1 ngày 19/7 và đăng tải toàn văn bài viết trên website.",
+      history: [
+        { time: "2026-07-18 09:00", author: "Nguyễn Thái Huy", action: "Giao nhiệm vụ cho Lê Văn Cường" },
+        { time: "2026-07-19 15:30", author: "Lê Văn Cường", action: "Cập nhật tiến độ 100%: Đã hoàn thành đăng bài và phát thanh" }
+      ]
+    },
+    {
+      id: "NV-2026-003",
+      title: "Tổng hợp báo cáo kinh phí tổ chức Giải hội thao công chức viên chức xã 2026",
+      description: "Lập dự toán chi tiết khen thưởng, trang thiết bị thi đấu và xin ý kiến UBND xã.",
+      assigner: "Lê Văn Cường (Phó phòng)",
+      assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
+      unit: "Phòng Văn hóa - Xã hội",
+      priority: "Trung bình",
+      assignedDate: "2026-07-10",
+      dueDate: "2026-07-18",
+      progress: 50,
+      status: "Quá hạn",
+      file_name: "DuToan_HoiThao2026.xlsx",
+      note: "Chờ Sở VH-TT gửi bổ sung khung giải thưởng.",
+      history: [
+        { time: "2026-07-10 10:00", author: "Lê Văn Cường", action: "Giao lập dự toán kinh phí hội thao" },
+        { time: "2026-07-14 11:00", author: "Phạm Thị Mai", action: "Cập nhật tiến độ 50%: Đã dự thảo xong 3 môn thi đấu chính" }
+      ]
+    },
+    {
+      id: "NV-2026-004",
+      title: "Chuẩn bị ma két, trang trí hội trường cho cuộc họp giao ban công tác VH-XH quý III",
+      description: "In phông chiếu, bố trí hệ thống âm thanh, máy chiếu và tài liệu họp cho đại biểu.",
+      assigner: "Nguyễn Thái Huy (Trưởng phòng)",
+      assignee: "Trần Văn Nam",
+      unit: "Tổ Hành chính Hậu cần",
+      priority: "Thấp",
+      assignedDate: "2026-07-22",
+      dueDate: "2026-07-26",
+      progress: 0,
+      status: "Mới giao",
+      file_name: "",
+      note: "Nhiệm vụ mới nhận.",
+      history: [
+        { time: "2026-07-22 08:00", author: "Nguyễn Thái Huy", action: "Khởi tạo & giao nhiệm vụ mới" }
+      ]
+    }
+  ];
+
+  // Persistent & Synchronized State across ALL Accounts / Tabs
+  const [dispatchTasks, setDispatchTasks] = useState(() => {
+    try {
+      const saved = localStorage.getItem("bhyt_dispatch_tasks");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    try {
+      localStorage.setItem("bhyt_dispatch_tasks", JSON.stringify(defaultInitialTasks));
+    } catch (e) {
+      console.error(e);
+    }
+    return defaultInitialTasks;
+  });
+
+  // Helper setter to write to State & LocalStorage
+  const saveAndSyncTasks = (newTasksList) => {
+    setDispatchTasks(newTasksList);
+    try {
+      localStorage.setItem("bhyt_dispatch_tasks", JSON.stringify(newTasksList));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Real-time synchronization across browser tabs/sessions
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "bhyt_dispatch_tasks" && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) {
+            setDispatchTasks(parsed);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const [showDispatchForm, setShowDispatchForm] = useState(false);
+  const [editingDispatchTask, setEditingDispatchTask] = useState(null);
+  const [viewingDetailTask, setViewingDetailTask] = useState(null);
+  const [updatingProgressTask, setUpdatingProgressTask] = useState(null);
+
+  const [searchDispatch, setSearchDispatch] = useState("");
+  const [filterDispatchStatus, setFilterDispatchStatus] = useState("ALL");
+  const [filterDispatchPriority, setFilterDispatchPriority] = useState("ALL");
+  const [filterDispatchAssignee, setFilterDispatchAssignee] = useState("ALL");
+
+  const [customAssignee, setCustomAssignee] = useState("");
+  const [dispatchForm, setDispatchForm] = useState({
+    title: "",
+    description: "",
+    assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
+    unit: "Phòng Văn hóa - Xã hội",
+    priority: "Trung bình",
+    assignedDate: new Date().toISOString().substring(0, 10),
+    dueDate: "",
+    file_name: "",
+    note: ""
+  });
+
+  const [progressNote, setProgressNote] = useState("");
+  const [selectedProgress, setSelectedProgress] = useState(0);
+
+  // Handlers Điều hành & Giao việc
+  const handleDispatchSubmit = (e) => {
+    e.preventDefault();
+    if (!dispatchForm.title || !dispatchForm.assignee || !dispatchForm.dueDate) {
+      setError("Vui lòng nhập đầy đủ Tên công việc, Người thực hiện và Hạn hoàn thành.");
+      return;
+    }
+
+    const finalAssignee = dispatchForm.assignee === "OTHER" ? (customAssignee || "Cán bộ chuyên trách") : dispatchForm.assignee;
+
+    if (editingDispatchTask) {
+      const updated = dispatchTasks.map(t => t.id === editingDispatchTask.id ? {
+        ...t,
+        ...dispatchForm,
+        assignee: finalAssignee,
+        history: [
+          ...t.history,
+          {
+            time: new Date().toLocaleString("vi-VN"),
+            author: fullName || "Lãnh đạo",
+            action: `Chỉnh sửa thông tin công việc`
+          }
+        ]
+      } : t);
+      saveAndSyncTasks(updated);
+      setMessage(`Đã cập nhật công việc "${dispatchForm.title}" thành công!`);
+      setEditingDispatchTask(null);
+    } else {
+      const newTask = {
+        id: `NV-2026-00${dispatchTasks.length + 1}`,
+        ...dispatchForm,
+        assignee: finalAssignee,
+        assigner: fullName ? `${fullName} (Lãnh đạo)` : "Nguyễn Thái Huy (Trưởng phòng)",
+        progress: 0,
+        status: "Mới giao",
+        history: [
+          {
+            time: new Date().toLocaleString("vi-VN"),
+            author: fullName || "Lãnh đạo",
+            action: `Chỉ đạo & Giao nhiệm vụ cho: ${finalAssignee}`
+          }
+        ]
+      };
+      const updated = [newTask, ...dispatchTasks];
+      saveAndSyncTasks(updated);
+
+      // Ban hành thông báo thực tế cho tất cả cán bộ
+      try {
+        const existingLogs = JSON.parse(localStorage.getItem("bhyt_system_notifications") || "[]");
+        const newNotif = {
+          id: `NOTIF-${Date.now()}`,
+          title: `📢 THÔNG BÁO CHỈ ĐẠO THỰC TẾ: ${dispatchForm.title}`,
+          content: `${fullName || "Trưởng phòng Nguyễn Thái Huy"} vừa chỉ đạo / giao việc đến ${finalAssignee}. Hạn hoàn thành: ${dispatchForm.dueDate}`,
+          time: new Date().toLocaleString("vi-VN"),
+          sender: fullName || "Trưởng phòng Nguyễn Thái Huy",
+          recipient: finalAssignee,
+          type: "task_assignment"
+        };
+        localStorage.setItem("bhyt_system_notifications", JSON.stringify([newNotif, ...existingLogs]));
+      } catch (err) {
+        console.error(err);
+      }
+
+      setMessage(`🚀 Đã ban hành chỉ đạo / giao việc tới [${finalAssignee}]! Tất cả Cán bộ đã nhận được trên hệ thống.`);
+    }
+
+    setShowDispatchForm(false);
+    setCustomAssignee("");
+    setDispatchForm({
+      title: "",
+      description: "",
+      assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
+      unit: "Phòng Văn hóa - Xã hội",
+      priority: "Trung bình",
+      assignedDate: new Date().toISOString().substring(0, 10),
+      dueDate: "",
+      file_name: "",
+      note: ""
+    });
+  };
+
+  const handleEditDispatchTask = (task) => {
+    setEditingDispatchTask(task);
+    setShowDispatchForm(true);
+    setDispatchForm({
+      title: task.title || "",
+      description: task.description || "",
+      assignee: task.assignee || "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
+      unit: task.unit || "Phòng Văn hóa - Xã hội",
+      priority: task.priority || "Trung bình",
+      assignedDate: task.assignedDate || new Date().toISOString().substring(0, 10),
+      dueDate: task.dueDate || "",
+      file_name: task.file_name || "",
+      note: task.note || ""
+    });
+  };
+
+  const handleDeleteDispatchTask = (id) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa công việc này khỏi hệ thống?")) return;
+    const updated = dispatchTasks.filter(t => t.id !== id);
+    saveAndSyncTasks(updated);
+    setMessage("Đã xóa công việc thành công.");
+  };
+
+  const handleQuickCompleteDispatch = (task) => {
+    const updated = dispatchTasks.map(t => t.id === task.id ? {
+      ...t,
+      progress: 100,
+      status: "Hoàn thành",
+      history: [
+        ...t.history,
+        {
+          time: new Date().toLocaleString("vi-VN"),
+          author: fullName || "Cán bộ",
+          action: "Đã đánh dấu 100% Hoàn thành công việc"
+        }
+      ]
+    } : t);
+    saveAndSyncTasks(updated);
+    setMessage(`Công việc "${task.title}" đã được hoàn thành!`);
+  };
+
+  const handleSaveProgress = (e) => {
+    e.preventDefault();
+    if (!updatingProgressTask) return;
+
+    const newProg = Number(selectedProgress);
+    let newStatus = updatingProgressTask.status;
+    if (newProg === 100) {
+      newStatus = "Hoàn thành";
+    } else if (newProg > 0 && newStatus === "Mới giao") {
+      newStatus = "Đang xử lý";
+    }
+
+    const updated = dispatchTasks.map(t => t.id === updatingProgressTask.id ? {
+      ...t,
+      progress: newProg,
+      status: newStatus,
+      note: progressNote ? `${t.note ? t.note + " | " : ""}${progressNote}` : t.note,
+      history: [
+        ...t.history,
+        {
+          time: new Date().toLocaleString("vi-VN"),
+          author: fullName || "Cán bộ",
+          action: `Cập nhật tiến độ thành ${newProg}%${progressNote ? `: ${progressNote}` : ""}`
+        }
+      ]
+    } : t);
+
+    saveAndSyncTasks(updated);
+    setMessage(`Đã cập nhật tiến độ công việc thành ${newProg}%!`);
+    setUpdatingProgressTask(null);
+    setProgressNote("");
+  };
+
   // ── CÂN BỘ (OFFICER) STATES ──
   // Tab: Citizens & BHYT Management
   const [citizens, setCitizens] = useState([]);
@@ -984,6 +1544,16 @@ export default function TruongPhongDashboard() {
                 📊 Trang tổng quan
               </button>
               <button
+                className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("task-dispatch");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📌 Điều hành & Giao việc
+              </button>
+              <button
                 className={`tp-nav-item ${activeTab === "staff" ? "active" : ""}`}
                 onClick={() => {
                   setActiveTab("staff");
@@ -992,6 +1562,26 @@ export default function TruongPhongDashboard() {
                 }}
               >
                 👥 Cán bộ cấp dưới
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "incoming-docs" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("incoming-docs");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📨 Quản lý Văn bản đến
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "outgoing-docs" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("outgoing-docs");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📤 Quản lý Văn bản đi
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
@@ -1048,6 +1638,36 @@ export default function TruongPhongDashboard() {
                 }}
               >
                 📊 Trang tổng quan
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("task-dispatch");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📌 Điều hành & Giao việc
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "incoming-docs" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("incoming-docs");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📨 Quản lý Văn bản đến
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "outgoing-docs" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("outgoing-docs");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📤 Quản lý Văn bản đi
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
@@ -1114,6 +1734,26 @@ export default function TruongPhongDashboard() {
                 }}
               >
                 📊 Trang tổng quan
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "incoming-docs" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("incoming-docs");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📨 Quản lý Văn bản đến
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "outgoing-docs" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("outgoing-docs");
+                  setMessage("");
+                  setError("");
+                }}
+              >
+                📤 Quản lý Văn bản đi
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
@@ -1194,6 +1834,9 @@ export default function TruongPhongDashboard() {
             <div>
               <h2>
                 {activeTab === "dashboard" && "Trang tổng quan & Theo dõi hoạt động thời gian thực"}
+                {activeTab === "task-dispatch" && "Hệ thống Điều hành & Giao việc - Phòng Văn hóa - Xã hội"}
+                {activeTab === "incoming-docs" && "Quản lý Sổ Văn bản đến & Phân công chỉ đạo xử lý"}
+                {activeTab === "outgoing-docs" && "Quản lý Sổ Văn bản đi & Soạn thảo dự thảo phát hành"}
                 {activeTab === "staff" && "Quản lý Cán bộ cấp dưới"}
                 {activeTab === "schedule" && "Lịch họp & Điều phối lịch công tác"}
                 {activeTab === "updates" && "Nhật ký Hệ thống & Thông báo UBND"}
@@ -1218,6 +1861,34 @@ export default function TruongPhongDashboard() {
         <div className="tp-content-body">
           {message && <div className="tp-alert-success">✅ {message}</div>}
           {error && <div className="tp-alert-error">⚠️ {error}</div>}
+
+          {/* 📢 BANNER THÔNG BÁO CHỈ ĐẠO THỰC TẾ TỪ TRƯỞNG PHÒNG GỬI ALL CÁN BỘ */}
+          {(() => {
+            const allStaffDirectives = dispatchTasks.filter(t => t.status !== "Hoàn thành" && (t.assignee.includes("Tất cả Cán bộ") || t.assignee.includes("ALL")));
+            if (allStaffDirectives.length === 0 || activeTab === "task-dispatch") return null;
+
+            return (
+              <div style={{ background: "#eff6ff", border: "1px solid #93c5fd", borderLeft: "5px solid #005baa", borderRadius: "4px", padding: "10px 14px", marginBottom: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={{ fontSize: "18px" }}>📢</span>
+                  <div>
+                    <strong style={{ fontSize: "13.5px", color: "#1e3a8a" }}>
+                      CHỈ ĐẠO TRỰC TIẾP TỪ TRƯỞNG PHÒNG GỬI TOÀN THỂ CÁN BỘ ({allStaffDirectives.length} chỉ đạo đang thực hiện)
+                    </strong>
+                    <div style={{ fontSize: "12.5px", color: "#1e293b", marginTop: "2px" }}>
+                      Mới nhất: <strong>{allStaffDirectives[0].title}</strong> ({allStaffDirectives[0].assigner} - Hạn: {allStaffDirectives[0].dueDate})
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setActiveTab("task-dispatch")}
+                  style={{ padding: "6px 14px", background: "#005baa", color: "#ffffff", border: "none", borderRadius: "4px", fontSize: "12px", fontWeight: "700", cursor: "pointer" }}
+                >
+                  📌 Xem & Báo cáo tiến độ
+                </button>
+              </div>
+            );
+          })()}
 
           {activeTab === "dashboard" && (() => {
             // Tính toán số liệu thực tế từ database
@@ -1744,6 +2415,1287 @@ export default function TruongPhongDashboard() {
             );
           })()}
 
+          {/* ──────────────────────────────────
+              TAB ĐIỀU HÀNH & GIAO VIỆC (NỘI BỘ PHÒNG VH-XH)
+              ────────────────────────────────── */}
+          {activeTab === "task-dispatch" && (() => {
+            const todayStr = new Date().toISOString().substring(0, 10);
+
+            // Phân loại danh sách thông báo & lọc dữ liệu
+            const overdueTasks = dispatchTasks.filter(t => t.status !== "Hoàn thành" && (t.status === "Quá hạn" || (t.dueDate && t.dueDate < todayStr)));
+            const upcomingTasks = dispatchTasks.filter(t => {
+              if (t.status === "Hoàn thành" || !t.dueDate) return false;
+              const diffDays = Math.ceil((new Date(t.dueDate) - new Date(todayStr)) / (1000 * 60 * 60 * 24));
+              return diffDays >= 0 && diffDays <= 2;
+            });
+            const newTasks = dispatchTasks.filter(t => t.status === "Mới giao");
+
+            // Lọc công việc theo bộ lọc
+            const filteredTasks = dispatchTasks.filter(t => {
+              const matchSearch = t.title.toLowerCase().includes(searchDispatch.toLowerCase()) ||
+                                  t.description.toLowerCase().includes(searchDispatch.toLowerCase()) ||
+                                  t.assignee.toLowerCase().includes(searchDispatch.toLowerCase()) ||
+                                  t.id.toLowerCase().includes(searchDispatch.toLowerCase());
+              const matchStatus = filterDispatchStatus === "ALL" || t.status === filterDispatchStatus;
+              const matchPriority = filterDispatchPriority === "ALL" || t.priority === filterDispatchPriority;
+              const matchAssignee = filterDispatchAssignee === "ALL" || t.assignee === filterDispatchAssignee;
+              return matchSearch && matchStatus && matchPriority && matchAssignee;
+            });
+
+            // Danh sách cán bộ thực hiện độc nhất để đưa vào dropdown filter
+            const uniqueAssignees = Array.from(new Set(dispatchTasks.map(t => t.assignee)));
+
+            return (
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                
+                {/* 8. Bảng Khối Thông báo Cảnh báo (Alert Banner Top) */}
+                {(overdueTasks.length > 0 || upcomingTasks.length > 0 || newTasks.length > 0) && (
+                  <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", padding: "12px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <div style={{ fontSize: "13px", fontWeight: "800", color: "#1e3a8a", borderBottom: "1px solid #e2e8f0", paddingBottom: "4px" }}>
+                      📢 KHỐI THÔNG BÁO VĂN PHÒNG ĐIỀU HÀNH
+                    </div>
+                    <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", fontSize: "12.5px" }}>
+                      {overdueTasks.length > 0 && (
+                        <div style={{ color: "#b91c1c", fontWeight: "700" }}>
+                          🚨 Quá hạn ({overdueTasks.length}): {overdueTasks.map(t => t.title).join("; ")}
+                        </div>
+                      )}
+                      {upcomingTasks.length > 0 && (
+                        <div style={{ color: "#b45309", fontWeight: "700" }}>
+                          ⏳ Sắp đến hạn ({upcomingTasks.length}): {upcomingTasks.map(t => t.title).join("; ")}
+                        </div>
+                      )}
+                      {newTasks.length > 0 && (
+                        <div style={{ color: "#0369a1", fontWeight: "700" }}>
+                          📌 Có công việc mới giao ({newTasks.length}): {newTasks.map(t => t.title).join("; ")}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* 1. Dashboard (5 Thẻ thống kê tối giản) */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px" }}>
+                  <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderLeft: "4px solid #1e3a8a", borderRadius: "4px", padding: "12px 16px" }}>
+                    <div style={{ fontSize: "11px", color: "#475569", fontWeight: "700", textTransform: "uppercase" }}>TỔNG CÔNG VIỆC</div>
+                    <div style={{ fontSize: "22px", fontWeight: "800", color: "#1e3a8a", marginTop: "2px" }}>{dispatchTasks.length}</div>
+                  </div>
+                  <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderLeft: "4px solid #0284c7", borderRadius: "4px", padding: "12px 16px" }}>
+                    <div style={{ fontSize: "11px", color: "#475569", fontWeight: "700", textTransform: "uppercase" }}>ĐANG XỬ LÝ</div>
+                    <div style={{ fontSize: "22px", fontWeight: "800", color: "#0284c7", marginTop: "2px" }}>
+                      {dispatchTasks.filter(t => t.status === "Đang xử lý").length}
+                    </div>
+                  </div>
+                  <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderLeft: "4px solid #15803d", borderRadius: "4px", padding: "12px 16px" }}>
+                    <div style={{ fontSize: "11px", color: "#475569", fontWeight: "700", textTransform: "uppercase" }}>HOÀN THÀNH</div>
+                    <div style={{ fontSize: "22px", fontWeight: "800", color: "#15803d", marginTop: "2px" }}>
+                      {dispatchTasks.filter(t => t.status === "Hoàn thành").length}
+                    </div>
+                  </div>
+                  <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderLeft: "4px solid #b45309", borderRadius: "4px", padding: "12px 16px" }}>
+                    <div style={{ fontSize: "11px", color: "#475569", fontWeight: "700", textTransform: "uppercase" }}>SẮP ĐẾN HẠN</div>
+                    <div style={{ fontSize: "22px", fontWeight: "800", color: "#b45309", marginTop: "2px" }}>
+                      {upcomingTasks.length}
+                    </div>
+                  </div>
+                  <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderLeft: "4px solid #b91c1c", borderRadius: "4px", padding: "12px 16px" }}>
+                    <div style={{ fontSize: "11px", color: "#475569", fontWeight: "700", textTransform: "uppercase" }}>QUÁ HẠN</div>
+                    <div style={{ fontSize: "22px", fontWeight: "800", color: "#b91c1c", marginTop: "2px" }}>
+                      {overdueTasks.length}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Thanh công cụ (Toolbar controls) */}
+                <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                    <input
+                      type="text"
+                      placeholder="🔍 Tìm tên công việc, người thực hiện..."
+                      value={searchDispatch}
+                      onChange={(e) => setSearchDispatch(e.target.value)}
+                      style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", width: "230px" }}
+                    />
+
+                    <select
+                      value={filterDispatchStatus}
+                      onChange={(e) => setFilterDispatchStatus(e.target.value)}
+                      style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
+                    >
+                      <option value="ALL">Tất cả trạng thái</option>
+                      <option value="Mới giao">Mới giao</option>
+                      <option value="Đang xử lý">Đang xử lý</option>
+                      <option value="Chờ xử lý">Chờ xử lý</option>
+                      <option value="Hoàn thành">Hoàn thành</option>
+                      <option value="Quá hạn">Quá hạn</option>
+                    </select>
+
+                    <select
+                      value={filterDispatchPriority}
+                      onChange={(e) => setFilterDispatchPriority(e.target.value)}
+                      style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
+                    >
+                      <option value="ALL">Tất cả độ ưu tiên</option>
+                      <option value="Thấp">Thấp</option>
+                      <option value="Trung bình">Trung bình</option>
+                      <option value="Cao">Cao</option>
+                      <option value="Khẩn">Khẩn</option>
+                    </select>
+
+                    <select
+                      value={filterDispatchAssignee}
+                      onChange={(e) => setFilterDispatchAssignee(e.target.value)}
+                      style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
+                    >
+                      <option value="ALL">Tất cả người thực hiện</option>
+                      {uniqueAssignees.map(a => (
+                        <option key={a} value={a}>{a}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      if (showDispatchForm && !editingDispatchTask) {
+                        setShowDispatchForm(false);
+                      } else {
+                        setShowDispatchForm(true);
+                        setEditingDispatchTask(null);
+                        setDispatchForm({
+                          title: "", description: "", assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
+                          unit: "Phòng Văn hóa - Xã hội", priority: "Trung bình",
+                          assignedDate: new Date().toISOString().substring(0, 10),
+                          dueDate: "", file_name: "", note: ""
+                        });
+                      }
+                    }}
+                    style={{
+                      padding: "7px 14px", borderRadius: "4px", background: "#005baa", color: "#ffffff",
+                      border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer"
+                    }}
+                  >
+                    {showDispatchForm ? "❌ Đóng form" : "➕ Giao công việc"}
+                  </button>
+                </div>
+
+                {/* 4. Form giao việc (Collapsible Horizontal Grid) */}
+                {(showDispatchForm || editingDispatchTask) && (
+                  <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderTop: "3px solid #005baa", borderRadius: "4px", padding: "16px" }}>
+                    <div style={{ fontSize: "14px", fontWeight: "800", color: "#1e3a8a", marginBottom: "14px" }}>
+                      {editingDispatchTask ? "✏️ CẬP NHẬT CÔNG VIỆC GIAO" : "📋 FORM GIAO CÔNG VIỆC MỚI"}
+                    </div>
+
+                    <form onSubmit={handleDispatchSubmit}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "10px 14px" }}>
+                        <div style={{ gridColumn: "1 / -1" }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Tên công việc / Nội dung chỉ đạo (*)
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Nhập tên nhiệm vụ, công việc giao..."
+                            value={dispatchForm.title}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, title: e.target.value })}
+                            required
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Người thực hiện / Nhận chỉ đạo (*)
+                          </label>
+                          <select
+                            value={dispatchForm.assignee}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, assignee: e.target.value })}
+                            required
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff", fontWeight: "700" }}
+                          >
+                            <option value="📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)">📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)</option>
+                            <option value="Phạm Thị Mai">Phạm Thị Mai (Cán bộ BHYT)</option>
+                            <option value="Lê Văn Cường">Lê Văn Cường (Phó phòng)</option>
+                            <option value="Trần Văn Nam">Trần Văn Nam (Cán bộ CNTT & Tuyên truyền)</option>
+                            <option value="Nguyễn Văn An">Nguyễn Văn An (Cán bộ Văn hóa - Thể thao)</option>
+                            <option value="OTHER">➕ Nhập họ tên cán bộ khác...</option>
+                          </select>
+
+                          {dispatchForm.assignee === "OTHER" && (
+                            <input
+                              type="text"
+                              placeholder="Nhập tên cán bộ hoặc đơn vị..."
+                              value={customAssignee}
+                              onChange={(e) => setCustomAssignee(e.target.value)}
+                              required
+                              style={{ width: "100%", marginTop: "6px", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                            />
+                          )}
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Đơn vị phụ trách
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Phòng Văn hóa - Xã hội"
+                            value={dispatchForm.unit}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, unit: e.target.value })}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Mức độ ưu tiên
+                          </label>
+                          <select
+                            value={dispatchForm.priority}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, priority: e.target.value })}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
+                          >
+                            <option value="Thấp">Thấp</option>
+                            <option value="Trung bình">Trung bình</option>
+                            <option value="Cao">Cao</option>
+                            <option value="Khẩn">Khẩn</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Ngày giao
+                          </label>
+                          <input
+                            type="date"
+                            value={dispatchForm.assignedDate}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, assignedDate: e.target.value })}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Hạn hoàn thành (*)
+                          </label>
+                          <input
+                            type="date"
+                            value={dispatchForm.dueDate}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, dueDate: e.target.value })}
+                            required
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            File đính kèm
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="KeHoach_CongViec.pdf"
+                            value={dispatchForm.file_name}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, file_name: e.target.value })}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div style={{ gridColumn: "1 / -1" }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Mô tả công việc
+                          </label>
+                          <textarea
+                            rows="2"
+                            placeholder="Chi tiết yêu cầu công việc..."
+                            value={dispatchForm.description}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, description: e.target.value })}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", fontFamily: "inherit" }}
+                          />
+                        </div>
+
+                        <div style={{ gridColumn: "1 / -1" }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Ghi chú
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Ghi chú bổ sung..."
+                            value={dispatchForm.note}
+                            onChange={(e) => setDispatchForm({ ...dispatchForm, note: e.target.value })}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: "12px" }}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowDispatchForm(false);
+                            setEditingDispatchTask(null);
+                          }}
+                          style={{ padding: "6px 14px", borderRadius: "4px", background: "#e2e8f0", border: "1px solid #cbd5e1", fontSize: "13px", cursor: "pointer" }}
+                        >
+                          Hủy
+                        </button>
+                        <button
+                          type="submit"
+                          style={{ padding: "6px 18px", borderRadius: "4px", background: "#005baa", color: "#ffffff", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}
+                        >
+                          Lưu
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                {/* 3. Bảng Danh sách công việc (Chuẩn HTML Admin Cơ Quan) */}
+                <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", overflow: "hidden" }}>
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+                      <thead>
+                        <tr style={{ background: "#f1f5f9", color: "#1e293b", borderBottom: "2px solid #cbd5e1" }}>
+                          <th style={{ padding: "10px 12px", width: "45px", textAlign: "center" }}>STT</th>
+                          <th style={{ padding: "10px 12px" }}>Tên công việc</th>
+                          <th style={{ padding: "10px 12px", width: "150px" }}>Người giao</th>
+                          <th style={{ padding: "10px 12px", width: "140px" }}>Người thực hiện</th>
+                          <th style={{ padding: "10px 12px", width: "95px", whiteSpace: "nowrap" }}>Ngày giao</th>
+                          <th style={{ padding: "10px 12px", width: "95px", whiteSpace: "nowrap" }}>Hạn hoàn thành</th>
+                          <th style={{ padding: "10px 12px", width: "90px", textAlign: "center" }}>Ưu tiên</th>
+                          <th style={{ padding: "10px 12px", width: "110px", textAlign: "center" }}>Tiến độ (%)</th>
+                          <th style={{ padding: "10px 12px", width: "100px", textAlign: "center" }}>Trạng thái</th>
+                          <th style={{ padding: "10px 12px", width: "150px", textAlign: "center" }}>Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredTasks.length === 0 ? (
+                          <tr>
+                            <td colSpan="10" style={{ textAlign: "center", padding: "28px", color: "#64748b" }}>
+                              Không tìm thấy công việc nào.
+                            </td>
+                          </tr>
+                        ) : (
+                          filteredTasks.map((t, idx) => (
+                            <tr
+                              key={t.id}
+                              style={{
+                                borderBottom: "1px solid #e2e8f0",
+                                background: idx % 2 === 0 ? "#ffffff" : "#f8fafc"
+                              }}
+                            >
+                              <td style={{ padding: "10px 12px", textAlign: "center", fontWeight: "600", color: "#64748b" }}>
+                                {idx + 1}
+                              </td>
+                              <td style={{ padding: "10px 12px" }}>
+                                <div style={{ fontWeight: "700", color: "#0f172a", lineHeight: "1.4" }}>
+                                  {t.title}
+                                </div>
+                                {t.file_name && (
+                                  <div style={{ fontSize: "11.5px", color: "#2563eb", marginTop: "2px" }}>
+                                    📎 <u>{t.file_name}</u>
+                                  </div>
+                                )}
+                              </td>
+                              <td style={{ padding: "10px 12px", color: "#334155", fontSize: "12.5px" }}>
+                                {t.assigner}
+                              </td>
+                              <td style={{ padding: "10px 12px", fontWeight: "600", color: "#0f172a", fontSize: "12.5px" }}>
+                                {t.assignee && t.assignee.includes("Tất cả Cán bộ") ? (
+                                  <span style={{ fontSize: "11px", fontWeight: "800", color: "#1e3a8a", background: "#dbeafe", border: "1px solid #93c5fd", padding: "3px 8px", borderRadius: "4px", display: "inline-block" }}>
+                                    📢 Toàn thể Phòng VH-XH
+                                  </span>
+                                ) : (
+                                  <span>{t.assignee}</span>
+                                )}
+                                <div style={{ fontSize: "11px", color: "#64748b" }}>{t.unit}</div>
+                              </td>
+                              <td style={{ padding: "10px 12px", whiteSpace: "nowrap", color: "#475569" }}>
+                                {t.assignedDate}
+                              </td>
+                              <td style={{ padding: "10px 12px", whiteSpace: "nowrap", fontWeight: "600", color: t.status === "Quá hạn" ? "#b91c1c" : "#334155" }}>
+                                {t.dueDate}
+                              </td>
+                              <td style={{ padding: "10px 12px", textAlign: "center" }}>
+                                <span style={{
+                                  fontSize: "11px", fontWeight: "700", padding: "2px 6px", borderRadius: "3px",
+                                  background: t.priority === "Khẩn" ? "#fee2e2" : t.priority === "Cao" ? "#fef3c7" : "#e2e8f0",
+                                  color: t.priority === "Khẩn" ? "#b91c1c" : t.priority === "Cao" ? "#b45309" : "#334155"
+                                }}>
+                                  {t.priority}
+                                </span>
+                              </td>
+                              <td style={{ padding: "10px 12px", textAlign: "center" }}>
+                                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2px" }}>
+                                  <span style={{ fontSize: "11.5px", fontWeight: "700" }}>{t.progress}%</span>
+                                  <div style={{ width: "70px", height: "6px", background: "#e2e8f0", borderRadius: "3px", overflow: "hidden" }}>
+                                    <div style={{
+                                      width: `${t.progress}%`, height: "100%",
+                                      background: t.progress === 100 ? "#15803d" : "#005baa"
+                                    }} />
+                                  </div>
+                                </div>
+                              </td>
+                              <td style={{ padding: "10px 12px", textAlign: "center" }}>
+                                <span style={{
+                                  fontSize: "11.5px", fontWeight: "700", padding: "3px 8px", borderRadius: "3px", display: "inline-block",
+                                  background: t.status === "Hoàn thành" ? "#d1fae5" :
+                                              t.status === "Đang xử lý" ? "#e0f2fe" :
+                                              t.status === "Quá hạn" ? "#fee2e2" : "#f1f5f9",
+                                  color: t.status === "Hoàn thành" ? "#15803d" :
+                                         t.status === "Đang xử lý" ? "#0369a1" :
+                                         t.status === "Quá hạn" ? "#b91c1c" : "#475569"
+                                }}>
+                                  {t.status}
+                                </span>
+                              </td>
+                              <td style={{ padding: "10px 12px", textAlign: "center" }}>
+                                <div style={{ display: "flex", gap: "4px", justifyContent: "center", flexWrap: "wrap" }}>
+                                  <button
+                                    onClick={() => setViewingDetailTask(t)}
+                                    style={{ padding: "3px 6px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer" }}
+                                    title="Xem chi tiết"
+                                  >
+                                    👁️ Xem
+                                  </button>
+
+                                  <button
+                                    onClick={() => handleEditDispatchTask(t)}
+                                    style={{ padding: "3px 6px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer" }}
+                                    title="Sửa công việc"
+                                  >
+                                    ✏️ Sửa
+                                  </button>
+
+                                  <button
+                                    onClick={() => {
+                                      setUpdatingProgressTask(t);
+                                      setSelectedProgress(t.progress || 0);
+                                      setProgressNote("");
+                                    }}
+                                    style={{ padding: "3px 6px", background: "#e0f2fe", border: "1px solid #bfdbfe", color: "#0369a1", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer", fontWeight: "600" }}
+                                    title="Cập nhật tiến độ"
+                                  >
+                                    📊 Tiến độ
+                                  </button>
+
+                                  {t.progress < 100 && (
+                                    <button
+                                      onClick={() => handleQuickCompleteDispatch(t)}
+                                      style={{ padding: "3px 6px", background: "#d1fae5", border: "1px solid #a7f3d0", color: "#15803d", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer", fontWeight: "700" }}
+                                      title="Đánh dấu Hoàn thành"
+                                    >
+                                      ✅ Complete
+                                    </button>
+                                  )}
+
+                                  <button
+                                    onClick={() => handleDeleteDispatchTask(t.id)}
+                                    style={{ padding: "3px 6px", background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer" }}
+                                    title="Xóa công việc"
+                                  >
+                                    🗑️ Xóa
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* 5. Modal Chi tiết công việc */}
+                {viewingDetailTask && (
+                  <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.4)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
+                    <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "6px", width: "100%", maxWidth: "650px", maxHeight: "90vh", overflowY: "auto", padding: "20px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "10px", marginBottom: "14px" }}>
+                        <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800" }}>
+                          📌 CHI TIẾT CÔNG VIỆC: {viewingDetailTask.id}
+                        </h3>
+                        <button onClick={() => setViewingDetailTask(null)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer" }}>✕</button>
+                      </div>
+
+                      <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "13px" }}>
+                        <div>
+                          <strong style={{ fontSize: "14px", color: "#0f172a" }}>{viewingDetailTask.title}</strong>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", background: "#f8fafc", padding: "10px", borderRadius: "4px" }}>
+                          <div><strong>Người giao:</strong> {viewingDetailTask.assigner}</div>
+                          <div><strong>Người thực hiện:</strong> {viewingDetailTask.assignee}</div>
+                          <div><strong>Đơn vị:</strong> {viewingDetailTask.unit}</div>
+                          <div><strong>Mức ưu tiên:</strong> {viewingDetailTask.priority}</div>
+                          <div><strong>Ngày giao:</strong> {viewingDetailTask.assignedDate}</div>
+                          <div><strong>Hạn hoàn thành:</strong> {viewingDetailTask.dueDate}</div>
+                          <div><strong>Tiến độ:</strong> {viewingDetailTask.progress}%</div>
+                          <div><strong>Trạng thái:</strong> {viewingDetailTask.status}</div>
+                        </div>
+
+                        {viewingDetailTask.description && (
+                          <div>
+                            <strong>Mô tả chi tiết:</strong>
+                            <div style={{ background: "#f1f5f9", padding: "8px 10px", borderRadius: "4px", marginTop: "4px" }}>
+                              {viewingDetailTask.description}
+                            </div>
+                          </div>
+                        )}
+
+                        {viewingDetailTask.file_name && (
+                          <div>
+                            <strong>File đính kèm:</strong> 📎 <u>{viewingDetailTask.file_name}</u>
+                          </div>
+                        )}
+
+                        {/* 5. Lịch sử xử lý */}
+                        <div>
+                          <strong style={{ display: "block", marginBottom: "6px" }}>📜 Lịch sử & Tiến trình xử lý:</strong>
+                          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            {viewingDetailTask.history && viewingDetailTask.history.length > 0 ? (
+                              viewingDetailTask.history.map((h, i) => (
+                                <div key={i} style={{ fontSize: "12px", borderLeft: "3px solid #005baa", paddingLeft: "8px", background: "#fafafa", padding: "4px 8px" }}>
+                                  <span style={{ color: "#64748b" }}>[{h.time}]</span> <strong>{h.author}:</strong> {h.action}
+                                </div>
+                              ))
+                            ) : (
+                              <span style={{ color: "#64748b", fontSize: "12px" }}>Chưa có nhật ký ghi nhận.</span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "10px" }}>
+                          <button onClick={() => setViewingDetailTask(null)} style={{ padding: "6px 16px", borderRadius: "4px", background: "#005baa", color: "#fff", border: "none", fontSize: "13px", cursor: "pointer" }}>
+                            Đóng cửa sổ
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 6. Modal Cập nhật tiến độ */}
+                {updatingProgressTask && (
+                  <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.4)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
+                    <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "6px", width: "100%", maxWidth: "480px", padding: "20px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "10px", marginBottom: "14px" }}>
+                        <h3 style={{ margin: 0, fontSize: "15px", color: "#1e3a8a", fontWeight: "800" }}>
+                          📊 CẬP NHẬT TIẾN ĐỘ CÔNG VIỆC
+                        </h3>
+                        <button onClick={() => setUpdatingProgressTask(null)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer" }}>✕</button>
+                      </div>
+
+                      <form onSubmit={handleSaveProgress}>
+                        <div style={{ fontSize: "13px", marginBottom: "12px", fontWeight: "700", color: "#0f172a" }}>
+                          {updatingProgressTask.title}
+                        </div>
+
+                        <div style={{ marginBottom: "14px" }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "8px" }}>
+                            Chọn mức độ % hoàn thành:
+                          </label>
+                          <div style={{ display: "flex", gap: "8px", justifyContent: "space-between" }}>
+                            {[0, 25, 50, 75, 100].map(p => (
+                              <button
+                                key={p}
+                                type="button"
+                                onClick={() => setSelectedProgress(p)}
+                                style={{
+                                  flex: 1, padding: "8px 0", borderRadius: "4px", fontSize: "13px", fontWeight: "800", cursor: "pointer",
+                                  background: Number(selectedProgress) === p ? "#005baa" : "#f1f5f9",
+                                  color: Number(selectedProgress) === p ? "#ffffff" : "#334155",
+                                  border: Number(selectedProgress) === p ? "none" : "1px solid #cbd5e1"
+                                }}
+                              >
+                                {p}%
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div style={{ marginBottom: "14px" }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                            Ghi chú nội dung xử lý:
+                          </label>
+                          <textarea
+                            rows="3"
+                            placeholder="Nhập ghi chú tiến độ thực hiện thực tế..."
+                            value={progressNote}
+                            onChange={(e) => setProgressNote(e.target.value)}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", fontFamily: "inherit" }}
+                          />
+                        </div>
+
+                        <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+                          <button type="button" onClick={() => setUpdatingProgressTask(null)} style={{ padding: "6px 14px", borderRadius: "4px", background: "#e2e8f0", border: "1px solid #cbd5e1", fontSize: "13px", cursor: "pointer" }}>
+                            Hủy
+                          </button>
+                          <button type="submit" style={{ padding: "6px 18px", borderRadius: "4px", background: "#005baa", color: "#ffffff", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}>
+                            Lưu tiến độ
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            );
+          })()}
+
+          {/* ──────────────────────────────────
+              TAB VĂN BẢN ĐẾN & VĂN BẢN ĐỊ (CHUNG CHO TẤT CẢ CÁN BỘ & LÃNH ĐẠO)
+              ────────────────────────────────── */}
+          {activeTab === "incoming-docs" && (() => {
+            const filteredIncoming = incomingDocs.filter(doc => {
+              const matchSearch = doc.so_hieu.toLowerCase().includes(searchIncoming.toLowerCase()) ||
+                                  doc.trich_yeu.toLowerCase().includes(searchIncoming.toLowerCase()) ||
+                                  doc.co_quan_ban_hanh.toLowerCase().includes(searchIncoming.toLowerCase());
+              const matchUrgency = filterIncomingUrgency === "ALL" || doc.do_khan === filterIncomingUrgency;
+              return matchSearch && matchUrgency;
+            });
+
+            return (
+              <div style={{ animation: "fadeIn 0.2s ease-out", display: "flex", flexDirection: "column", gap: "16px" }}>
+                {/* Thanh Tiêu đề & Công cụ điều khiển tối giản */}
+                <div className="tp-card" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: "17px", color: "#0f172a", fontWeight: "800" }}>
+                      📥 SỔ QUẢN LÝ VĂN BẢN ĐẾN CƠ QUAN ({filteredIncoming.length})
+                    </h3>
+                    <span style={{ fontSize: "12px", color: "#64748b" }}>
+                      Quản lý, phân công và theo dõi tiến độ xử lý văn bản đến của Phòng Văn hóa - Xã hội
+                    </span>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                    <select
+                      value={filterIncomingUrgency}
+                      onChange={(e) => setFilterIncomingUrgency(e.target.value)}
+                      style={{ padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
+                    >
+                      <option value="ALL">🔍 Tất cả độ khẩn</option>
+                      <option value="Thường">🟢 Thường</option>
+                      <option value="Khẩn">⚡ Khẩn</option>
+                      <option value="Mật">🔒 Mật</option>
+                    </select>
+
+                    <input
+                      type="text"
+                      placeholder="🔍 Tìm số hiệu, trích yếu, nơi gửi..."
+                      style={{ width: "240px", padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                      value={searchIncoming}
+                      onChange={(e) => setSearchIncoming(e.target.value)}
+                    />
+
+                    <button
+                      onClick={() => {
+                        if (showIncomingForm && !editingIncomingDoc) {
+                          setShowIncomingForm(false);
+                        } else {
+                          setShowIncomingForm(true);
+                          setEditingIncomingDoc(null);
+                          setIncomingForm({
+                            so_hieu: "", co_quan_ban_hanh: "", ngay_den: new Date().toISOString().substring(0, 10),
+                            trich_yeu: "", do_khan: "Thường", nguoi_xu_ly: "Nguyễn Thái Huy (Trưởng phòng)",
+                            han_xu_ly: "", trang_thai: "Chưa xử lý", file_name: "", chi_dao: "", ket_qua: ""
+                          });
+                        }
+                      }}
+                      style={{
+                        padding: "8px 16px", borderRadius: "6px", background: "#005baa", color: "#fff",
+                        border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px"
+                      }}
+                    >
+                      {showIncomingForm ? "❌ Đóng biểu mẫu" : "➕ Tiếp nhận Văn bản đến Mới"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Form Tiếp nhận / Hiệu chỉnh Văn bản Đến (Full Width Nằm Ngang Gọn Gàng) */}
+                {(showIncomingForm || editingIncomingDoc) && (
+                  <div className="tp-card" style={{ padding: "20px", borderTop: "4px solid #005baa", background: "#fafafa" }}>
+                    <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#003d7a", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px" }}>
+                      {editingIncomingDoc ? "✏️ CẬP NHẬT THÔNG TIN VĂN BẢN ĐẾN" : "📥 TIẾP NHẬN & PHÂN CÔNG VĂN BẢN ĐẾN MỚI"}
+                    </h4>
+
+                    <form onSubmit={handleIncomingSubmit}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px 16px" }}>
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Số / Ký hiệu Văn bản (*)</label>
+                          <input
+                            type="text"
+                            placeholder="Ví dụ: 128/UBND-VX"
+                            value={incomingForm.so_hieu}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, so_hieu: e.target.value })}
+                            required
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Cơ quan ban hành (*)</label>
+                          <input
+                            type="text"
+                            placeholder="UBND huyện Tu Mơ Rông"
+                            value={incomingForm.co_quan_ban_hanh}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, co_quan_ban_hanh: e.target.value })}
+                            required
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Ngày đến (*)</label>
+                          <input
+                            type="date"
+                            value={incomingForm.ngay_den}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, ngay_den: e.target.value })}
+                            required
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Hạn xử lý</label>
+                          <input
+                            type="date"
+                            value={incomingForm.han_xu_ly}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, han_xu_ly: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Mức độ khẩn</label>
+                          <select
+                            value={incomingForm.do_khan}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, do_khan: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          >
+                            <option value="Thường">🟢 Thường</option>
+                            <option value="Khẩn">⚡ Khẩn</option>
+                            <option value="Mật">🔒 Mật</option>
+                          </select>
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Trạng thái xử lý</label>
+                          <select
+                            value={incomingForm.trang_thai}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, trang_thai: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          >
+                            <option value="Chưa xử lý">🔴 Chưa xử lý</option>
+                            <option value="Đang xử lý">🟡 Đang xử lý</option>
+                            <option value="Đã hoàn thành">🟢 Đã hoàn thành</option>
+                          </select>
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Cán bộ được giao xử lý</label>
+                          <input
+                            type="text"
+                            placeholder="Ví dụ: Nguyễn Thái Huy"
+                            value={incomingForm.nguoi_xu_ly}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, nguoi_xu_ly: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Tên file đính kèm</label>
+                          <input
+                            type="text"
+                            placeholder="128_UBND_CongVan.pdf"
+                            value={incomingForm.file_name}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, file_name: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginTop: "12px" }}>
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Trích yếu nội dung văn bản (*)</label>
+                          <textarea
+                            rows="2"
+                            placeholder="Tóm tắt ngắn gọn nội dung chỉ đạo trong văn bản..."
+                            value={incomingForm.trich_yeu}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, trich_yeu: e.target.value })}
+                            required
+                            style={{ width: "100%", padding: "8px 10px", border: "1px solid #cbd5e1", borderRadius: "6px", fontSize: "13px", fontFamily: "inherit" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Ý kiến chỉ đạo của Lãnh đạo</label>
+                          <textarea
+                            rows="2"
+                            placeholder="Nội dung giao việc, chỉ đạo thực hiện..."
+                            value={incomingForm.chi_dao}
+                            onChange={(e) => setIncomingForm({ ...incomingForm, chi_dao: e.target.value })}
+                            style={{ width: "100%", padding: "8px 10px", border: "1px solid #cbd5e1", borderRadius: "6px", fontSize: "13px", fontFamily: "inherit" }}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", gap: "10px", marginTop: "16px", justifyContent: "flex-end" }}>
+                        <button
+                          type="button"
+                          className="tp-btn-cancel"
+                          onClick={() => {
+                            setShowIncomingForm(false);
+                            setEditingIncomingDoc(null);
+                          }}
+                          style={{ padding: "7px 16px", fontSize: "13px" }}
+                        >
+                          Hủy bỏ
+                        </button>
+                        <button type="submit" className="tp-btn-submit" style={{ padding: "7px 20px", fontSize: "13px" }}>
+                          {editingIncomingDoc ? "💾 Lưu cập nhật văn bản" : "📥 Lưu văn bản đến"}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                {/* Bảng Danh sách Văn bản Đến Chuẩn Cơ Quan Tối Giản */}
+                <div className="tp-card" style={{ padding: "0", overflow: "hidden" }}>
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+                      <thead>
+                        <tr style={{ background: "#f1f5f9", color: "#1e293b", borderBottom: "2px solid #cbd5e1" }}>
+                          <th style={{ padding: "12px 14px", width: "50px", textAlign: "center" }}>STT</th>
+                          <th style={{ padding: "12px 14px", width: "130px", whiteSpace: "nowrap" }}>Số / Ký hiệu</th>
+                          <th style={{ padding: "12px 14px", width: "100px", whiteSpace: "nowrap" }}>Ngày đến</th>
+                          <th style={{ padding: "12px 14px", width: "180px" }}>Cơ quan ban hành</th>
+                          <th style={{ padding: "12px 14px" }}>Trích yếu nội dung & Chỉ đạo</th>
+                          <th style={{ padding: "12px 14px", width: "160px" }}>Người xử lý & Hạn</th>
+                          <th style={{ padding: "12px 14px", width: "90px", textAlign: "center" }}>Độ khẩn</th>
+                          <th style={{ padding: "12px 14px", width: "110px", textAlign: "center" }}>Trạng thái</th>
+                          <th style={{ padding: "12px 14px", width: "110px", textAlign: "center" }}>Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredIncoming.length === 0 ? (
+                          <tr>
+                            <td colSpan="9" style={{ textAlign: "center", padding: "32px", color: "#64748b" }}>
+                              Không tìm thấy bản ghi văn bản đến nào.
+                            </td>
+                          </tr>
+                        ) : (
+                          filteredIncoming.map((doc, idx) => (
+                            <tr
+                              key={doc.id}
+                              style={{
+                                borderBottom: "1px solid #e2e8f0",
+                                background: idx % 2 === 0 ? "#ffffff" : "#f8fafc",
+                                transition: "background 0.15s ease"
+                              }}
+                            >
+                              <td style={{ padding: "12px 14px", textAlign: "center", fontWeight: "600", color: "#64748b" }}>
+                                {idx + 1}
+                              </td>
+                              <td style={{ padding: "12px 14px", whiteSpace: "nowrap" }}>
+                                <strong style={{ color: "#003d7a", fontSize: "13.5px" }}>{doc.so_hieu}</strong>
+                              </td>
+                              <td style={{ padding: "12px 14px", whiteSpace: "nowrap", color: "#475569" }}>
+                                {doc.ngay_den}
+                              </td>
+                              <td style={{ padding: "12px 14px", fontWeight: "700", color: "#334155" }}>
+                                {doc.co_quan_ban_hanh}
+                              </td>
+                              <td style={{ padding: "12px 14px", lineHeight: "1.45" }}>
+                                <div style={{ fontWeight: "700", color: "#0f172a" }}>
+                                  {doc.trich_yeu}
+                                </div>
+                                {doc.chi_dao && (
+                                  <div style={{ marginTop: "4px", fontSize: "12px", color: "#475569", background: "#eff6ff", padding: "4px 8px", borderRadius: "4px", borderLeft: "3px solid #005baa" }}>
+                                    <strong>Chỉ đạo:</strong> {doc.chi_dao}
+                                  </div>
+                                )}
+                                {doc.file_name && (
+                                  <div style={{ fontSize: "11.5px", color: "#2563eb", marginTop: "4px" }}>
+                                    📎 <u>{doc.file_name}</u>
+                                  </div>
+                                )}
+                              </td>
+                              <td style={{ padding: "12px 14px", color: "#334155" }}>
+                                <div style={{ fontWeight: "600" }}>{doc.nguoi_xu_ly}</div>
+                                {doc.han_xu_ly && (
+                                  <div style={{ fontSize: "11px", color: "#dc2626", marginTop: "2px" }}>
+                                    Hạn: {doc.han_xu_ly}
+                                  </div>
+                                )}
+                              </td>
+                              <td style={{ padding: "12px 14px", textAlign: "center" }}>
+                                <span style={{
+                                  fontSize: "11px", fontWeight: "700", padding: "3px 8px", borderRadius: "4px",
+                                  background: doc.do_khan === "Khẩn" ? "#fee2e2" : doc.do_khan === "Mật" ? "#fef3c7" : "#e2e8f0",
+                                  color: doc.do_khan === "Khẩn" ? "#dc2626" : doc.do_khan === "Mật" ? "#d97706" : "#334155"
+                                }}>
+                                  {doc.do_khan}
+                                </span>
+                              </td>
+                              <td style={{ padding: "12px 14px", textAlign: "center" }}>
+                                <span style={{
+                                  fontSize: "11.5px", fontWeight: "700", padding: "3px 8px", borderRadius: "4px",
+                                  background: doc.trang_thai === "Đã hoàn thành" ? "#d1fae5" : doc.trang_thai === "Đang xử lý" ? "#fef3c7" : "#fee2e2",
+                                  color: doc.trang_thai === "Đã hoàn thành" ? "#15803d" : doc.trang_thai === "Đang xử lý" ? "#b45309" : "#b91c1c"
+                                }}>
+                                  {doc.trang_thai}
+                                </span>
+                              </td>
+                              <td style={{ padding: "12px 14px", textAlign: "center" }}>
+                                <div style={{ display: "flex", gap: "6px", justifyContent: "center" }}>
+                                  <button
+                                    onClick={() => {
+                                      setShowIncomingForm(true);
+                                      handleEditIncomingDoc(doc);
+                                    }}
+                                    style={{ padding: "4px 8px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
+                                    title="Sửa"
+                                  >
+                                    ✏️
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteIncomingDoc(doc.id)}
+                                    style={{ padding: "4px 8px", background: "#fee2e2", border: "1px solid #fca5a5", color: "#dc2626", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
+                                    title="Xóa"
+                                  >
+                                    🗑️
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })()}
+
+          {activeTab === "outgoing-docs" && (() => {
+            const filteredOutgoing = outgoingDocs.filter(doc => {
+              const matchSearch = doc.so_hieu.toLowerCase().includes(searchOutgoing.toLowerCase()) ||
+                                  doc.trich_yeu.toLowerCase().includes(searchOutgoing.toLowerCase()) ||
+                                  doc.noi_nhan.toLowerCase().includes(searchOutgoing.toLowerCase());
+              const matchType = filterOutgoingType === "ALL" || doc.loai_van_ban === filterOutgoingType;
+              return matchSearch && matchType;
+            });
+
+            return (
+              <div style={{ animation: "fadeIn 0.2s ease-out", display: "flex", flexDirection: "column", gap: "16px" }}>
+                {/* Thanh Tiêu đề & Điều khiển tối giản */}
+                <div className="tp-card" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: "17px", color: "#0f172a", fontWeight: "800" }}>
+                      📤 SỔ QUẢN LÝ VĂN BẢN ĐỊ CƠ QUAN ({filteredOutgoing.length})
+                    </h3>
+                    <span style={{ fontSize: "12px", color: "#64748b" }}>
+                      Soạn thảo, trình duyệt và theo dõi sổ phát hành văn bản đi của Phòng Văn hóa - Xã hội
+                    </span>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                    <select
+                      value={filterOutgoingType}
+                      onChange={(e) => setFilterOutgoingType(e.target.value)}
+                      style={{ padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
+                    >
+                      <option value="ALL">🔍 Tất cả loại văn bản</option>
+                      <option value="Báo cáo">Báo cáo</option>
+                      <option value="Kế hoạch">Kế hoạch</option>
+                      <option value="Thông báo">Thông báo</option>
+                      <option value="Công văn">Công văn</option>
+                      <option value="Tờ trình">Tờ trình</option>
+                    </select>
+
+                    <input
+                      type="text"
+                      placeholder="🔍 Tìm số hiệu, trích yếu, nơi nhận..."
+                      style={{ width: "240px", padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                      value={searchOutgoing}
+                      onChange={(e) => setSearchOutgoing(e.target.value)}
+                    />
+
+                    <button
+                      onClick={() => {
+                        if (showOutgoingForm && !editingOutgoingDoc) {
+                          setShowOutgoingForm(false);
+                        } else {
+                          setShowOutgoingForm(true);
+                          setEditingOutgoingDoc(null);
+                          setOutgoingForm({
+                            so_hieu: "", trich_yeu: "", noi_nhan: "", nguoi_soan: fullName || "Cán bộ chuyên trách",
+                            nguoi_duyet: "Nguyễn Thái Huy (Trưởng phòng)", ngay_ban_hanh: new Date().toISOString().substring(0, 10),
+                            loai_van_ban: "Công văn", trang_thai: "Dự thảo", file_name: "", ghi_chu: ""
+                          });
+                        }
+                      }}
+                      style={{
+                        padding: "8px 16px", borderRadius: "6px", background: "#005baa", color: "#fff",
+                        border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px"
+                      }}
+                    >
+                      {showOutgoingForm ? "❌ Đóng biểu mẫu" : "➕ Soạn thảo Văn bản đi Mới"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Form Soạn thảo / Hiệu chỉnh Văn bản Đi (Full Width Grid) */}
+                {(showOutgoingForm || editingOutgoingDoc) && (
+                  <div className="tp-card" style={{ padding: "20px", borderTop: "4px solid #005baa", background: "#fafafa" }}>
+                    <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#003d7a", fontWeight: "800" }}>
+                      {editingOutgoingDoc ? "✏️ CẬP NHẬT VĂN BẢN ĐỊ" : "📤 SOẠN THẢO & PHÁT HÀNH VĂN BẢN ĐỊ MỚI"}
+                    </h4>
+
+                    <form onSubmit={handleOutgoingSubmit}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px 16px" }}>
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Số / Ký hiệu Phát hành (*)</label>
+                          <input
+                            type="text"
+                            placeholder="Ví dụ: 34/BC-VHXH"
+                            value={outgoingForm.so_hieu}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, so_hieu: e.target.value })}
+                            required
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Loại văn bản</label>
+                          <select
+                            value={outgoingForm.loai_van_ban}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, loai_van_ban: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          >
+                            <option value="Công văn">Công văn</option>
+                            <option value="Báo cáo">Báo cáo</option>
+                            <option value="Kế hoạch">Kế hoạch</option>
+                            <option value="Thông báo">Thông báo</option>
+                            <option value="Tờ trình">Tờ trình</option>
+                          </select>
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Ngày phát hành (*)</label>
+                          <input
+                            type="date"
+                            value={outgoingForm.ngay_ban_hanh}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, ngay_ban_hanh: e.target.value })}
+                            required
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Nơi nhận văn bản (*)</label>
+                          <input
+                            type="text"
+                            placeholder="UBND Huyện, Các Thôn..."
+                            value={outgoingForm.noi_nhan}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, noi_nhan: e.target.value })}
+                            required
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Người soạn thảo</label>
+                          <input
+                            type="text"
+                            placeholder="Họ tên cán bộ soạn"
+                            value={outgoingForm.nguoi_soan}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, nguoi_soan: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Người ký / Duyệt</label>
+                          <input
+                            type="text"
+                            placeholder="Nguyễn Thái Huy"
+                            value={outgoingForm.nguoi_duyet}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, nguoi_duyet: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Trạng thái</label>
+                          <select
+                            value={outgoingForm.trang_thai}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, trang_thai: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          >
+                            <option value="Dự thảo">🟡 Dự thảo</option>
+                            <option value="Đã phát hành">🟢 Đã phát hành</option>
+                          </select>
+                        </div>
+
+                        <div className="tp-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Tên file đính kèm</label>
+                          <input
+                            type="text"
+                            placeholder="34_BC_VHXH_BHYT.pdf"
+                            value={outgoingForm.file_name}
+                            onChange={(e) => setOutgoingForm({ ...outgoingForm, file_name: e.target.value })}
+                            style={{ padding: "7px 10px", fontSize: "13px" }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="tp-form-group" style={{ marginTop: "12px" }}>
+                        <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Trích yếu nội dung phát hành (*)</label>
+                        <textarea
+                          rows="2"
+                          placeholder="Tóm tắt ngắn gọn nội dung báo cáo, kế hoạch, công văn..."
+                          value={outgoingForm.trich_yeu}
+                          onChange={(e) => setOutgoingForm({ ...outgoingForm, trich_yeu: e.target.value })}
+                          required
+                          style={{ width: "100%", padding: "8px 10px", border: "1px solid #cbd5e1", borderRadius: "6px", fontSize: "13px", fontFamily: "inherit" }}
+                        />
+                      </div>
+
+                      <div style={{ display: "flex", gap: "10px", marginTop: "16px", justifyContent: "flex-end" }}>
+                        <button
+                          type="button"
+                          className="tp-btn-cancel"
+                          onClick={() => {
+                            setShowOutgoingForm(false);
+                            setEditingOutgoingDoc(null);
+                          }}
+                          style={{ padding: "7px 16px", fontSize: "13px" }}
+                        >
+                          Hủy bỏ
+                        </button>
+                        <button type="submit" className="tp-btn-submit" style={{ padding: "7px 20px", fontSize: "13px" }}>
+                          {editingOutgoingDoc ? "💾 Lưu cập nhật văn bản đi" : "🚀 Phát hành / Lưu văn bản đi"}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                {/* Bảng Danh sách Văn bản Đi Chuẩn Cơ Quan Tối Giản */}
+                <div className="tp-card" style={{ padding: "0", overflow: "hidden" }}>
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+                      <thead>
+                        <tr style={{ background: "#f1f5f9", color: "#1e293b", borderBottom: "2px solid #cbd5e1" }}>
+                          <th style={{ padding: "12px 14px", width: "50px", textAlign: "center" }}>STT</th>
+                          <th style={{ padding: "12px 14px", width: "130px", whiteSpace: "nowrap" }}>Số / Ký hiệu</th>
+                          <th style={{ padding: "12px 14px", width: "100px", whiteSpace: "nowrap" }}>Ngày ký</th>
+                          <th style={{ padding: "12px 14px", width: "110px" }}>Loại VB</th>
+                          <th style={{ padding: "12px 14px" }}>Trích yếu nội dung & Nơi nhận</th>
+                          <th style={{ padding: "12px 14px", width: "160px" }}>Người soạn & Duyệt</th>
+                          <th style={{ padding: "12px 14px", width: "110px", textAlign: "center" }}>Trạng thái</th>
+                          <th style={{ padding: "12px 14px", width: "140px", textAlign: "center" }}>Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredOutgoing.length === 0 ? (
+                          <tr>
+                            <td colSpan="8" style={{ textAlign: "center", padding: "32px", color: "#64748b" }}>
+                              Không tìm thấy bản ghi văn bản đi nào.
+                            </td>
+                          </tr>
+                        ) : (
+                          filteredOutgoing.map((doc, idx) => (
+                            <tr
+                              key={doc.id}
+                              style={{
+                                borderBottom: "1px solid #e2e8f0",
+                                background: idx % 2 === 0 ? "#ffffff" : "#f8fafc",
+                                transition: "background 0.15s ease"
+                              }}
+                            >
+                              <td style={{ padding: "12px 14px", textAlign: "center", fontWeight: "600", color: "#64748b" }}>
+                                {idx + 1}
+                              </td>
+                              <td style={{ padding: "12px 14px", whiteSpace: "nowrap" }}>
+                                <strong style={{ color: "#003d7a", fontSize: "13.5px" }}>{doc.so_hieu}</strong>
+                              </td>
+                              <td style={{ padding: "12px 14px", whiteSpace: "nowrap", color: "#475569" }}>
+                                {doc.ngay_ban_hanh}
+                              </td>
+                              <td style={{ padding: "12px 14px" }}>
+                                <span style={{ fontSize: "12px", fontWeight: "700", color: "#1e3a8a", background: "#eff6ff", padding: "3px 8px", borderRadius: "4px", border: "1px solid #bfdbfe" }}>
+                                  {doc.loai_van_ban}
+                                </span>
+                              </td>
+                              <td style={{ padding: "12px 14px", lineHeight: "1.45" }}>
+                                <div style={{ fontWeight: "700", color: "#0f172a" }}>
+                                  {doc.trich_yeu}
+                                </div>
+                                <div style={{ fontSize: "12px", color: "#475569", marginTop: "4px" }}>
+                                  <strong>Nơi nhận:</strong> {doc.noi_nhan}
+                                </div>
+                                {doc.file_name && (
+                                  <div style={{ fontSize: "11.5px", color: "#2563eb", marginTop: "4px" }}>
+                                    📎 <u>{doc.file_name}</u>
+                                  </div>
+                                )}
+                              </td>
+                              <td style={{ padding: "12px 14px", color: "#334155" }}>
+                                <div>Soạn: <strong>{doc.nguoi_soan}</strong></div>
+                                <div style={{ color: "#64748b", fontSize: "12px", marginTop: "2px" }}>Duyệt: {doc.nguoi_duyet}</div>
+                              </td>
+                              <td style={{ padding: "12px 14px", textAlign: "center" }}>
+                                <span style={{
+                                  fontSize: "11.5px", fontWeight: "700", padding: "3px 8px", borderRadius: "4px",
+                                  background: doc.trang_thai === "Đã phát hành" ? "#d1fae5" : "#fef3c7",
+                                  color: doc.trang_thai === "Đã phát hành" ? "#15803d" : "#b45309"
+                                }}>
+                                  {doc.trang_thai}
+                                </span>
+                              </td>
+                              <td style={{ padding: "12px 14px", textAlign: "center" }}>
+                                <div style={{ display: "flex", gap: "6px", justifyContent: "center", alignItems: "center" }}>
+                                  {doc.trang_thai === "Dự thảo" && (
+                                    <button
+                                      onClick={() => handleApproveOutgoingDoc(doc.id)}
+                                      style={{ padding: "4px 8px", background: "#16a34a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "11.5px", fontWeight: "700" }}
+                                      title="Duyệt & Phát hành"
+                                    >
+                                      🚀 Duyệt
+                                    </button>
+                                  )}
+                                  <button
+                                    onClick={() => {
+                                      setShowOutgoingForm(true);
+                                      handleEditOutgoingDoc(doc);
+                                    }}
+                                    style={{ padding: "4px 8px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
+                                    title="Sửa"
+                                  >
+                                    ✏️
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteOutgoingDoc(doc.id)}
+                                    style={{ padding: "4px 8px", background: "#fee2e2", border: "1px solid #fca5a5", color: "#dc2626", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
+                                    title="Xóa"
+                                  >
+                                    🗑️
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })()}
 
           {/* ──────────────────────────────────
               TRƯỞNG PHÒNG TAB CONTENTS
@@ -2788,18 +4740,18 @@ export default function TruongPhongDashboard() {
                   {/* Top Header Banner */}
                   <div style={{
                     background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-                    color: "#ffffff", padding: "12px 18px", borderRadius: "10px",
+                    color: "#ffffff", padding: "16px 24px", borderRadius: "12px",
                     border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                    display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px"
+                    display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px"
                   }}>
                     <div>
-                      <span style={{ background: "rgba(99, 102, 241, 0.25)", color: "#c7d2fe", fontSize: "10.5px", fontWeight: "800", padding: "2px 8px", borderRadius: "12px", border: "1px solid #6366f1" }}>
+                      <span style={{ background: "rgba(99, 102, 241, 0.25)", color: "#c7d2fe", fontSize: "12px", fontWeight: "800", padding: "4px 12px", borderRadius: "12px", border: "1px solid #6366f1" }}>
                         THƯ KÝ SỐ THÔNG MINH — PHÒNG VĂN HÓA - XÃ HỘI
                       </span>
-                      <h2 style={{ margin: "4px 0 2px", fontSize: "15px", fontWeight: "900", color: "#f8fafc" }}>
+                      <h2 style={{ margin: "8px 0 4px", fontSize: "20px", fontWeight: "900", color: "#f8fafc" }}>
                         🤖 TRỢ LÝ AI NGHIỆP VỤ HÀNH CHÍNH & VĂN BẢN
                       </h2>
-                      <p style={{ margin: 0, fontSize: "11.5px", color: "#94a3b8" }}>
+                      <p style={{ margin: 0, fontSize: "13.5px", color: "#94a3b8" }}>
                         Tự động hóa 100% công tác Soạn Báo cáo, Kế hoạch, Thông báo, Tóm tắt Văn bản/Cuộc họp & Tra cứu CSDL
                       </p>
                     </div>
@@ -2807,14 +4759,14 @@ export default function TruongPhongDashboard() {
                     <div style={{
                       background: "rgba(255, 255, 255, 0.08)",
                       border: "1px solid rgba(255, 255, 255, 0.18)",
-                      padding: "4px 10px",
-                      borderRadius: "6px",
+                      padding: "6px 14px",
+                      borderRadius: "8px",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center"
                     }}>
-                      <span style={{ fontSize: "9.5px", color: "#94a3b8", fontWeight: "600", textAlign: "right" }}>Thời gian hiện tại</span>
-                      <div style={{ fontSize: "13px", fontWeight: "800", color: "#38bdf8", display: "flex", alignItems: "center", gap: "5px" }}>
+                      <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600", textAlign: "right" }}>Thời gian hiện tại</span>
+                      <div style={{ fontSize: "15px", fontWeight: "800", color: "#38bdf8", display: "flex", alignItems: "center", gap: "6px" }}>
                         <span>🕒</span>
                         <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
                       </div>
@@ -2825,7 +4777,7 @@ export default function TruongPhongDashboard() {
                   <div style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(8, 1fr)",
-                    gap: "4px",
+                    gap: "6px",
                     width: "100%"
                   }}>
                     
@@ -2834,22 +4786,23 @@ export default function TruongPhongDashboard() {
                       onClick={() => handleExecuteAIQuery("Soạn báo cáo kết quả công tác VH-XH và BHYT")}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="1. Soạn Báo cáo kết quả công tác"
                     >
-                      <span style={{ fontSize: "13px" }}>📄</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>1. Soạn Báo cáo</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📄</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>1. Soạn Báo cáo</span>
                     </div>
 
                     {/* Card 2: Soạn Kế hoạch */}
@@ -2857,22 +4810,23 @@ export default function TruongPhongDashboard() {
                       onClick={() => handleExecuteAIQuery("Soạn kế hoạch công tác trọng tâm")}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="2. Soạn Kế hoạch công tác"
                     >
-                      <span style={{ fontSize: "13px" }}>📋</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>2. Soạn Kế hoạch</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📋</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>2. Soạn Kế hoạch</span>
                     </div>
 
                     {/* Card 3: Soạn Thông báo */}
@@ -2880,22 +4834,23 @@ export default function TruongPhongDashboard() {
                       onClick={() => handleExecuteAIQuery("Soạn thông báo nội bộ cuộc họp khẩn")}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="3. Soạn Thông báo nội bộ / khẩn"
                     >
-                      <span style={{ fontSize: "13px" }}>📣</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>3. Soạn Thông báo</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>🔔</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>3. Soạn Thông báo</span>
                     </div>
 
                     {/* Card 4: Nội dung Tuyên truyền */}
@@ -2903,22 +4858,23 @@ export default function TruongPhongDashboard() {
                       onClick={() => handleExecuteAIQuery("Soạn nội dung tuyên truyền BHYT và khẩu hiệu slogan")}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="4. Bài viết Tuyên truyền & Slogan"
                     >
-                      <span style={{ fontSize: "13px" }}>✍️</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>4. Tuyên truyền</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📣</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>4. Tuyên truyền</span>
                     </div>
 
                     {/* Card 5: Tóm tắt Văn bản File */}
@@ -2926,22 +4882,23 @@ export default function TruongPhongDashboard() {
                       onClick={() => document.getElementById("ai-doc-file-input").click()}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="5. Tóm tắt Văn bản PDF/Word"
                     >
-                      <span style={{ fontSize: "13px" }}>📂</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>5. Tóm tắt File</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📁</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>5. Tóm tắt File</span>
                     </div>
 
                     {/* Card 6: Tóm tắt Cuộc họp */}
@@ -2949,22 +4906,23 @@ export default function TruongPhongDashboard() {
                       onClick={() => handleExecuteAIQuery("Soạn biên bản cuộc họp & tóm tắt chỉ đạo phân công cán bộ")}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="6. Tóm tắt Cuộc họp & Biên bản"
                     >
-                      <span style={{ fontSize: "13px" }}>👥</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>6. Tóm tắt Họp</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>👥</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>6. Tóm tắt Họp</span>
                     </div>
 
                     {/* Card 7: Tìm kiếm Văn bản */}
@@ -2972,22 +4930,23 @@ export default function TruongPhongDashboard() {
                       onClick={() => handleExecuteAIQuery("Tìm kiếm văn bản BHYT và quyết định liên quan")}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="7. Tìm kiếm Văn bản CSDL"
                     >
-                      <span style={{ fontSize: "13px" }}>🔍</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>7. Tìm Văn bản</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>🔍</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>7. Tìm Văn bản</span>
                     </div>
 
                     {/* Card 8: Gợi ý Công việc */}
@@ -2995,28 +4954,26 @@ export default function TruongPhongDashboard() {
                       onClick={() => handleExecuteAIQuery("Gợi ý công việc ưu tiên và nhắc việc quá hạn hôm nay")}
                       style={{
                         background: "#ffffff",
-                        padding: "6px 2px",
-                        borderRadius: "6px",
+                        padding: "6px 4px",
+                        borderRadius: "8px",
                         border: "1px solid #cbd5e1",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "3px",
+                        gap: "4px",
                         transition: "all 0.2s",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        minWidth: 0
                       }}
                       className="tp-hover-card"
                       title="8. Gợi ý Công việc ưu tiên hôm nay"
                     >
-                      <span style={{ fontSize: "13px" }}>💡</span>
-                      <span style={{ color: "#1e3a8a", fontSize: "11px", fontWeight: "800", whiteSpace: "nowrap" }}>8. Gợi ý Việc</span>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>💡</span>
+                      <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>8. Gợi ý Việc</span>
                     </div>
 
                   </div>
-
-
-
 
                   {/* Hidden File Input for PDF/Word Upload */}
                   <input
@@ -3034,19 +4991,18 @@ export default function TruongPhongDashboard() {
                   />
 
                   {/* CHAT TERMINAL & ACTION PREVIEWS */}
-                  <div style={{ display: "grid", gridTemplateColumns: aiGeneratedDocContent ? "1fr 1fr" : "1fr", gap: "12px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: aiGeneratedDocContent ? "1fr 1fr" : "1fr", gap: "16px" }}>
                     
                     {/* Left: Interactive Chat Terminal */}
-                    <div className="tp-card" style={{ display: "flex", flexDirection: "column", minHeight: "340px", padding: "12px 14px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "8px", marginBottom: "8px" }}>
-                        <h3 style={{ margin: 0, fontSize: "13.5px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
-                          💬 Khung Tương tác Thư ký số AI (Voice & Text)
+                    <div className="tp-card" style={{ display: "flex", flexDirection: "column", minHeight: "450px", padding: "16px 20px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "10px", marginBottom: "12px" }}>
+                        <h3 style={{ margin: 0, fontSize: "15px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
+                          💭 KHUNG TƯƠNG TÁC THƯ KÝ SỐ AI (VOICE & TEXT)
                         </h3>
                       </div>
 
-
                       {/* Messages Container */}
-                      <div style={{ flex: 1, overflowY: "auto", maxHeight: "250px", paddingRight: "4px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <div style={{ flex: 1, overflowY: "auto", maxHeight: "360px", paddingRight: "6px", display: "flex", flexDirection: "column", gap: "12px" }}>
                         {aiChatMessages.map((msg) => (
                           <div
                             key={msg.id}
@@ -3055,12 +5011,12 @@ export default function TruongPhongDashboard() {
                               maxWidth: "88%",
                               background: msg.sender === "user" ? "#1e3a8a" : "#f1f5f9",
                               color: msg.sender === "user" ? "#ffffff" : "#1e293b",
-                              padding: "8px 12px", borderRadius: "8px",
-                              fontSize: "12px", lineHeight: "1.5",
+                              padding: "12px 16px", borderRadius: "10px",
+                              fontSize: "14px", lineHeight: "1.6",
                               boxShadow: "0 1px 3px rgba(0,0,0,0.04)"
                             }}
                           >
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3px", fontSize: "10.5px", opacity: 0.75 }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px", fontSize: "12px", opacity: 0.75 }}>
                               <strong>{msg.sender === "user" ? fullName : "🤖 AI Thư ký số"}</strong>
                               <span>{msg.time}</span>
                             </div>
@@ -3069,7 +5025,7 @@ export default function TruongPhongDashboard() {
                               <button
                                 type="button"
                                 onClick={() => handleTextToSpeech(msg.text)}
-                                style={{ background: "none", border: "none", color: "#2563eb", fontSize: "10.5px", fontWeight: "700", cursor: "pointer", marginTop: "4px", padding: 0 }}
+                                style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", marginTop: "6px", padding: 0 }}
                               >
                                 🔊 Đọc thành tiếng
                               </button>
@@ -3084,10 +5040,10 @@ export default function TruongPhongDashboard() {
                           e.preventDefault();
                           handleExecuteAIQuery();
                         }}
-                        style={{ marginTop: "10px", borderTop: "1px solid #e2e8f0", paddingTop: "8px" }}
+                        style={{ marginTop: "14px", borderTop: "1px solid #e2e8f0", paddingTop: "12px" }}
                       >
                         {/* Preset Tags */}
-                        <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginBottom: "6px" }}>
+                        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
                           {[
                             "Soạn báo cáo tuần",
                             "Soạn kế hoạch tuyên truyền BHYT",
@@ -3099,18 +5055,18 @@ export default function TruongPhongDashboard() {
                               key={idx}
                               type="button"
                               onClick={() => handleExecuteAIQuery(chip)}
-                              style={{ background: "#f8fafc", color: "#475569", border: "1px solid #cbd5e1", padding: "2px 6px", borderRadius: "4px", fontSize: "10.5px", fontWeight: "600", cursor: "pointer" }}
+                              style={{ background: "#f8fafc", color: "#475569", border: "1px solid #cbd5e1", padding: "5px 10px", borderRadius: "6px", fontSize: "12.5px", fontWeight: "600", cursor: "pointer" }}
                             >
                               + {chip}
                             </button>
                           ))}
                         </div>
 
-                        <div style={{ display: "flex", gap: "6px" }}>
+                        <div style={{ display: "flex", gap: "8px" }}>
                           <button
                             type="button"
                             onClick={() => document.getElementById("ai-doc-file-input").click()}
-                            style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "6px", padding: "0 10px", cursor: "pointer", fontSize: "14px" }}
+                            style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "8px 14px", cursor: "pointer", fontSize: "16px" }}
                             title="Tải tệp PDF/Word để AI tóm tắt"
                           >
                             📎
@@ -3120,11 +5076,11 @@ export default function TruongPhongDashboard() {
                             placeholder="Nhập yêu cầu nghiệp vụ (soạn báo cáo, kế hoạch, thông báo, tìm văn bản...)..."
                             value={aiInputQuery}
                             onChange={(e) => setAiInputQuery(e.target.value)}
-                            style={{ flex: 1, padding: "6px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}
+                            style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px" }}
                           />
                           <button
                             type="submit"
-                            style={{ background: "#1e3a8a", color: "#ffffff", border: "none", padding: "6px 14px", borderRadius: "6px", fontSize: "12px", fontWeight: "800", cursor: "pointer" }}
+                            style={{ background: "#1e3a8a", color: "#ffffff", border: "none", padding: "10px 20px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", cursor: "pointer" }}
                           >
                             Gửi
                           </button>
@@ -3133,28 +5089,26 @@ export default function TruongPhongDashboard() {
 
                     </div>
 
-
                     {/* Right: Generated Document Preview & Export Section */}
                     {aiGeneratedDocContent && (
-                      <div className="tp-card" style={{ display: "flex", flexDirection: "column", background: "#f8fafc", border: "1.5px solid #3b82f6", padding: "12px 14px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #cbd5e1", paddingBottom: "6px", marginBottom: "8px" }}>
-                          <h3 style={{ margin: 0, fontSize: "13px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
+                      <div className="tp-card" style={{ display: "flex", flexDirection: "column", background: "#f8fafc", border: "1.5px solid #3b82f6", padding: "16px 20px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #cbd5e1", paddingBottom: "10px", marginBottom: "12px" }}>
+                          <h3 style={{ margin: 0, fontSize: "15px", fontWeight: "800", color: "#1e3a8a", border: "none", padding: 0 }}>
                             📄 NỘI DUNG VĂN BẢN ĐÃ SOẠN THẢO (XUẤT MÁY)
                           </h3>
                           <button
                             onClick={() => setAiGeneratedDocContent("")}
-                            style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontWeight: "800", fontSize: "12px" }}
+                            style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontWeight: "800", fontSize: "13px" }}
                           >
                             ✕
                           </button>
                         </div>
 
-                        <div style={{ flex: 1, background: "#ffffff", padding: "10px 12px", borderRadius: "6px", border: "1px solid #e2e8f0", fontSize: "12px", lineHeight: "1.5", whiteSpace: "pre-wrap", overflowY: "auto", maxHeight: "250px", color: "#1e293b" }}>
+                        <div style={{ flex: 1, background: "#ffffff", padding: "14px 16px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "14px", lineHeight: "1.6", whiteSpace: "pre-wrap", overflowY: "auto", maxHeight: "360px", color: "#1e293b" }}>
                           {aiGeneratedDocContent}
                         </div>
 
-
-                        <div style={{ display: "flex", gap: "6px", marginTop: "8px", justifyContent: "flex-end" }}>
+                        <div style={{ display: "flex", gap: "8px", marginTop: "12px", justifyContent: "flex-end" }}>
                           <button
                             type="button"
                             onClick={() => {
@@ -3165,21 +5119,20 @@ export default function TruongPhongDashboard() {
                               a.download = `${aiGeneratedDocTitle || "Van_Ban_VHXH"}.doc`;
                               a.click();
                             }}
-                            style={{ background: "#0284c7", color: "#fff", border: "none", padding: "5px 10px", borderRadius: "5px", fontWeight: "700", cursor: "pointer", fontSize: "11.5px" }}
+                            style={{ background: "#0284c7", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "13px" }}
                           >
                             📥 Xuất Word (.doc)
                           </button>
                           <button
                             type="button"
                             onClick={() => alert("Đã in văn bản ra file PDF chính thức!")}
-                            style={{ background: "#15803d", color: "#fff", border: "none", padding: "5px 10px", borderRadius: "5px", fontWeight: "700", cursor: "pointer", fontSize: "11.5px" }}
+                            style={{ background: "#15803d", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "13px" }}
                           >
                             📄 Xuất PDF
                           </button>
                         </div>
                       </div>
                     )}
-
 
                   </div>
 

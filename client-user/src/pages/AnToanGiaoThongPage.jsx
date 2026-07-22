@@ -6,7 +6,7 @@ const DATA = {
   subtitle: 'Chung tay xây dựng văn hóa giao thông an toàn, văn minh trên địa bàn xã Đăk Pxi',
   content:
     'Xã Đăk Pxi có địa hình đường nông thôn nhiều đèo dốc quanh co, sương mù và đường trơn trượt vào mùa mưa lũ. Để bảo vệ tính mạng, sức khỏe và tài sản của bản thân cùng gia đình, Phòng Văn hóa - Xã hội UBND xã Đăk Pxi đề nghị toàn thể bà con nhân dân, học sinh và các lực lượng tham gia giao thông nâng cao tinh thần tự giác, chấp hành nghiêm các quy định về an toàn giao thông đường bộ.',
-  
+
   // 📸 CƠ CẤU MỚI: TỪNG BƯỚC HƯỚNG DẪN ĐI LIỀN VỚI ẢNH MINH HỌA TO RỘNG
   visualSteps: [
     {
@@ -80,7 +80,7 @@ const DATA = {
 
 export default function AnToanGiaoThongPage() {
   const [activeImg, setActiveImg] = useState(null);
-  const [speaking, setSpeaking]   = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const [sloganIdx, setSloganIdx] = useState(0);
 
   useEffect(() => {
@@ -125,13 +125,6 @@ export default function AnToanGiaoThongPage() {
             <span className="atgt-header-badge">🚦 TUYÊN TRUYỀN AN TOÀN GIAO THÔNG</span>
             <h1 className="atgt-title">{DATA.title}</h1>
             <p className="atgt-subtitle">{DATA.subtitle}</p>
-            <div className="atgt-meta-tags">
-              <span>🏛️ UBND xã Đăk Pxi</span>
-              <span className="sep">•</span>
-              <span>📋 Phòng Văn hóa - Xã hội</span>
-              <span className="sep">•</span>
-              <span>🏔️ Tỉnh Quảng Ngãi</span>
-            </div>
           </div>
 
           <div className="atgt-header-right">
@@ -175,7 +168,7 @@ export default function AnToanGiaoThongPage() {
               <div className="atgt-visual-steps-list">
                 {DATA.visualSteps.map((step, i) => (
                   <div key={i} className={`atgt-vstep-card step-${i + 1}`}>
-                    
+
                     {/* Header thông tin bước */}
                     <div className="atgt-vstep-head">
                       <span className="atgt-vstep-stt">Bước {step.stt}</span>
@@ -194,7 +187,7 @@ export default function AnToanGiaoThongPage() {
                     {/* Nội dung chi tiết & Điểm cần nhớ */}
                     <div className="atgt-vstep-content">
                       <p className="atgt-vstep-desc">{step.desc}</p>
-                      
+
                       <div className="atgt-vstep-highlights">
                         <strong>📌 Lưu ý quan trọng cho bà con:</strong>
                         <ul>

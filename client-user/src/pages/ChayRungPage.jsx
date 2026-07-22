@@ -3,7 +3,7 @@ import './ChayRungPage.css';
 
 const DATA = {
   title: 'Phòng chống cháy rừng',
-  subtitle: 'Ủy ban nhân dân xã Đăk Pxi — Tỉnh Quảng Ngãi',
+  subtitle: 'Phòng Văn hóa - Xã hội xã Đăk Pxi',
   images: [
     {
       src: '/huong-dan/chay-rung-1.png',
