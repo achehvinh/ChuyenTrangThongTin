@@ -412,6 +412,47 @@ export default function BaiVietDetailPage() {
                 </div>
               )}
 
+              {/* 🎧 KHUNG FILE ÂM THANH / PHÁT THANH TUYÊN TRUYỀN CHÍNH THỨC (NẾU CÓ AUDIO) */}
+              {bv.audio && (
+                <div className="bvd-audio-player-container" style={{
+                  margin: '20px 0 26px',
+                  background: 'linear-gradient(135deg, #064e3b 0%, #047857 100%)',
+                  borderRadius: '16px',
+                  padding: '18px 22px',
+                  color: '#ffffff',
+                  boxShadow: '0 10px 28px rgba(4, 120, 87, 0.25)',
+                  border: '1.5px solid #a7f3d0'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '14px',
+                    fontWeight: '800',
+                    marginBottom: '12px',
+                    paddingBottom: '8px',
+                    borderBottom: '1px solid rgba(255,255,255,0.2)'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '22px' }}>📻</span>
+                      <span style={{ color: '#ffffff', letterSpacing: '0.3px' }}>FILE ÂM THANH / BẢN TIN PHÁT THANH BÀI VIẾT</span>
+                    </div>
+                    <span style={{ fontSize: '12px', color: '#6ee7b7', background: 'rgba(255,255,255,0.15)', padding: '4px 12px', borderRadius: '20px', fontWeight: '800' }}>
+                      🎧 Audio Tuyên Truyền
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <audio controls src={bv.audio} style={{ width: '100%', outline: 'none', height: '42px', borderRadius: '8px' }} />
+                  </div>
+
+                  <div style={{ marginTop: '10px', fontSize: '12.5px', color: '#ecfdf5', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span>🔊</span>
+                    <span>Kính mời bà con bấm nút Play để nghe bản tin âm thanh tuyên truyền phát thanh.</span>
+                  </div>
+                </div>
+              )}
+
               {/* Phần Ảnh & Nội dung Chữ: Tự động điều chỉnh khi chỉ có Video hoặc có cả Ảnh */}
               {(() => {
                 const allImages = [

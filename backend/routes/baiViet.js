@@ -18,6 +18,13 @@ const storage = new CloudinaryStorage({
         allowed_formats: ['mp4', 'mov', 'webm'],
       };
     }
+    if (file.fieldname === 'audio') {
+      return {
+        folder: 'baiviet/audio',
+        resource_type: 'video', // Cloudinary processes audio files under 'video' resource_type
+        allowed_formats: ['mp3', 'wav', 'm4a', 'ogg', 'aac', 'flac', 'webm'],
+      };
+    }
     if (file.fieldname === 'tai_lieu_files') {
       return {
         folder: 'baiviet/tai-lieu',
@@ -43,6 +50,7 @@ const uploadFields = upload.fields([
   { name: 'anh', maxCount: 1 },
   { name: 'anh_phu', maxCount: 20 },
   { name: 'video', maxCount: 1 },
+  { name: 'audio', maxCount: 1 },
   { name: 'tai_lieu_files', maxCount: 10 }, // 📄 Upload PDF/DOCX
 ]);
 
@@ -75,7 +83,7 @@ router.get('/admin/all', authAdmin, async (req, res) => {
 
 router.post('/', authAdmin, uploadFields, async (req, res) => {
   try {
-    const { tieu_de, mo_ta, noi_dung, danh_muc, trang_thai, nguoi_dang, video_url, chu_chay } = req.body;
+    const { tieu_de, mo_ta, noi_dung, danh_muc, trang_thai, nguoi_dang, video_url, audio_url, chu_chay } = req.body;
 
     if (!tieu_de?.trim() || !noi_dung?.trim()) {
       return res.status(400).json({ message: 'Tiêu đề và nội dung không được trống.' });
@@ -84,6 +92,7 @@ router.post('/', authAdmin, uploadFields, async (req, res) => {
     const anh_dai_dien = req.files?.anh?.[0]?.path || '';
     const anh_phu = (req.files?.anh_phu || []).map(f => f.path);
     const video = req.files?.video?.[0]?.path || video_url || '';
+    const audio = req.files?.audio?.[0]?.path || audio_url || '';
 
     // Parse tai_lieu từ JSON string hoặc từ file upload
     let tai_lieu = [];
@@ -106,7 +115,7 @@ router.post('/', authAdmin, uploadFields, async (req, res) => {
       danh_muc:   danh_muc   || 'su-kien',
       trang_thai: trang_thai || 'da-dang',
       nguoi_dang: nguoi_dang || 'Admin',
-      anh_dai_dien, anh_phu, video,
+      anh_dai_dien, anh_phu, video, audio,
       chu_chay: (chu_chay || '').trim(),
       tai_lieu,
     });
@@ -121,6 +130,7 @@ router.put('/:id', authAdmin, uploadFields, async (req, res) => {
   try {
     const update = { ...req.body };
     delete update.video_url; // xoá field thô, gán lại đúng tên
+    delete update.audio_url;
 
     if (req.files?.anh?.[0]) {
       update.anh_dai_dien = req.files.anh[0].path;
@@ -132,6 +142,12 @@ router.put('/:id', authAdmin, uploadFields, async (req, res) => {
       update.video = req.files.video[0].path;
     } else if (req.body.video_url !== undefined) {
       update.video = req.body.video_url;
+    }
+
+    if (req.files?.audio?.[0]) {
+      update.audio = req.files.audio[0].path;
+    } else if (req.body.audio_url !== undefined) {
+      update.audio = req.body.audio_url;
     }
 
     const bv = await BaiViet.findByIdAndUpdate(

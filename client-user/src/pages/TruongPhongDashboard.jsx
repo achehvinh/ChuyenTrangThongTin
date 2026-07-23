@@ -860,6 +860,14 @@ export default function TruongPhongDashboard() {
     trang_thai: "da-dang",
     chu_chay: "",
   });
+  const [coverImage, setCoverImage] = useState(null);
+  const [coverPreview, setCoverPreview] = useState("");
+  const [secondaryImages, setSecondaryImages] = useState([]);
+  const [secondaryPreviews, setSecondaryPreviews] = useState([]);
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoPreview, setVideoPreview] = useState("");
+  const [audioFile, setAudioFile] = useState(null);
+  const [audioPreview, setAudioPreview] = useState("");
 
   // ── TRỢ LÝ AI NGHIỆP VỤ PHÒNG VH-XH STATES & HANDLERS ──
   const [aiActiveSubTab, setAiActiveSubTab] = useState("all");
@@ -979,14 +987,6 @@ export default function TruongPhongDashboard() {
       setAiChatMessages((prev) => [...prev, aiMsg]);
     }, 800);
   };
-
-  // File upload states
-  const [coverImage, setCoverImage] = useState(null);
-  const [coverPreview, setCoverPreview] = useState("");
-  const [secondaryImages, setSecondaryImages] = useState([]);
-  const [secondaryPreviews, setSecondaryPreviews] = useState([]);
-  const [videoFile, setVideoFile] = useState(null);
-  const [videoPreview, setVideoPreview] = useState("");
 
   // Tab: Feedback Management (Citizens feedback mock data for realism)
   const [replyInputs, setReplyInputs] = useState({});
@@ -1401,6 +1401,9 @@ export default function TruongPhongDashboard() {
       if (videoFile) {
         fd.append("video", videoFile);
       }
+      if (audioFile) {
+        fd.append("audio", audioFile);
+      }
 
       if (editingArticle) {
         await axios.put(`${BASE_URL}/api/v1/bai-viet/${editingArticle._id}`, fd, {
@@ -1429,6 +1432,8 @@ export default function TruongPhongDashboard() {
       setSecondaryPreviews([]);
       setVideoFile(null);
       setVideoPreview("");
+      setAudioFile(null);
+      setAudioPreview("");
 
       fetchArticles();
     } catch (err) {
@@ -1448,6 +1453,10 @@ export default function TruongPhongDashboard() {
       trang_thai: item.trang_thai || "da-dang",
       chu_chay: item.chu_chay || "",
     });
+    setCoverPreview(item.anh_dai_dien || "");
+    setSecondaryPreviews(item.anh_phu || []);
+    setVideoPreview(item.video || "");
+    setAudioPreview(item.audio || "");
   };
 
   const handleDeleteArticle = async (id) => {
@@ -4260,10 +4269,10 @@ export default function TruongPhongDashboard() {
                         </div>
                       </div>
 
-                      {/* Hàng 3: Media Upload Mini Bar (Nút tải Ảnh bìa, Album, Video nằm ngang) */}
+                      {/* Hàng 3: Media Upload Mini Bar (Nút tải Ảnh bìa, Album, Video, Âm thanh nằm ngang) */}
                       <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1.5px dashed #cbd5e1", marginBottom: "14px" }}>
                         <div style={{ fontSize: "13px", fontWeight: "800", color: "#334155", marginBottom: "10px" }}>
-                          📁 Đính kèm File phương tiện truyền thông (Ảnh bìa, Album nhiều ảnh, Video)
+                          📁 Đính kèm File phương tiện truyền thông (Ảnh bìa, Album nhiều ảnh, Video, Âm thanh)
                         </div>
 
                         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
@@ -4308,10 +4317,23 @@ export default function TruongPhongDashboard() {
                           <label htmlFor="video-upload-input" style={{ background: videoPreview ? "#fce7f3" : "#ffffff", border: "1.5px solid #db2777", padding: "8px 16px", borderRadius: "20px", fontSize: "13px", fontWeight: "800", cursor: "pointer", color: videoPreview ? "#be185d" : "#db2777", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
                             📹 {videoPreview ? "Đã chọn Video ✓" : "+ Đính kèm Video tuyên truyền"}
                           </label>
+
+                          {/* Nút 4: File Âm thanh */}
+                          <input
+                            type="file" accept="audio/*"
+                            id="audio-upload-input" style={{ display: "none" }}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) { setAudioFile(file); setAudioPreview(URL.createObjectURL(file)); }
+                            }}
+                          />
+                          <label htmlFor="audio-upload-input" style={{ background: audioPreview ? "#f0fdf4" : "#ffffff", border: "1.5px solid #16a34a", padding: "8px 16px", borderRadius: "20px", fontSize: "13px", fontWeight: "800", cursor: "pointer", color: audioPreview ? "#15803d" : "#16a34a", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
+                            🎧 {audioPreview ? "Đã chọn File Âm thanh ✓" : "+ Đính kèm File Âm thanh"}
+                          </label>
                         </div>
 
                         {/* Hiển thị Xem trước siêu nhỏ gọn */}
-                        {(coverPreview || secondaryPreviews.length > 0 || videoPreview) && (
+                        {(coverPreview || secondaryPreviews.length > 0 || videoPreview || audioPreview) && (
                           <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "12px", paddingTop: "8px", borderTop: "1px solid #e2e8f0", overflowX: "auto" }}>
                             {coverPreview && (
                               <div style={{ position: "relative", width: "55px", height: "55px", borderRadius: "8px", overflow: "hidden", border: "2px solid #0284c7", flexShrink: 0 }}>
@@ -4332,6 +4354,13 @@ export default function TruongPhongDashboard() {
                               <div style={{ position: "relative", width: "90px", height: "55px", borderRadius: "8px", overflow: "hidden", border: "2px solid #db2777", background: "#000", flexShrink: 0 }}>
                                 <video src={videoPreview} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                 <button type="button" onClick={() => { setVideoFile(null); setVideoPreview(""); }} style={{ position: "absolute", top: 0, right: 0, background: "rgba(0,0,0,0.8)", color: "#fff", border: "none", width: "18px", height: "18px", fontSize: "10px", cursor: "pointer" }}>✕</button>
+                              </div>
+                            )}
+                            {audioPreview && (
+                              <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "#f0fdf4", border: "1.5px solid #16a34a", padding: "6px 12px", borderRadius: "8px", flexShrink: 0 }}>
+                                <span style={{ fontSize: "18px" }}>🔊</span>
+                                <audio controls src={audioPreview} style={{ height: "32px", maxWidth: "220px" }} />
+                                <button type="button" onClick={() => { setAudioFile(null); setAudioPreview(""); }} style={{ background: "rgba(0,0,0,0.8)", color: "#fff", border: "none", width: "18px", height: "18px", borderRadius: "50%", fontSize: "10px", cursor: "pointer" }}>✕</button>
                               </div>
                             )}
                           </div>
@@ -4406,6 +4435,11 @@ export default function TruongPhongDashboard() {
                               <tr key={art._id}>
                                 <td>
                                   <strong style={{ color: "#003d7a", fontSize: "14px" }}>{art.tieu_de}</strong>
+                                  <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "3px" }}>
+                                    {art.anh_dai_dien && <span style={{ fontSize: "11px", background: "#e0f2fe", color: "#0369a1", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>🖼️ Ảnh</span>}
+                                    {art.video && <span style={{ fontSize: "11px", background: "#fce7f3", color: "#be185d", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>📹 Video</span>}
+                                    {art.audio && <span style={{ fontSize: "11px", background: "#f0fdf4", color: "#15803d", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>🎧 Âm thanh</span>}
+                                  </div>
                                   {art.mo_ta && (
                                     <div style={{ fontSize: "12.5px", color: "#64748b", marginTop: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "450px" }}>
                                       {art.mo_ta}
@@ -4561,6 +4595,40 @@ export default function TruongPhongDashboard() {
                                 </div>
                               ) : (
                                 <div style={{ color: "#64748b", fontSize: "13px" }}>🖼️ Chọn ảnh bìa minh họa</div>
+                              )}
+                            </label>
+                          </div>
+                        </div>
+
+                        {/* Audio File Upload */}
+                        <div className="tp-form-group">
+                          <label>File Âm thanh / Phát thanh tuyên truyền</label>
+                          <div className="tp-file-uploader-box">
+                            <input
+                              type="file"
+                              accept="audio/*"
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setAudioFile(file);
+                                  setAudioPreview(URL.createObjectURL(file));
+                                }
+                              }}
+                              id="atgt-audio-upload-tp"
+                              style={{ display: "none" }}
+                            />
+                            <label htmlFor="atgt-audio-upload-tp" className="tp-uploader-label" style={{ display: "block", border: "1px dashed #16a34a", borderRadius: "8px", padding: "10px 14px", textAlign: "center", cursor: "pointer", background: "#f0fdf4" }}>
+                              {audioPreview ? (
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+                                  <audio controls src={audioPreview} style={{ height: "30px", flex: 1 }} />
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAudioFile(null); setAudioPreview(""); }}
+                                    style={{ background: "rgba(0,0,0,0.6)", color: "#fff", border: "none", borderRadius: "50%", width: "20px", height: "20px", cursor: "pointer" }}
+                                  >✕</button>
+                                </div>
+                              ) : (
+                                <div style={{ color: "#16a34a", fontSize: "13px", fontWeight: "700" }}>🎧 + Chọn File Âm thanh phát thanh (.mp3, .wav)</div>
                               )}
                             </label>
                           </div>

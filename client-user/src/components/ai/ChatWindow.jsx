@@ -340,14 +340,55 @@ export default function ChatWindow() {
     setMessages(prev => [...prev, { text: msg, sender: 'user', suggestions: [] }]);
     setLoading(true);
 
+    // 1. ƯU TIÊN KIỂM TRA CƠ SỞ TRI THỨC ĐÃ ĐƯỢC ADMIN NHẬP BẰNG HỆ THỐNG CSDLS
+    let matchedAnswer = null;
     try {
-      // Đính kèm ngữ cảnh Trợ lý AI Phòng Văn hóa - Xã hội
+      const savedKn = localStorage.getItem('bhyt_knowledge_db');
+      if (savedKn) {
+        const knList = JSON.parse(savedKn);
+        if (Array.isArray(knList) && knList.length > 0) {
+          const qLower = msg.toLowerCase().trim();
+          const found = knList.find(item => {
+            if (item.active === false || item.status === 'Nháp') return false;
+            const tLower = (item.title || '').toLowerCase();
+            const kwLower = (item.keywords || '').toLowerCase();
+            const kwList = kwLower.split(',').map(x => x.trim()).filter(Boolean);
+            return kwList.some(kw => qLower.includes(kw) || kw.includes(qLower)) ||
+                   tLower.includes(qLower) ||
+                   qLower.includes(tLower);
+          });
+          if (found) {
+            matchedAnswer = found.content;
+            found.usageCount = (found.usageCount || 0) + 1;
+            localStorage.setItem('bhyt_knowledge_db', JSON.stringify(knList));
+            axios.post(`https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/knowledge/${found._id}/use`).catch(() => {});
+          }
+        }
+      }
+    } catch (e) {}
+
+    if (matchedAnswer) {
+      const suggestions = findSuggestions(msg + ' ' + matchedAnswer);
+      setMessages(prev => {
+        const newMsgs = [...prev, { text: matchedAnswer, sender: 'ai', suggestions }];
+        if (autoRead) {
+          const newIndex = newMsgs.length - 1;
+          setTimeout(() => speakText(matchedAnswer, newIndex), 100);
+        }
+        return newMsgs;
+      });
+      setLoading(false);
+      return;
+    }
+
+    // 2. NẾU KHÔNG CÓ TRONG KNOWLEDGE BASE, GỌI API SERVER HOẶC TRẢ VỀ CÂU TRẢ LỜI QUY ĐỊNH
+    try {
       const contextPrompt = `[Trợ lý AI Phòng Văn hóa - Xã hội | Đang xem: ${activeContext.title}] ${msg}`;
       const res = await axios.post(
         'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/chat',
         { message: contextPrompt }
       );
-      const reply = res.data.reply || 'Xin lỗi, tôi chưa hiểu câu hỏi. Bà con thử hỏi lại nhé!';
+      const reply = res.data.reply || "Xin lỗi, hiện tại tôi chưa có dữ liệu về nội dung này trong cơ sở tri thức của Phòng Văn hóa - Xã hội.";
       const suggestions = findSuggestions(msg + ' ' + reply);
 
       setMessages(prev => {
@@ -360,12 +401,12 @@ export default function ChatWindow() {
       });
     } catch {
       const suggestions = findSuggestions(msg);
+      const fallbackMsg = "Xin lỗi, hiện tại tôi chưa có dữ liệu về nội dung này trong cơ sở tri thức của Phòng Văn hóa - Xã hội.";
       setMessages(prev => {
-        const reply = 'Xin lỗi, hệ thống đang bận. Bà con thử lại sau hoặc xem trực tiếp nội dung bên dưới nhé!';
-        const newMsgs = [...prev, { text: reply, sender: 'ai', suggestions }];
+        const newMsgs = [...prev, { text: fallbackMsg, sender: 'ai', suggestions }];
         if (autoRead) {
           const newIndex = newMsgs.length - 1;
-          setTimeout(() => speakText(reply, newIndex), 100);
+          setTimeout(() => speakText(fallbackMsg, newIndex), 100);
         }
         return newMsgs;
       });

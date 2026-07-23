@@ -13,6 +13,7 @@ const BaiVietSchema = new mongoose.Schema({
   anh_dai_dien: { type: String, default: '' },           // URL ảnh đại diện
   anh_phu:      [{ type: String }],                      // mảng ảnh phụ
   video:        { type: String, default: '' },
+  audio:        { type: String, default: '' },
   chu_chay:     { type: String, default: '' },           // chữ chạy tùy chọn
   tai_lieu:     { type: [TaiLieuSchema], default: [] },  // 📄 File tải về (PDF, DOCX…)
 

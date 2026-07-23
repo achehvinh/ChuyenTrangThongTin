@@ -117,6 +117,9 @@ export default function BaiVietPage() {
   const [video, setVideo] = useState(null);
   const [videoPreview, setVideoPreview] = useState('');
   const fileRefVideo = useRef();
+  const [audio, setAudio] = useState(null);
+  const [audioPreview, setAudioPreview] = useState('');
+  const fileRefAudio = useRef();
   const [uploadProgress, setUploadProgress] = useState(0);
 
 
@@ -162,6 +165,8 @@ export default function BaiVietPage() {
   setShowForm(true);
   setVideo(null);
   setVideoPreview('');
+  setAudio(null);
+  setAudioPreview('');
 }
 
 function handleVideoChange(e) {
@@ -173,6 +178,13 @@ function handleVideoChange(e) {
   }
   setVideo(file);
   setVideoPreview(URL.createObjectURL(file));
+}
+
+function handleAudioChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  setAudio(file);
+  setAudioPreview(URL.createObjectURL(file));
 }
 
 function openEdit(bv) {
@@ -194,6 +206,8 @@ function openEdit(bv) {
   setShowForm(true);
   setVideoPreview(bv.video || '');
   setVideo(null);
+  setAudioPreview(bv.audio || '');
+  setAudio(null);
 }
 
   function handleAnhChange(e) {
@@ -243,6 +257,11 @@ async function handleSubmit(e) {
     if (anh) fd.append('anh', anh);
     anhPhu.forEach(file => fd.append('anh_phu', file));
     fd.append('video_url', videoUrl);
+    if (audio) {
+      fd.append('audio', audio);
+    } else if (editing && audioPreview) {
+      fd.append('audio_url', audioPreview);
+    }
 
     if (editing) {
       await axios.put(`${API}/bai-viet/${editing._id}`, fd, { headers: { ...authHeader() } });
@@ -445,6 +464,30 @@ async function handleSubmit(e) {
   accept="video/*"
   style={{ display: 'none' }}
   onChange={handleVideoChange}
+/>
+
+<div className="bv-compose-video">
+  {audioPreview ? (
+    <div className="bv-video-item" style={{ height: 'auto', padding: '6px', background: '#f0fdf4', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <span style={{ fontSize: '18px' }}>🔊</span>
+      <audio src={audioPreview} controls style={{ height: '32px', flex: 1 }} />
+      <button type="button" className="bv-media-remove" style={{ position: 'static' }}
+        onClick={() => { setAudio(null); setAudioPreview(''); }}>✕</button>
+    </div>
+  ) : (
+    <button type="button" className="bv-video-add" onClick={() => fileRefAudio.current.click()} style={{ borderColor: '#16a34a', color: '#16a34a' }}>
+      <span>🎧</span>
+      <small>Thêm Âm thanh (.mp3, .wav)</small>
+    </button>
+  )}
+</div>
+
+<input
+  ref={fileRefAudio}
+  type="file"
+  accept="audio/*"
+  style={{ display: 'none' }}
+  onChange={handleAudioChange}
 />
   </div>
 
