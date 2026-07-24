@@ -45,6 +45,8 @@ import TruongPhongDashboard from './pages/TruongPhongDashboard';
 import CuocHopTrucTuyen from './pages/CuocHopTrucTuyen';
 import AnToanGiaoThongPage from './pages/AnToanGiaoThongPage';
 import PhongChongLuaDaoPage from './pages/PhongChongLuaDaoPage';
+import HelpPage from './pages/HelpPage';
+import ContactPage from './pages/ContactPage';
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -137,7 +139,12 @@ function AppLayout() {
   const isMeetingRoom = location.pathname.startsWith("/cuoc-hop-truc-tuyen");
   const isDashboardPage = location.pathname === "/truong-phong";
   const hideLayout =
-    location.pathname.startsWith("/thu-tuc-hanh-chinh") || isLoginPage || isMeetingRoom;
+    location.pathname.startsWith("/thu-tuc-hanh-chinh") ||
+    location.pathname.startsWith("/huong-dan") ||
+    location.pathname.startsWith("/tro-giup") ||
+    location.pathname.startsWith("/lien-he") ||
+    isLoginPage ||
+    isMeetingRoom;
 
   useEffect(() => {
     const sendVisitorHit = async () => {
@@ -179,6 +186,9 @@ function AppLayout() {
           <Route path="/co-cau-to-chuc" element={<CoCauToChucPage />} />
           <Route path="/huong-dan-bhxh" element={<HuongDanBHXHPage />} />
           <Route path="/huong-dan-vneid" element={<HuongDanVNeIDPage />} />
+          <Route path="/huong-dan" element={<HelpPage />} />
+          <Route path="/tro-giup" element={<HelpPage />} />
+          <Route path="/lien-he" element={<ContactPage />} />
           <Route path="/lich-hop" element={<LichHopPage />} />
           <Route path="/chuyen-doi-so" element={<ChuyenDoiSoPage />} />
           <Route path="/thu-vien-anh" element={<ThuVienAnh />} />

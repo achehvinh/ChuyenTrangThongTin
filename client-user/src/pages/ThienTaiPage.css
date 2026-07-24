@@ -82,6 +82,9 @@
   font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
   letter-spacing: -0.02em;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .tt-subtitle {
@@ -184,6 +187,9 @@
   padding-bottom: 10px;
   border-bottom: 2px solid #f1f5f9;
   font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .tt-content {

@@ -1,186 +1,779 @@
-.gns-page { background: #f5f7fa; min-height: 100vh; }
+/* ════════════════════════════════════════════════════════════════
+   Gianongsan.css - CỔNG THÔNG TIN ĐIỆN TỬ PHÒNG VĂN HÓA - XÃ HỘI
+   Cấu trúc Tối giản, Chuyên nghiệp, Phong cách Hành chính Nhà nước
+   ════════════════════════════════════════════════════════════════ */
 
-/* Hero */
-.gns-hero {
-  background: #29d63a;
-  padding: 40px 40px 32px;
-  position: relative;
-  overflow: hidden;
-}
-.gns-hero::before {
-  content: '';
-  position: absolute;
-  top: -60px; right: -60px;
-  width: 220px; height: 220px;
-  border-radius: 50%;
-  background: rgba(16,185,129,.12);
-}
-.gns-hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
-.gns-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
-  background: rgba(255,255,255,.08);
-  border: 0.5px solid rgba(255,255,255,.18);
-  border-radius: 40px;
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,.75);
-  letter-spacing: .6px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.gns-hero h1 { font-size: 30px; font-weight: 900; color: #fff; margin-bottom: 8px; }
-.gns-hero h1 span { color: #34d399; }
-.gns-hero p { font-size: 14px; color: rgba(255,255,255,.55); line-height: 1.7; }
-.gns-update-time {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 5px 14px;
-  background: rgba(52,211,153,.12);
-  border: 0.5px solid rgba(52,211,153,.25);
-  border-radius: 20px;
-  font-size: 12px;
-  color: #34d399;
-  font-weight: 600;
+.gov-gns-page {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 20px 0 50px;
+  font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  box-sizing: border-box;
 }
 
-/* Content */
-.gns-content {
-  max-width: 1200px;
+.gov-gns-container {
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
-  padding: 28px 24px 60px;
+  padding: 0 16px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+/* ════════════════════════════════════════════════
+   1. HEADER CHUẨN CỔNG THÔNG TIN HÀNH CHÍNH
+   ════════════════════════════════════════════════ */
+.gov-gns-header {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-top: 4px solid #16a34a;
+  border-radius: 6px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
 }
 
-/* Notice */
-.gns-notice {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #fffbeb;
-  border: 0.5px solid #fcd34d;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #92400e;
-  line-height: 1.6;
-}
-.gns-notice span { font-size: 16px; flex-shrink: 0; }
-.gns-notice p { margin: 0; }
-
-/* Grid */
-.gns-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+.gov-header-left {
+  flex: 1;
+  min-width: 280px;
 }
 
-.gns-skeleton {
-  height: 220px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, #e2e8f0, #f1f5f9, #e2e8f0);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-}
-@keyframes shimmer {
-  from { background-position: 200% 0; }
-  to   { background-position: -200% 0; }
-}
-
-/* Card */
-.gns-card {
-  background: #fff;
-  border: 0.5px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: all .2s;
-}
-.gns-card:hover {
-  border-color: #005bac;
-  box-shadow: 0 6px 20px rgba(22, 137, 238, 0.08);
-  transform: translateY(-2px);
-}
-
-.gns-card-top {
+.gov-header-title-row {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 4px;
 }
 
-.gns-icon {
-  width: 44px; height: 44px;
-  border-radius: 10px;
-  background: #f0fdf4;
+.gov-header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #dcfce7;
+  color: #15803d;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.gov-header-title {
   font-size: 22px;
-  flex-shrink: 0;
-}
-
-.gns-name { flex: 1; }
-.gns-name h3 { font-size: 13px; font-weight: 700; color: #3a6ce0; margin-bottom: 2px; }
-.gns-name span { font-size: 11px; color: #94a3b8; }
-
-.gns-badge {
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-.gns-badge.tang { background: #f0fdf4; color: #16a34a; }
-.gns-badge.giam { background: #fef2f2; color: #dc2626; }
-
-.gns-price {
-  font-size: 24px;
   font-weight: 900;
-  color: #003d7a;
-  letter-spacing: -0.5px;
+  color: #0f172a;
+  letter-spacing: 0.02em;
+  margin: 0;
 }
 
-.gns-diff {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 10px;
+.gov-header-sub {
+  font-size: 13px;
+  color: #475569;
+  margin: 0;
+  font-weight: 500;
+}
+
+.gov-header-right {
+  flex-shrink: 0;
+}
+
+.gov-meta-box {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
-  width: fit-content;
-}
-.gns-diff.tang { background: #f0fdf4; color: #16a34a; }
-.gns-diff.giam { background: #fef2f2; color: #dc2626; }
-
-.gns-meta {
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-top: 10px;
-  border-top: 0.5px solid #f1f5f9;
+  font-size: 12px;
 }
-.gns-meta-row { display: flex; flex-direction: column; gap: 1px; }
-.gns-meta-row span { font-size: 10px; color: #94a3b8; font-weight: 500; }
-.gns-meta-row strong { font-size: 12px; color: #3261d0; }
 
-/* Contact */
-.gns-contact {
+.gov-meta-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
-  background: #fff;
-  border: 0.5px solid #e2e8f0;
-  border-radius: 12px;
+  justify-content: space-between;
+  gap: 12px;
 }
-.gns-contact-icon { font-size: 28px; }
-.gns-contact strong { display: block; font-size: 13px; color: #315fcb; margin-bottom: 3px; }
-.gns-contact p { font-size: 12px; color: #64748b; margin: 0; }
-.gns-contact a { color: #005bac; font-weight: 700; text-decoration: none; }
 
-@media (max-width: 900px) { .gns-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .gns-grid { grid-template-columns: 1fr; } }
+.gov-meta-label {
+  color: #64748b;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gov-meta-val {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.gov-status-online {
+  color: #16a34a;
+  font-weight: 800;
+  background: #dcfce7;
+  padding: 2px 10px;
+  border-radius: 12px;
+  border: 1px solid #86efac;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gov-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+/* ════════════════════════════════════════════════
+   2. THANH CÔNG CỤ TÌM KIẾM VÀ BỘ LỌC DỮ LIỆU
+   ════════════════════════════════════════════════ */
+.gov-toolbar-section {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+}
+
+.gov-search-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 260px;
+  position: relative;
+}
+
+.gov-label-icon {
+  color: #64748b;
+  display: flex;
+  align-items: center;
+}
+
+.gov-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.gov-input {
+  width: 100%;
+  padding: 7px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  background: #ffffff;
+  color: #0f172a;
+  transition: border-color 0.2s ease;
+}
+
+.gov-input:focus {
+  border-color: #005bac;
+}
+
+.gov-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gov-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gov-select {
+  padding: 7px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+  background: #ffffff;
+  outline: none;
+  cursor: pointer;
+}
+
+.gov-select:focus {
+  border-color: #005bac;
+}
+
+.gov-refresh-btn {
+  padding: 7px 14px;
+  background: #005bac;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gov-refresh-btn:hover {
+  background: #004480;
+}
+
+/* ════════════════════════════════════════════════
+   3. THỐNG KÊ NHANH 4 THẺ NHỎ CHUẨN HÀNH CHÍNH
+   ════════════════════════════════════════════════ */
+.gov-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.gov-stat-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.card-total { border-left: 4px solid #005bac; }
+.card-up { border-left: 4px solid #16a34a; }
+.card-down { border-left: 4px solid #dc2626; }
+.card-stable { border-left: 4px solid #64748b; }
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.04em;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 900;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+.text-up { color: #16a34a; }
+.text-down { color: #dc2626; }
+.text-stable { color: #475569; }
+
+.stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-blue { background: #eff6ff; color: #005bac; }
+.icon-green { background: #dcfce7; color: #15803d; }
+.icon-red { background: #fee2e2; color: #b91c1c; }
+.icon-slate { background: #f1f5f9; color: #475569; }
+
+/* ════════════════════════════════════════════════
+   4. BẢNG GIÁ DẠNG DATA TABLE RÕ RÀNG
+   ════════════════════════════════════════════════ */
+.gov-table-wrapper {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.table-caption {
+  background: #f1f5f9;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e3a8a;
+}
+
+.caption-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-count {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.gov-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.gov-data-table th {
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 800;
+  padding: 10px 12px;
+  border-bottom: 2px solid #cbd5e1;
+  white-space: nowrap;
+}
+
+.gov-data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.gov-data-table tbody tr {
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+
+.gov-data-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.gov-data-table tbody tr.row-active {
+  background: #eff6ff;
+}
+
+.col-stt {
+  text-align: center;
+  width: 44px;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.item-name-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-tag {
+  font-size: 10.5px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.item-svg-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.price-highlight {
+  color: #005bac;
+  font-size: 14px;
+}
+
+.bd-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.bd-up {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.bd-down {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.bd-stable {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-action-chart {
+  padding: 4px 10px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-action-chart:hover {
+  border-color: #005bac;
+  color: #005bac;
+  background: #eff6ff;
+}
+
+.btn-action-chart.active {
+  background: #005bac;
+  color: #ffffff;
+  border-color: #005bac;
+}
+
+/* ════════════════════════════════════════════════
+   5. BIỂU ĐỒ BIẾN ĐỘNG GIÁ NÔNG SẢN 7 NGÀY GẦN NHẤT
+   ════════════════════════════════════════════════ */
+.gov-chart-section {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.chart-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-title strong {
+  color: #005bac;
+}
+
+.chart-select-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gov-select-sm {
+  padding: 4px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  background: #ffffff;
+  outline: none;
+}
+
+.chart-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chart-summary-strip {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 12.5px;
+  flex-wrap: wrap;
+}
+
+.summary-label {
+  color: #64748b;
+  margin-right: 6px;
+}
+
+.summary-val {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.text-blue {
+  color: #005bac;
+}
+
+.svg-chart-container {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 4px;
+  padding: 10px 0;
+}
+
+.svg-chart-element {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ════════════════════════════════════════════════
+   6. KHUNG THÔNG BÁO CẢNH BÁO MÀU VÀNG
+   ════════════════════════════════════════════════ */
+.gov-warning-box {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-left: 5px solid #d97706;
+  border-radius: 6px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #78350f;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.warning-icon {
+  color: #d97706;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.warning-content strong {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 2px;
+  color: #92400e;
+}
+
+.warning-content p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* ════════════════════════════════════════════════
+   7 & 8. THÔNG TIN HỖ TRỢ & NGUỒN DỮ LIỆU
+   ════════════════════════════════════════════════ */
+.gov-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.gov-card-info {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-info-header {
+  background: #f1f5f9;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-info-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  flex: 1;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #f1f5f9;
+}
+
+.info-label {
+  color: #64748b;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-val {
+  color: #0f172a;
+}
+
+.highlight-phone {
+  color: #005bac;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.gov-call-now-btn {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.gov-call-now-btn:hover {
+  background: #15803d;
+}
+
+.source-intro {
+  margin: 0 0 6px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.source-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.source-list li {
+  color: #334155;
+  line-height: 1.4;
+}
+
+.source-badge {
+  margin-top: auto;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ════════════════════════════════════════════════
+   9. FOOTER DỮ LIỆU CHUẨN CƠ QUAN NHÀ NƯỚC
+   ════════════════════════════════════════════════ */
+.gov-gns-footer {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #64748b;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-col strong {
+  color: #0f172a;
+}
+
+/* ════════════════════════════════════════════════
+   10. RESPONSIVE BREAKPOINTS
+   ════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .gov-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gov-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .gov-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .gov-toolbar-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .gov-search-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .gov-filter-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .gov-select {
+    width: 100%;
+  }
+  .gov-gns-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

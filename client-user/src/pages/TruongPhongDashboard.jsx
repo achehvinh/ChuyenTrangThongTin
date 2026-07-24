@@ -142,6 +142,38 @@ export default function TruongPhongDashboard() {
     onlineList: []
   });
   const [selectedDetailTab, setSelectedDetailTab] = useState("tuyen-truyen");
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Tự động đóng thông báo Toast sau đúng 5 giây
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => setMessage(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   // Tab: Schedule
   const [meetings, setMeetings] = useState([]);
   const [editingMeeting, setEditingMeeting] = useState(null);
@@ -159,7 +191,7 @@ export default function TruongPhongDashboard() {
 
   const [showAIScheduleModal, setShowAIScheduleModal] = useState(false);
   const [aiPromptForm, setAiPromptForm] = useState({
-    topic: "Rà soát & cấp thẻ BHYT đợt 2 cho người dân 6 thôn",
+    topic: "Rà soát & cấp thẻ BHYT đợt 2 cho người dân 10 thôn",
     date: new Date().toISOString().substring(0, 10),
     time: "08:30",
     type: "hop-bao-mat",
@@ -188,7 +220,7 @@ export default function TruongPhongDashboard() {
     } else if (selectedType === "hop-khan") {
       titlePrefix = "🚨 Họp Khẩn cấp:";
       locationStr = "Phòng Điều hành Khẩn cấp - UBND Xã";
-      thonStr = "Ban Chỉ đạo Xã, Cán bộ VH-XH & Trưởng 6 thôn";
+      thonStr = "Ban Chỉ đạo Xã, Cán bộ VH-XH & Trưởng 10 thôn";
     } else if (selectedType === "chuyen-de") {
       titlePrefix = "📑 Họp Chuyên đề:";
       locationStr = "Hội trường UBND xã Đăk Pxi";
@@ -280,8 +312,8 @@ export default function TruongPhongDashboard() {
       han_xu_ly: "2026-07-28",
       trang_thai: "Đang xử lý",
       file_name: "128_UBND_CongVan_BHYT_DuoiNuoc.pdf",
-      chi_dao: "Giao cán bộ chuyên trách lập danh sách rà soát tại 6 thôn và gửi báo cáo trước 25/7.",
-      ket_qua: "Đã chỉ đạo các thôn Pa cheng, Đăk Wek rà soát xong đợt 1."
+      chi_dao: "Giao cán bộ chuyên trách lập danh sách rà soát tại 10 thôn và gửi báo cáo trước 25/7.",
+      ket_qua: "Đã chỉ đạo các thôn Pa Cheng, Đăk Xế Kơ Ne, Đăk Wek rà soát xong đợt 1."
     },
     {
       id: "VBD-2026-002",
@@ -290,7 +322,7 @@ export default function TruongPhongDashboard() {
       ngay_den: "2026-07-18",
       trich_yeu: "Thông báo phương thức thủ đoạn lừa đảo chiếm đoạt tài sản qua không gian mạng đợt 3/2026",
       do_khan: "Mật",
-      nguoi_xu_ly: "Lê Văn Cường (Phó phòng)",
+      nguoi_xu_ly: "Ngô Đỗ Quỳnh (Phó phòng)",
       phong_phap: "Phòng Văn hóa - Xã hội",
       han_xu_ly: "2026-07-25",
       trang_thai: "Đã hoàn thành",
@@ -305,12 +337,12 @@ export default function TruongPhongDashboard() {
       ngay_den: "2026-07-15",
       trich_yeu: "Hướng dẫn tổ chức Giải hội thao công chức viên chức xã Đăk Pxi năm 2026",
       do_khan: "Thường",
-      nguoi_xu_ly: "Phạm Thị Mai (Cán bộ)",
+      nguoi_xu_ly: "Hoàng Trung Dũng (Cán Bộ Chuyên Viên)",
       phong_phap: "Phòng Văn hóa - Xã hội",
       han_xu_ly: "2026-08-05",
       trang_thai: "Chưa xử lý",
       file_name: "89_SVHTT_KeHoachHoiThao.docx",
-      chi_dao: "Cán bộ Mai dự thảo kế hoạch kinh phí và thành phần vận động viên.",
+      chi_dao: "Cán bộ Dũng dự thảo kế hoạch kinh phí và thành phần vận động viên.",
       ket_qua: ""
     }
   ]);
@@ -336,7 +368,7 @@ export default function TruongPhongDashboard() {
     {
       id: "VBI-2026-001",
       so_hieu: "34/BC-VHXH",
-      trich_yeu: "Báo cáo kết quả công tác rà soát BHYT người dân 6 thôn xã Đăk Pxi 6 tháng đầu năm 2026",
+      trich_yeu: "Báo cáo kết quả công tác rà soát BHYT người dân 10 thôn xã Đăk Pxi 6 tháng đầu năm 2026",
       noi_nhan: "UBND Huyện, Phòng LĐTBXH, UBND Xã Đăk Pxi",
       nguoi_soan: "Nguyễn Thái Huy (Trưởng phòng)",
       nguoi_duyet: "Nguyễn Thái Huy",
@@ -350,21 +382,21 @@ export default function TruongPhongDashboard() {
       id: "VBI-2026-002",
       so_hieu: "12/KH-VHXH",
       trich_yeu: "Kế hoạch tổ chức tuyên truyền phòng chống lừa đảo mạng và an toàn giao thông quý III/2026",
-      noi_nhan: "Ban nhân dân 6 Thôn, Công an Xã, Các Trường học",
-      nguoi_soan: "Lê Văn Cường (Phó phòng)",
+      noi_nhan: "Ban nhân dân 10 Thôn, Công an Xã, Các Trường học",
+      nguoi_soan: "Ngô Đỗ Quỳnh (Phó phòng)",
       nguoi_duyet: "Nguyễn Thái Huy",
       ngay_ban_hanh: "2026-07-12",
       loai_van_ban: "Kế hoạch",
       trang_thai: "Đã phát hành",
       file_name: "12_KH_VHXH_TuyenTruyenQuy3.pdf",
-      ghi_chu: "Đã gửi tới 6 Ban nhân dân thôn."
+      ghi_chu: "Đã gửi tới 10 Ban nhân dân thôn."
     },
     {
       id: "VBI-2026-003",
       so_hieu: "Duthao-05",
-      trich_yeu: "Thông báo về việc tổ chức tập huấn công nghệ số cộng đồng cho người dân 6 thôn",
-      noi_nhan: "UBND Xã, 6 Tổ công nghệ số cộng đồng",
-      nguoi_soan: "Phạm Thị Mai (Cán bộ)",
+      trich_yeu: "Thông báo về việc tổ chức tập huấn công nghệ số cộng đồng cho người dân 10 thôn",
+      noi_nhan: "UBND Xã, 10 Tổ công nghệ số cộng đồng",
+      nguoi_soan: "Lê Ngọc Sơn (Cán bộ chuyên Viên)",
       nguoi_duyet: "Nguyễn Thái Huy",
       ngay_ban_hanh: "2026-07-22",
       loai_van_ban: "Thông báo",
@@ -522,8 +554,8 @@ export default function TruongPhongDashboard() {
   const defaultInitialTasks = [
     {
       id: "NV-2026-001",
-      title: "Rà soát & lập danh sách hộ gia đình khó khăn chưa tham gia BHYT tại 6 thôn",
-      description: "Phối hợp với Trưởng thôn Pa cheng, Đăk Wek rà soát các hộ nghèo, cận nghèo để hỗ trợ cấp thẻ BHYT đợt 2/2026.",
+      title: "Rà soát & lập danh sách hộ gia đình khó khăn chưa tham gia BHYT tại 10 thôn",
+      description: "Phối hợp với Trưởng 10 thôn rà soát các hộ nghèo, cận nghèo để hỗ trợ cấp thẻ BHYT đợt 2/2026.",
       assigner: "Nguyễn Thái Huy (Trưởng phòng)",
       assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
       unit: "Toàn thể Phòng Văn hóa - Xã hội",
@@ -533,19 +565,19 @@ export default function TruongPhongDashboard() {
       progress: 75,
       status: "Đang xử lý",
       file_name: "KeHoach_RaSoat_BHYT_Thon.pdf",
-      note: "Đã hoàn thành rà soát tại 4/6 thôn. Đang tổng hợp dữ liệu 2 thôn còn lại.",
+      note: "Đã hoàn thành rà soát tại 7/10 thôn (Thôn Pa Cheng, Thôn Đăk Xế Kơ Ne, Thôn Đăk Kơ Đương, Thôn Đăk Rơ Wang, Thôn Krong Đuân, Thôn Đăk Wek, Thôn Kon Đao Yôp). Đang tổng hợp 3 thôn còn lại.",
       history: [
         { time: "2026-07-15 08:30", author: "Nguyễn Thái Huy", action: "Chỉ đạo trực tiếp tới Toàn thể Cán bộ nhân viên Phòng VH-XH" },
-        { time: "2026-07-18 14:20", author: "Phạm Thị Mai", action: "Cập nhật tiến độ 50%: Đã xuống thôn Pa cheng lập danh sách đợt 1" },
-        { time: "2026-07-21 16:00", author: "Phạm Thị Mai", action: "Cập nhật tiến độ 75%: Hoàn tất rà soát thêm thôn Đăk Wek và Đăk Xe" }
+        { time: "2026-07-18 14:20", author: "Hoàng Trung Dũng", action: "Cập nhật tiến độ 50%: Đã xuống Thôn Pa Cheng, Thôn Đăk Xế Kơ Ne lập danh sách đợt 1" },
+        { time: "2026-07-21 16:00", author: "Hoàng Trung Dũng", action: "Cập nhật tiến độ 75%: Hoàn tất rà soát thêm Thôn Đăk Kơ Đương, Thôn Đăk Rơ Wang, Thôn Krong Đuân, Thôn Đăk Wek" }
       ]
     },
     {
       id: "NV-2026-002",
       title: "Đăng tải bài viết cảnh báo thủ đoạn lừa đảo qua mạng trên Cổng thông tin xã",
-      description: "Biên tập nội dung tuyên truyền dựa trên Công văn 45/PA05 của Công an Tỉnh và phát qua hệ thống đài truyền thanh xã.",
+      description: "Biên tập nội dung tuyên truyền dựa trên Công văn 45/PA05 của Công an Tỉnh và phát qua hệ thống đài truyền thanh 10 thôn xã Đăk Pxi.",
       assigner: "Nguyễn Thái Huy (Trưởng phòng)",
-      assignee: "Lê Văn Cường",
+      assignee: "Ngô Đỗ Quỳnh (Phó phòng)",
       unit: "Tổ Công nghệ số & Tuyên truyền",
       priority: "Cao",
       assignedDate: "2026-07-18",
@@ -553,17 +585,17 @@ export default function TruongPhongDashboard() {
       progress: 100,
       status: "Hoàn thành",
       file_name: "BaiViet_CanhBaoLuaDao.docx",
-      note: "Đã phát thanh đợt 1 ngày 19/7 và đăng tải toàn văn bài viết trên website.",
+      note: "Đã phát thanh đợt 1 ngày 19/7 tại 10 thôn và đăng tải toàn văn bài viết trên website.",
       history: [
-        { time: "2026-07-18 09:00", author: "Nguyễn Thái Huy", action: "Giao nhiệm vụ cho Lê Văn Cường" },
-        { time: "2026-07-19 15:30", author: "Lê Văn Cường", action: "Cập nhật tiến độ 100%: Đã hoàn thành đăng bài và phát thanh" }
+        { time: "2026-07-18 09:00", author: "Nguyễn Thái Huy", action: "Giao nhiệm vụ cho Ngô Đỗ Quỳnh (Phó phòng)" },
+        { time: "2026-07-19 15:30", author: "Ngô Đỗ Quỳnh", action: "Cập nhật tiến độ 100%: Đã hoàn thành đăng bài và phát thanh tới 10 thôn" }
       ]
     },
     {
       id: "NV-2026-003",
       title: "Tổng hợp báo cáo kinh phí tổ chức Giải hội thao công chức viên chức xã 2026",
-      description: "Lập dự toán chi tiết khen thưởng, trang thiết bị thi đấu và xin ý kiến UBND xã.",
-      assigner: "Lê Văn Cường (Phó phòng)",
+      description: "Lập dự toán chi tiết khen thưởng các đoàn vận động viên 10 thôn, trang thiết bị thi đấu và xin ý kiến UBND xã.",
+      assigner: "Ngô Đỗ Quỳnh (Phó phòng)",
       assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
       unit: "Phòng Văn hóa - Xã hội",
       priority: "Trung bình",
@@ -574,16 +606,16 @@ export default function TruongPhongDashboard() {
       file_name: "DuToan_HoiThao2026.xlsx",
       note: "Chờ Sở VH-TT gửi bổ sung khung giải thưởng.",
       history: [
-        { time: "2026-07-10 10:00", author: "Lê Văn Cường", action: "Giao lập dự toán kinh phí hội thao" },
-        { time: "2026-07-14 11:00", author: "Phạm Thị Mai", action: "Cập nhật tiến độ 50%: Đã dự thảo xong 3 môn thi đấu chính" }
+        { time: "2026-07-10 10:00", author: "Ngô Đỗ Quỳnh", action: "Giao lập dự toán kinh phí hội thao 10 thôn" },
+        { time: "2026-07-14 11:00", author: "Hoàng Trung Dũng", action: "Cập nhật tiến độ 50%: Đã dự thảo xong 3 môn thi đấu chính" }
       ]
     },
     {
       id: "NV-2026-004",
       title: "Chuẩn bị ma két, trang trí hội trường cho cuộc họp giao ban công tác VH-XH quý III",
-      description: "In phông chiếu, bố trí hệ thống âm thanh, máy chiếu và tài liệu họp cho đại biểu.",
+      description: "In phông chiếu, bố trí hệ thống âm thanh, máy chiếu và tài liệu họp cho Trưởng 10 thôn và đại biểu.",
       assigner: "Nguyễn Thái Huy (Trưởng phòng)",
-      assignee: "Trần Văn Nam",
+      assignee: "Lê Ngọc Sơn (Cán bộ chuyên Viên)",
       unit: "Tổ Hành chính Hậu cần",
       priority: "Thấp",
       assignedDate: "2026-07-22",
@@ -601,7 +633,7 @@ export default function TruongPhongDashboard() {
   // Persistent & Synchronized State across ALL Accounts / Tabs
   const [dispatchTasks, setDispatchTasks] = useState(() => {
     try {
-      const saved = localStorage.getItem("bhyt_dispatch_tasks");
+      const saved = localStorage.getItem("bhyt_dispatch_tasks_v4");
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -610,7 +642,7 @@ export default function TruongPhongDashboard() {
       console.error(e);
     }
     try {
-      localStorage.setItem("bhyt_dispatch_tasks", JSON.stringify(defaultInitialTasks));
+      localStorage.setItem("bhyt_dispatch_tasks_v4", JSON.stringify(defaultInitialTasks));
     } catch (e) {
       console.error(e);
     }
@@ -621,7 +653,7 @@ export default function TruongPhongDashboard() {
   const saveAndSyncTasks = (newTasksList) => {
     setDispatchTasks(newTasksList);
     try {
-      localStorage.setItem("bhyt_dispatch_tasks", JSON.stringify(newTasksList));
+      localStorage.setItem("bhyt_dispatch_tasks_v4", JSON.stringify(newTasksList));
     } catch (e) {
       console.error(e);
     }
@@ -630,7 +662,7 @@ export default function TruongPhongDashboard() {
   // Real-time synchronization across browser tabs/sessions
   useEffect(() => {
     const handleStorageChange = (e) => {
-      if (e.key === "bhyt_dispatch_tasks" && e.newValue) {
+      if (e.key === "bhyt_dispatch_tasks_v4" && e.newValue) {
         try {
           const parsed = JSON.parse(e.newValue);
           if (Array.isArray(parsed)) {
@@ -649,6 +681,32 @@ export default function TruongPhongDashboard() {
   const [editingDispatchTask, setEditingDispatchTask] = useState(null);
   const [viewingDetailTask, setViewingDetailTask] = useState(null);
   const [updatingProgressTask, setUpdatingProgressTask] = useState(null);
+  const [openActionMenuId, setOpenActionMenuId] = useState(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showAccountInfoModal, setShowAccountInfoModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+  // Close action dropdown menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".tp-action-dropdown-wrapper")) {
+        setOpenActionMenuId(null);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  // Close profile dropdown menu when clicking outside
+  useEffect(() => {
+    const handleClickOutsideProfile = (e) => {
+      if (!e.target.closest(".tp-profile-menu-wrapper")) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutsideProfile);
+    return () => document.removeEventListener("click", handleClickOutsideProfile);
+  }, []);
 
   const [searchDispatch, setSearchDispatch] = useState("");
   const [filterDispatchStatus, setFilterDispatchStatus] = useState("ALL");
@@ -1486,20 +1544,63 @@ export default function TruongPhongDashboard() {
     <div className="tp-workspace-layout">
       {/* Left Sidebar Menu */}
       <aside className="tp-sidebar">
-        <div className="tp-profile-section" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", width: "100%", paddingBottom: "16px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0, flex: 1 }}>
-            <div className="tp-avatar" style={{ width: "40px", height: "40px", fontSize: "14px", flexShrink: 0 }}>
-              {fullName ? fullName.split(" ").pop().substring(0, 2).toUpperCase() : "CB"}
+        <div className="tp-profile-section tp-profile-menu-wrapper" style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px", width: "100%", paddingBottom: "16px" }}>
+          <div 
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
+            style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "6px", 
+              minWidth: 0, 
+              flex: 1, 
+              cursor: "pointer",
+              padding: "4px 4px",
+              borderRadius: "8px",
+              background: showProfileMenu ? "#f1f5f9" : "transparent",
+              transition: "all 0.15s ease"
+            }}
+            title="Nhấp để mở Menu Tài khoản"
+          >
+            <div style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "50%",
+              background: "#e0f2fe",
+              border: "1px solid #bae6fd",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0
+            }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
             </div>
-            <div className="tp-profile-info" style={{ minWidth: 0 }}>
-              <h4 className="tp-profile-name" style={{ fontSize: "14.5px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{fullName}</h4>
-              <span className="tp-profile-role" style={{ fontSize: "11px" }}>
+            <div className="tp-profile-info" style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
+              <h4 className="tp-profile-name" style={{ 
+                fontSize: "12px", 
+                fontWeight: "700", 
+                color: "#0f172a", 
+                margin: 0, 
+                padding: 0,
+                lineHeight: "1.2",
+                whiteSpace: "nowrap", 
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "flex", 
+                alignItems: "center", 
+                gap: "2px" 
+              }}>
+                <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{fullName}</span>
+              </h4>
+              <span className="tp-profile-role" style={{ fontSize: "10.5px", color: "#64748b", display: "block", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {role === "truongphong" || role === "admin" ? "Trưởng phòng VH-XH" : role === "phophong" ? "Phó phòng VH-XH" : "Cán bộ chuyên viên"}
               </span>
             </div>
           </div>
 
-          {/* Icon thông báo đơn giản */}
+          {/* Icon thông báo (Hình tròn với 🔔 SVG và chấm đỏ) */}
           <div 
             onClick={() => {
               if (role === "truongphong" || role === "admin") {
@@ -1514,28 +1615,144 @@ export default function TruongPhongDashboard() {
               display: "inline-flex", 
               alignItems: "center",
               justifyContent: "center",
-              width: "32px",
-              height: "32px",
+              width: "34px",
+              height: "34px",
               borderRadius: "50%", 
-              background: "#f8fafc", 
+              background: "#ffffff", 
               border: "1px solid #cbd5e1", 
               color: "#475569",
-              flexShrink: 0
+              flexShrink: 0,
+              boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
             }}
             title="Xem thông báo"
           >
-            <span style={{ fontSize: "15px" }}>🔔</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
             <span style={{ 
               position: "absolute", 
               top: "1px", 
               right: "1px", 
-              width: "7px", 
-              height: "7px", 
+              width: "8px", 
+              height: "8px", 
               borderRadius: "50%", 
               background: "#ef4444", 
-              border: "1.5px solid #fff" 
+              border: "1.5px solid #ffffff" 
             }} />
           </div>
+
+          {/* DROPDOWN MENU TÀI KHOẢN */}
+          {showProfileMenu && (
+            <div style={{
+              position: "absolute",
+              top: "calc(100% - 6px)",
+              left: 0,
+              width: "100%",
+              zIndex: 9999,
+              background: "#ffffff",
+              border: "1px solid #cbd5e1",
+              borderRadius: "8px",
+              boxShadow: "0 10px 25px -5px rgba(0,0,0,0.15), 0 8px 10px -6px rgba(0,0,0,0.06)",
+              padding: "6px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "2px",
+              animation: "tpDropdownFadeIn 0.18s ease"
+            }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowProfileMenu(false);
+                  setShowAccountInfoModal(true);
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  width: "100%",
+                  padding: "8px 12px",
+                  border: "none",
+                  background: "transparent",
+                  borderRadius: "6px",
+                  fontSize: "13px",
+                  fontWeight: "600",
+                  color: "#334155",
+                  cursor: "pointer",
+                  textAlign: "left"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "#f1f5f9"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>Thông tin tài khoản</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowProfileMenu(false);
+                  setShowSettingsModal(true);
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  width: "100%",
+                  padding: "8px 12px",
+                  border: "none",
+                  background: "transparent",
+                  borderRadius: "6px",
+                  fontSize: "13px",
+                  fontWeight: "600",
+                  color: "#334155",
+                  cursor: "pointer",
+                  textAlign: "left"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "#f1f5f9"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span>Cài đặt</span>
+              </button>
+
+              <div style={{ height: "1px", background: "#e2e8f0", margin: "4px 0" }} />
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowProfileMenu(false);
+                  handleLogout();
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  width: "100%",
+                  padding: "8px 12px",
+                  border: "none",
+                  background: "transparent",
+                  borderRadius: "6px",
+                  fontSize: "13px",
+                  fontWeight: "600",
+                  color: "#dc2626",
+                  cursor: "pointer",
+                  textAlign: "left"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "#fef2f2"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                <span>Đăng xuất</span>
+              </button>
+            </div>
+          )}
         </div>
 
         <nav className="tp-nav-menu">
@@ -1544,93 +1761,101 @@ export default function TruongPhongDashboard() {
             <>
               <button
                 className={`tp-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("dashboard");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("dashboard"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📊 Trang tổng quan
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+                </svg>
+                <span>Trang tổng quan</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("task-dispatch");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("task-dispatch"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📌 Điều hành & Giao việc
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <span>Điều hành & Giao việc</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "staff" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("staff");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("staff"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                👥 Cán bộ cấp dưới
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <span>Cán bộ cấp dưới</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "incoming-docs" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("incoming-docs");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("incoming-docs"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📨 Quản lý Văn bản đến
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                </svg>
+                <span>Quản lý Văn bản đến</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "outgoing-docs" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("outgoing-docs");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("outgoing-docs"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📤 Quản lý Văn bản đi
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                <span>Quản lý Văn bản đi</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("schedule");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("schedule"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📅 Lịch họp cơ quan
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span>Lịch họp cơ quan</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "articles" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("articles");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("articles"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                ✍️ Viết bài tuyên truyền
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                <span>Viết bài tuyên truyền</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "updates" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("updates");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("updates"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                🔔 Nhật ký & Thông báo
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span>Nhật ký & Thông báo</span>
               </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("ai-assistant");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("ai-assistant"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                🤖 Trợ lý AI Hành chính & Văn bản
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>
+                </svg>
+                <span>Trợ lý AI Hành chính & Văn bản</span>
               </button>
             </>
           )}
@@ -1640,93 +1865,83 @@ export default function TruongPhongDashboard() {
             <>
               <button
                 className={`tp-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("dashboard");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("dashboard"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📊 Trang tổng quan
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+                </svg>
+                <span>Trang tổng quan</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("task-dispatch");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("task-dispatch"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📌 Điều hành & Giao việc
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <span>Điều hành & Giao việc</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "incoming-docs" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("incoming-docs");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("incoming-docs"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📨 Quản lý Văn bản đến
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                </svg>
+                <span>Quản lý Văn bản đến</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "outgoing-docs" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("outgoing-docs");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("outgoing-docs"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📤 Quản lý Văn bản đi
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                <span>Quản lý Văn bản đi</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("schedule");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("schedule"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📅 Lịch họp cơ quan
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span>Lịch họp cơ quan</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "tasks" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("tasks");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("tasks"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📋 Chỉ đạo & Nhiệm vụ
-              </button>
-              <button
-                className={`tp-nav-item ${activeTab === "citizens" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("citizens");
-                  setMessage("");
-                  setError("");
-                }}
-              >
-                👥 Quản lý người dân BHYT
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 12"/>
+                </svg>
+                <span>Chỉ đạo & Nhiệm vụ</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "articles" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("articles");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("articles"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                ✍️ Viết bài tuyên truyền
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                <span>Viết bài tuyên truyền</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("ai-assistant");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("ai-assistant"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                🤖 Trợ lý AI Hành chính & Văn bản
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>
+                </svg>
+                <span>Trợ lý AI Hành chính & Văn bản</span>
               </button>
             </>
           )}
@@ -1736,104 +1951,98 @@ export default function TruongPhongDashboard() {
             <>
               <button
                 className={`tp-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("dashboard");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("dashboard"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📊 Trang tổng quan
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+                </svg>
+                <span>Trang tổng quan</span>
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
+                onClick={() => { setActiveTab("task-dispatch"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <span>Điều hành & Giao việc</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "incoming-docs" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("incoming-docs");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("incoming-docs"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📨 Quản lý Văn bản đến
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                </svg>
+                <span>Quản lý Văn bản đến</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "outgoing-docs" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("outgoing-docs");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("outgoing-docs"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📤 Quản lý Văn bản đi
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                <span>Quản lý Văn bản đi</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("schedule");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("schedule"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📅 Lịch họp cơ quan
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span>Lịch họp cơ quan</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "tasks" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("tasks");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("tasks"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                📋 Chỉ đạo & Nhiệm vụ
-              </button>
-              <button
-                className={`tp-nav-item ${activeTab === "citizens" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("citizens");
-                  setMessage("");
-                  setError("");
-                }}
-              >
-                👥 Quản lý người dân BHYT
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 12"/>
+                </svg>
+                <span>Chỉ đạo & Nhiệm vụ</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "articles" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("articles");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("articles"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                ✍️ Viết bài tuyên truyền
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                <span>Viết bài tuyên truyền</span>
               </button>
-
               <button
                 className={`tp-nav-item ${activeTab === "feedback" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("feedback");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("feedback"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                💬 Góp ý & Phản hồi
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>Góp ý & Phản hồi</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
-                onClick={() => {
-                  setActiveTab("ai-assistant");
-                  setMessage("");
-                  setError("");
-                }}
+                onClick={() => { setActiveTab("ai-assistant"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                🤖 Trợ lý AI Hành chính & Văn bản
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>
+                </svg>
+                <span>Trợ lý AI Hành chính & Văn bản</span>
               </button>
             </>
           )}
         </nav>
 
-        <div className="tp-sidebar-footer">
-          <button onClick={handleLogout} className="tp-sidebar-logout-btn">
-            🚪 Đăng xuất tài khoản
-          </button>
-        </div>
       </aside>
 
       {/* Right Main Content */}
@@ -1841,16 +2050,18 @@ export default function TruongPhongDashboard() {
         {activeTab !== "ai-assistant" && (
           <header className="tp-content-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h2>
+              <div style={{ fontSize: "12px", fontWeight: "800", color: "#005baa", letterSpacing: "0.3px", marginBottom: "2px", textTransform: "uppercase" }}>
+                Hệ thống Điều hành & Giao việc — Phòng Văn hóa - Xã hội
+              </div>
+              <h2 style={{ margin: 0 }}>
                 {activeTab === "dashboard" && "Trang tổng quan & Theo dõi hoạt động thời gian thực"}
-                {activeTab === "task-dispatch" && "Hệ thống Điều hành & Giao việc - Phòng Văn hóa - Xã hội"}
+                {activeTab === "task-dispatch" && "Quản lý Điều hành & Phân công Giao việc"}
                 {activeTab === "incoming-docs" && "Quản lý Sổ Văn bản đến & Phân công chỉ đạo xử lý"}
                 {activeTab === "outgoing-docs" && "Quản lý Sổ Văn bản đi & Soạn thảo dự thảo phát hành"}
                 {activeTab === "staff" && "Quản lý Cán bộ cấp dưới"}
                 {activeTab === "schedule" && "Lịch họp & Điều phối lịch công tác"}
                 {activeTab === "updates" && "Nhật ký Hệ thống & Thông báo UBND"}
                 {activeTab === "tasks" && "Chỉ thị & Nhiệm vụ được giao"}
-                {activeTab === "citizens" && "Quản lý dữ liệu Công dân & Cấp thẻ BHYT"}
                 {activeTab === "articles" && "Soạn thảo bài tuyên truyền cho bà con"}
                 {activeTab === "feedback" && "Phản hồi & Giải đáp góp ý từ người dân"}
               </h2>
@@ -1859,8 +2070,8 @@ export default function TruongPhongDashboard() {
             {/* Đồng hồ thời gian hiện tại góc bên phải */}
             <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "8px 16px", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <span style={{ fontSize: "11px", color: "#475569", fontWeight: "600", textAlign: "right", marginBottom: "2px" }}>Thời gian hiện tại</span>
-              <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
-                <span>🕒</span>
+              <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
               </div>
             </div>
@@ -1868,8 +2079,101 @@ export default function TruongPhongDashboard() {
         )}
 
         <div className="tp-content-body">
-          {message && <div className="tp-alert-success">✅ {message}</div>}
-          {error && <div className="tp-alert-error">⚠️ {error}</div>}
+          {/* 🔔 THÔNG BÁO TOAST NỔI GÓC DƯỚI BÊN PHẢI (5 GIÂY TỰ ĐỘNG BIẾN MẤT - CHUẨN HTML5/CSS3) */}
+          {(message || error) && (
+            <div
+              style={{
+                position: "fixed",
+                bottom: "24px",
+                right: "24px",
+                zIndex: 999999,
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                maxWidth: "420px",
+                width: "calc(100vw - 48px)",
+                animation: "toastSlideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
+              }}
+            >
+              {message && (
+                <div
+                  style={{
+                    background: "#f0fdf4",
+                    border: "1.5px solid #86efac",
+                    borderRadius: "10px",
+                    padding: "14px 16px",
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    position: "relative",
+                    overflow: "hidden"
+                  }}
+                >
+                  <div style={{
+                    width: "28px", height: "28px", borderRadius: "50%", background: "#dcfce7",
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+                  }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1, fontSize: "13.5px", fontWeight: "700", color: "#14532d", lineHeight: "1.4" }}>
+                    {message}
+                  </div>
+                  <button
+                    onClick={() => setMessage("")}
+                    style={{ background: "none", border: "none", color: "#166534", fontSize: "16px", cursor: "pointer", padding: "0 4px", fontWeight: "700" }}
+                  >
+                    ✕
+                  </button>
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, height: "3px", background: "#22c55e",
+                    width: "100%", animation: "toastCountdown 5s linear forwards"
+                  }} />
+                </div>
+              )}
+
+              {error && (
+                <div
+                  style={{
+                    background: "#fef2f2",
+                    border: "1.5px solid #fca5a5",
+                    borderRadius: "10px",
+                    padding: "14px 16px",
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    position: "relative",
+                    overflow: "hidden"
+                  }}
+                >
+                  <div style={{
+                    width: "28px", height: "28px", borderRadius: "50%", background: "#fee2e2",
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+                  }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1, fontSize: "13.5px", fontWeight: "700", color: "#7f1d1d", lineHeight: "1.4" }}>
+                    {error}
+                  </div>
+                  <button
+                    onClick={() => setError("")}
+                    style={{ background: "none", border: "none", color: "#991b1b", fontSize: "16px", cursor: "pointer", padding: "0 4px", fontWeight: "700" }}
+                  >
+                    ✕
+                  </button>
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, height: "3px", background: "#ef4444",
+                    width: "100%", animation: "toastCountdown 5s linear forwards"
+                  }} />
+                </div>
+              )}
+            </div>
+          )}
 
           {/* 📢 BANNER THÔNG BÁO CHỈ ĐẠO THỰC TẾ TỪ TRƯỞNG PHÒNG GỬI ALL CÁN BỘ */}
           {(() => {
@@ -1879,7 +2183,9 @@ export default function TruongPhongDashboard() {
             return (
               <div style={{ background: "#eff6ff", border: "1px solid #93c5fd", borderLeft: "5px solid #005baa", borderRadius: "4px", padding: "10px 14px", marginBottom: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <span style={{ fontSize: "18px" }}>📢</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                    <path d="M22 8a6 6 0 0 0-6-6H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h2l4 4 4-4h2a6 6 0 0 0 6-6V8z"/>
+                  </svg>
                   <div>
                     <strong style={{ fontSize: "13.5px", color: "#1e3a8a" }}>
                       CHỈ ĐẠO TRỰC TIẾP TỪ TRƯỞNG PHÒNG GỬI TOÀN THỂ CÁN BỘ ({allStaffDirectives.length} chỉ đạo đang thực hiện)
@@ -1891,9 +2197,12 @@ export default function TruongPhongDashboard() {
                 </div>
                 <button
                   onClick={() => setActiveTab("task-dispatch")}
-                  style={{ padding: "6px 14px", background: "#005baa", color: "#ffffff", border: "none", borderRadius: "4px", fontSize: "12px", fontWeight: "700", cursor: "pointer" }}
+                  style={{ padding: "6px 14px", background: "#005baa", color: "#ffffff", border: "none", borderRadius: "4px", fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
                 >
-                  📌 Xem & Báo cáo tiến độ
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                  <span>Xem & Báo cáo tiến độ</span>
                 </button>
               </div>
             );
@@ -2520,7 +2829,7 @@ export default function TruongPhongDashboard() {
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
                     <input
                       type="text"
-                      placeholder="🔍 Tìm tên công việc, người thực hiện..."
+                      placeholder="Tìm tên công việc, người thực hiện..."
                       value={searchDispatch}
                       onChange={(e) => setSearchDispatch(e.target.value)}
                       style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", width: "230px" }}
@@ -2571,7 +2880,7 @@ export default function TruongPhongDashboard() {
                         setShowDispatchForm(true);
                         setEditingDispatchTask(null);
                         setDispatchForm({
-                          title: "", description: "", assignee: "📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
+                          title: "", description: "", assignee: "Tất cả Cán bộ (Toàn thể Phòng VH-XH)",
                           unit: "Phòng Văn hóa - Xã hội", priority: "Trung bình",
                           assignedDate: new Date().toISOString().substring(0, 10),
                           dueDate: "", file_name: "", note: ""
@@ -2580,18 +2889,38 @@ export default function TruongPhongDashboard() {
                     }}
                     style={{
                       padding: "7px 14px", borderRadius: "4px", background: "#005baa", color: "#ffffff",
-                      border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer"
+                      border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px"
                     }}
                   >
-                    {showDispatchForm ? "❌ Đóng form" : "➕ Giao công việc"}
+                    {showDispatchForm ? (
+                      <>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        <span>Đóng form</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>Giao công việc</span>
+                      </>
+                    )}
                   </button>
                 </div>
 
                 {/* 4. Form giao việc (Collapsible Horizontal Grid) */}
                 {(showDispatchForm || editingDispatchTask) && (
                   <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderTop: "3px solid #005baa", borderRadius: "4px", padding: "16px" }}>
-                    <div style={{ fontSize: "14px", fontWeight: "800", color: "#1e3a8a", marginBottom: "14px" }}>
-                      {editingDispatchTask ? "✏️ CẬP NHẬT CÔNG VIỆC GIAO" : "📋 FORM GIAO CÔNG VIỆC MỚI"}
+                    <div style={{ fontSize: "14px", fontWeight: "800", color: "#1e3a8a", marginBottom: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
+                      {editingDispatchTask ? (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                          <span>CẬP NHẬT CÔNG VIỆC GIAO</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                          <span>FORM GIAO CÔNG VIỆC MỚI</span>
+                        </>
+                      )}
                     </div>
 
                     <form onSubmit={handleDispatchSubmit}>
@@ -2620,12 +2949,11 @@ export default function TruongPhongDashboard() {
                             required
                             style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff", fontWeight: "700" }}
                           >
-                            <option value="📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)">📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)</option>
-                            <option value="Phạm Thị Mai">Phạm Thị Mai (Cán bộ BHYT)</option>
-                            <option value="Lê Văn Cường">Lê Văn Cường (Phó phòng)</option>
-                            <option value="Trần Văn Nam">Trần Văn Nam (Cán bộ CNTT & Tuyên truyền)</option>
-                            <option value="Nguyễn Văn An">Nguyễn Văn An (Cán bộ Văn hóa - Thể thao)</option>
-                            <option value="OTHER">➕ Nhập họ tên cán bộ khác...</option>
+                            <option value="📢 Tất cả Cán bộ (Toàn thể Phòng VH-XH)">Tất cả Cán bộ (Toàn thể Phòng VH-XH)</option>
+                            <option value="Ngô Đỗ Quỳnh (Phó phòng)">Ngô Đỗ Quỳnh (Phó phòng)</option>
+                            <option value="Hoàng Trung Dũng (Cán Bộ Chuyên Viên)">Hoàng Trung Dũng (Cán Bộ Chuyên Viên)</option>
+                            <option value="Lê Ngọc Sơn (Cán bộ chuyên Viên)">Lê Ngọc Sơn (Cán bộ chuyên Viên)</option>
+                            <option value="OTHER">Nhập họ tên cán bộ khác...</option>
                           </select>
 
                           {dispatchForm.assignee === "OTHER" && (
@@ -2698,13 +3026,34 @@ export default function TruongPhongDashboard() {
                           <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
                             File đính kèm
                           </label>
-                          <input
-                            type="text"
-                            placeholder="KeHoach_CongViec.pdf"
-                            value={dispatchForm.file_name}
-                            onChange={(e) => setDispatchForm({ ...dispatchForm, file_name: e.target.value })}
-                            style={{ width: "100%", padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
-                          />
+                          <div style={{ display: "flex", gap: "6px" }}>
+                            <input
+                              type="file"
+                              id="dispatch-file-upload"
+                              style={{ display: "none" }}
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setDispatchForm({ ...dispatchForm, file_name: file.name });
+                                }
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="KeHoach_CongViec.pdf"
+                              value={dispatchForm.file_name}
+                              onChange={(e) => setDispatchForm({ ...dispatchForm, file_name: e.target.value })}
+                              style={{ flex: 1, padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => document.getElementById("dispatch-file-upload").click()}
+                              style={{ padding: "6px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                              <span>Chọn file</span>
+                            </button>
+                          </div>
                         </div>
 
                         <div style={{ gridColumn: "1 / -1" }}>
@@ -2757,7 +3106,7 @@ export default function TruongPhongDashboard() {
                 )}
 
                 {/* 3. Bảng Danh sách công việc (Chuẩn HTML Admin Cơ Quan) */}
-                <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", overflow: "hidden" }}>
+                <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px" }}>
                   <div style={{ overflowX: "auto" }}>
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
                       <thead>
@@ -2771,7 +3120,7 @@ export default function TruongPhongDashboard() {
                           <th style={{ padding: "10px 12px", width: "90px", textAlign: "center" }}>Ưu tiên</th>
                           <th style={{ padding: "10px 12px", width: "110px", textAlign: "center" }}>Tiến độ (%)</th>
                           <th style={{ padding: "10px 12px", width: "100px", textAlign: "center" }}>Trạng thái</th>
-                          <th style={{ padding: "10px 12px", width: "150px", textAlign: "center" }}>Thao tác</th>
+                          <th style={{ padding: "10px 12px", width: "80px", textAlign: "center" }}>Thao tác</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -2798,8 +3147,9 @@ export default function TruongPhongDashboard() {
                                   {t.title}
                                 </div>
                                 {t.file_name && (
-                                  <div style={{ fontSize: "11.5px", color: "#2563eb", marginTop: "2px" }}>
-                                    📎 <u>{t.file_name}</u>
+                                  <div style={{ fontSize: "11.5px", color: "#2563eb", marginTop: "2px", display: "flex", alignItems: "center", gap: "4px" }}>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                    <u>{t.file_name}</u>
                                   </div>
                                 )}
                               </td>
@@ -2808,8 +3158,9 @@ export default function TruongPhongDashboard() {
                               </td>
                               <td style={{ padding: "10px 12px", fontWeight: "600", color: "#0f172a", fontSize: "12.5px" }}>
                                 {t.assignee && t.assignee.includes("Tất cả Cán bộ") ? (
-                                  <span style={{ fontSize: "11px", fontWeight: "800", color: "#1e3a8a", background: "#dbeafe", border: "1px solid #93c5fd", padding: "3px 8px", borderRadius: "4px", display: "inline-block" }}>
-                                    📢 Toàn thể Phòng VH-XH
+                                  <span style={{ fontSize: "11px", fontWeight: "800", color: "#1e3a8a", background: "#dbeafe", border: "1px solid #93c5fd", padding: "3px 8px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <span>Toàn thể Phòng VH-XH</span>
                                   </span>
                                 ) : (
                                   <span>{t.assignee}</span>
@@ -2856,52 +3207,98 @@ export default function TruongPhongDashboard() {
                                 </span>
                               </td>
                               <td style={{ padding: "10px 12px", textAlign: "center" }}>
-                                <div style={{ display: "flex", gap: "4px", justifyContent: "center", flexWrap: "wrap" }}>
+                                <div className="tp-action-dropdown-wrapper">
                                   <button
-                                    onClick={() => setViewingDetailTask(t)}
-                                    style={{ padding: "3px 6px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer" }}
-                                    title="Xem chi tiết"
-                                  >
-                                    👁️ Xem
-                                  </button>
-
-                                  <button
-                                    onClick={() => handleEditDispatchTask(t)}
-                                    style={{ padding: "3px 6px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer" }}
-                                    title="Sửa công việc"
-                                  >
-                                    ✏️ Sửa
-                                  </button>
-
-                                  <button
-                                    onClick={() => {
-                                      setUpdatingProgressTask(t);
-                                      setSelectedProgress(t.progress || 0);
-                                      setProgressNote("");
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setOpenActionMenuId(openActionMenuId === t.id ? null : t.id);
                                     }}
-                                    style={{ padding: "3px 6px", background: "#e0f2fe", border: "1px solid #bfdbfe", color: "#0369a1", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer", fontWeight: "600" }}
-                                    title="Cập nhật tiến độ"
+                                    className={`tp-action-trigger-btn ${openActionMenuId === t.id ? "active" : ""}`}
+                                    title="Thao tác"
                                   >
-                                    📊 Tiến độ
+                                    ⋮
                                   </button>
 
-                                  {t.progress < 100 && (
-                                    <button
-                                      onClick={() => handleQuickCompleteDispatch(t)}
-                                      style={{ padding: "3px 6px", background: "#d1fae5", border: "1px solid #a7f3d0", color: "#15803d", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer", fontWeight: "700" }}
-                                      title="Đánh dấu Hoàn thành"
-                                    >
-                                      ✅ Complete
-                                    </button>
+                                  {openActionMenuId === t.id && (
+                                    <div className="tp-action-dropdown-menu">
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setOpenActionMenuId(null);
+                                          setViewingDetailTask(t);
+                                        }}
+                                        className="tp-dropdown-item"
+                                      >
+                                        <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        </span>
+                                        <span>Xem chi tiết</span>
+                                      </button>
+
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setOpenActionMenuId(null);
+                                          handleEditDispatchTask(t);
+                                        }}
+                                        className="tp-dropdown-item"
+                                      >
+                                        <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                        </span>
+                                        <span>Sửa công việc</span>
+                                      </button>
+
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setOpenActionMenuId(null);
+                                          setUpdatingProgressTask(t);
+                                          setSelectedProgress(t.progress || 0);
+                                          setProgressNote("");
+                                        }}
+                                        className="tp-dropdown-item"
+                                      >
+                                        <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                                        </span>
+                                        <span>Cập nhật tiến độ</span>
+                                      </button>
+
+                                      {t.progress < 100 && (
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setOpenActionMenuId(null);
+                                            handleQuickCompleteDispatch(t);
+                                          }}
+                                          className="tp-dropdown-item tp-dropdown-item-complete"
+                                        >
+                                          <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                          </span>
+                                          <span>Đánh dấu Hoàn thành</span>
+                                        </button>
+                                      )}
+
+                                      <div className="tp-dropdown-divider" />
+
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setOpenActionMenuId(null);
+                                          handleDeleteDispatchTask(t.id);
+                                        }}
+                                        className="tp-dropdown-item tp-dropdown-item-delete"
+                                      >
+                                        <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        </span>
+                                        <span>Xóa công việc</span>
+                                      </button>
+                                    </div>
                                   )}
-
-                                  <button
-                                    onClick={() => handleDeleteDispatchTask(t.id)}
-                                    style={{ padding: "3px 6px", background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", borderRadius: "3px", fontSize: "11.5px", cursor: "pointer" }}
-                                    title="Xóa công việc"
-                                  >
-                                    🗑️ Xóa
-                                  </button>
                                 </div>
                               </td>
                             </tr>
@@ -2917,8 +3314,9 @@ export default function TruongPhongDashboard() {
                   <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.4)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
                     <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "6px", width: "100%", maxWidth: "650px", maxHeight: "90vh", overflowY: "auto", padding: "20px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "10px", marginBottom: "14px" }}>
-                        <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800" }}>
-                          📌 CHI TIẾT CÔNG VIỆC: {viewingDetailTask.id}
+                        <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px" }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                          <span>CHI TIẾT CÔNG VIỆC: {viewingDetailTask.id}</span>
                         </h3>
                         <button onClick={() => setViewingDetailTask(null)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer" }}>✕</button>
                       </div>
@@ -3066,8 +3464,9 @@ export default function TruongPhongDashboard() {
                 {/* Thanh Tiêu đề & Công cụ điều khiển tối giản */}
                 <div className="tp-card" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
                   <div>
-                    <h3 style={{ margin: 0, fontSize: "17px", color: "#0f172a", fontWeight: "800" }}>
-                      📥 SỔ QUẢN LÝ VĂN BẢN ĐẾN CƠ QUAN ({filteredIncoming.length})
+                    <h3 style={{ margin: 0, fontSize: "17px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                      <span>SỔ QUẢN LÝ VĂN BẢN ĐẾN CƠ QUAN ({filteredIncoming.length})</span>
                     </h3>
                     <span style={{ fontSize: "12px", color: "#64748b" }}>
                       Quản lý, phân công và theo dõi tiến độ xử lý văn bản đến của Phòng Văn hóa - Xã hội
@@ -3080,15 +3479,15 @@ export default function TruongPhongDashboard() {
                       onChange={(e) => setFilterIncomingUrgency(e.target.value)}
                       style={{ padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
                     >
-                      <option value="ALL">🔍 Tất cả độ khẩn</option>
-                      <option value="Thường">🟢 Thường</option>
-                      <option value="Khẩn">⚡ Khẩn</option>
-                      <option value="Mật">🔒 Mật</option>
+                      <option value="ALL">Tất cả độ khẩn</option>
+                      <option value="Thường">Thường</option>
+                      <option value="Khẩn">Khẩn</option>
+                      <option value="Mật">Mật</option>
                     </select>
 
                     <input
                       type="text"
-                      placeholder="🔍 Tìm số hiệu, trích yếu, nơi gửi..."
+                      placeholder="Tìm số hiệu, trích yếu, nơi gửi..."
                       style={{ width: "240px", padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px" }}
                       value={searchIncoming}
                       onChange={(e) => setSearchIncoming(e.target.value)}
@@ -3113,7 +3512,17 @@ export default function TruongPhongDashboard() {
                         border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px"
                       }}
                     >
-                      {showIncomingForm ? "❌ Đóng biểu mẫu" : "➕ Tiếp nhận Văn bản đến Mới"}
+                      {showIncomingForm ? (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                          <span>Đóng biểu mẫu</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                          <span>Tiếp nhận Văn bản đến Mới</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -3122,7 +3531,17 @@ export default function TruongPhongDashboard() {
                 {(showIncomingForm || editingIncomingDoc) && (
                   <div className="tp-card" style={{ padding: "20px", borderTop: "4px solid #005baa", background: "#fafafa" }}>
                     <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#003d7a", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px" }}>
-                      {editingIncomingDoc ? "✏️ CẬP NHẬT THÔNG TIN VĂN BẢN ĐẾN" : "📥 TIẾP NHẬN & PHÂN CÔNG VĂN BẢN ĐẾN MỚI"}
+                      {editingIncomingDoc ? (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                          <span>CẬP NHẬT THÔNG TIN VĂN BẢN ĐẾN</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                          <span>TIẾP NHẬN & PHÂN CÔNG VĂN BẢN ĐẾN MỚI</span>
+                        </>
+                      )}
                     </h4>
 
                     <form onSubmit={handleIncomingSubmit}>
@@ -3179,9 +3598,9 @@ export default function TruongPhongDashboard() {
                             onChange={(e) => setIncomingForm({ ...incomingForm, do_khan: e.target.value })}
                             style={{ padding: "7px 10px", fontSize: "13px" }}
                           >
-                            <option value="Thường">🟢 Thường</option>
-                            <option value="Khẩn">⚡ Khẩn</option>
-                            <option value="Mật">🔒 Mật</option>
+                            <option value="Thường">Thường</option>
+                            <option value="Khẩn">Khẩn</option>
+                            <option value="Mật">Mật</option>
                           </select>
                         </div>
 
@@ -3192,9 +3611,9 @@ export default function TruongPhongDashboard() {
                             onChange={(e) => setIncomingForm({ ...incomingForm, trang_thai: e.target.value })}
                             style={{ padding: "7px 10px", fontSize: "13px" }}
                           >
-                            <option value="Chưa xử lý">🔴 Chưa xử lý</option>
-                            <option value="Đang xử lý">🟡 Đang xử lý</option>
-                            <option value="Đã hoàn thành">🟢 Đã hoàn thành</option>
+                            <option value="Chưa xử lý">Chưa xử lý</option>
+                            <option value="Đang xử lý">Đang xử lý</option>
+                            <option value="Đã hoàn thành">Đã hoàn thành</option>
                           </select>
                         </div>
 
@@ -3210,14 +3629,35 @@ export default function TruongPhongDashboard() {
                         </div>
 
                         <div className="tp-form-group" style={{ margin: 0 }}>
-                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Tên file đính kèm</label>
-                          <input
-                            type="text"
-                            placeholder="128_UBND_CongVan.pdf"
-                            value={incomingForm.file_name}
-                            onChange={(e) => setIncomingForm({ ...incomingForm, file_name: e.target.value })}
-                            style={{ padding: "7px 10px", fontSize: "13px" }}
-                          />
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>File đính kèm</label>
+                          <div style={{ display: "flex", gap: "6px" }}>
+                            <input
+                              type="file"
+                              id="incoming-file-upload"
+                              style={{ display: "none" }}
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setIncomingForm({ ...incomingForm, file_name: file.name });
+                                }
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="128_UBND_CongVan.pdf"
+                              value={incomingForm.file_name}
+                              onChange={(e) => setIncomingForm({ ...incomingForm, file_name: e.target.value })}
+                              style={{ flex: 1, padding: "7px 10px", fontSize: "13px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => document.getElementById("incoming-file-upload").click()}
+                              style={{ padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                              <span>Chọn file</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
 
@@ -3323,7 +3763,7 @@ export default function TruongPhongDashboard() {
                                 )}
                                 {doc.file_name && (
                                   <div style={{ fontSize: "11.5px", color: "#2563eb", marginTop: "4px" }}>
-                                    📎 <u>{doc.file_name}</u>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "middle", marginRight: "4px" }}><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg><u>{doc.file_name}</u>
                                   </div>
                                 )}
                               </td>
@@ -3354,23 +3794,23 @@ export default function TruongPhongDashboard() {
                                 </span>
                               </td>
                               <td style={{ padding: "12px 14px", textAlign: "center" }}>
-                                <div style={{ display: "flex", gap: "6px", justifyContent: "center" }}>
+                                <div style={{ display: "flex", gap: "6px", justifyContent: "center", alignItems: "center" }}>
                                   <button
                                     onClick={() => {
                                       setShowIncomingForm(true);
                                       handleEditIncomingDoc(doc);
                                     }}
-                                    style={{ padding: "4px 8px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
+                                    style={{ padding: "4px 8px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontSize: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}
                                     title="Sửa"
                                   >
-                                    ✏️
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                                   </button>
                                   <button
                                     onClick={() => handleDeleteIncomingDoc(doc.id)}
-                                    style={{ padding: "4px 8px", background: "#fee2e2", border: "1px solid #fca5a5", color: "#dc2626", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
+                                    style={{ padding: "4px 8px", background: "#fee2e2", border: "1px solid #fca5a5", color: "#dc2626", borderRadius: "4px", cursor: "pointer", fontSize: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}
                                     title="Xóa"
                                   >
-                                    🗑️
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                                   </button>
                                 </div>
                               </td>
@@ -3400,8 +3840,9 @@ export default function TruongPhongDashboard() {
                 {/* Thanh Tiêu đề & Điều khiển tối giản */}
                 <div className="tp-card" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
                   <div>
-                    <h3 style={{ margin: 0, fontSize: "17px", color: "#0f172a", fontWeight: "800" }}>
-                      📤 SỔ QUẢN LÝ VĂN BẢN ĐỊ CƠ QUAN ({filteredOutgoing.length})
+                    <h3 style={{ margin: 0, fontSize: "17px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                      <span>SỔ QUẢN LÝ VĂN BẢN ĐỊ CƠ QUAN ({filteredOutgoing.length})</span>
                     </h3>
                     <span style={{ fontSize: "12px", color: "#64748b" }}>
                       Soạn thảo, trình duyệt và theo dõi sổ phát hành văn bản đi của Phòng Văn hóa - Xã hội
@@ -3414,7 +3855,7 @@ export default function TruongPhongDashboard() {
                       onChange={(e) => setFilterOutgoingType(e.target.value)}
                       style={{ padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
                     >
-                      <option value="ALL">🔍 Tất cả loại văn bản</option>
+                      <option value="ALL">Tất cả loại văn bản</option>
                       <option value="Báo cáo">Báo cáo</option>
                       <option value="Kế hoạch">Kế hoạch</option>
                       <option value="Thông báo">Thông báo</option>
@@ -3424,7 +3865,7 @@ export default function TruongPhongDashboard() {
 
                     <input
                       type="text"
-                      placeholder="🔍 Tìm số hiệu, trích yếu, nơi nhận..."
+                      placeholder="Tìm số hiệu, trích yếu, nơi nhận..."
                       style={{ width: "240px", padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px" }}
                       value={searchOutgoing}
                       onChange={(e) => setSearchOutgoing(e.target.value)}
@@ -3449,7 +3890,17 @@ export default function TruongPhongDashboard() {
                         border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px"
                       }}
                     >
-                      {showOutgoingForm ? "❌ Đóng biểu mẫu" : "➕ Soạn thảo Văn bản đi Mới"}
+                      {showOutgoingForm ? (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                          <span>Đóng biểu mẫu</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                          <span>Soạn thảo Văn bản đi Mới</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -3457,8 +3908,18 @@ export default function TruongPhongDashboard() {
                 {/* Form Soạn thảo / Hiệu chỉnh Văn bản Đi (Full Width Grid) */}
                 {(showOutgoingForm || editingOutgoingDoc) && (
                   <div className="tp-card" style={{ padding: "20px", borderTop: "4px solid #005baa", background: "#fafafa" }}>
-                    <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#003d7a", fontWeight: "800" }}>
-                      {editingOutgoingDoc ? "✏️ CẬP NHẬT VĂN BẢN ĐỊ" : "📤 SOẠN THẢO & PHÁT HÀNH VĂN BẢN ĐỊ MỚI"}
+                    <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#003d7a", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px" }}>
+                      {editingOutgoingDoc ? (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                          <span>CẬP NHẬT VĂN BẢN ĐỊ</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                          <span>SOẠN THẢO & PHÁT HÀNH VĂN BẢN ĐỊ MỚI</span>
+                        </>
+                      )}
                     </h4>
 
                     <form onSubmit={handleOutgoingSubmit}>
@@ -3542,20 +4003,41 @@ export default function TruongPhongDashboard() {
                             onChange={(e) => setOutgoingForm({ ...outgoingForm, trang_thai: e.target.value })}
                             style={{ padding: "7px 10px", fontSize: "13px" }}
                           >
-                            <option value="Dự thảo">🟡 Dự thảo</option>
-                            <option value="Đã phát hành">🟢 Đã phát hành</option>
+                            <option value="Dự thảo">Dự thảo</option>
+                            <option value="Đã phát hành">Đã phát hành</option>
                           </select>
                         </div>
 
                         <div className="tp-form-group" style={{ margin: 0 }}>
-                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>Tên file đính kèm</label>
-                          <input
-                            type="text"
-                            placeholder="34_BC_VHXH_BHYT.pdf"
-                            value={outgoingForm.file_name}
-                            onChange={(e) => setOutgoingForm({ ...outgoingForm, file_name: e.target.value })}
-                            style={{ padding: "7px 10px", fontSize: "13px" }}
-                          />
+                          <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155" }}>File đính kèm</label>
+                          <div style={{ display: "flex", gap: "6px" }}>
+                            <input
+                              type="file"
+                              id="outgoing-file-upload"
+                              style={{ display: "none" }}
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setOutgoingForm({ ...outgoingForm, file_name: file.name });
+                                }
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="34_BC_VHXH_BHYT.pdf"
+                              value={outgoingForm.file_name}
+                              onChange={(e) => setOutgoingForm({ ...outgoingForm, file_name: e.target.value })}
+                              style={{ flex: 1, padding: "7px 10px", fontSize: "13px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => document.getElementById("outgoing-file-upload").click()}
+                              style={{ padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                              <span>Chọn file</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
 
@@ -3583,8 +4065,9 @@ export default function TruongPhongDashboard() {
                         >
                           Hủy bỏ
                         </button>
-                        <button type="submit" className="tp-btn-submit" style={{ padding: "7px 20px", fontSize: "13px" }}>
-                          {editingOutgoingDoc ? "💾 Lưu cập nhật văn bản đi" : "🚀 Phát hành / Lưu văn bản đi"}
+                        <button type="submit" className="tp-btn-submit" style={{ padding: "7px 20px", fontSize: "13px", display: "flex", alignItems: "center", gap: "6px" }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                          <span>{editingOutgoingDoc ? "Lưu cập nhật văn bản đi" : "Phát hành / Lưu văn bản đi"}</span>
                         </button>
                       </div>
                     </form>
@@ -3669,10 +4152,11 @@ export default function TruongPhongDashboard() {
                                   {doc.trang_thai === "Dự thảo" && (
                                     <button
                                       onClick={() => handleApproveOutgoingDoc(doc.id)}
-                                      style={{ padding: "4px 8px", background: "#16a34a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "11.5px", fontWeight: "700" }}
+                                      style={{ padding: "4px 8px", background: "#16a34a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "11.5px", fontWeight: "700", display: "flex", alignItems: "center", gap: "4px" }}
                                       title="Duyệt & Phát hành"
                                     >
-                                      🚀 Duyệt
+                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                      <span>Duyệt</span>
                                     </button>
                                   )}
                                   <button
@@ -3683,14 +4167,14 @@ export default function TruongPhongDashboard() {
                                     style={{ padding: "4px 8px", background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
                                     title="Sửa"
                                   >
-                                    ✏️
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                                   </button>
                                   <button
                                     onClick={() => handleDeleteOutgoingDoc(doc.id)}
                                     style={{ padding: "4px 8px", background: "#fee2e2", border: "1px solid #fca5a5", color: "#dc2626", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
                                     title="Xóa"
                                   >
-                                    🗑️
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                   </button>
                                 </div>
                               </td>
@@ -3788,7 +4272,10 @@ export default function TruongPhongDashboard() {
                   </div>
 
                   <div className="tp-card tp-list-card">
-                    <h3>📋 Cán bộ trực thuộc quản lý ({subordinates.length})</h3>
+                    <h3 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      <span>Cán bộ trực thuộc quản lý ({subordinates.length})</span>
+                    </h3>
                     <div className="tp-table-wrapper">
                       <table className="tp-table">
                         <thead>
@@ -3912,17 +4399,23 @@ export default function TruongPhongDashboard() {
               {activeTab === "tasks" && (
                 <div className="tp-tasks-section">
                   <div className="tp-card">
-                    <h3>⚠️ Chỉ đạo công việc từ Trưởng phòng Nguyễn Thái Huy</h3>
+                    <h3 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      <span>Chỉ đạo công việc từ Trưởng phòng Nguyễn Thái Huy</span>
+                    </h3>
                     <div className="tp-activity-list" style={{ marginTop: "15px" }}>
                       {assignedTasks.map((task) => (
                         <div className="tp-notice-item" key={task.id} style={{ borderLeft: "4px solid #1a3a5c", background: "#f8fafc" }}>
                           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
                             <span className="notice-badge" style={{ background: task.status === "completed" ? "#d1fae5" : "#fef3c7", color: task.status === "completed" ? "#065f46" : "#92400e" }}>
-                              {task.status === "completed" ? "✅ Đã hoàn thành" : "⚡ Đang thực hiện"}
+                              {task.status === "completed" ? "Đã hoàn thành" : "Đang thực hiện"}
                             </span>
                             <span style={{ fontSize: "12px", color: "#64748b" }}>Hạn chót: {task.deadline}</span>
                           </div>
-                          <strong>📌 {task.title}</strong>
+                          <strong style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>{task.title}</span>
+                          </strong>
                           <p style={{ marginTop: "6px", color: "#334155" }}>{task.description}</p>
                           <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "10px", textAlign: "right" }}>
                             Người giao: <em>{task.sender}</em>
@@ -3934,246 +4427,7 @@ export default function TruongPhongDashboard() {
                 </div>
               )}
 
-              {activeTab === "citizens" && (
-                <div className="tp-grid" style={{ gridTemplateColumns: "360px 1fr" }}>
-                  <div className="tp-card tp-form-card">
-                    <h3>{editingCitizenId ? "✏️ Sửa công dân" : "➕ Thêm công dân mới"}</h3>
-                    <form onSubmit={handleCitizenSubmit} style={{ marginBottom: "20px" }}>
-                      <div className="tp-form-group">
-                        <label>Họ và tên công dân</label>
-                        <input
-                          type="text"
-                          placeholder="Ví dụ: Y Byen"
-                          value={citizenForm.fullName}
-                          onChange={(e) => setCitizenForm({ ...citizenForm, fullName: e.target.value })}
-                          required
-                        />
-                      </div>
 
-                      <div className="tp-form-group">
-                        <label>Số CCCD (12 số)</label>
-                        <input
-                          type="text"
-                          placeholder="062095000123"
-                          value={citizenForm.cccd}
-                          onChange={(e) => setCitizenForm({ ...citizenForm, cccd: e.target.value })}
-                          required
-                        />
-                      </div>
-
-                      <div className="tp-form-group-row">
-                        <div className="tp-form-group">
-                          <label>Ngày sinh</label>
-                          <input
-                            type="date"
-                            value={citizenForm.dob}
-                            onChange={(e) => setCitizenForm({ ...citizenForm, dob: e.target.value })}
-                            required
-                          />
-                        </div>
-                        <div className="tp-form-group">
-                          <label>Giới tính</label>
-                          <select
-                            value={citizenForm.gender}
-                            onChange={(e) => setCitizenForm({ ...citizenForm, gender: e.target.value })}
-                          >
-                            <option value="Nam">Nam</option>
-                            <option value="Nữ">Nữ</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="tp-form-group">
-                        <label>Số điện thoại</label>
-                        <input
-                          type="text"
-                          placeholder="0392888123"
-                          value={citizenForm.phone}
-                          onChange={(e) => setCitizenForm({ ...citizenForm, phone: e.target.value })}
-                        />
-                      </div>
-
-                      <div className="tp-form-group">
-                        <label>Địa chỉ thường trú</label>
-                        <input
-                          type="text"
-                          placeholder="Ví dụ: Thôn Đăk Wek"
-                          value={citizenForm.address}
-                          onChange={(e) => setCitizenForm({ ...citizenForm, address: e.target.value })}
-                        />
-                      </div>
-
-                      <div className="tp-btn-group">
-                        <button type="submit" className="tp-btn-submit" disabled={loading}>
-                          {editingCitizenId ? "💾 Lưu" : "➕ Thêm"}
-                        </button>
-                        {editingCitizenId && (
-                          <button
-                            type="button"
-                            className="tp-btn-cancel"
-                            onClick={() => {
-                              setEditingCitizenId(null);
-                              setCitizenForm({ fullName: "", cccd: "", dob: "", gender: "Nam", phone: "", address: "" });
-                            }}
-                          >
-                            Hủy
-                          </button>
-                        )}
-                      </div>
-                    </form>
-
-                    {selectedCitizen && (
-                      <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "15px" }}>
-                        <h3 style={{ textTransform: "none", fontSize: "14px", border: "none", padding: 0 }}>
-                          🎫 Cấp thẻ BHYT cho: <strong>{selectedCitizen.fullName}</strong>
-                        </h3>
-                        <form onSubmit={handleInsuranceSubmit} style={{ marginTop: "12px" }}>
-                          <div className="tp-form-group">
-                            <label>Mã số thẻ BHYT</label>
-                            <input
-                              type="text"
-                              placeholder="GD4797931885408"
-                              value={insuranceForm.cardCode}
-                              onChange={(e) => setInsuranceForm({ ...insuranceForm, cardCode: e.target.value })}
-                              required
-                            />
-                          </div>
-
-                          <div className="tp-form-group-row">
-                            <div className="tp-form-group">
-                              <label>Ngày cấp</label>
-                              <input
-                                type="date"
-                                value={insuranceForm.startDate}
-                                onChange={(e) => setInsuranceForm({ ...insuranceForm, startDate: e.target.value })}
-                                required
-                              />
-                            </div>
-                            <div className="tp-form-group">
-                              <label>Ngày hết hạn</label>
-                              <input
-                                type="date"
-                                value={insuranceForm.endDate}
-                                onChange={(e) => setInsuranceForm({ ...insuranceForm, endDate: e.target.value })}
-                                required
-                              />
-                            </div>
-                          </div>
-
-                          <div className="tp-form-group">
-                            <label>Trạng thái</label>
-                            <select
-                              value={insuranceForm.status}
-                              onChange={(e) => setInsuranceForm({ ...insuranceForm, status: e.target.value })}
-                            >
-                              <option value="active">🟢 Đang hoạt động</option>
-                              <option value="inactive">🔴 Bị khóa</option>
-                            </select>
-                          </div>
-
-                          <button type="submit" className="tp-btn-submit" style={{ background: "#10b981" }} disabled={loading}>
-                            💾 Lưu thẻ BHYT
-                          </button>
-                        </form>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="tp-card tp-list-card">
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
-                      <h3 style={{ margin: 0, padding: 0, border: "none" }}>📋 Danh sách công dân ({citizens.length})</h3>
-                      <input
-                        type="text"
-                        placeholder="🔍 Tìm tên, CCCD, SĐT..."
-                        style={{ width: "200px", padding: "6px 12px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
-                        value={searchCitizen}
-                        onChange={(e) => setSearchCitizen(e.target.value)}
-                      />
-                    </div>
-
-                    <div className="tp-table-wrapper">
-                      <table className="tp-table">
-                        <thead>
-                          <tr>
-                            <th>Công dân</th>
-                            <th>Liên hệ</th>
-                            <th>Thẻ BHYT</th>
-                            <th style={{ textAlign: "center" }}>Hành động BHYT</th>
-                            <th>Thao tác</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredCitizens.length === 0 ? (
-                            <tr>
-                              <td colSpan="5">Không tìm thấy công dân nào.</td>
-                            </tr>
-                          ) : (
-                            filteredCitizens.map((c) => (
-                              <tr key={c._id} className={selectedCitizen?._id === c._id ? "selected-row" : ""}>
-                                <td>
-                                  <strong>{c.fullName}</strong>
-                                  <div className="text-muted" style={{ fontSize: "11px" }}>CCCD: {c.cccd}</div>
-                                </td>
-                                <td>
-                                  <div>📞 {c.phone || "N/A"}</div>
-                                  <div className="text-muted" style={{ fontSize: "11.5px" }}>🏠 {c.address || "N/A"}</div>
-                                </td>
-                                <td>
-                                  {c.insuranceCard ? (
-                                    <div style={{ fontSize: "13px" }}>
-                                      <span style={{ color: "#1a3a5c", fontWeight: "700" }}>💳 {c.insuranceCard.cardCode}</span>
-                                      <div style={{ fontSize: "11px", color: c.insuranceCard.status === "active" ? "#166534" : "#991b1b" }}>
-                                        {c.insuranceCard.status === "active" ? "🟢 Đang hoạt động" : "🔴 Tạm khóa"}
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <span style={{ color: "#94a3b8", fontSize: "12px" }}>Chưa cấp thẻ BHYT</span>
-                                  )}
-                                </td>
-                                <td style={{ textAlign: "center" }}>
-                                  <button
-                                    className="tp-edit-btn-small"
-                                    style={{ background: "#eff6ff", color: "#1d4ed8", border: "1px solid #bfdbfe" }}
-                                    onClick={() => handleCitizenSelect(c)}
-                                  >
-                                    🎫 Cấp/Sửa BHYT
-                                  </button>
-                                </td>
-                                <td>
-                                  <div className="tp-table-actions">
-                                    <button
-                                      className="tp-edit-btn-small"
-                                      onClick={() => {
-                                        setEditingCitizenId(c._id);
-                                        setCitizenForm({
-                                          fullName: c.fullName,
-                                          cccd: c.cccd,
-                                          dob: c.dob ? c.dob.substring(0, 10) : "",
-                                          gender: c.gender || "Nam",
-                                          phone: c.phone || "",
-                                          address: c.address || "",
-                                        });
-                                      }}
-                                    >
-                                      ✏️ Sửa
-                                    </button>
-                                    <button
-                                      className="tp-delete-btn-small"
-                                      onClick={() => handleDeleteCitizen(c._id, c.fullName)}
-                                    >
-                                      🗑️ Xóa
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {activeTab === "articles" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
@@ -4181,7 +4435,8 @@ export default function TruongPhongDashboard() {
                   <div className="tp-card tp-form-card" style={{ width: "100%", padding: "24px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", pb: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
                       <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#003d7a", display: "flex", alignItems: "center", gap: "8px" }}>
-                        ✍️ {editingArticle ? "Sửa bài viết tuyên truyền" : "Soạn thảo bài viết tuyên truyền mới"}
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <span>{editingArticle ? "Sửa bài viết tuyên truyền" : "Soạn thảo bài viết tuyên truyền mới"}</span>
                       </h3>
                       {editingArticle && (
                         <button
@@ -4222,23 +4477,23 @@ export default function TruongPhongDashboard() {
                             onChange={(e) => setArticleForm({ ...articleForm, danh_muc: e.target.value })}
                             style={{ padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", fontWeight: "700", color: "#003d7a", height: "43px" }}
                           >
-                            <optgroup label="🛡️ Tuyên truyền Trọng tâm">
-                              <option value="phong-chong-lua-dao">🛡️ Phòng, chống Lừa đảo Không gian mạng</option>
-                              <option value="an-toan-giao-thong">🚦 Tuyên truyền An toàn Giao thông</option>
-                              <option value="thien-tai">🌧️ Phòng chống Thiên tai & Bão lũ</option>
-                              <option value="bau-cu">🗳️ Tuyên truyền Bầu cử</option>
-                              <option value="huong-dan-vneid">🆔 Hướng dẫn VNeID Mức 2</option>
-                              <option value="te-nan">🛡️ Phòng chống Tệ nạn Xã hội</option>
-                              <option value="chay-rung">🔥 Phòng chống Cháy rừng</option>
-                              <option value="duoi-nuoc">🏊 Phòng chống Đuối nước</option>
-                              <option value="thu-tuc-hanh-chinh">📑 Thủ tục Hành chính & Dịch vụ công</option>
-                              <option value="tra-cuu">🏥 Tra cứu BHYT & BHXH</option>
+                            <optgroup label="Tuyên truyền Trọng tâm">
+                              <option value="phong-chong-lua-dao">Phòng, chống Lừa đảo Không gian mạng</option>
+                              <option value="an-toan-giao-thong">Tuyên truyền An toàn Giao thông</option>
+                              <option value="thien-tai">Phòng chống Thiên tai & Bão lũ</option>
+                              <option value="bau-cu">Tuyên truyền Bầu cử</option>
+                              <option value="huong-dan-vneid">Hướng dẫn VNeID Mức 2</option>
+                              <option value="te-nan">Phòng chống Tệ nạn Xã hội</option>
+                              <option value="chay-rung">Phòng chống Cháy rừng</option>
+                              <option value="duoi-nuoc">Phòng chống Đuối nước</option>
+                              <option value="thu-tuc-hanh-chinh">Thủ tục Hành chính & Dịch vụ công</option>
+                              <option value="tra-cuu">Tra cứu BHYT & BHXH</option>
                             </optgroup>
-                            <optgroup label="📌 Tin tức & Sự kiện">
-                              <option value="su-kien">📌 Sự kiện xã Đăk Pxi</option>
-                              <option value="the-thao">⚽ Thể thao phong trào</option>
-                              <option value="le-hoi">🌾 Lễ hội văn hóa truyền thống</option>
-                              <option value="khac">📰 Khác</option>
+                            <optgroup label="Tin tức & Sự kiện">
+                              <option value="su-kien">Sự kiện xã Đăk Pxi</option>
+                              <option value="the-thao">Thể thao phong trào</option>
+                              <option value="le-hoi">Lễ hội văn hóa truyền thống</option>
+                              <option value="khac">Khác</option>
                             </optgroup>
                           </select>
                         </div>
@@ -4769,7 +5024,7 @@ export default function TruongPhongDashboard() {
                               {fb.status === "pending" && (
                                 <button
                                   className="tp-edit-btn-small"
-                                  style={{ background: "#10b981", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", cursor: "pointer", fontWeight: "700" }}
+                                  style={{ background: "#10b981", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", cursor: "pointer", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "6px" }}
                                   onClick={() => {
                                     const replyText = replyInputs[fb._id] || "";
                                     if (!replyText.trim()) {
@@ -4780,7 +5035,8 @@ export default function TruongPhongDashboard() {
                                     setMessage("Đã gửi phản hồi thành công!");
                                   }}
                                 >
-                                  ✉️ Gửi phản hồi
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                  <span>Gửi phản hồi</span>
                                 </button>
                               )}
                               
@@ -4791,7 +5047,8 @@ export default function TruongPhongDashboard() {
                                 className="tp-edit-btn-small"
                                 style={{ background: "#0068ff", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", fontWeight: "700" }}
                               >
-                                💬 Nhắn Zalo riêng
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                <span>Nhắn Zalo riêng</span>
                               </a>
                             </div>
                           </div>
@@ -4835,7 +5092,7 @@ export default function TruongPhongDashboard() {
                     }}>
                       <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600", textAlign: "right" }}>Thời gian hiện tại</span>
                       <div style={{ fontSize: "15px", fontWeight: "800", color: "#38bdf8", display: "flex", alignItems: "center", gap: "6px" }}>
-                        <span>🕒</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
                       </div>
                     </div>
@@ -4869,7 +5126,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="1. Soạn Báo cáo kết quả công tác"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📄</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>1. Soạn Báo cáo</span>
                     </div>
 
@@ -4893,7 +5150,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="2. Soạn Kế hoạch công tác"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📋</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>2. Soạn Kế hoạch</span>
                     </div>
 
@@ -4917,7 +5174,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="3. Soạn Thông báo nội bộ / khẩn"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>🔔</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>3. Soạn Thông báo</span>
                     </div>
 
@@ -4941,7 +5198,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="4. Bài viết Tuyên truyền & Slogan"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📣</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M22 8a6 6 0 0 0-6-6H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h2l4 4 4-4h2a6 6 0 0 0 6-6V8z"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>4. Tuyên truyền</span>
                     </div>
 
@@ -4965,7 +5222,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="5. Tóm tắt Văn bản PDF/Word"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>📁</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>5. Tóm tắt File</span>
                     </div>
 
@@ -4989,7 +5246,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="6. Tóm tắt Cuộc họp & Biên bản"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>👥</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>6. Tóm tắt Họp</span>
                     </div>
 
@@ -5013,7 +5270,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="7. Tìm kiếm Văn bản CSDL"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>🔍</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>7. Tìm Văn bản</span>
                     </div>
 
@@ -5037,7 +5294,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="8. Gợi ý Công việc ưu tiên hôm nay"
                     >
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>💡</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.64 2.94 1.68 3.96.72.76 1.18 1.52 1.36 2.54"/></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>8. Gợi ý Việc</span>
                     </div>
 
@@ -5085,7 +5342,7 @@ export default function TruongPhongDashboard() {
                             }}
                           >
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px", fontSize: "12px", opacity: 0.75 }}>
-                              <strong>{msg.sender === "user" ? fullName : "🤖 AI Thư ký số"}</strong>
+                              <strong>{msg.sender === "user" ? fullName : "AI Thư ký số"}</strong>
                               <span>{msg.time}</span>
                             </div>
                             <div style={{ whiteSpace: "pre-wrap" }}>{msg.text}</div>
@@ -5093,9 +5350,10 @@ export default function TruongPhongDashboard() {
                               <button
                                 type="button"
                                 onClick={() => handleTextToSpeech(msg.text)}
-                                style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", marginTop: "6px", padding: 0 }}
+                                style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", marginTop: "6px", padding: 0, display: "inline-flex", alignItems: "center", gap: "4px" }}
                               >
-                                🔊 Đọc thành tiếng
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                                <span>Đọc thành tiếng</span>
                               </button>
                             )}
                           </div>
@@ -5134,10 +5392,10 @@ export default function TruongPhongDashboard() {
                           <button
                             type="button"
                             onClick={() => document.getElementById("ai-doc-file-input").click()}
-                            style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "8px 14px", cursor: "pointer", fontSize: "16px" }}
+                            style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "8px 14px", cursor: "pointer", fontSize: "16px", display: "flex", alignItems: "center" }}
                             title="Tải tệp PDF/Word để AI tóm tắt"
                           >
-                            📎
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
                           </button>
                           <input
                             type="text"
@@ -5293,12 +5551,12 @@ export default function TruongPhongDashboard() {
                           value={meetingForm.type}
                           onChange={(e) => setMeetingForm({ ...meetingForm, type: e.target.value })}
                         >
-                          <option value="giao-ban">👥 Họp giao ban định kỳ</option>
-                          <option value="hop-bao-mat">🔒 Cuộc họp Bảo mật Cán bộ (Mật / Nội bộ)</option>
-                          <option value="hop-khan">🚨 Họp khẩn cấp</option>
-                          <option value="chuyen-de">📑 Họp chuyên đề chuyên môn</option>
-                          <option value="tap-huan">📚 Tập huấn & Hướng dẫn nghiệp vụ</option>
-                          <option value="khac">📌 Cuộc họp khác</option>
+                          <option value="giao-ban">Họp giao ban định kỳ</option>
+                          <option value="hop-bao-mat">Cuộc họp Bảo mật Cán bộ (Mật / Nội bộ)</option>
+                          <option value="hop-khan">Họp khẩn cấp</option>
+                          <option value="chuyen-de">Họp chuyên đề chuyên môn</option>
+                          <option value="tap-huan">Tập huấn & Hướng dẫn nghiệp vụ</option>
+                          <option value="khac">Cuộc họp khác</option>
                         </select>
                       </div>
 
@@ -5348,7 +5606,10 @@ export default function TruongPhongDashboard() {
 
                   {/* Right: List of meetings with countdown */}
                   <div className="tp-card tp-list-card">
-                    <h3>📋 Danh sách cuộc họp cơ quan ({meetings.length})</h3>
+                    <h3>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "6px" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                      Danh sách cuộc họp cơ quan ({meetings.length})
+                    </h3>
                     <div className="tp-meetings-list">
                       {meetings.length === 0 ? (
                         <div className="text-center" style={{ padding: "30px", color: "#64748b" }}>Chưa có cuộc họp nào được lên lịch.</div>
@@ -5362,17 +5623,29 @@ export default function TruongPhongDashboard() {
                               <div className="tp-meeting-card-left">
                                 <div className="tp-meeting-card-info">
                                   <div className="tp-meeting-card-title">
-                                    {m.type === "hop-bao-mat" && <span style={{ color: "#e11d48", marginRight: "6px" }}>🔒 [MẬT]</span>}
+                                    {m.type === "hop-bao-mat" && (
+                                      <span style={{ color: "#e11d48", marginRight: "6px", display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                                        [MẬT]
+                                      </span>
+                                    )}
                                     {m.title}
                                   </div>
                                   <div className="tp-meeting-card-meta">
                                     <span className="tp-meta-item" style={{ color: m.type === "hop-bao-mat" ? "#e11d48" : "inherit", fontWeight: m.type === "hop-bao-mat" ? "800" : "500" }}>
-                                      📁 {getMeetingBadgeLabel(m.type)}
+                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "3px" }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
+                                      {getMeetingBadgeLabel(m.type)}
                                     </span>
                                     <span className="tp-meta-divider">•</span>
-                                    <span className="tp-meta-item">👥 {m.thon}</span>
+                                    <span className="tp-meta-item">
+                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "3px" }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                                      {m.thon}
+                                    </span>
                                     <span className="tp-meta-divider">•</span>
-                                    <span className="tp-meta-item">📍 {m.location}</span>
+                                    <span className="tp-meta-item">
+                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "3px" }}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                                      {m.location}
+                                    </span>
                                   </div>
                                 </div>
                               </div>
@@ -5392,27 +5665,39 @@ export default function TruongPhongDashboard() {
                                     <button
                                       className="tp-btn-card"
                                       onClick={() => setSelectedMeetingHistory(m)}
-                                      style={{ background: "#1e3a8a", color: "#60a5fa", border: "1px solid #3b82f6", fontWeight: "800", whiteSpace: "nowrap", cursor: "pointer" }}
+                                      style={{ background: "#1e3a8a", color: "#60a5fa", border: "1px solid #3b82f6", fontWeight: "800", whiteSpace: "nowrap", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "4px" }}
                                       title="Xem Lịch sử họp & Biên bản kết luận được lưu vĩnh viễn"
                                     >
-                                      📋 Lịch sử & Biên bản
+                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></svg>
+                                      Lịch sử & Biên bản
                                     </button>
                                   ) : (
                                     <>
                                       <button
                                         className={`tp-btn-card tp-btn-join ${m.type === "hop-bao-mat" ? "sec-join-btn" : ""}`}
                                         onClick={() => handleJoinMeeting(m)}
-                                        style={m.type === "hop-bao-mat" ? { background: "linear-gradient(135deg, #ef4444 0%, #be123c 100%)", color: "#fff" } : {}}
+                                        style={m.type === "hop-bao-mat" ? { background: "linear-gradient(135deg, #ef4444 0%, #be123c 100%)", color: "#fff", display: "inline-flex", alignItems: "center", gap: "4px" } : { display: "inline-flex", alignItems: "center", gap: "4px" }}
                                       >
-                                        {m.type === "hop-bao-mat" ? "🔒 Vào họp Mật" : "🎥 Vào phòng"}
+                                        {m.type === "hop-bao-mat" ? (
+                                          <>
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                                            Vào họp Mật
+                                          </>
+                                        ) : (
+                                          <>
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7" /><rect width="15" height="14" x="1" y="5" rx="2" ry="2" /></svg>
+                                            Vào phòng
+                                          </>
+                                        )}
                                       </button>
                                       <button
                                         className="tp-btn-card"
                                         onClick={() => handleResendInvite(m)}
-                                        style={{ background: "#4338ca", color: "#ffffff", border: "1px solid #6366f1", fontWeight: "700" }}
+                                        style={{ background: "#4338ca", color: "#ffffff", border: "1px solid #6366f1", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "4px" }}
                                         title="Tự động phát thông báo & Giấy mời họp thời gian thực tới tất cả Cán bộ trong hệ thống"
                                       >
-                                        📩 Giấy mời
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+                                        Giấy mời
                                       </button>
                                     </>
                                   )}
@@ -5432,15 +5717,17 @@ export default function TruongPhongDashboard() {
                                       });
                                     }}
                                     title="Sửa cuộc họp"
+                                    style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}
                                   >
-                                    ✏️
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg>
                                   </button>
                                   <button
                                     className="tp-btn-card tp-btn-delete"
                                     onClick={() => handleDeleteMeeting(m._id)}
                                     title="Xóa cuộc họp"
+                                    style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}
                                   >
-                                    🗑️
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
                                   </button>
                                 </div>
                               </div>
@@ -5454,7 +5741,10 @@ export default function TruongPhongDashboard() {
               ) : (
                 /* Officer view: Full width list, no create/edit/delete form */
                 <div className="tp-card tp-list-card" style={{ width: "100%" }}>
-                  <h3>📋 Danh sách cuộc họp cơ quan của bạn ({meetings.length})</h3>
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "6px" }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                    Danh sách cuộc họp cơ quan của bạn ({meetings.length})
+                  </h3>
                   <div className="tp-meetings-list">
                     {meetings.length === 0 ? (
                       <div className="text-center" style={{ padding: "30px", color: "#64748b" }}>Chưa có cuộc họp nào được lên lịch.</div>
@@ -5468,17 +5758,29 @@ export default function TruongPhongDashboard() {
                             <div className="tp-meeting-card-left">
                               <div className="tp-meeting-card-info">
                                 <div className="tp-meeting-card-title">
-                                  {m.type === "hop-bao-mat" && <span style={{ color: "#e11d48", marginRight: "6px" }}>🔒 [MẬT]</span>}
+                                  {m.type === "hop-bao-mat" && (
+                                    <span style={{ color: "#e11d48", marginRight: "6px", display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                                      [MẬT]
+                                    </span>
+                                  )}
                                   {m.title}
                                 </div>
                                 <div className="tp-meeting-card-meta">
                                   <span className="tp-meta-item" style={{ color: m.type === "hop-bao-mat" ? "#e11d48" : "inherit", fontWeight: m.type === "hop-bao-mat" ? "800" : "500" }}>
-                                    📁 {getMeetingBadgeLabel(m.type)}
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "3px" }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
+                                    {getMeetingBadgeLabel(m.type)}
                                   </span>
                                   <span className="tp-meta-divider">•</span>
-                                  <span className="tp-meta-item">👥 {m.thon}</span>
+                                  <span className="tp-meta-item">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "3px" }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                                    {m.thon}
+                                  </span>
                                   <span className="tp-meta-divider">•</span>
-                                  <span className="tp-meta-item">📍 {m.location}</span>
+                                  <span className="tp-meta-item">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle", marginRight: "3px" }}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                                    {m.location}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -5493,16 +5795,27 @@ export default function TruongPhongDashboard() {
                                   {timerInfo.label}
                                 </span>
                               </div>
-                              <div style={{ flex: 1, minWidth: "120px", fontSize: "12.5px", color: "#64748b", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                                📝 {m.note || <em style={{ color: "#94a3b8" }}>Không có ghi chú</em>}
+                              <div style={{ flex: 1, minWidth: "120px", fontSize: "12.5px", color: "#64748b", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></svg>
+                                <span>{m.note || <em style={{ color: "#94a3b8" }}>Không có ghi chú</em>}</span>
                               </div>
                               <div className="tp-meeting-card-actions">
                                 <button
                                   className={`tp-btn-card tp-btn-join ${m.type === "hop-bao-mat" ? "sec-join-btn" : ""}`}
                                   onClick={() => handleJoinMeeting(m)}
-                                  style={m.type === "hop-bao-mat" ? { background: "linear-gradient(135deg, #ef4444 0%, #be123c 100%)", color: "#fff" } : {}}
+                                  style={m.type === "hop-bao-mat" ? { background: "linear-gradient(135deg, #ef4444 0%, #be123c 100%)", color: "#fff", display: "inline-flex", alignItems: "center", gap: "4px" } : { display: "inline-flex", alignItems: "center", gap: "4px" }}
                                 >
-                                  {m.type === "hop-bao-mat" ? "🔒 Vào họp Mật" : "🎥 Vào phòng"}
+                                  {m.type === "hop-bao-mat" ? (
+                                    <>
+                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                                      Vào họp Mật
+                                    </>
+                                  ) : (
+                                    <>
+                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7" /><rect width="15" height="14" x="1" y="5" rx="2" ry="2" /></svg>
+                                      Vào phòng
+                                    </>
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -5805,7 +6118,7 @@ export default function TruongPhongDashboard() {
                   </label>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                     {[
-                      "Rà soát & cấp thẻ BHYT đợt 2 cho 6 thôn",
+                      "Rà soát & cấp thẻ BHYT đợt 2 cho 10 thôn",
                       "Tuyên truyền Bầu cử & Quyền lợi BHYT",
                       "Ứng phó thiên tai lũ lụt & An sinh xã hội",
                       "Tuyên truyền BHYT Học đường năm học mới",
@@ -5833,7 +6146,7 @@ export default function TruongPhongDashboard() {
                   <label style={{ fontWeight: "800", color: "#1e3a8a" }}>1. Nội dung / Chủ đề Trưởng phòng muốn họp</label>
                   <input
                     type="text"
-                    placeholder="Ví dụ: Rà soát cấp thẻ BHYT đợt 2 cho người dân 6 thôn"
+                    placeholder="Ví dụ: Rà soát cấp thẻ BHYT đợt 2 cho người dân 10 thôn"
                     value={aiPromptForm.topic}
                     onChange={(e) => setAiPromptForm({ ...aiPromptForm, topic: e.target.value })}
                     required
@@ -5871,11 +6184,11 @@ export default function TruongPhongDashboard() {
                     onChange={(e) => setAiPromptForm({ ...aiPromptForm, type: e.target.value })}
                     style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
                   >
-                    <option value="hop-bao-mat">🔒 Cuộc họp Bảo mật Cán bộ (Mật / Nội bộ)</option>
-                    <option value="giao-ban">👥 Họp giao ban định kỳ</option>
-                    <option value="hop-khan">🚨 Họp khẩn cấp</option>
-                    <option value="chuyen-de">📑 Họp chuyên đề chuyên môn</option>
-                    <option value="tap-huan">📚 Tập huấn & Hướng dẫn nghiệp vụ</option>
+                    <option value="hop-bao-mat">Cuộc họp Bảo mật Cán bộ (Mật / Nội bộ)</option>
+                    <option value="giao-ban">Họp giao ban định kỳ</option>
+                    <option value="hop-khan">Họp khẩn cấp</option>
+                    <option value="chuyen-de">Họp chuyên đề chuyên môn</option>
+                    <option value="tap-huan">Tập huấn & Hướng dẫn nghiệp vụ</option>
                   </select>
                 </div>
 
@@ -5903,8 +6216,177 @@ export default function TruongPhongDashboard() {
               </div>
             </div>
           )}
+
+          {/* Modal Thông tin Tài khoản */}
+          {showAccountInfoModal && (
+            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.45)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
+              <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "10px", width: "100%", maxWidth: "520px", padding: "24px", boxShadow: "0 20px 25px -5px rgba(0,0,0,0.2)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "16px" }}>
+                  <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>THÔNG TIN TÀI KHOẢN CÁN BỘ</span>
+                  </h3>
+                  <button onClick={() => setShowAccountInfoModal(false)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer", color: "#64748b" }}>✕</button>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "14px", fontSize: "13.5px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "14px", background: "#f8fafc", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                    <div style={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "50%",
+                      background: "#e0f2fe",
+                      border: "1.5px solid #bae6fd",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0
+                    }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: "800", fontSize: "16px", color: "#0f172a" }}>{fullName}</div>
+                      <div style={{ fontSize: "12px", color: "#0284c7", fontWeight: "700", marginTop: "2px" }}>
+                        {role === "truongphong" || role === "admin" ? "Trưởng phòng Văn hóa - Xã hội" : role === "phophong" ? "Phó trưởng phòng VH-XH" : "Cán bộ chuyên viên chuyên trách"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", background: "#ffffff" }}>
+                    <div>
+                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Đơn vị công tác:</strong>
+                      <span style={{ color: "#0f172a", fontWeight: "600" }}>UBND xã Đăk Pxi</span>
+                    </div>
+                    <div>
+                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Phòng ban:</strong>
+                      <span style={{ color: "#0f172a", fontWeight: "600" }}>Phòng Văn hóa - Xã hội</span>
+                    </div>
+                    <div>
+                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Mã định danh cán bộ:</strong>
+                      <span style={{ color: "#0f172a", fontWeight: "600" }}>CB-VHXH-2026</span>
+                    </div>
+                    <div>
+                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Trạng thái tài khoản:</strong>
+                      <span style={{ color: "#16a34a", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/></svg>
+                        <span>Đang hoạt động</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", padding: "10px 12px", borderRadius: "6px", fontSize: "12px", color: "#1d4ed8" }}>
+                    <strong>Quyền hạn hệ thống:</strong> {role === "truongphong" || role === "admin" ? "Toàn quyền quản lý điều hành, phê duyệt văn bản, giao việc cán bộ & gửi thông báo." : "Quyền cập nhật tiến độ công việc, xử lý văn bản đến/đi và soạn bài viết tuyên truyền."}
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "20px" }}>
+                  <button onClick={() => setShowAccountInfoModal(false)} style={{ background: "#005baa", color: "#ffffff", border: "none", padding: "8px 20px", borderRadius: "6px", fontWeight: "700", cursor: "pointer" }}>
+                    Đóng
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Modal Cài đặt */}
+          {showSettingsModal && (
+            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.45)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
+              <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "10px", width: "100%", maxWidth: "500px", padding: "24px", boxShadow: "0 20px 25px -5px rgba(0,0,0,0.2)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "16px" }}>
+                  <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>CÀI ĐẶT TÀI KHOẢN & HỆ THỐNG</span>
+                  </h3>
+                  <button onClick={() => setShowSettingsModal(false)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer", color: "#64748b" }}>✕</button>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px", fontSize: "13px" }}>
+                  <div>
+                    <label style={{ fontWeight: "700", color: "#334155", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span>Thông báo SMS & Email chỉ đạo</span>
+                    </label>
+                    <div style={{ display: "flex", gap: "12px" }}>
+                      <label style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
+                        <input type="checkbox" defaultChecked /> Bật nhận thông báo SMS OTP họp
+                      </label>
+                      <label style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
+                        <input type="checkbox" defaultChecked /> Đồng bộ email UBND
+                      </label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ fontWeight: "700", color: "#334155", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      <span>Đổi mật khẩu đăng nhập</span>
+                    </label>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <input type="password" placeholder="Mật khẩu hiện tại..." style={{ width: "100%", padding: "7px 10px", borderRadius: "6px", border: "1px solid #cbd5e1" }} />
+                      <input type="password" placeholder="Mật khẩu mới..." style={{ width: "100%", padding: "7px 10px", borderRadius: "6px", border: "1px solid #cbd5e1" }} />
+                    </div>
+                  </div>
+
+                  <div style={{ background: "#f8fafc", padding: "10px", borderRadius: "6px", border: "1px solid #e2e8f0", fontSize: "12px", color: "#475569" }}>
+                    <strong>Phiên bản phần mềm:</strong> v2.6.4 (BHYT & Điều hành Hành chính công Đăk Pxi)
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: "20px" }}>
+                  <button onClick={() => setShowSettingsModal(false)} style={{ background: "#e2e8f0", color: "#475569", border: "1px solid #cbd5e1", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", cursor: "pointer" }}>
+                    Hủy
+                  </button>
+                  <button onClick={() => { setShowSettingsModal(false); setMessage("Đã lưu cài đặt thành công!"); }} style={{ background: "#005baa", color: "#ffffff", border: "none", padding: "8px 20px", borderRadius: "6px", fontWeight: "700", cursor: "pointer" }}>
+                    Lưu cài đặt
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
+
+      {/* Floating Scroll to Top Button (Standard HTML5 SVG Vector Icon) */}
+      {showScrollTop && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          style={{
+            position: "fixed",
+            bottom: "24px",
+            right: "24px",
+            width: "44px",
+            height: "44px",
+            borderRadius: "50%",
+            background: "#005baa",
+            color: "#ffffff",
+            border: "none",
+            boxShadow: "0 4px 14px rgba(0, 91, 170, 0.35)",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+            transition: "all 0.25s ease-in-out"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-3px)";
+            e.currentTarget.style.background = "#004080";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.background = "#005baa";
+          }}
+          title="Lên đầu trang"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+        </button>
+      )}
     </div>
   );
 }

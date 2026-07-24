@@ -1,0 +1,155 @@
+/* ContactPage.css — Phong cách Cổng thông tin Điện tử Nhà nước */
+
+.contact-page-root {
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+.contact-header {
+  background: #ffffff;
+  border-bottom: 2px solid #005baa;
+  padding: 20px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.contact-header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.contact-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.contact-brand-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: #f0f7ff;
+  color: #005baa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #bfdbfe;
+}
+
+.contact-brand-text .sub-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.contact-brand-text h1 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #003d7a;
+  margin: 2px 0 6px;
+}
+
+.contact-brand-text p {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+}
+
+/* ── BREADCRUMB ── */
+.contact-breadcrumb {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.contact-breadcrumb-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-breadcrumb-inner a {
+  color: #005baa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact-breadcrumb-inner .sep {
+  color: #94a3b8;
+}
+
+.contact-breadcrumb-inner .current {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* ── MAIN CONTAINER ── */
+.contact-main-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.contact-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.contact-feedback-section {
+  width: 100%;
+}
+
+/* ── FOOTER ── */
+.contact-footer {
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.contact-footer-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.contact-footer p {
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .contact-top-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-brand {
+    flex-direction: column;
+  }
+  .contact-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

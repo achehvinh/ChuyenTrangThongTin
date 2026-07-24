@@ -20,7 +20,7 @@ export default function Footer() {
             <div className="footer-top">
                 <div className="footer-info">
                     <h3 className="footer-org-name">PHÒNG VĂN HÓA - XÃ HỘI XÃ ĐĂK PXI</h3>
-                    <p>Trụ sở: Thôn Pa cheng, Xã Đăk Pxi.</p>
+                    <p>Trụ sở: Thôn Pa Cheng, Xã Đăk Pxi.</p>
                     <p>
                         Điện thoại: <strong>0339.310.915</strong>{' '}
                         &nbsp;–&nbsp; Email: <strong>vhxh.dakpxi@gmail.com</strong>

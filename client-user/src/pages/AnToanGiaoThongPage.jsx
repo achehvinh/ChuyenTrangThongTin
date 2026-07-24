@@ -1,5 +1,106 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './AnToanGiaoThongPage.css';
+
+// ── BỘ ICON SVG CHUẨN HTML5 ──
+const SvgIcons = {
+  Traffic: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="10" height="20" x="7" y="2" rx="3" />
+      <circle cx="12" cy="6" r="1.5" />
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="12" cy="18" r="1.5" />
+    </svg>
+  ),
+  VolumeUp: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </svg>
+  ),
+  SquareStop: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+    </svg>
+  ),
+  Clipboard: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+    </svg>
+  ),
+  Search: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  ),
+  Pin: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="17" x2="12" y2="22" />
+      <path d="M5 17h14l-1.5-6H6.5L5 17Z" />
+      <path d="M9 11V4a3 3 0 0 1 6 0v7" />
+    </svg>
+  ),
+  ShieldCheck: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  ),
+  Siren: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 12a5 5 0 0 1 10 0v7H7v-7Z" />
+      <path d="M5 19h14" />
+      <path d="M12 2v3" />
+    </svg>
+  ),
+  AlertTriangle: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  ),
+  Landmark: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="3" y1="22" x2="21" y2="22" />
+      <line x1="6" y1="18" x2="6" y2="11" />
+      <line x1="10" y1="18" x2="10" y2="11" />
+      <line x1="14" y1="18" x2="14" y2="11" />
+      <line x1="18" y1="18" x2="18" y2="11" />
+      <polygon points="12 2 20 7 4 7 12 2" />
+    </svg>
+  ),
+  BookOpen: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  ),
+  Scale: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+      <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+      <path d="M7 21h10" />
+      <path d="M12 3v18" />
+      <path d="M3 7h18" />
+    </svg>
+  ),
+  Megaphone: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m3 11 18-5v12L3 13v-2z" />
+      <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+    </svg>
+  ),
+  ExternalLink: () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  )
+};
 
 const DATA = {
   title: 'Tuyên truyền An toàn Giao thông',
@@ -7,11 +108,10 @@ const DATA = {
   content:
     'Xã Đăk Pxi có địa hình đường nông thôn nhiều đèo dốc quanh co, sương mù và đường trơn trượt vào mùa mưa lũ. Để bảo vệ tính mạng, sức khỏe và tài sản của bản thân cùng gia đình, Phòng Văn hóa - Xã hội UBND xã Đăk Pxi đề nghị toàn thể bà con nhân dân, học sinh và các lực lượng tham gia giao thông nâng cao tinh thần tự giác, chấp hành nghiêm các quy định về an toàn giao thông đường bộ.',
 
-  // 📸 CƠ CẤU MỚI: TỪNG BƯỚC HƯỚNG DẪN ĐI LIỀN VỚI ẢNH MINH HỌA TO RỘNG
   visualSteps: [
     {
       stt: '01',
-      title: '📢 Tuyên truyền diễu hành & Đội mũ bảo hiểm đạt chuẩn cho con em',
+      title: 'Tuyên truyền diễu hành & Đội mũ bảo hiểm đạt chuẩn cho con em',
       tag: 'Tuyên truyền lưu động',
       img: '/huong-dan/atgt-1.png',
       desc: 'Phòng Văn hóa - Xã hội xã Đăk Pxi phối hợp tổ chức tuyên truyền lưu động và diễu hành an toàn giao thông trên các tuyến đường chính. Vận động 100% bà con nhân dân và học sinh chấp hành nghiêm việc đội mũ bảo hiểm đạt chuẩn chất lượng, gài quai chắc chắn khi đi xe máy.',
@@ -23,7 +123,7 @@ const DATA = {
     },
     {
       stt: '02',
-      title: '🏛️ Sinh hoạt tập trung & Tuyên truyền văn hóa giao thông tại Nhà Rông',
+      title: 'Sinh hoạt tập trung & Tuyên truyền văn hóa giao thông tại Nhà Rông',
       tag: 'Sinh hoạt cộng đồng',
       img: '/huong-dan/atgt-2.png',
       desc: 'Tổ chức các buổi sinh hoạt tập trung tại Nhà Rông các thôn để hướng dẫn trực quan cho bà con nhân dân xã Đăk Pxi. Nhắc nhở thông điệp "An toàn giao thông là hạnh phúc của mọi nhà", nâng cao ý thức văn hóa giao thông chung.',
@@ -35,7 +135,7 @@ const DATA = {
     },
     {
       stt: '03',
-      title: '📜 Hướng dẫn trực quan Quy định & Biển báo Giao thông đường bộ',
+      title: 'Hướng dẫn trực quan Quy định & Biển báo Giao thông đường bộ',
       tag: 'Phổ biến pháp luật',
       img: '/huong-dan/atgt-3.png',
       desc: 'Cán bộ tuyên truyền trực tiếp giảng giải các biển báo nguy hiểm, độ tuổi được phép lái xe và mức phạt theo quy định pháp luật. Giúp bà con và học sinh dễ nhận biết, dễ nhớ và chủ động phòng tránh tai nạn giao thông.',
@@ -57,9 +157,9 @@ const DATA = {
   ],
 
   preparednessItems: [
-    { title: '⛑️ Mũ bảo hiểm đạt chuẩn', desc: 'Có tem CR chất lượng, kính chắn gió chống bụi và quai cài chắc chắn.' },
-    { title: '💡 Hệ thống đèn & Phanh xe', desc: 'Đèn pha chiếu sáng tốt khi sương mù, phanh ăn nhạy trước sau.' },
-    { title: '🌧️ Áo mưa bộ gọn gàng', desc: 'Sử dụng áo mưa bộ hai mảnh để không bị vướng vào bánh xe máy.' },
+    { title: 'Mũ bảo hiểm đạt chuẩn', desc: 'Có tem CR chất lượng, kính chắn gió chống bụi và quai cài chắc chắn.' },
+    { title: 'Hệ thống đèn & Phanh xe', desc: 'Đèn pha chiếu sáng tốt khi sương mù, phanh ăn nhạy trước sau.' },
+    { title: 'Áo mưa bộ gọn gàng', desc: 'Sử dụng áo mưa bộ hai mảnh để không bị vướng vào bánh xe máy.' },
   ],
 
   emergencyPhones: [
@@ -122,7 +222,10 @@ export default function AnToanGiaoThongPage() {
         {/* ── HEADER TIÊU ĐỀ TRANG + LOA PHÁT THANH ── */}
         <div className="atgt-header-top">
           <div className="atgt-header-left">
-            <span className="atgt-header-badge">🚦 TUYÊN TRUYỀN AN TOÀN GIAO THÔNG</span>
+            <span className="atgt-header-badge">
+              <SvgIcons.Traffic />
+              <span>TUYÊN TRUYỀN AN TOÀN GIAO THÔNG</span>
+            </span>
             <h1 className="atgt-title">{DATA.title}</h1>
             <p className="atgt-subtitle">{DATA.subtitle}</p>
           </div>
@@ -141,16 +244,16 @@ export default function AnToanGiaoThongPage() {
               className={`atgt-speak-btn ${speaking ? 'speaking' : ''}`}
               onClick={handleSpeak}
             >
-              <span className="audio-icon">{speaking ? '⏹' : '📢'}</span>
+              <span className="audio-icon">{speaking ? <SvgIcons.SquareStop /> : <SvgIcons.VolumeUp />}</span>
               <span>{speaking ? 'Dừng đọc phát thanh' : 'Nghe loa đọc tuyên truyền'}</span>
             </button>
           </div>
         </div>
 
-        {/* ── KHUNG BỐ CỤC 2 CỘT (Cột trái chính + Cột phải Sidebar) ── */}
+        {/* ── KHUNG BỐ CỤC 2 CỘT ── */}
         <div className="atgt-layout">
 
-          {/* ════════════ CỘT TRÁI (MAIN CONTENT) ════════════ */}
+          {/* CỘT TRÁI (MAIN CONTENT) */}
           <div className="atgt-main">
 
             {/* Mô tả tuyên truyền */}
@@ -158,10 +261,13 @@ export default function AnToanGiaoThongPage() {
               <p className="atgt-content-lead">{DATA.content}</p>
             </section>
 
-            {/* ── HƯỚNG DẪN TRỰC QUAN: TỪNG BƯỚC ĐI LIỀN VỚI ẢNH TO RỘNG ── */}
+            {/* HƯỚNG DẪN TRỰC QUAN */}
             <section className="atgt-section atgt-visual-section">
               <div className="atgt-steps-header">
-                <h2 className="atgt-section-title">📋 Hướng dẫn an toàn giao thông từng bước trực quan</h2>
+                <h2 className="atgt-section-title">
+                  <SvgIcons.Clipboard />
+                  <span>Hướng dẫn an toàn giao thông từng bước trực quan</span>
+                </h2>
                 <span className="atgt-steps-sub">Hình ảnh tuyên truyền thực tế & Nội dung hướng dẫn sinh động cho bà con xã Đăk Pxi</span>
               </div>
 
@@ -176,20 +282,24 @@ export default function AnToanGiaoThongPage() {
                       <span className="atgt-vstep-tag">{step.tag}</span>
                     </div>
 
-                    {/* Ảnh TO RỘNG minh họa sinh động */}
+                    {/* Ảnh TO RỘNG minh họa */}
                     <div className="atgt-vstep-img-box" onClick={() => setActiveImg(step.img)}>
                       <img src={step.img} alt={step.title} className="atgt-vstep-img" />
                       <div className="atgt-vstep-img-badge">
-                        <span>🔍 Bấm phóng to ảnh xem chi tiết</span>
+                        <SvgIcons.Search />
+                        <span>Bấm phóng to ảnh xem chi tiết</span>
                       </div>
                     </div>
 
-                    {/* Nội dung chi tiết & Điểm cần nhớ */}
+                    {/* Nội dung chi tiết */}
                     <div className="atgt-vstep-content">
                       <p className="atgt-vstep-desc">{step.desc}</p>
 
                       <div className="atgt-vstep-highlights">
-                        <strong>📌 Lưu ý quan trọng cho bà con:</strong>
+                        <strong>
+                          <SvgIcons.Pin />
+                          <span>Lưu ý quan trọng cho bà con:</span>
+                        </strong>
                         <ul>
                           {step.highlights.map((h, idx) => (
                             <li key={idx}>{h}</li>
@@ -203,9 +313,12 @@ export default function AnToanGiaoThongPage() {
               </div>
             </section>
 
-            {/* ── Bộ thiết bị an toàn cần có ── */}
+            {/* Bộ thiết bị an toàn cần có */}
             <section className="atgt-section">
-              <h2 className="atgt-section-title">🎒 Thiết bị an toàn bắt buộc khi tham gia giao thông</h2>
+              <h2 className="atgt-section-title">
+                <SvgIcons.ShieldCheck />
+                <span>Thiết bị an toàn bắt buộc khi tham gia giao thông</span>
+              </h2>
               <div className="atgt-prep-grid">
                 {DATA.preparednessItems.map((item, i) => (
                   <div key={i} className="atgt-prep-card">
@@ -220,12 +333,15 @@ export default function AnToanGiaoThongPage() {
 
           </div>
 
-          {/* ════════════ CỘT PHẢI (SIDEBAR - TỪ DƯỚI LÊN) ════════════ */}
+          {/* CỘT PHẢI (SIDEBAR) */}
           <aside className="atgt-sidebar">
 
-            {/* 🚨 Số điện thoại khẩn cấp */}
+            {/* Số điện thoại khẩn cấp */}
             <div className="atgt-box atgt-box--danger">
-              <div className="atgt-box-title">🚨 Số điện thoại hỗ trợ khẩn cấp</div>
+              <div className="atgt-box-title">
+                <SvgIcons.Siren />
+                <span>Số điện thoại hỗ trợ khẩn cấp</span>
+              </div>
               <div className="atgt-phones-list">
                 {DATA.emergencyPhones.map((p, i) => (
                   <div key={i} className="atgt-phone-item">
@@ -237,9 +353,12 @@ export default function AnToanGiaoThongPage() {
               <p className="atgt-phone-note">Phòng VH-XH & Công an xã Đăk Pxi trực 24/7</p>
             </div>
 
-            {/* ⚠️ Lưu ý quan trọng */}
+            {/* Lưu ý quan trọng */}
             <div className="atgt-box">
-              <div className="atgt-box-title">⚠️ Lưu ý an toàn giao thông</div>
+              <div className="atgt-box-title">
+                <SvgIcons.AlertTriangle />
+                <span>Lưu ý an toàn giao thông</span>
+              </div>
               <ul className="atgt-warning-list">
                 {DATA.warning.map((w, i) => (
                   <li key={i}>{w}</li>
@@ -247,9 +366,12 @@ export default function AnToanGiaoThongPage() {
               </ul>
             </div>
 
-            {/* 🏛️ KHUNG CỔNG THÔNG TIN PHÁP LUẬT QUỐC GIA */}
+            {/* CỔNG THÔNG TIN PHÁP LUẬT QUỐC GIA */}
             <div className="atgt-box atgt-box--law">
-              <div className="atgt-box-title">🏛️ Cổng Thông tin Pháp luật Quốc gia</div>
+              <div className="atgt-box-title">
+                <SvgIcons.Landmark />
+                <span>Cổng Thông tin Pháp luật Quốc gia</span>
+              </div>
               <p className="atgt-law-box-desc">Tra cứu chính thức các quy định Luật Giao thông đường bộ & Nghị định xử phạt:</p>
               <div className="atgt-sidebar-law-links">
                 <a
@@ -258,12 +380,12 @@ export default function AnToanGiaoThongPage() {
                   rel="noopener noreferrer"
                   className="atgt-side-law-btn"
                 >
-                  <span className="ico">📚</span>
+                  <span className="ico"><SvgIcons.BookOpen /></span>
                   <div>
                     <strong>Cơ sở dữ liệu VBPL Quốc gia</strong>
                     <span>vbpl.vn — Tra cứu Luật GTĐB</span>
                   </div>
-                  <span className="arr">↗</span>
+                  <span className="arr"><SvgIcons.ExternalLink /></span>
                 </a>
 
                 <a
@@ -272,12 +394,12 @@ export default function AnToanGiaoThongPage() {
                   rel="noopener noreferrer"
                   className="atgt-side-law-btn secondary"
                 >
-                  <span className="ico">⚖️</span>
+                  <span className="ico"><SvgIcons.Scale /></span>
                   <div>
                     <strong>Cổng Thông tin Pháp luật Quốc gia</strong>
                     <span>phapluat.gov.vn — Hệ thống văn bản</span>
                   </div>
-                  <span className="arr">↗</span>
+                  <span className="arr"><SvgIcons.ExternalLink /></span>
                 </a>
 
                 <a
@@ -286,19 +408,22 @@ export default function AnToanGiaoThongPage() {
                   rel="noopener noreferrer"
                   className="atgt-side-law-btn accent"
                 >
-                  <span className="ico">🔍</span>
+                  <span className="ico"><SvgIcons.Search /></span>
                   <div>
                     <strong>Mức phạt Nghị định 100 & 123</strong>
                     <span>Tra cứu mức phạt vi phạm ATGT</span>
                   </div>
-                  <span className="arr">↗</span>
+                  <span className="arr"><SvgIcons.ExternalLink /></span>
                 </a>
               </div>
             </div>
 
-            {/* 📢 Khung Thông điệp tuyên truyền */}
+            {/* Thông điệp tuyên truyền */}
             <div className="atgt-box atgt-box--slogan">
-              <div className="atgt-box-title">📢 Thông điệp tuyên truyền</div>
+              <div className="atgt-box-title">
+                <SvgIcons.Megaphone />
+                <span>Thông điệp tuyên truyền</span>
+              </div>
               <blockquote className="atgt-slogan-text">
                 "{DATA.slogans[sloganIdx]}"
               </blockquote>
@@ -309,7 +434,7 @@ export default function AnToanGiaoThongPage() {
         </div>
       </div>
 
-      {/* ── MODAL XEM ẢNH RÕ NẾT ── */}
+      {/* MODAL XEM ẢNH RÕ NẾT */}
       {activeImg && (
         <div className="atgt-img-modal-overlay" onClick={() => setActiveImg(null)}>
           <div className="atgt-img-modal-content" onClick={e => e.stopPropagation()}>

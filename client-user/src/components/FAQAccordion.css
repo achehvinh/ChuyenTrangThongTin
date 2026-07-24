@@ -1,0 +1,70 @@
+/* FAQAccordion.css — HTML5 Accordion Tối giản Chuẩn Nhà nước */
+
+.faq-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.faq-accordion-item {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-accordion-item.is-open {
+  border-color: #005baa;
+  box-shadow: 0 4px 12px rgba(0, 91, 170, 0.06);
+}
+
+.faq-summary {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #003d7a;
+  list-style: none;
+}
+
+.faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-num {
+  font-weight: 900;
+  color: #005baa;
+  font-size: 13.5px;
+}
+
+.faq-question {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.faq-icon-toggle {
+  color: #005baa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.faq-answer {
+  padding: 0 18px 16px 44px;
+  border-top: 1px dashed #e2e8f0;
+  margin-top: 4px;
+  padding-top: 12px;
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.faq-answer p {
+  margin: 0;
+}

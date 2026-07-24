@@ -21,6 +21,9 @@
     cursor: pointer;
     transition: all 0.2s;
     margin-bottom: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .baucu-back-btn:hover {
@@ -98,7 +101,10 @@
 }
 
 .baucu-speak-btn {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     margin: 0 auto;
     background: #fff;
     color: #da251d;

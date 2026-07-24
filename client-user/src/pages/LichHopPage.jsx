@@ -87,10 +87,8 @@ export default function LichHopPage() {
             {past.map(e => <EventCard key={e.id} event={e} isPast />)}
           </div>
         </div>
-        
       )}
     </div>
-    
   );
 }
 
@@ -98,7 +96,6 @@ function EventCard({ event, isPast }) {
   const type = TYPE_LABELS[event.type] || TYPE_LABELS['khac'];
   const dateObj = new Date(event.date);
   const dayName = dateObj.toLocaleDateString('vi-VN', { weekday: 'long' });
-  const dateStr = dateObj.toLocaleDateString('vi-VN');
 
   return (
     <div className={`event-card ${isPast ? 'past' : ''}`}>

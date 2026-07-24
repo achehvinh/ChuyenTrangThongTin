@@ -98,11 +98,11 @@ export default function CuocHopTrucTuyen() {
 
   // Summary Report data
   const [summaryData, setSummaryData] = useState({
-    bienBan: `Hội nghị Ban Chỉ đạo Phòng Văn hóa - Xã hội do ${fullName} chủ trì đã tiến hành rà soát 100% hồ sơ BHYT đợt 2 cho người dân 6 thôn. Thống nhất danh sách 45 hộ được hỗ trợ kinh phí bảo hiểm xã hội.`,
+    bienBan: `Hội nghị Ban Chỉ đạo Phòng Văn hóa - Xã hội do ${fullName} chủ trì đã tiến hành rà soát 100% hồ sơ BHYT đợt 2 cho người dân 10 thôn (Thôn Pa Cheng, Thôn Đăk Xế Kơ Ne, Thôn Đăk Kơ Đương, Thôn Đăk Rơ Wang, Thôn Krong Đuân, Thôn Đăk Wek, Thôn Kon Đao Yôp, Thôn Kon Teo Đăk Lấp, Thôn Tua Team, Thôn Kon Pao Kơ La). Thống nhất danh sách 45 hộ được hỗ trợ kinh phí bảo hiểm xã hội.`,
     ketLuan: [
-      { id: 1, text: "Đồng chí Y Byen hoàn thiện dữ liệu nhập lên cổng DVC trước 17h00 ngày 22/07.", done: true },
-      { id: 2, text: "Đồng chí A Blong phối hợp Trưởng thôn Đăk Wek tuyên truyền lưu động.", done: false },
-      { id: 3, text: "Giao Phó phòng Lê Thị C ký duyệt biên bản tổng hợp chuyển UBND Xã.", done: false },
+      { id: 1, text: "Đồng chí Hoàng Trung Dũng hoàn thiện dữ liệu nhập lên cổng DVC trước 17h00.", done: true },
+      { id: 2, text: "Đồng chí Lê Ngọc Sơn phối hợp Trưởng thôn Đăk Wek tuyên truyền lưu động.", done: false },
+      { id: 3, text: "Giao Phó phòng Ngô Đỗ Quỳnh ký duyệt biên bản tổng hợp chuyển UBND Xã.", done: false },
     ]
   });
 
@@ -533,9 +533,9 @@ I. TỔ CHỨC CUỘC HỌP:
 - Cán bộ xác thực có mặt: ${officerNames}
 
 II. DIỄN BIẾN NỘI DUNG & THẢO LUẬN THỜI GIAN THỰC:
-1. Chủ trì cuộc họp ${fullName} quán triệt yêu cầu bảo mật, rà soát 100% hồ sơ cấp thẻ BHYT đợt 2 cho người dân 6 thôn xã Đăk Pxi.
-2. Phó Trưởng phòng Lê Thị C báo cáo đã hoàn thành 95% chỉ tiêu rà soát thôn Đăk Wek.
-3. Cán bộ Y Byen phát biểu giải trình ý kiến về các lỗi trùng lặp mã thẻ BHYT trên cổng DVC trực tuyến.
+1. Chủ trì cuộc họp ${fullName} quán triệt yêu cầu bảo mật, rà soát 100% hồ sơ cấp thẻ BHYT đợt 2 cho người dân 10 thôn xã Đăk Pxi.
+2. Phó Trưởng phòng Ngô Đỗ Quỳnh báo cáo đã hoàn thành 95% chỉ tiêu rà soát các thôn.
+3. Cán bộ Hoàng Trung Dũng phát biểu giải trình ý kiến về các lỗi trùng lặp mã thẻ BHYT trên cổng DVC trực tuyến.
 
 III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG PHÒNG:
 1. Phê duyệt 100% danh sách 45 hộ nghèo được hỗ trợ kinh phí bảo hiểm xã hội.

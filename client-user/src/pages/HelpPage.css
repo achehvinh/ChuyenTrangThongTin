@@ -1,0 +1,322 @@
+/* HelpPage.css — Phong cách Cổng thông tin Điện tử Nhà nước */
+
+.help-page-root {
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+.help-header {
+  background: #ffffff;
+  border-bottom: 2px solid #005baa;
+  padding: 20px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.help-header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.help-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.help-brand-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: #f0f7ff;
+  color: #005baa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #bfdbfe;
+}
+
+.help-brand-text .sub-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.help-brand-text h1 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #003d7a;
+  margin: 2px 0 6px;
+}
+
+.help-brand-text p {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+}
+
+/* ── BREADCRUMB ── */
+.help-breadcrumb {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.help-breadcrumb-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.help-breadcrumb-inner a {
+  color: #005baa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.help-breadcrumb-inner .sep {
+  color: #94a3b8;
+}
+
+.help-breadcrumb-inner .current {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* ── MAIN CONTAINER ── */
+.help-main-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.help-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.help-section-title {
+  margin-bottom: 18px;
+  border-bottom: 2px solid #f0f7ff;
+  padding-bottom: 10px;
+}
+
+.help-section-title h2 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #003d7a;
+  margin: 0 0 4px;
+}
+
+.help-section-title p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* GUIDE GRID */
+.help-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.guide-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.guide-card:hover {
+  background: #ffffff;
+  border-color: #005baa;
+  box-shadow: 0 4px 12px rgba(0, 91, 170, 0.08);
+  transform: translateY(-1px);
+}
+
+.guide-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.guide-icon.blue { background: #eff6ff; color: #1d4ed8; }
+.guide-icon.green { background: #f0fdf4; color: #15803d; }
+.guide-icon.orange { background: #fff7ed; color: #c2410c; }
+.guide-icon.purple { background: #faf5ff; color: #7e22ce; }
+.guide-icon.teal { background: #f0fdf4; color: #0d9488; }
+
+.guide-info h3 {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #003d7a;
+  margin: 0 0 4px;
+  line-height: 1.35;
+}
+
+.guide-info p {
+  font-size: 12.5px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* QUICK MEDIA BUTTONS */
+.quick-media-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.media-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-video {
+  background: #005baa;
+  color: #ffffff;
+}
+
+.btn-video:hover {
+  background: #003d7a;
+}
+
+.btn-pdf {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-pdf:hover {
+  background: #e2e8f0;
+  color: #005baa;
+}
+
+.btn-img {
+  background: #eff6ff;
+  color: #005baa;
+  border: 1px solid #bfdbfe;
+}
+
+.btn-img:hover {
+  background: #005baa;
+  color: #ffffff;
+}
+
+/* HỖ TRỢ THÊM BOX */
+.help-support-box {
+  background: #003d7a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.support-content h2 {
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0 0 4px;
+}
+
+.support-content p {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.support-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #003d7a;
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.support-action-btn:hover {
+  background: #f0f7ff;
+}
+
+/* FOOTER */
+.help-footer {
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.help-footer-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.help-footer p {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .help-brand {
+    flex-direction: column;
+  }
+  .help-support-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .help-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
