@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './KnowledgeManager.css';
 
@@ -33,6 +34,58 @@ const SOURCES = [
 
 const PRIORITIES = ['Thấp', 'Trung bình', 'Cao', 'Khẩn'];
 const STATUSES = ['Nháp', 'Chờ duyệt', 'Đã duyệt'];
+
+const DEFAULT_CHAT_LOGS = [
+  {
+    id: "chat-001",
+    user: "Bà con Thôn Pa Cheng",
+    question: "Làm thẻ BHYT cho trẻ em dưới 6 tuổi cần những giấy tờ gì?",
+    answer: "Hồ sơ gồm: Trích lục Giấy khai sinh của trẻ và Căn cước công dân của cha/mẹ. Bà con mang đến Bộ phận Một cửa UBND xã Đăk Pxi để được cấp miễn phí 100%.",
+    confidence: 96,
+    source: "Phòng Văn hóa - Xã hội",
+    timestamp: "2026-07-28 08:15",
+    rating: "helpful"
+  },
+  {
+    id: "chat-002",
+    user: "Người dân Thôn Đăk Wek",
+    question: "Có số điện thoại lạ gọi báo khóa tài khoản VNeID sau 2 tiếng có đúng không?",
+    answer: "ĐÂY LÀ HÀNH VI LỪA ĐẢO. Cơ quan Công an và UBND xã KHÔNG BAO GIỜ gọi điện yêu cầu cung cấp OTP hoặc đe dọa khóa tài khoản qua điện thoại. Bà con tuyệt đối không làm theo.",
+    confidence: 99,
+    source: "Phòng chống Lừa đảo Mạng",
+    timestamp: "2026-07-28 07:42",
+    rating: "helpful"
+  },
+  {
+    id: "chat-003",
+    user: "Bà con Thôn Krong Đuân",
+    question: "Đăng ký tạm trú cho công nhân làm đường ở đâu?",
+    answer: "Bà con mang CCCD và hợp đồng thuê nhà/giấy xác nhận của chủ hộ đến Trụ sở Công an xã Đăk Pxi để thực hiện đăng ký tạm trú trực tiếp hoặc qua ứng dụng VNeID.",
+    confidence: 88,
+    source: "Thủ tục hành chính",
+    timestamp: "2026-07-27 16:20",
+    rating: "helpful"
+  },
+  {
+    id: "chat-004",
+    user: "Người dân Thôn Kon Đao Yôp",
+    question: "Lịch tiêm chủng cho trẻ nhỏ tháng này vào ngày nào?",
+    answer: "Lịch tiêm chủng mở rộng định kỳ tại Trạm Y tế xã Đăk Pxi diễn ra vào ngày 15 và 25 hàng tháng.",
+    confidence: 92,
+    source: "UBND xã Đăk Pxi",
+    timestamp: "2026-07-27 14:10",
+    rating: "helpful"
+  }
+];
+
+const DEFAULT_AI_CONFIG = {
+  botName: "Trợ lý AI - Phòng Văn hóa - Xã hội",
+  communeName: "UBND xã Đăk Pxi",
+  systemPrompt: "Bạn là Trợ lý AI chuyên trách tư vấn nghiệp vụ, giải đáp thủ tục hành chính, chính sách BHYT/BHXH và tuyên truyền phòng chống lừa đảo mạng cho Nhân dân xã Đăk Pxi.",
+  confidenceThreshold: 75,
+  autoReply: true,
+  fallbackMessage: "Tôi là Trợ lý AI của Phòng Văn hóa - Xã hội xã Đăk Pxi. Câu hỏi của bà con hiện chưa có trong cơ sở dữ liệu tri thức đã duyệt. Cán bộ chuyên trách sẽ cập nhật câu trả lời sớm nhất!"
+};
 
 const DEFAULT_KNOWLEDGE = [
   {
@@ -104,6 +157,53 @@ Bà con chỉ cần nhập câu hỏi theo cách tự nhiên!`,
 ];
 
 export default function KnowledgeManager() {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'knowledge'; // 'knowledge' | 'chat-history' | 'ai-config'
+
+  // User Profile Dropdown & Modal States
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+  const [adminUser, setAdminUser] = useState(() => {
+    return {
+      fullName: localStorage.getItem('admin_fullname') || 'Admin VH-XH',
+      username: localStorage.getItem('admin_username') || 'admin_vhxh',
+      roleTitle: localStorage.getItem('admin_role') === 'truongphong' ? 'Trưởng phòng VH-XH' : 'Quản trị hệ thống',
+      phone: '0987.654.321',
+      email: 'admin.vhxh@dakpxi.gov.vn'
+    };
+  });
+
+  const [passForm, setPassForm] = useState({
+    oldPass: '',
+    newPass: '',
+    confirmPass: ''
+  });
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_role');
+    localStorage.removeItem('admin_username');
+    localStorage.removeItem('admin_fullname');
+    navigate('/dang-nhap');
+  };
+
+  const [chatLogs, setChatLogs] = useState(() => {
+    const saved = localStorage.getItem('bhyt_chat_logs');
+    if (saved) { try { return JSON.parse(saved); } catch (e) {} }
+    return DEFAULT_CHAT_LOGS;
+  });
+
+  const [aiConfig, setAiConfig] = useState(() => {
+    const saved = localStorage.getItem('bhyt_ai_config');
+    if (saved) { try { return JSON.parse(saved); } catch (e) {} }
+    return DEFAULT_AI_CONFIG;
+  });
+
+  const [chatSearch, setChatSearch] = useState('');
+
   const [form, setForm] = useState({
     title: '',
     keywords: '',
@@ -446,53 +546,149 @@ export default function KnowledgeManager() {
 
   return (
     <div className="km-admin-container">
-      {/* HEADER BANNER */}
-      <div className="km-header">
-        <h2>🤖 QUẢN LÝ TRI THỨC TRỢ LÝ AI (PHÒNG VĂN HÓA - XÃ HỘI)</h2>
-        <p className="km-sub">Hệ thống biên soạn & thẩm định cơ sở dữ liệu tri thức chuẩn nghiệp vụ cho Trợ lý AI phục vụ Nhân dân xã Đăk Pxi</p>
+
+      {/* THỐNG KÊ (5 STAT CARDS) */}
+      <div className="km-stats-5cards">
+        <div className="km-stat-box km-stat-box--blue">
+          <div className="km-stat-circle km-stat-circle--blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.6 2.8 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>
+          </div>
+          <div className="km-stat-details">
+            <span className="km-stat-number">{totalCount || 1}</span>
+            <span className="km-stat-title">Tổng tri thức</span>
+            <span className="km-stat-sub">Tổng số tài liệu và dữ liệu</span>
+          </div>
+        </div>
+
+        <div className="km-stat-box km-stat-box--green">
+          <div className="km-stat-circle km-stat-circle--green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div className="km-stat-details">
+            <span className="km-stat-number">{approvedCount || 1}</span>
+            <span className="km-stat-title">Đã duyệt</span>
+            <span className="km-stat-sub">Tài liệu đã được phê duyệt</span>
+          </div>
+        </div>
+
+        <div className="km-stat-box km-stat-box--orange">
+          <div className="km-stat-circle km-stat-circle--orange">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2.2"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+          </div>
+          <div className="km-stat-details">
+            <span className="km-stat-number">{pendingCount || 0}</span>
+            <span className="km-stat-title">Chờ duyệt</span>
+            <span className="km-stat-sub">Tài liệu đang chờ duyệt</span>
+          </div>
+        </div>
+
+        <div className="km-stat-box km-stat-box--purple">
+          <div className="km-stat-circle km-stat-circle--purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9333ea" strokeWidth="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div className="km-stat-details">
+            <span className="km-stat-number">{draftCount || 0}</span>
+            <span className="km-stat-title">Nháp</span>
+            <span className="km-stat-sub">Tài liệu nháp</span>
+          </div>
+        </div>
+
+        <div className="km-stat-box km-stat-box--pink">
+          <div className="km-stat-circle km-stat-circle--pink" style={{ background: "#f3e8ff", border: "1px solid #e9d5ff" }}>
+            <svg width="24" height="24" viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="46" fill="#f3e8ff" />
+              <rect x="36" y="62" width="28" height="24" rx="10" fill="#ffffff" stroke="#c084fc" strokeWidth="2.5" />
+              <circle cx="50" cy="74" r="6" fill="#2563eb" />
+              <rect x="26" y="28" width="48" height="34" rx="14" fill="#ffffff" stroke="#c084fc" strokeWidth="2.5" />
+              <rect x="31" y="33" width="38" height="24" rx="10" fill="#7c3aed" />
+              <circle cx="43" cy="45" r="3.5" fill="#ffffff" />
+              <circle cx="57" cy="45" r="3.5" fill="#ffffff" />
+              <line x1="50" y1="28" x2="50" y2="20" stroke="#a855f7" strokeWidth="3" strokeLinecap="round" />
+              <circle cx="50" cy="18" r="4" fill="#a855f7" />
+            </svg>
+          </div>
+          <div className="km-stat-details">
+            <span className="km-stat-number">{totalAiUses || 1}</span>
+            <span className="km-stat-title">Lượt AI trả lời</span>
+            <span className="km-stat-sub">Tổng lượt trả lời cho người dùng</span>
+          </div>
+        </div>
       </div>
 
-      {/* THỐNG KÊ (STATISTICS BANNER) */}
-      <div className="km-stats-banner">
-        <div className="km-stat-card">
-          <span className="km-stat-icon">📚</span>
-          <div className="km-stat-info">
-            <span className="km-stat-val">{totalCount}</span>
-            <span className="km-stat-lbl">Tổng tri thức</span>
-          </div>
-        </div>
-        <div className="km-stat-card km-stat-card--approved">
-          <span className="km-stat-icon">✅</span>
-          <div className="km-stat-info">
-            <span className="km-stat-val">{approvedCount}</span>
-            <span className="km-stat-lbl">Đã duyệt</span>
-          </div>
-        </div>
-        <div className="km-stat-card km-stat-card--pending">
-          <span className="km-stat-icon">⏳</span>
-          <div className="km-stat-info">
-            <span className="km-stat-val">{pendingCount}</span>
-            <span className="km-stat-lbl">Chờ duyệt</span>
-          </div>
-        </div>
-        <div className="km-stat-card km-stat-card--draft">
-          <span className="km-stat-icon">📝</span>
-          <div className="km-stat-info">
-            <span className="km-stat-val">{draftCount}</span>
-            <span className="km-stat-lbl">Nháp</span>
-          </div>
-        </div>
-        <div className="km-stat-card km-stat-card--ai">
-          <span className="km-stat-icon">🤖</span>
-          <div className="km-stat-info">
-            <span className="km-stat-val">{totalAiUses}</span>
-            <span className="km-stat-lbl">Lượt AI trả lời</span>
-          </div>
-        </div>
+      {/* SUB-TABS: CHUYỂN ĐỔI GIỮA TRI THỨC AI | LỊCH SỬ CHAT | QUẢN LÝ & CẤU HÌNH AI */}
+      <div style={{ display: "flex", gap: "10px", margin: "16px 0 20px", borderBottom: "2px solid #e2e8f0", paddingBottom: "10px" }}>
+        <button
+          type="button"
+          onClick={() => setSearchParams({ tab: "knowledge" })}
+          style={{
+            padding: "8px 22px",
+            borderRadius: "30px",
+            border: "none",
+            background: activeTab === "knowledge" ? "linear-gradient(135deg, #003366 0%, #004085 100%)" : "#ffffff",
+            color: activeTab === "knowledge" ? "#ffffff" : "#475569",
+            fontSize: "13.5px",
+            fontWeight: "900",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            boxShadow: activeTab === "knowledge" ? "0 4px 12px rgba(0,51,102,0.35)" : "0 1px 3px rgba(0,0,0,0.05)"
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="46" fill="#f3e8ff" />
+            <rect x="36" y="62" width="28" height="24" rx="10" fill="#ffffff" stroke="#c084fc" strokeWidth="2.5" />
+            <circle cx="50" cy="74" r="6" fill="#2563eb" />
+            <rect x="26" y="28" width="48" height="34" rx="14" fill="#ffffff" stroke="#c084fc" strokeWidth="2.5" />
+            <rect x="31" y="33" width="38" height="24" rx="10" fill="#7c3aed" />
+            <circle cx="43" cy="45" r="3.5" fill="#ffffff" />
+            <circle cx="57" cy="45" r="3.5" fill="#ffffff" />
+            <line x1="50" y1="28" x2="50" y2="20" stroke="#a855f7" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="50" cy="18" r="4" fill="#a855f7" />
+          </svg>
+          <span>Trợ lý AI ({list.length})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSearchParams({ tab: "chat-history" })}
+          style={{
+            padding: "8px 18px",
+            borderRadius: "20px",
+            border: "none",
+            background: activeTab === "chat-history" ? "#1d4ed8" : "#ffffff",
+            color: activeTab === "chat-history" ? "#ffffff" : "#475569",
+            fontSize: "13px",
+            fontWeight: "800",
+            cursor: "pointer",
+            boxShadow: activeTab === "chat-history" ? "0 2px 6px rgba(29,78,216,0.3)" : "0 1px 3px rgba(0,0,0,0.05)"
+          }}
+        >
+          🕒 Lịch sử chat ({chatLogs.length})
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSearchParams({ tab: "ai-config" })}
+          style={{
+            padding: "8px 18px",
+            borderRadius: "20px",
+            border: "none",
+            background: activeTab === "ai-config" ? "#1d4ed8" : "#ffffff",
+            color: activeTab === "ai-config" ? "#ffffff" : "#475569",
+            fontSize: "13px",
+            fontWeight: "800",
+            cursor: "pointer",
+            boxShadow: activeTab === "ai-config" ? "0 2px 6px rgba(29,78,216,0.3)" : "0 1px 3px rgba(0,0,0,0.05)"
+          }}
+        >
+          ⚙️ Quản lý AI
+        </button>
       </div>
 
-      {/* BỐ CỤC 2 CỘT */}
-      <div className="km-grid">
+      {/* VIEW SUB-TAB 1: TRI THỨC AI (BỐ CỤC 2 CỘT CHUẨN MỚI) */}
+      {activeTab === "knowledge" && (
+        <div className="km-grid">
         {/* CỘT TRÁI: FORM NHẬP / SỬA TRI THỨC AI */}
         <div className="km-card km-form-card">
           <div className="km-form-header">
@@ -802,6 +998,157 @@ export default function KnowledgeManager() {
           )}
         </div>
       </div>
+    )}
+
+      {/* VIEW SUB-TAB 2: LỊCH SỬ CHAT CỦA BÀ CON NÔNG DÂN VỚI TRỢ LÝ AI */}
+      {activeTab === "chat-history" && (
+        <div className="km-card" style={{ padding: "24px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px", borderBottom: "1.5px solid #e2e8f0", paddingBottom: "12px" }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: "16px", color: "#1e1b4b", fontWeight: "800" }}>
+                🕒 LỊCH SỬ HỘI THOẠI CỦA BÀ CON NÔNG DÂN VỚI TRỢ LÝ AI
+              </h3>
+              <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#64748b" }}>
+                Theo dõi nhật ký hội thoại thực tế của người dân 10 thôn thuộc xã Đăk Pxi
+              </p>
+            </div>
+            <input
+              type="text"
+              placeholder="🔍 Tìm câu hỏi / từ khóa..."
+              value={chatSearch}
+              onChange={(e) => setChatSearch(e.target.value)}
+              className="km-input"
+              style={{ width: "260px" }}
+            />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            {chatLogs
+              .filter(item => !chatSearch || item.question.toLowerCase().includes(chatSearch.toLowerCase()) || item.user.toLowerCase().includes(chatSearch.toLowerCase()))
+              .map((log) => (
+                <div key={log.id} style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "10px", padding: "16px", boxShadow: "0 2px 6px rgba(0,0,0,0.02)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ background: "#dbeafe", color: "#1d4ed8", padding: "3px 10px", borderRadius: "12px", fontSize: "11.5px", fontWeight: "800" }}>
+                        👤 {log.user}
+                      </span>
+                      <span style={{ fontSize: "11px", color: "#94a3b8" }}>{log.timestamp}</span>
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ background: "#dcfce7", color: "#15803d", fontSize: "11px", fontWeight: "800", padding: "2px 8px", borderRadius: "8px" }}>
+                        🎯 Độ tin cậy: {log.confidence}%
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setForm({
+                            title: log.question,
+                            keywords: log.question.split(" ").slice(0, 5).join(", "),
+                            category: "Thủ tục Hành chính",
+                            type: "Hỏi đáp",
+                            source: log.source || "Phòng Văn hóa - Xã hội",
+                            customSource: "",
+                            priority: "Trung bình",
+                            status: "Đã duyệt",
+                            creator: "Admin - Phòng VH-XH",
+                            content: log.answer
+                          });
+                          setSearchParams({ tab: "knowledge" });
+                        }}
+                        style={{ padding: "4px 10px", background: "#1d4ed8", color: "#fff", border: "none", borderRadius: "6px", fontSize: "11.5px", fontWeight: "700", cursor: "pointer" }}
+                      >
+                        + Chuyển thành Tri thức AI mới
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={{ fontSize: "13.5px", fontWeight: "800", color: "#1e1b4b", marginBottom: "8px" }}>
+                    ❓ Câu hỏi: {log.question}
+                  </div>
+
+                  <div style={{ background: "#f8fafc", padding: "12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px", color: "#334155", lineHeight: "1.6" }}>
+                    🤖 <strong>Trợ lý AI trả lời:</strong> {log.answer}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* VIEW SUB-TAB 3: CẤU HÌNH & QUẢN LÝ HỆ THỐNG TRỢ LÝ AI */}
+      {activeTab === "ai-config" && (
+        <div className="km-card" style={{ padding: "24px", maxWidth: "800px", margin: "0 auto" }}>
+          <h3 style={{ margin: "0 0 16px", fontSize: "16px", color: "#1e1b4b", fontWeight: "800", borderBottom: "1.5px solid #e2e8f0", paddingBottom: "10px" }}>
+            ⚙️ CẤU HÌNH HỆ THỐNG TRỢ LÝ AI PHÒNG VĂN HÓA - XÃ HỘI
+          </h3>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div className="km-form-group">
+              <label>Tên Trợ lý AI hiển thị người dân:</label>
+              <input
+                type="text"
+                value={aiConfig.botName}
+                onChange={(e) => setAiConfig({ ...aiConfig, botName: e.target.value })}
+                className="km-input"
+              />
+            </div>
+
+            <div className="km-form-group">
+              <label>Cơ quan quản lý vận hành:</label>
+              <input
+                type="text"
+                value={aiConfig.communeName}
+                onChange={(e) => setAiConfig({ ...aiConfig, communeName: e.target.value })}
+                className="km-input"
+              />
+            </div>
+
+            <div className="km-form-group">
+              <label>Chỉ thị ngữ cảnh hệ thống (System Prompt):</label>
+              <textarea
+                rows="4"
+                value={aiConfig.systemPrompt}
+                onChange={(e) => setAiConfig({ ...aiConfig, systemPrompt: e.target.value })}
+                className="km-textarea"
+              />
+            </div>
+
+            <div className="km-form-group">
+              <label>Ngưỡng độ tin cậy trích xuất dữ liệu CSDL (%):</label>
+              <input
+                type="number"
+                min="50"
+                max="100"
+                value={aiConfig.confidenceThreshold}
+                onChange={(e) => setAiConfig({ ...aiConfig, confidenceThreshold: Number(e.target.value) })}
+                className="km-input"
+              />
+            </div>
+
+            <div className="km-form-group">
+              <label>Thông điệp phản hồi mặc định khi không tìm thấy dữ liệu (Fallback Response):</label>
+              <textarea
+                rows="3"
+                value={aiConfig.fallbackMessage}
+                onChange={(e) => setAiConfig({ ...aiConfig, fallbackMessage: e.target.value })}
+                className="km-textarea"
+              />
+            </div>
+
+            <button
+              type="button"
+              className="km-submit-btn"
+              onClick={() => {
+                localStorage.setItem("bhyt_ai_config", JSON.stringify(aiConfig));
+                alert("✅ Đã lưu cấu hình Hệ thống Trợ lý AI thành công!");
+              }}
+            >
+              💾 Lưu Cấu Hình Hệ Thống AI
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* POPUP 1: KIỂM THỬ AI (AI TEST MODAL) */}
       {testingItem && (
@@ -887,6 +1234,150 @@ export default function KnowledgeManager() {
                   {viewingItem.content}
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* POPUP 3: CÀI ĐẶT THÔNG TIN TÀI KHOẢN */}
+      {showProfileModal && (
+        <div className="km-modal-overlay" onClick={() => setShowProfileModal(false)}>
+          <div className="km-modal-content" style={{ maxWidth: "520px" }} onClick={(e) => e.stopPropagation()}>
+            <div className="km-modal-head">
+              <h3>👤 CÀI ĐẶT THÔNG TIN TÀI KHOẢN CÁN BỘ</h3>
+              <button className="km-modal-close" onClick={() => setShowProfileModal(false)}>✕</button>
+            </div>
+
+            <div className="km-modal-body" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div className="km-form-group">
+                <label>Họ và tên Cán bộ:</label>
+                <input
+                  type="text"
+                  value={adminUser.fullName}
+                  onChange={(e) => setAdminUser({ ...adminUser, fullName: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <div className="km-form-group">
+                <label>Tên đăng nhập hệ thống:</label>
+                <input
+                  type="text"
+                  value={adminUser.username}
+                  onChange={(e) => setAdminUser({ ...adminUser, username: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <div className="km-form-group">
+                <label>Chức danh / Vai trò nghiệp vụ:</label>
+                <input
+                  type="text"
+                  value={adminUser.roleTitle}
+                  onChange={(e) => setAdminUser({ ...adminUser, roleTitle: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <div className="km-form-group">
+                <label>Số điện thoại liên hệ:</label>
+                <input
+                  type="text"
+                  value={adminUser.phone}
+                  onChange={(e) => setAdminUser({ ...adminUser, phone: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <div className="km-form-group">
+                <label>Email công vụ:</label>
+                <input
+                  type="email"
+                  value={adminUser.email}
+                  onChange={(e) => setAdminUser({ ...adminUser, email: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <button
+                type="button"
+                className="km-submit-btn"
+                onClick={() => {
+                  localStorage.setItem('admin_fullname', adminUser.fullName);
+                  localStorage.setItem('admin_username', adminUser.username);
+                  setShowProfileModal(false);
+                  alert('✅ Đã cập nhật thông tin tài khoản thành công!');
+                }}
+              >
+                💾 Cập Nhật Thông Tin Tài Khoản
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* POPUP 4: ĐỔI MẬT KHẨU BẢO MẬT */}
+      {showPasswordModal && (
+        <div className="km-modal-overlay" onClick={() => setShowPasswordModal(false)}>
+          <div className="km-modal-content" style={{ maxWidth: "450px" }} onClick={(e) => e.stopPropagation()}>
+            <div className="km-modal-head">
+              <h3>🔑 ĐỔI MẬT KHẨU TÀI KHOẢN ADMIN</h3>
+              <button className="km-modal-close" onClick={() => setShowPasswordModal(false)}>✕</button>
+            </div>
+
+            <div className="km-modal-body" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div className="km-form-group">
+                <label>Mật khẩu hiện tại:</label>
+                <input
+                  type="password"
+                  placeholder="Nhập mật khẩu hiện tại..."
+                  value={passForm.oldPass}
+                  onChange={(e) => setPassForm({ ...passForm, oldPass: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <div className="km-form-group">
+                <label>Mật khẩu mới:</label>
+                <input
+                  type="password"
+                  placeholder="Nhập mật khẩu mới..."
+                  value={passForm.newPass}
+                  onChange={(e) => setPassForm({ ...passForm, newPass: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <div className="km-form-group">
+                <label>Xác nhận mật khẩu mới:</label>
+                <input
+                  type="password"
+                  placeholder="Nhập lại mật khẩu mới..."
+                  value={passForm.confirmPass}
+                  onChange={(e) => setPassForm({ ...passForm, confirmPass: e.target.value })}
+                  className="km-input"
+                />
+              </div>
+
+              <button
+                type="button"
+                className="km-submit-btn"
+                onClick={() => {
+                  if (!passForm.oldPass || !passForm.newPass) {
+                    alert('⚠️ Vui lòng nhập đầy đủ thông tin mật khẩu!');
+                    return;
+                  }
+                  if (passForm.newPass !== passForm.confirmPass) {
+                    alert('⚠️ Mật khẩu mới xác nhận không trùng khớp!');
+                    return;
+                  }
+                  setShowPasswordModal(false);
+                  setPassForm({ oldPass: '', newPass: '', confirmPass: '' });
+                  alert('✅ Đổi mật khẩu thành công!');
+                }}
+              >
+                🔒 Đổi Mật Khẩu Ngay
+              </button>
             </div>
           </div>
         </div>

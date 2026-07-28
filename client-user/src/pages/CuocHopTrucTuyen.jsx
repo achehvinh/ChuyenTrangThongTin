@@ -17,9 +17,21 @@ const getOfficerInitials = (name) => {
   return (first + last).toUpperCase();
 };
 
+// DANH SÁCH TOÀN BỘ CÁN BỘ CƠ QUAN PHÒNG VĂN HÓA - XÃ HỘI XÃ ĐĂK PXI (DỮ LIỆU THẬT)
+const OFFICIAL_OFFICERS = [
+  { id: "off-1", name: "Nguyễn Thái Huy", role: "Trưởng phòng VH-XH", isHost: true, avatar: "NTH", color: "#005baa" },
+  { id: "off-2", name: "Ngô Đỗ Quỳnh", role: "Phó Trưởng phòng VH-XH", isHost: true, avatar: "NĐQ", color: "#0d9488" },
+  { id: "off-3", name: "Lê Thị C", role: "Phó Trưởng phòng VH-XH", isHost: false, avatar: "LTC", color: "#065f46" },
+  { id: "off-4", name: "Y Byen", role: "Cán bộ Chuyên môn BHYT", isHost: false, avatar: "YB", color: "#92400e" },
+  { id: "off-5", name: "A Blong", role: "Cán bộ Chuyên môn Xã", isHost: false, avatar: "AB", color: "#3730a3" },
+  { id: "off-6", name: "A Lộc", role: "Cán bộ Nông nghiệp & BHXH", isHost: false, avatar: "AL", color: "#7c3aed" },
+  { id: "off-7", name: "Hoàng Trung Dũng", role: "Cán bộ Công nghệ số & Bảo hiểm", isHost: false, avatar: "HTD", color: "#2563eb" },
+];
+
 export default function CuocHopTrucTuyen() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const meetingKeyId = id || "default";
   const token = localStorage.getItem("admin_token");
   const fullName = localStorage.getItem("admin_fullname") || "Trưởng phòng Nguyễn Thái Huy";
   const role = localStorage.getItem("admin_role") || "truongphong";
@@ -46,13 +58,14 @@ export default function CuocHopTrucTuyen() {
   const [isHandRaised, setIsHandRaised] = useState(false);
 
   // Waiting Room queue & modals
+  const [showAddOfficerModal, setShowAddOfficerModal] = useState(false);
   const [showOfficerModal, setShowOfficerModal] = useState(false);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [showParticipantDropdown, setShowParticipantDropdown] = useState(false);
   const [toastNotification, setToastNotification] = useState(null);
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
   const [waitingQueue, setWaitingQueue] = useState([
-    { id: "req-1", name: "Cán bộ A Lộc", role: "Cán bộ Nông nghiệp", time: "08:32" },
+    { id: "req-1", name: "Cán bộ A Lộc", role: "Cán bộ Nông nghiệp & BHXH", time: "08:32" },
   ]);
 
   // Call status states (Mặc định mở Cam & Mic của người thật)
@@ -77,60 +90,82 @@ export default function CuocHopTrucTuyen() {
   const sourceRef = useRef(null);
   const rafRef = useRef(null);
 
-  // Participant list (Người thật đang đăng nhập là Cán bộ số 1)
-  const [participants, setParticipants] = useState([
-    {
-      id: "self",
-      name: `${fullName} (Bạn)`,
-      role: role === "truongphong" ? "Trưởng phòng (Chủ trì)" : role === "photruongphong" ? "Phó Trưởng phòng" : "Cán bộ Chuyên môn",
-      isHost: isHost,
-      isMuted: false,
-      isCameraOff: false,
-      isHandRaised: false,
-      isSpeaking: true,
-      isSelf: true,
-      color: "#1e40af"
-    },
-    { id: "p2", name: "Lê Thị C", role: "Phó Trưởng phòng", isHost: false, isMuted: true, isCameraOff: true, isHandRaised: false, isSpeaking: false, isSelf: false, color: "#065f46" },
-    { id: "p3", name: "Y Byen", role: "Cán bộ Chuyên môn", isHost: false, isMuted: true, isCameraOff: true, isHandRaised: true, isSpeaking: false, isSelf: false, color: "#92400e" },
-    { id: "p4", name: "A Blong", role: "Cán bộ Xã", isHost: false, isMuted: true, isCameraOff: true, isHandRaised: false, isSpeaking: false, isSelf: false, color: "#3730a3" },
-  ]);
+  // Participant list (Khởi tạo từ LocalStorage & CSDL Cán bộ Thật)
+  const [participants, setParticipants] = useState(() => {
+    const savedParts = localStorage.getItem(`vhxh_meeting_participants_${meetingKeyId}`);
+    if (savedParts) {
+      try { return JSON.parse(savedParts); } catch (e) { console.error(e); }
+    }
+    return [
+      {
+        id: "self",
+        name: `${fullName} (Bạn)`,
+        role: role === "truongphong" ? "Trưởng phòng (Chủ trì)" : role === "photruongphong" ? "Phó Trưởng phòng" : "Cán bộ Chuyên môn",
+        isHost: isHost,
+        isMuted: false,
+        isCameraOff: false,
+        isHandRaised: false,
+        isSpeaking: true,
+        isSelf: true,
+        color: "#1e40af"
+      },
+      { id: "p2", name: "Phó phòng Ngô Đỗ Quỳnh", role: "Phó Trưởng phòng", isHost: true, isMuted: true, isCameraOff: true, isHandRaised: false, isSpeaking: false, isSelf: false, color: "#0d9488" },
+      { id: "p3", name: "Lê Thị C", role: "Phó Trưởng phòng", isHost: false, isMuted: true, isCameraOff: true, isHandRaised: false, isSpeaking: false, isSelf: false, color: "#065f46" },
+      { id: "p4", name: "Y Byen", role: "Cán bộ Chuyên môn BHYT", isHost: false, isMuted: true, isCameraOff: true, isHandRaised: true, isSpeaking: false, isSelf: false, color: "#92400e" },
+      { id: "p5", name: "A Blong", role: "Cán bộ Xã", isHost: false, isMuted: true, isCameraOff: true, isHandRaised: false, isSpeaking: false, isSelf: false, color: "#3730a3" },
+    ];
+  });
 
   // Summary Report data
   const [summaryData, setSummaryData] = useState({
-    bienBan: `Hội nghị Ban Chỉ đạo Phòng Văn hóa - Xã hội do ${fullName} chủ trì đã tiến hành rà soát 100% hồ sơ BHYT đợt 2 cho người dân 10 thôn (Thôn Pa Cheng, Thôn Đăk Xế Kơ Ne, Thôn Đăk Kơ Đương, Thôn Đăk Rơ Wang, Thôn Krong Đuân, Thôn Đăk Wek, Thôn Kon Đao Yôp, Thôn Kon Teo Đăk Lấp, Thôn Tua Team, Thôn Kon Pao Kơ La). Thống nhất danh sách 45 hộ được hỗ trợ kinh phí bảo hiểm xã hội.`,
+    bienBan: `Hội nghị Ban Chỉ đạo Phòng Văn hóa - Xã hội do ${fullName} chủ trì đã tiến hành rà soát 100% hồ sơ BHYT đợt 2 cho người dân 10 thôn. Thống nhất danh sách 45 hộ được hỗ trợ kinh phí bảo hiểm xã hội.`,
     ketLuan: [
       { id: 1, text: "Đồng chí Hoàng Trung Dũng hoàn thiện dữ liệu nhập lên cổng DVC trước 17h00.", done: true },
-      { id: 2, text: "Đồng chí Lê Ngọc Sơn phối hợp Trưởng thôn Đăk Wek tuyên truyền lưu động.", done: false },
+      { id: 2, text: "Đồng chí A Lộc phối hợp Trưởng thôn Đăk Wek tuyên truyền lưu động.", done: false },
       { id: 3, text: "Giao Phó phòng Ngô Đỗ Quỳnh ký duyệt biên bản tổng hợp chuyển UBND Xã.", done: false },
     ]
   });
 
-  // Chat states
+  // Chat states (Đồng bộ vĩnh viễn với LocalStorage & CSDL Backend)
   const [chatInput, setChatInput] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      sender: fullName,
-      time: "08:30",
-      content: "Chào các đồng chí. Chúng ta bắt đầu cuộc họp bảo mật rà soát chỉ tiêu VH-XH và BHYT.",
-      self: true,
-    },
-    {
-      id: 2,
-      sender: "Phó phòng Lê Thị C",
-      time: "08:31",
-      content: "Báo cáo Trưởng phòng, thôn Đăk Wek đã hoàn thành rà soát 95% hộ nghèo rồi ạ.",
-      self: false,
-    },
-    {
-      id: 3,
-      sender: "Cán bộ Y Byen",
-      time: "08:33",
-      content: "Em xin phép giơ tay phát biểu ý kiến về hồ sơ bị lỗi mã thẻ BHYT.",
-      self: false,
-    },
-  ]);
+  const [messages, setMessages] = useState(() => {
+    const savedMsgs = localStorage.getItem(`vhxh_meeting_messages_${meetingKeyId}`);
+    if (savedMsgs) {
+      try { return JSON.parse(savedMsgs); } catch (e) { console.error(e); }
+    }
+    return [
+      {
+        id: 1,
+        sender: fullName,
+        time: "08:30",
+        content: "Chào các đồng chí. Chúng ta bắt đầu cuộc họp bảo mật rà soát chỉ tiêu VH-XH và BHYT.",
+        self: true,
+      },
+      {
+        id: 2,
+        sender: "Phó phòng Lê Thị C",
+        time: "08:31",
+        content: "Báo cáo Trưởng phòng, thôn Đăk Wek đã hoàn thành rà soát 95% hộ nghèo rồi ạ.",
+        self: false,
+      },
+      {
+        id: 3,
+        sender: "Cán bộ Y Byen",
+        time: "08:33",
+        content: "Em xin phép giơ tay phát biểu ý kiến về hồ sơ bị lỗi mã thẻ BHYT.",
+        self: false,
+      },
+    ];
+  });
+
+  // Lưu tự động Participants & Messages vào LocalStorage
+  useEffect(() => {
+    localStorage.setItem(`vhxh_meeting_participants_${meetingKeyId}`, JSON.stringify(participants));
+  }, [participants, meetingKeyId]);
+
+  useEffect(() => {
+    localStorage.setItem(`vhxh_meeting_messages_${meetingKeyId}`, JSON.stringify(messages));
+  }, [messages, meetingKeyId]);
 
   // Fetch actual meeting details if ID exists
   useEffect(() => {
@@ -143,6 +178,9 @@ export default function CuocHopTrucTuyen() {
           if (res.data) {
             setMeeting(res.data);
             if (res.data.isLocked) setIsRoomLocked(true);
+            if (res.data.summary && res.data.summary.bienBan) {
+              setSummaryData(res.data.summary);
+            }
           }
         })
         .catch(() => {
@@ -601,6 +639,18 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
             title="Sao chép đường dẫn để mời người thật vào họp ngay bây giờ"
           >
             Mã: {meeting.meetingCode || "VHXH-98213"} (PIN: {meeting.passcode || "123456"}) 🔗
+          </button>
+
+          <button
+            onClick={() => setShowAddOfficerModal(true)}
+            style={{
+              cursor: "pointer", border: "1px solid #10b981", background: "#065f46", color: "#ffffff",
+              fontSize: "12px", fontWeight: "700", padding: "4px 12px", borderRadius: "6px",
+              display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
+            }}
+            title="Kết nối thêm Trưởng/Phó phòng & Cán bộ chuyên trách xã Đăk Pxi vào cuộc họp"
+          >
+            <span>+ Mời Cán bộ</span>
           </button>
 
           <button
@@ -1094,6 +1144,128 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
                 style={{ background: "#3b82f6", color: "#ffffff", border: "none", padding: "8px 18px", borderRadius: "6px", fontWeight: "700", cursor: "pointer" }}
               >
                 Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL MỜI CÁN BỘ CƠ QUAN VÀO PHÒNG HỌP THỰC TẾ */}
+      {showAddOfficerModal && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999,
+          background: "rgba(15, 23, 42, 0.8)", backdropFilter: "blur(4px)",
+          display: "flex", alignItems: "center", justifyContent: "center", padding: "20px"
+        }}>
+          <div style={{
+            background: "#1e293b", border: "1px solid #334155", borderRadius: "12px",
+            width: "100%", maxWidth: "520px", padding: "22px", boxShadow: "0 20px 40px rgba(0,0,0,0.6)", color: "#ffffff"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #334155", paddingBottom: "12px", marginBottom: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "18px" }}>👥</span>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: "15px", color: "#60a5fa", fontWeight: "800" }}>
+                    KẾT NỐI CÁN BỘ CƠ QUAN VÀO PHÒNG HỌP THỰC TẾ
+                  </h3>
+                  <div style={{ fontSize: "11.5px", color: "#94a3b8" }}>
+                    Phòng Văn hóa - Xã hội UBND xã Đăk Pxi
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowAddOfficerModal(false)}
+                style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "16px", cursor: "pointer" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "350px", overflowY: "auto", paddingRight: "4px" }}>
+              {OFFICIAL_OFFICERS.map((officer) => {
+                const isAlreadyJoined = participants.some(p => p.name.includes(officer.name));
+                return (
+                  <div
+                    key={officer.id}
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      background: isAlreadyJoined ? "#0f172a" : "#334155",
+                      border: `1px solid ${isAlreadyJoined ? "#1e293b" : "#475569"}`,
+                      padding: "10px 14px", borderRadius: "8px"
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <div style={{
+                        width: "36px", height: "36px", borderRadius: "50%",
+                        background: officer.color, color: "#ffffff",
+                        fontWeight: "900", fontSize: "13px",
+                        display: "flex", alignItems: "center", justifyContent: "center"
+                      }}>
+                        {officer.avatar}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "13.5px", fontWeight: "800", color: "#f8fafc" }}>
+                          {officer.name}
+                        </div>
+                        <div style={{ fontSize: "11.5px", color: "#94a3b8" }}>
+                          {officer.role}
+                        </div>
+                      </div>
+                    </div>
+
+                    {isAlreadyJoined ? (
+                      <span style={{ fontSize: "11px", fontWeight: "800", background: "#065f46", color: "#a7f3d0", padding: "4px 10px", borderRadius: "20px" }}>
+                        🔴 Đang dự họp
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newPart = {
+                            id: `off-${Date.now()}`,
+                            name: officer.name,
+                            role: officer.role,
+                            isHost: officer.isHost,
+                            isMuted: true,
+                            isCameraOff: true,
+                            isHandRaised: false,
+                            isSpeaking: false,
+                            isSelf: false,
+                            color: officer.color
+                          };
+                          setParticipants(prev => [...prev, newPart]);
+                          triggerToast(`Đã kết nối ${officer.name} vào cuộc họp trực tuyến!`, "success");
+                          setMessages(prev => [
+                            ...prev,
+                            {
+                              id: Date.now(),
+                              sender: "Hệ thống Kết nối",
+                              time: currentTime.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }),
+                              content: `Đã kết nối Cán bộ ${officer.name} (${officer.role}) tham gia cuộc họp.`,
+                              self: false
+                            }
+                          ]);
+                        }}
+                        style={{
+                          background: "#005baa", color: "#ffffff", border: "none",
+                          padding: "6px 14px", borderRadius: "6px", fontSize: "12px",
+                          fontWeight: "800", cursor: "pointer", boxShadow: "0 2px 4px rgba(0,0,0,0.3)"
+                        }}
+                      >
+                        + Kết nối ngay
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div style={{ marginTop: "16px", paddingTop: "12px", borderTop: "1px solid #334155", textAlign: "right" }}>
+              <button
+                onClick={() => setShowAddOfficerModal(false)}
+                style={{ background: "#475569", color: "#fff", border: "none", padding: "7px 18px", borderRadius: "6px", fontSize: "12.5px", fontWeight: "700", cursor: "pointer" }}
+              >
+                Đóng cửa sổ
               </button>
             </div>
           </div>

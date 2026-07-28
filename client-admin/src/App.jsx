@@ -1,5 +1,6 @@
 import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import ThongBao from "./pages/ThongBao";
@@ -15,7 +16,6 @@ import KnowledgeManager from "./pages/KnowledgeManager";
 import QuanLyCanBo from "./pages/QuanLyCanBo";
 import QuanLyNguoiDung from "./pages/QuanLyNguoiDung";
 import QuanLyATGT from "./pages/QuanLyATGT";
-// ❌ Xóa dòng này: import BaiViet from './pages/BaiViet';
 
 function Layout() {
   const location = useLocation();
@@ -27,6 +27,7 @@ function Layout() {
     <div className="app-shell">
       {!isLoginPage && <Sidebar />}
       <main className={`app-main ${isLoginPage ? 'app-main--full' : ''}`}>
+        {!isLoginPage && <Header />}
         <Routes>
           <Route path="/" element={<DangNhap />} />
           <Route path="/dang-nhap" element={<DangNhap />} />

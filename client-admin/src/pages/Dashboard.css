@@ -1,147 +1,468 @@
-.dashboard-page {
-  padding: 1.5rem;
-  max-width: 1200px;
+/* ════════════════════════════════════════════════════════════════
+   DASHBOARD.CSS — GIAO DIỆN TỔNG QUAN ADMIN CHUẨN MỚI THEO ẢNH MẪU
+════════════════════════════════════════════════════════════════ */
+
+.dash-container {
+  max-width: 1440px;
   margin: 0 auto;
+  padding: 16px 20px 40px;
+  font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
+  color: #0f172a;
 }
 
-.dashboard-header {
+/* TOP HEADER BAR */
+.dash-top-bar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.dashboard-title {
-  font-size: 1.5rem;
+.dash-page-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 4px;
+}
+
+.dash-time-sub {
+  font-size: 12.5px;
+  color: #64748b;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dash-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dash-btn-outline {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: #111;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+}
+
+.dash-btn-outline:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.dash-btn-primary {
+  background: #1d4ed8;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+  transition: background 0.15s ease;
+}
+
+.dash-btn-primary:hover {
+  background: #1e40af;
+}
+
+/* 📊 METRICS GRID (6 CARDS IN 1 ROW) */
+.dash-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.dash-metric-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dash-metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.dash-metric-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.dash-metric-icon--blue { background: #dbeafe; }
+.dash-metric-icon--green { background: #dcfce7; }
+.dash-metric-icon--purple { background: #f3e8ff; }
+.dash-metric-icon--orange { background: #ffedd5; }
+.dash-metric-icon--pink { background: #ffe4e6; }
+.dash-metric-icon--skyblue { background: #e0f2fe; }
+
+.dash-metric-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-metric-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dash-metric-val {
+  font-size: 24px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.1;
+  margin: 3px 0;
+}
+
+.dash-metric-trend {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.trend-up { color: #16a34a; }
+.trend-stable { color: #64748b; }
+
+/* 📈 ROW GRIDS */
+.dash-row-grid {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.dash-row-grid--middle {
+  grid-template-columns: 2.2fr 1.4fr 1.4fr;
+}
+
+.dash-row-grid--bottom {
+  grid-template-columns: 1.2fr 1.2fr 1.4fr 1.4fr;
+}
+
+/* CARDS COMMON */
+.dash-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.dash-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.dash-card-head h3 {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0f172a;
   margin: 0;
 }
 
-.dashboard-time {
-  font-size: 0.85rem;
-  color: #666;
-  margin: 0.25rem 0 0;
-}
-
-.dashboard-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.btn-primary {
-  background: #005bac;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
+.dash-select-sm {
+  padding: 4px 10px;
+  border: 1px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 0.875rem;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #475569;
+  background: #ffffff;
+  outline: none;
+}
+
+/* LINE CHART CARD */
+.dash-chart-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-item i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dash-svg-chart-box {
+  width: 100%;
+  height: 180px;
+}
+
+.dash-line-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* SVG & CHART HOVER EFFECTS */
+.dash-donut-svg circle {
+  transition: all 0.2s ease;
+}
+
+.dash-donut-svg circle:hover {
+  stroke-width: 32px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+.dash-donut-legend div {
+  padding: 3px 6px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
   cursor: pointer;
 }
 
-.btn-primary:hover {
-  background: #004080;
+.dash-donut-legend div:hover {
+  background: #f1f5f9;
 }
 
-/* Stats grid */
-.dashboard-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+.bar-fill {
+  transition: height 0.3s ease, background 0.2s ease;
+  cursor: pointer;
 }
 
-.stat-card {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1.25rem;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+.bar-item:hover .bar-fill {
+  background: #1d4ed8;
+  filter: drop-shadow(0 2px 6px rgba(29, 78, 216, 0.3));
 }
 
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: #1a3a5c;
-  opacity: 0.85;
+.dash-chart-hover-group circle {
+  transition: r 0.2s ease, fill 0.2s ease;
 }
 
-.stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.04);
-  border-color: #cbd5e1;
+.dash-chart-hover-group:hover circle {
+  r: 8;
+  fill: #1d4ed8;
 }
 
-.stat-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0 0 0.5rem;
-}
-
-.stat-count {
-  font-size: 1.85rem;
-  font-weight: 800;
-  margin: 0;
-}
-
-/* Recent activity */
-.dashboard-recent {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.25rem;
-}
-
-.dashboard-recent h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 0.75rem;
-  color: #111;
-}
-
-.recent-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.recent-item {
+/* DONUT CHART LAYOUT */
+.dash-donut-layout {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #f3f4f6;
+  gap: 16px;
+  padding-top: 6px;
 }
 
-.recent-item:last-child {
-  border-bottom: none;
-}
-
-.recent-icon {
-  font-size: 1.2rem;
+.dash-donut-svg {
+  width: 120px;
+  height: 120px;
   flex-shrink: 0;
 }
 
-.recent-info {
+.dash-donut-legend {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #475569;
 }
 
-.recent-title {
-  font-size: 0.9rem;
-  color: #111;
+.dash-donut-legend div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.recent-time {
-  font-size: 0.75rem;
-  color: #999;
+.dash-donut-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* RECENT ACTIVITIES */
+.dash-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.act-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.act-icon--red { background: #ffe4e6; }
+.act-icon--purple { background: #f3e8ff; }
+.act-icon--orange { background: #ffedd5; }
+.act-icon--blue { background: #dbeafe; }
+
+.act-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.act-date {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.dash-btn-full-outline {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: auto;
+  transition: all 0.15s ease;
+}
+
+.dash-btn-full-outline:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #1d4ed8;
+}
+
+/* BAR CHART BOX */
+.dash-bar-chart-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 150px;
+  padding-top: 20px;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.bar-fill {
+  width: 16px;
+  background: #3b82f6;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+}
+
+.bar-date {
+  font-size: 10.5px;
+  color: #64748b;
+}
+
+/* TASK CHECKLIST */
+.dash-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.task-item:hover {
+  background: #f1f5f9;
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.task-left input {
+  accent-color: #1d4ed8;
+}
+
+.task-badge {
+  font-size: 11px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.task-badge--pink { background: #ffe4e6; color: #e11d48; }
+.task-badge--orange { background: #ffedd5; color: #ea580c; }
+.task-badge--blue { background: #dbeafe; color: #2563eb; }
+
+/* FOOTER */
+.dash-footer {
+  margin-top: 30px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+@media (max-width: 1200px) {
+  .dash-metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dash-row-grid--middle,
+  .dash-row-grid--bottom {
+    grid-template-columns: 1fr;
+  }
 }

@@ -426,7 +426,25 @@ export default function ChatWindow() {
       {/* ── HEADER AI ASSISTANT — PHÒNG VĂN HÓA XÃ HỘI ── */}
       <div className="cw-header">
         <div className="cw-header-info">
-          <div className="cw-header-avatar">🤖</div>
+          <div className="cw-header-avatar" style={{ background: "transparent", padding: 0 }}>
+            <svg width="42" height="42" viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="46" fill="#f3e8ff" />
+              <circle cx="50" cy="50" r="38" fill="#e9d5ff" opacity="0.6" />
+              <rect x="36" y="62" width="28" height="24" rx="10" fill="#ffffff" stroke="#c084fc" strokeWidth="2.5" />
+              <circle cx="50" cy="74" r="6" fill="#2563eb" />
+              <circle cx="50" cy="74" r="2.5" fill="#ffffff" />
+              <rect x="26" y="28" width="48" height="34" rx="14" fill="#ffffff" stroke="#c084fc" strokeWidth="2.5" />
+              <rect x="31" y="33" width="38" height="24" rx="10" fill="#7c3aed" />
+              <circle cx="43" cy="45" r="3.5" fill="#ffffff" />
+              <circle cx="57" cy="45" r="3.5" fill="#ffffff" />
+              <circle cx="44" cy="44" r="1.2" fill="#000000" />
+              <circle cx="58" cy="44" r="1.2" fill="#000000" />
+              <line x1="50" y1="28" x2="50" y2="20" stroke="#a855f7" strokeWidth="3" strokeLinecap="round" />
+              <circle cx="50" cy="18" r="4" fill="#a855f7" />
+              <rect x="22" y="38" width="5" height="14" rx="2.5" fill="#a855f7" />
+              <rect x="73" y="38" width="5" height="14" rx="2.5" fill="#a855f7" />
+            </svg>
+          </div>
           <div className="cw-header-text">
             <div className="cw-title">{activeContext.title}</div>
             <div className="cw-subtitle">Phòng Văn hóa - Xã hội • Trực tuyến 24/7</div>

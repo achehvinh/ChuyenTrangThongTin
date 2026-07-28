@@ -34,12 +34,15 @@ const aiRoutes = require("./routes/aiRoutes");
 const knowledgeRoutes = require('./routes/knowledgeRoutes');
 const chatRoutes = require("./routes/chatRoutes");
 const visitorRoutes = require("./routes/visitorRoutes");
+const vanBanRoutes = require("./routes/vanBanRoutes");
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
 app.use("/api/thong-bao",         thongBaoRoutes);
 app.use("/api/canh-bao",          canhBaoRoutes);
 app.use("/api/lich-hop",          lichHopRoutes);
+app.use("/api/v1/van-ban",        vanBanRoutes);
+app.use("/api/van-ban",           vanBanRoutes);
 app.use("/api/v1",                tthcRoutes);
 app.use("/api/v1/gia-nong-san",   giaRouter);
 app.use("/api/v1/auth",           authRouter);

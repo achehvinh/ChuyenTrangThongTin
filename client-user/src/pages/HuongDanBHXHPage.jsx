@@ -10,8 +10,8 @@ const HUONG_DAN_APP = [
     color: '#005bac',
     iconSvg: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
-        <line x1="12" y1="18" x2="12.01" y2="18"/>
+        <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+        <line x1="12" y1="18" x2="12.01" y2="18" />
       </svg>
     ),
     hinh: '/huong-dan/vssid.jpg',
@@ -21,7 +21,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 1: Tải ứng dụng VssID',
         desc: 'Mở cửa hàng Google Play (Android) hoặc App Store (iPhone), tìm "VssID" và cài đặt.',
         img: '/huong-dan/vssid_step1.jpg',
-        audioSrc: '/huong-dan/vssid_step1.mp3',
+        audioSrc: '/audio/vssid_step1.mp3',
         placeholderName: 'vssid_step1.jpg',
         audioFile: 'vssid_step1.mp3'
       },
@@ -30,7 +30,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 2: Đăng nhập cá nhân',
         desc: 'Điền Mã số BHXH (hoặc số CCCD 12 số) và mật khẩu cá nhân để đăng nhập.',
         img: '/huong-dan/vssid_step2.jpg',
-        audioSrc: '/huong-dan/vssid_step2.mp3',
+        audioSrc: '/audio/vssid_step2.mp3',
         placeholderName: 'vssid_step2.jpg',
         audioFile: 'vssid_step2.mp3'
       },
@@ -39,7 +39,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 3: Xem ảnh thẻ BHYT',
         desc: 'Nhấn chọn "Thẻ BHYT" ở menu chính để hiện ảnh thẻ và mã vạch đi khám chữa bệnh.',
         img: '/huong-dan/vssid_step3.jpg',
-        audioSrc: '/huong-dan/vssid_step3.mp3',
+        audioSrc: '/audio/vssid_step3.mp3',
         placeholderName: 'vssid_step3.jpg',
         audioFile: 'vssid_step3.mp3'
       }
@@ -54,7 +54,7 @@ const HUONG_DAN_APP = [
     color: '#0891b2',
     iconSvg: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
       </svg>
     ),
     hinh: '/huong-dan/suckhoe.jpg',
@@ -64,7 +64,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 1: Tải ứng dụng về máy',
         desc: 'Tải ứng dụng "Sức khỏe điện tử" trên điện thoại từ cửa hàng CH Play hoặc App Store.',
         img: '/huong-dan/suckhoe_step1.jpg',
-        audioSrc: '/huong-dan/suckhoe_step1.mp3',
+        audioSrc: '/audio/suckhoe_step1.mp3',
         placeholderName: 'suckhoe_step1.jpg',
         audioFile: 'suckhoe_step1.mp3'
       },
@@ -73,7 +73,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 2: Đăng ký & Đồng bộ thông tin',
         desc: 'Sử dụng số điện thoại cá nhân và Căn cước công dân để đăng ký tài khoản.',
         img: '/huong-dan/suckhoe_step2.jpg',
-        audioSrc: '/huong-dan/suckhoe_step2.mp3',
+        audioSrc: '/audio/suckhoe_step2.mp3',
         placeholderName: 'suckhoe_step2.jpg',
         audioFile: 'suckhoe_step2.mp3'
       },
@@ -82,7 +82,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 3: Tra cứu thông tin thẻ BHYT',
         desc: 'Truy cập "Thông tin thẻ BHYT" để xem chi tiết mã thẻ và hạn sử dụng.',
         img: '/huong-dan/suckhoe_step3.jpg',
-        audioSrc: '/huong-dan/suckhoe_step3.mp3',
+        audioSrc: '/audio/suckhoe_step3.mp3',
         placeholderName: 'suckhoe_step3.jpg',
         audioFile: 'suckhoe_step3.mp3'
       }
@@ -97,11 +97,11 @@ const HUONG_DAN_APP = [
     color: '#7c3aed',
     iconSvg: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="4" width="18" height="16" rx="2"/>
-        <circle cx="9" cy="10" r="2"/>
-        <line x1="15" y1="8" x2="17" y2="8"/>
-        <line x1="15" y1="12" x2="17" y2="12"/>
-        <path d="M7 16c0-1.5 1.5-2 2-2s2 .5 2 2"/>
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <circle cx="9" cy="10" r="2" />
+        <line x1="15" y1="8" x2="17" y2="8" />
+        <line x1="15" y1="12" x2="17" y2="12" />
+        <path d="M7 16c0-1.5 1.5-2 2-2s2 .5 2 2" />
       </svg>
     ),
     hinh: '/huong-dan/vneid.jpg',
@@ -111,7 +111,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 1: Kích hoạt Định danh Mức 2',
         desc: 'Đảm bảo ứng dụng VNeID đã kích hoạt Mức độ 2 (làm tại Công an xã).',
         img: '/huong-dan/vneid_step1.jpg',
-        audioSrc: '/huong-dan/vneid_step1.mp3',
+        audioSrc: '/audio/vneid_step1.mp3',
         placeholderName: 'vneid_step1.jpg',
         audioFile: 'vneid_step1.mp3'
       },
@@ -120,7 +120,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 2: Mở Ví giấy tờ bảo mật',
         desc: 'Đăng nhập VNeID, chọn "Ví giấy tờ", nhập mật mã Passcode cá nhân.',
         img: '/huong-dan/vneid_step2.jpg',
-        audioSrc: '/huong-dan/vneid_step2.mp3',
+        audioSrc: '/audio/vneid_step2.mp3',
         placeholderName: 'vneid_step2.jpg',
         audioFile: 'vneid_step2.mp3'
       },
@@ -129,7 +129,7 @@ const HUONG_DAN_APP = [
         title: 'Bước 3: Hiển thị thẻ BHYT tích hợp',
         desc: 'Chọn thẻ "Bảo hiểm y tế" để hiển thị chi tiết hạn dùng và mã QR tích hợp.',
         img: '/huong-dan/vneid_step3.jpg',
-        audioSrc: '/huong-dan/vneid_step3.mp3',
+        audioSrc: '/audio/vneid_step3.mp3',
         placeholderName: 'vneid_step3.jpg',
         audioFile: 'vneid_step3.mp3'
       }
@@ -147,7 +147,7 @@ const HUONG_DAN_WEB = [
     color: '#16a34a',
     iconSvg: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/>
+        <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" />
       </svg>
     ),
     hinh: '/huong-dan/tracuubhyt.jpg',
@@ -157,7 +157,7 @@ const HUONG_DAN_WEB = [
         title: 'Bước 1: Truy cập baohiemxahoi.gov.vn',
         desc: 'Dùng điện thoại hoặc máy tính truy cập địa chỉ baohiemxahoi.gov.vn.',
         img: '/huong-dan/bhxh_step1.jpg',
-        audioSrc: '/huong-dan/bhxh_step1.mp3',
+        audioSrc: '/audio/bhxh_step1.mp3',
         placeholderName: 'bhxh_step1.jpg',
         audioFile: 'bhxh_step1.mp3'
       },
@@ -166,7 +166,7 @@ const HUONG_DAN_WEB = [
         title: 'Bước 2: Vào tính năng tra cứu',
         desc: 'Tìm và nhấn chọn chuyên mục "Tra cứu trực tuyến" ở menu bên phải.',
         img: '/huong-dan/bhxh_step2.jpg',
-        audioSrc: '/huong-dan/bhxh_step2.mp3',
+        audioSrc: '/audio/bhxh_step2.mp3',
         placeholderName: 'bhxh_step2.jpg',
         audioFile: 'bhxh_step2.mp3'
       },
@@ -175,7 +175,7 @@ const HUONG_DAN_WEB = [
         title: 'Bước 3: Nhập thông tin cá nhân',
         desc: 'Chọn "Tra cứu thẻ BHYT", điền Mã số BHXH/CCCD, họ tên, ngày sinh và Tra cứu.',
         img: '/huong-dan/bhxh_step3.jpg',
-        audioSrc: '/huong-dan/bhxh_step3.mp3',
+        audioSrc: '/audio/bhxh_step3.mp3',
         placeholderName: 'bhxh_step3.jpg',
         audioFile: 'bhxh_step3.mp3'
       }
@@ -190,9 +190,9 @@ const HUONG_DAN_WEB = [
     color: '#dc2626',
     iconSvg: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2"/>
-        <line x1="8" y1="21" x2="16" y2="21"/>
-        <line x1="12" y1="17" x2="12" y2="21"/>
+        <rect x="2" y="3" width="20" height="14" rx="2" />
+        <line x1="8" y1="21" x2="16" y2="21" />
+        <line x1="12" y1="17" x2="12" y2="21" />
       </svg>
     ),
     hinh: '/huong-dan/tracuubhxh.jpg',
@@ -202,7 +202,7 @@ const HUONG_DAN_WEB = [
         title: 'Bước 1: Truy cập dichvucong.gov.vn',
         desc: 'Mở trình duyệt truy cập dichvucong.gov.vn để làm thủ tục hoặc tra cứu.',
         img: '/huong-dan/dvc_step1.jpg',
-        audioSrc: '/huong-dan/dvc_step1.mp3',
+        audioSrc: '/audio/dvc_step1.mp3',
         placeholderName: 'dvc_step1.jpg',
         audioFile: 'dvc_step1.mp3'
       },
@@ -211,7 +211,7 @@ const HUONG_DAN_WEB = [
         title: 'Bước 2: Đăng nhập VNeID',
         desc: 'Nhấn Đăng nhập ở góc trên, lựa chọn đăng nhập bằng Tài khoản VNeID.',
         img: '/huong-dan/dvc_step2.jpg',
-        audioSrc: '/huong-dan/dvc_step2.mp3',
+        audioSrc: '/audio/dvc_step2.mp3',
         placeholderName: 'dvc_step2.jpg',
         audioFile: 'dvc_step2.mp3'
       },
@@ -220,7 +220,7 @@ const HUONG_DAN_WEB = [
         title: 'Bước 3: Tra cứu thẻ BHYT',
         desc: 'Vào hồ sơ cá nhân hoặc tìm kiếm "Tra cứu thẻ BHYT" để xem dữ liệu.',
         img: '/huong-dan/dvc_step3.jpg',
-        audioSrc: '/huong-dan/dvc_step3.mp3',
+        audioSrc: '/audio/dvc_step3.mp3',
         placeholderName: 'dvc_step3.jpg',
         audioFile: 'dvc_step3.mp3'
       }
@@ -237,7 +237,7 @@ export default function HuongDanBHXHPage() {
   const [activeStepTab, setActiveStepTab] = useState(1); // 1 | 2 | 3 | 0 (0: Xem ca 3 buoc)
   const [anhPhongTo, setAnhPhongTo] = useState(null);
   const [showQrModal, setShowQrModal] = useState(false);
-  
+
   const [completedSteps, setCompletedSteps] = useState({});
   const [playingStepAudio, setPlayingStepAudio] = useState(null);
 
@@ -303,7 +303,7 @@ export default function HuongDanBHXHPage() {
       ...prev,
       [key]: nextState
     }));
-    
+
     if (nextState && activeStepTab > 0 && activeStepTab < 3) {
       setActiveStepTab(activeStepTab + 1);
     }
@@ -351,8 +351,8 @@ export default function HuongDanBHXHPage() {
     setPlayingStepAudio(null);
   };
 
-  const displayedSteps = activeStepTab === 0 
-    ? currentApp.steps 
+  const displayedSteps = activeStepTab === 0
+    ? currentApp.steps
     : currentApp.steps.filter(s => s.num === activeStepTab);
 
   return (
@@ -363,6 +363,7 @@ export default function HuongDanBHXHPage() {
         <header className="clean-top-header">
           <div className="clean-header-main">
             <div className="clean-title-group">
+              <span className="clean-badge">🏛️ CỔNG THÔNG TIN UBND XÃ ĐĂK PXI</span>
               <h1 className="clean-title">
                 Tra cứu thẻ BHYT & BHXH tại nhà — <span className="highlight">Không cần lên xã</span>
               </h1>
@@ -403,7 +404,7 @@ export default function HuongDanBHXHPage() {
 
         {/* ── GIAO DIỆN MASTER-DETAIL GỌN GÀNG ── */}
         <div className="clean-master-detail">
-          
+
           {/* SIDEBAR DANH MỤC (BÊN TRÁI) */}
           <div className="clean-sidebar">
             <div className="sidebar-title">DANH MỤC {tab === 'app' ? 'ỨNG DỤNG' : 'TRANG WEB'}</div>
@@ -440,7 +441,7 @@ export default function HuongDanBHXHPage() {
 
           {/* CỘT CHI TIẾT MAIN (BÊN PHẢI) */}
           <div className="clean-main-content">
-            
+
             {/* Banner Top App */}
             <div className="app-banner-strip" style={{ background: currentApp.color }}>
               <div className="app-banner-info">
@@ -459,7 +460,7 @@ export default function HuongDanBHXHPage() {
               >
                 <span>{currentApp.btn.label}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                  <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
                 </svg>
               </a>
             </div>
@@ -506,7 +507,7 @@ export default function HuongDanBHXHPage() {
 
                 return (
                   <div className={`step-card-box ${isStepDone ? 'is-done' : ''}`} key={step.num}>
-                    
+
                     {/* Header Bước */}
                     <div className="step-card-header">
                       <div className="step-tag-title">
@@ -541,7 +542,7 @@ export default function HuongDanBHXHPage() {
                       />
                       <div className="step-img-overlay">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                          <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" />
                         </svg>
                         <span>🔍 BẤM VÀO ĐÂY ĐỂ XEM HÌNH ẢNH TO PHÓNG LỚN</span>
                       </div>
@@ -591,7 +592,7 @@ export default function HuongDanBHXHPage() {
         </div>
 
         <FAQChatBot type="bhxh" />
-        
+
         {/* Footer */}
         <div className="clean-footer-tip">
           <span className="footer-icon">🏛️</span>
