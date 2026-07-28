@@ -416,7 +416,7 @@ export default function DuoiNuocPage() {
       <div className="dn-hero">
         <span className="dn-hero-icon"><SvgIcons.Swimmer /></span>
         <h1 className="dn-hero-title">CẨM NANG PHÒNG CHỐNG ĐUỐI NƯỚC</h1>
-        <p className="dn-hero-sub">Ủy ban nhân dân xã Đăk Pxi • Vì cuộc sống bình yên của bản làng</p>
+        <p className="dn-hero-sub">Vì cuộc sống bình yên của bản làng</p>
         
         {/* Sóng nước SVG */}
         <div className="dn-wave-container">

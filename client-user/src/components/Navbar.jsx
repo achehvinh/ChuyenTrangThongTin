@@ -31,12 +31,22 @@ export default function Navbar() {
   const { lang, toggleLang } = useLang();
   const { increase, decrease, sizeIndex, max, currentLabel } = useFontSize();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [openAccordions, setOpenAccordions] = useState({});
 
   const isLoggedIn = !!localStorage.getItem("admin_token");
   const userFullName = localStorage.getItem("admin_fullname") || localStorage.getItem("admin_username") || "Cán bộ";
   const userRole = localStorage.getItem("admin_role");
 
-  const closeDrawer = () => setDrawerOpen(false);
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+  };
+
+  const toggleAccordion = (label) => {
+    setOpenAccordions(prev => ({
+      ...prev,
+      [label]: !prev[label]
+    }));
+  };
 
   return (
     <header className="navbar">
@@ -62,7 +72,6 @@ export default function Navbar() {
           aria-label="Toggle menu nav"
         >
           {drawerOpen ? <X size={24} /> : <Menu size={24} />}
-          <span>MENU</span>
         </button>
       </div>
 
@@ -142,7 +151,7 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* DRAWER SLIDE-OVER MENU TRÊN MOBILE (<768px) */}
+      {/* DRAWER SLIDE-OVER MENU TRÊN MOBILE (<768px) VỚI DẠNG ACCORDION */}
       {drawerOpen && (
         <div className="navbar-drawer-overlay" onClick={closeDrawer}>
           <div className="navbar-drawer-content" onClick={e => e.stopPropagation()}>
@@ -156,17 +165,28 @@ export default function Navbar() {
                 <div key={item.label} className="drawer-item-group">
                   {item.dropdown ? (
                     <>
-                      <div className="drawer-group-title">{item.label}</div>
-                      {item.dropdown.map(sub => (
-                        <NavLink
-                          key={sub.to}
-                          to={sub.to}
-                          className="drawer-link sub-link"
-                          onClick={closeDrawer}
-                        >
-                          {sub.label}
-                        </NavLink>
-                      ))}
+                      <button
+                        type="button"
+                        className={`drawer-link drawer-accordion-btn ${openAccordions[item.label] ? 'expanded' : ''}`}
+                        onClick={() => toggleAccordion(item.label)}
+                      >
+                        <span>{item.label}</span>
+                        <span className="accordion-arrow">{openAccordions[item.label] ? '▴' : '▾'}</span>
+                      </button>
+                      {openAccordions[item.label] && (
+                        <div className="drawer-sub-menu">
+                          {item.dropdown.map(sub => (
+                            <NavLink
+                              key={sub.to}
+                              to={sub.to}
+                              className="drawer-link sub-link"
+                              onClick={closeDrawer}
+                            >
+                              {sub.label}
+                            </NavLink>
+                          ))}
+                        </div>
+                      )}
                     </>
                   ) : (
                     <NavLink

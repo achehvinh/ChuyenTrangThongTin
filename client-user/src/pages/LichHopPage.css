@@ -1,32 +1,78 @@
+/* ══════════════════════════════════════
+   LichHopPage — HTML5 Standard & Premium Design
+   ══════════════════════════════════════ */
+
 .lich-hop-page {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: 32px 24px 64px;
+  font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
+  color: #0f172a;
 }
 
+/* ── HEADER BANNER ── */
 .lich-hop-header {
-  text-align: center;
-  margin-bottom: 40px;
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(2, 132, 199, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-left: 5px solid #38bdf8;
+}
+
+.lich-hop-header::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.lich-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #7dd3fc;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 5px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .lich-hop-header h1 {
-  font-size: 38px;
-  color: #005bac;
-  font-weight: 800;
-  margin-bottom: 10px;
+  font-size: clamp(22px, 3.2vw, 32px);
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
 }
 
 .lich-hop-header p {
-  color: #64748b;
-  font-size: 16px;
+  color: rgba(226, 232, 240, 0.92);
+  font-size: 14.5px;
+  margin: 0;
+  line-height: 1.5;
 }
 
+/* ── BỘ LỌC TÌM KIẾM ── */
 .lich-filters {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  margin-bottom: 40px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -35,59 +81,75 @@
 .filter-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
-.filter-group label {
-  font-weight: 700;
-  color: #0f172a;
-  min-width: 50px;
+.filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #1e293b;
+  min-width: 120px;
 }
 
 .filter-btns {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  flex: 1;
 }
 
 .filter-btn {
-  padding: 8px 16px;
-  border: 2px solid #e2e8f0;
+  padding: 7px 16px;
+  border: 1.5px solid #cbd5e1;
   border-radius: 20px;
-  background: white;
-  font-size: 14px;
-  font-weight: 600;
+  background: #ffffff;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
 .filter-btn:hover {
-  border-color: #005bac;
-  color: #005bac;
+  border-color: #0284c7;
+  color: #0284c7;
+  background: #f0f9ff;
 }
 
 .filter-btn.active {
-  background: #005bac;
-  color: white;
-  border-color: #005bac;
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
 }
 
+/* ── SECTIONS & EVENT CARDS ── */
 .lich-section {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
-.lich-section h2 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 20px;
+.section-title-row {
+  margin-bottom: 18px;
   padding-bottom: 10px;
-  border-bottom: 3px solid #005bac;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.lich-section.past h2 {
-  border-color: #94a3b8;
+.section-title-row h2 {
+  font-size: 20px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lich-section.past .section-title-row h2 {
   color: #64748b;
 }
 
@@ -97,107 +159,229 @@
   gap: 16px;
 }
 
+/* Thẻ sự kiện Article chuẩn HTML5 */
 .event-card {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 24px;
   display: flex;
-  gap: 24px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  border-left: 5px solid #005bac;
-  transition: 0.2s;
+  gap: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid #0284c7;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  align-items: center;
 }
 
 .event-card:hover {
-  transform: translateX(4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+  border-left-color: #0369a1;
 }
 
 .event-card.past {
   border-left-color: #94a3b8;
-  opacity: 0.7;
+  opacity: 0.72;
+  background: #f8fafc;
 }
 
+.event-card.past:hover {
+  opacity: 0.95;
+}
+
+/* Khung ngày tháng Calendar */
 .event-date-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
-  background: #f0f7ff;
+  min-width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
   border-radius: 12px;
-  padding: 12px;
+  padding: 8px 12px;
   text-align: center;
+  border: 1.5px solid #bae6fd;
+  flex-shrink: 0;
+}
+
+.event-card.past .event-date-box {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
 .event-day {
-  font-size: 36px;
-  font-weight: 800;
-  color: #005bac;
+  font-size: 32px;
+  font-weight: 900;
+  color: #0369a1;
   line-height: 1;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.event-card.past .event-day {
+  color: #475569;
 }
 
 .event-month {
-  font-size: 13px;
-  color: #005bac;
-  font-weight: 600;
+  font-size: 12.5px;
+  color: #0284c7;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.event-card.past .event-month {
+  color: #64748b;
 }
 
 .event-weekday {
   font-size: 11px;
   color: #64748b;
-  margin-top: 4px;
+  font-weight: 600;
+  margin-top: 2px;
 }
 
+/* Nội dung thông tin */
 .event-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .event-type-badge {
-  display: inline-block;
-  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-weight: 800;
+  border: 1px solid transparent;
 }
 
-.event-info h3 {
-  font-size: 20px;
+.event-thon-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
   font-weight: 700;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.event-title {
+  font-size: 18px;
+  font-weight: 800;
   color: #0f172a;
-  margin-bottom: 8px;
+  margin: 2px 0 4px;
+  line-height: 1.4;
 }
 
-.event-info p {
-  font-size: 14px;
-  color: #64748b;
-  margin-bottom: 4px;
+.event-details-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  color: #334155;
+}
+
+.detail-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.detail-item.location {
+  color: #0f172a;
 }
 
 .event-note {
-  margin-top: 8px;
-  padding: 8px 12px;
-  background: #fef9ec;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 8px 14px;
+  background: #fffbeb;
   border-radius: 8px;
-  color: #92400e !important;
-  font-weight: 600;
+  color: #b45309;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid #fef3c7;
 }
 
-.empty-msg {
+/* Thông báo rỗng */
+.empty-msg-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 48px 24px;
   text-align: center;
-  color: #94a3b8;
-  font-size: 16px;
-  padding: 40px;
+  border: 1.5px dashed #cbd5e1;
+  color: #64748b;
 }
 
+.empty-msg-box p {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ── RESPONSIVE DESIGN FOR MOBILE & TABLET ── */
 @media (max-width: 768px) {
+  .lich-hop-page {
+    padding: 16px 12px 40px;
+  }
+  .lich-hop-header {
+    padding: 20px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .lich-filters {
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  .filter-label {
+    min-width: 100%;
+    margin-bottom: 4px;
+  }
   .event-card {
     flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 14px;
   }
   .event-date-box {
     flex-direction: row;
-    gap: 8px;
-    width: fit-content;
+    width: 100%;
+    height: auto;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+  }
+  .event-day {
+    font-size: 24px;
+  }
+  .event-details-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 }

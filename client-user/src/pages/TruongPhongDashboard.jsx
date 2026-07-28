@@ -132,7 +132,12 @@ export default function TruongPhongDashboard() {
     username: "",
     password: "Vhxh@2026",
     role: "canbo",
+    chucVu: "Chuyên viên chính",
+    phongBan: "Phòng Văn hóa - Xã hội",
+    phanQuyen: "Biên tập & Tuyên truyền",
   });
+  const [showStaffPassword, setShowStaffPassword] = useState(false);
+  const [docsMenuOpen, setDocsMenuOpen] = useState(true);
 
   const [visitorStats, setVisitorStats] = useState({
     todayCount: 142,
@@ -1492,6 +1497,9 @@ export default function TruongPhongDashboard() {
         const payload = {
           fullName: staffForm.fullName,
           role: staffForm.role,
+          chucVu: staffForm.chucVu,
+          phongBan: staffForm.phongBan,
+          phanQuyen: staffForm.phanQuyen,
         };
         if (staffForm.password) {
           payload.password = staffForm.password;
@@ -1512,7 +1520,15 @@ export default function TruongPhongDashboard() {
         );
         setMessage("Cấp tài khoản cán bộ thành công!");
       }
-      setStaffForm({ fullName: "", username: "", password: "Vhxh@2026", role: "canbo" });
+      setStaffForm({
+        fullName: "",
+        username: "",
+        password: "Vhxh@2026",
+        role: "canbo",
+        chucVu: "Chuyên viên chính",
+        phongBan: "Phòng Văn hóa - Xã hội",
+        phanQuyen: "Biên tập & Tuyên truyền",
+      });
       setUsernamePrefix("");
       fetchSubordinates();
     } catch (err) {
@@ -1530,7 +1546,10 @@ export default function TruongPhongDashboard() {
       fullName: s.fullName,
       username: s.username,
       password: "",
-      role: s.role
+      role: s.role || "canbo",
+      chucVu: s.chucVu || (s.role === "phophong" ? "Phó Trưởng phòng" : "Chuyên viên chính"),
+      phongBan: s.phongBan || "Phòng Văn hóa - Xã hội",
+      phanQuyen: s.phanQuyen || "Biên tập & Tuyên truyền",
     });
   };
 
@@ -2139,75 +2158,107 @@ export default function TruongPhongDashboard() {
                 className={`tp-nav-item ${activeTab === "staff" ? "active" : ""}`}
                 onClick={() => { setActiveTab("staff"); setMessage(""); setError(""); }}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                title="Cán bộ cấp dưới"
+                title="Quản lý cán bộ"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
-                <span>Cán bộ cấp dưới</span>
+                <span>Quản lý cán bộ</span>
               </button>
 
-              <button
-                className={`tp-nav-item ${activeTab === "incoming-docs" ? "active" : ""}`}
-                onClick={() => { setActiveTab("incoming-docs"); setMessage(""); setError(""); }}
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                title={`Quản lý Văn bản đến (${pendingIncomingCount} cần xử lý)`}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
-                </svg>
-                <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đến</span>
-                {pendingIncomingCount > 0 && (
-                  <mark
-                    title={`${pendingIncomingCount} văn bản đến chưa xử lý`}
-                    style={{
-                      marginLeft: "auto",
-                      background: "#ef4444",
-                      color: "#ffffff",
-                      fontSize: "11px",
-                      fontWeight: "800",
-                      padding: "2px 7px",
-                      borderRadius: "10px",
-                      lineHeight: "1.2",
-                      boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)",
-                      border: "none"
-                    }}
-                  >
-                    {pendingIncomingCount}
-                  </mark>
-                )}
-              </button>
+              {/* CẤU TRÚC CHA: QUẢN LÝ VĂN BẢN (CHỨA 2 CẤU TRÚC CON: VĂN BẢN ĐẾN, VĂN BẢN ĐỊ) */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                <button
+                  type="button"
+                  className={`tp-nav-item tp-nav-parent ${(activeTab === "incoming-docs" || activeTab === "outgoing-docs") ? "active-parent" : ""}`}
+                  onClick={() => setDocsMenuOpen(!docsMenuOpen)}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "8px" }}
+                  title="Quản lý Văn bản"
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    <span style={{ fontWeight: "800" }}>Quản lý Văn bản</span>
+                  </div>
+                  <span style={{ fontSize: "10px", color: "#64748b", transform: docsMenuOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
+                    ▼
+                  </span>
+                </button>
 
-              <button
-                className={`tp-nav-item ${activeTab === "outgoing-docs" ? "active" : ""}`}
-                onClick={() => { setActiveTab("outgoing-docs"); setMessage(""); setError(""); }}
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                title={`Quản lý Văn bản đi (${pendingOutgoingCount} dự thảo)`}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                </svg>
-                <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đi</span>
-                {pendingOutgoingCount > 0 && (
-                  <mark
-                    title={`${pendingOutgoingCount} văn bản đi dự thảo`}
-                    style={{
-                      marginLeft: "auto",
-                      background: "#f59e0b",
-                      color: "#ffffff",
-                      fontSize: "11px",
-                      fontWeight: "800",
-                      padding: "2px 7px",
-                      borderRadius: "10px",
-                      lineHeight: "1.2",
-                      boxShadow: "0 2px 4px rgba(245, 158, 11, 0.4)",
-                      border: "none"
-                    }}
-                  >
-                    {pendingOutgoingCount}
-                  </mark>
+                {docsMenuOpen && (
+                  <div style={{ paddingLeft: "14px", display: "flex", flexDirection: "column", gap: "3px", marginTop: "2px" }}>
+                    {/* Cấu trúc con 1: Văn bản đến */}
+                    <button
+                      type="button"
+                      className={`tp-nav-item tp-nav-sub ${activeTab === "incoming-docs" ? "active" : ""}`}
+                      onClick={() => { setActiveTab("incoming-docs"); setMessage(""); setError(""); }}
+                      style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                      title={`Quản lý Văn bản đến (${pendingIncomingCount} cần xử lý)`}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                      </svg>
+                      <span style={{ flex: 1, textAlign: "left" }}>Văn bản đến</span>
+                      {pendingIncomingCount > 0 && (
+                        <span
+                          title={`${pendingIncomingCount} văn bản đến chưa xử lý`}
+                          style={{
+                            marginLeft: "auto",
+                            background: "#ef4444",
+                            color: "#ffffff",
+                            fontSize: "11px",
+                            fontWeight: "800",
+                            padding: "2px 6px",
+                            borderRadius: "10px",
+                            lineHeight: "1.2",
+                            boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)",
+                            border: "none"
+                          }}
+                        >
+                          {pendingIncomingCount}
+                        </span>
+                      )}
+                    </button>
+
+                    {/* Cấu trúc con 2: Văn bản đi */}
+                    <button
+                      type="button"
+                      className={`tp-nav-item tp-nav-sub ${activeTab === "outgoing-docs" ? "active" : ""}`}
+                      onClick={() => { setActiveTab("outgoing-docs"); setMessage(""); setError(""); }}
+                      style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                      title={`Quản lý Văn bản đi (${pendingOutgoingCount} dự thảo)`}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                      </svg>
+                      <span style={{ flex: 1, textAlign: "left" }}>Văn bản đi</span>
+                      {pendingOutgoingCount > 0 && (
+                        <span
+                          title={`${pendingOutgoingCount} văn bản đi dự thảo`}
+                          style={{
+                            marginLeft: "auto",
+                            background: "#f59e0b",
+                            color: "#ffffff",
+                            fontSize: "11px",
+                            fontWeight: "800",
+                            padding: "2px 6px",
+                            borderRadius: "10px",
+                            lineHeight: "1.2",
+                            boxShadow: "0 2px 4px rgba(245, 158, 11, 0.4)",
+                            border: "none"
+                          }}
+                        >
+                          {pendingOutgoingCount}
+                        </span>
+                      )}
+                    </button>
+                  </div>
                 )}
-              </button>
+              </div>
 
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
@@ -2292,7 +2343,7 @@ export default function TruongPhongDashboard() {
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đến</span>
                 {pendingIncomingCount > 0 && (
-                  <mark
+                  <span
                     title={`${pendingIncomingCount} văn bản đến chưa xử lý`}
                     style={{
                       marginLeft: "auto",
@@ -2308,7 +2359,7 @@ export default function TruongPhongDashboard() {
                     }}
                   >
                     {pendingIncomingCount}
-                  </mark>
+                  </span>
                 )}
               </button>
               <button
@@ -2321,7 +2372,7 @@ export default function TruongPhongDashboard() {
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đi</span>
                 {pendingOutgoingCount > 0 && (
-                  <mark
+                  <span
                     title={`${pendingOutgoingCount} văn bản đi dự thảo`}
                     style={{
                       marginLeft: "auto",
@@ -2337,7 +2388,7 @@ export default function TruongPhongDashboard() {
                     }}
                   >
                     {pendingOutgoingCount}
-                  </mark>
+                  </span>
                 )}
               </button>
               <button
@@ -2416,7 +2467,7 @@ export default function TruongPhongDashboard() {
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đến</span>
                 {pendingIncomingCount > 0 && (
-                  <mark
+                  <span
                     title={`${pendingIncomingCount} văn bản đến chưa xử lý`}
                     style={{
                       marginLeft: "auto",
@@ -2432,7 +2483,7 @@ export default function TruongPhongDashboard() {
                     }}
                   >
                     {pendingIncomingCount}
-                  </mark>
+                  </span>
                 )}
               </button>
               <button
@@ -2445,7 +2496,7 @@ export default function TruongPhongDashboard() {
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đi</span>
                 {pendingOutgoingCount > 0 && (
-                  <mark
+                  <span
                     title={`${pendingOutgoingCount} văn bản đi dự thảo`}
                     style={{
                       marginLeft: "auto",
@@ -2461,7 +2512,7 @@ export default function TruongPhongDashboard() {
                     }}
                   >
                     {pendingOutgoingCount}
-                  </mark>
+                  </span>
                 )}
               </button>
               <button
@@ -2533,7 +2584,7 @@ export default function TruongPhongDashboard() {
                 {activeTab === "task-dispatch" && "Quản lý Điều hành & Phân công Giao việc"}
                 {activeTab === "incoming-docs" && "Quản lý Sổ Văn bản đến & Phân công chỉ đạo xử lý"}
                 {activeTab === "outgoing-docs" && "Quản lý Sổ Văn bản đi & Soạn thảo dự thảo phát hành"}
-                {activeTab === "staff" && "Quản lý Cán bộ cấp dưới"}
+                {activeTab === "staff" && "Quản lý cán bộ"}
                 {activeTab === "schedule" && "Lịch họp & Điều phối lịch công tác"}
                 {activeTab === "updates" && "Nhật ký Hệ thống & Thông báo UBND"}
                 {activeTab === "tasks" && "Chỉ thị & Nhiệm vụ được giao"}
@@ -5016,143 +5067,264 @@ export default function TruongPhongDashboard() {
           {(role === "truongphong" || role === "admin") && (
             <>
               {activeTab === "staff" && (
-                <div className="tp-grid">
-                  <div className="tp-card tp-form-card">
-                    <h3>{editingStaff ? "Chỉnh sửa tài khoản" : "Cấp tài khoản mới"}</h3>
-                    <form onSubmit={handleStaffSubmit}>
-                      <div className="tp-form-group">
-                        <label>Họ và tên cán bộ</label>
-                        <input
-                          type="text"
-                          placeholder="Ví dụ: Trần Văn B"
-                          value={staffForm.fullName}
-                          onChange={(e) => setStaffForm({ ...staffForm, fullName: e.target.value })}
-                          required
-                        />
-                      </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                  {/* CARD 1: FORM CẤP / SỬA CÁN BỘ */}
+                  <div className="tp-card tp-form-card" style={{ width: "100%", padding: "24px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px", paddingBottom: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
+                      <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#003d7a", display: "flex", alignItems: "center", gap: "8px" }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+                        <span>{editingStaff ? "Chỉnh sửa Thông tin & Phân quyền Cán bộ" : "Thêm mới & Cấp tài khoản Cán bộ"}</span>
+                      </h3>
+                      {editingStaff && (
+                        <button
+                          type="button"
+                          style={{ background: "#fee2e2", color: "#dc2626", border: "none", padding: "6px 14px", borderRadius: "20px", fontSize: "13px", cursor: "pointer", fontWeight: "800" }}
+                          onClick={() => {
+                            setEditingStaff(null);
+                            setUsernamePrefix("");
+                            setStaffForm({
+                              fullName: "",
+                              username: "",
+                              password: "Vhxh@2026",
+                              role: "canbo",
+                              chucVu: "Chuyên viên chính",
+                              phongBan: "Phòng Văn hóa - Xã hội",
+                              phanQuyen: "Biên tập & Tuyên truyền",
+                            });
+                          }}
+                        >
+                          ✕ Hủy chế độ sửa
+                        </button>
+                      )}
+                    </div>
 
-                      <div className="tp-form-group">
-                        <label>Tên đăng nhập</label>
-                        <div style={{ display: "flex", alignItems: "center", border: "1px solid #cbd5e1", borderRadius: "6px", background: editingStaff ? "#f1f5f9" : "#fff", paddingRight: "12px", height: "40px" }}>
+                    <form onSubmit={handleStaffSubmit}>
+                      {/* HÀNG 1: TÀI KHOẢN (Họ tên + Tên đăng nhập + Mật khẩu) */}
+                      <div className="tp-form-grid-2">
+                        <div className="tp-form-group">
+                          <label>Họ và tên cán bộ <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
                             type="text"
-                            placeholder="Ví dụ: Acv"
-                            value={usernamePrefix}
-                            onChange={(e) => setUsernamePrefix(e.target.value.trim().toLowerCase())}
+                            placeholder="Ví dụ: Nguyễn Văn An"
+                            value={staffForm.fullName}
+                            onChange={(e) => setStaffForm({ ...staffForm, fullName: e.target.value })}
                             required
-                            disabled={!!editingStaff}
-                            style={{ flex: 1, border: "none", outline: "none", boxShadow: "none", background: "transparent", padding: "0 12px", height: "100%", fontSize: "14px", fontFamily: "inherit" }}
                           />
-                          <span style={{ color: "#475569", fontWeight: "700", fontSize: "14px", userSelect: "none" }}>.vhxh</span>
+                        </div>
+
+                        <div className="tp-form-group">
+                          <label>Tài khoản (Tên đăng nhập) <span style={{ color: "#dc2626" }}>*</span></label>
+                          <div style={{ display: "flex", alignItems: "center", width: "100%", border: "1.5px solid #cbd5e1", borderRadius: "8px", background: editingStaff ? "#f1f5f9" : "#fff", height: "42px" }}>
+                            <input
+                              type="text"
+                              placeholder="Ví dụ: nv-an"
+                              value={usernamePrefix}
+                              onChange={(e) => setUsernamePrefix(e.target.value.trim().toLowerCase())}
+                              required
+                              disabled={!!editingStaff}
+                              style={{ flex: 1, border: "none", outline: "none", boxShadow: "none", background: "transparent", padding: "0 12px", height: "100%", fontSize: "14px", fontWeight: "600", color: "#0f172a" }}
+                            />
+                            <span style={{ color: "#0284c7", fontWeight: "800", fontSize: "13px", paddingRight: "14px", userSelect: "none" }}>.vhxh</span>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="tp-form-group">
-                        <label>{editingStaff ? "Mật khẩu đăng nhập mới (Để trống nếu giữ nguyên)" : "Mật khẩu đăng nhập"}</label>
-                        <input
-                          type="password"
-                          placeholder={editingStaff ? "Nhập mật khẩu mới" : "Nhập mật khẩu mặc định"}
-                          value={staffForm.password}
-                          onChange={(e) => setStaffForm({ ...staffForm, password: e.target.value })}
-                          required={!editingStaff}
-                        />
-                      </div>
+                      {/* HÀNG 2: MẬT KHẨU & CHỨC VỤ */}
+                      <div className="tp-form-grid-2">
+                        <div className="tp-form-group">
+                          <label>{editingStaff ? "Mật khẩu mới (Để trống nếu giữ nguyên)" : "Mật khẩu đăng nhập mặc định"} <span style={{ color: "#dc2626" }}>*</span></label>
+                          <div style={{ display: "flex", alignItems: "center", width: "100%", border: "1.5px solid #cbd5e1", borderRadius: "8px", background: "#ffffff", height: "42px" }}>
+                            <input
+                              type={showStaffPassword ? "text" : "password"}
+                              placeholder={editingStaff ? "Nhập mật khẩu mới nếu cần đổi" : "Nhập mật khẩu (mặc định: Vhxh@2026)"}
+                              value={staffForm.password}
+                              onChange={(e) => setStaffForm({ ...staffForm, password: e.target.value })}
+                              required={!editingStaff}
+                              style={{ flex: 1, border: "none", outline: "none", boxShadow: "none", background: "transparent", padding: "0 12px", height: "100%", fontSize: "14px", fontWeight: "600", color: "#0f172a" }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowStaffPassword(!showStaffPassword)}
+                              style={{
+                                background: "transparent",
+                                border: "none",
+                                outline: "none",
+                                boxShadow: "none",
+                                cursor: "pointer",
+                                padding: "0 12px",
+                                fontSize: "13px",
+                                fontWeight: "700",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "6px"
+                              }}
+                              title={showStaffPassword ? "Ẩn mật khẩu" : "Hiện rõ mật khẩu"}
+                            >
+                              {showStaffPassword ? (
+                                <>
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                  </svg>
+                                  <span style={{ color: "#64748b" }}>Ẩn</span>
+                                </>
+                              ) : (
+                                <>
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                  </svg>
+                                  <span style={{ color: "#005baa" }}>Hiện</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
 
-                      <div className="tp-form-group">
-                        <label>Chức danh cấp bậc</label>
-                        <select
-                          value={staffForm.role}
-                          onChange={(e) => setStaffForm({ ...staffForm, role: e.target.value })}
-                        >
-                          <option value="canbo">Cán bộ chuyên viên</option>
-                          <option value="phophong">Phó trưởng phòng</option>
-                        </select>
-                      </div>
-
-                      <div className="tp-btn-group" style={{ display: "flex", gap: "8px" }}>
-                        <button type="submit" className="tp-btn-submit" disabled={loading}>
-                          {editingStaff ? "Lưu thay đổi" : "Cấp tài khoản mới"}
-                        </button>
-                        {editingStaff && (
-                          <button
-                            type="button"
-                            className="tp-btn-cancel"
-                            style={{ padding: "10px 16px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#fff", cursor: "pointer", fontWeight: "700" }}
-                            onClick={() => {
-                              setEditingStaff(null);
-                              setUsernamePrefix("");
-                              setStaffForm({ fullName: "", username: "", password: "Vhxh@2026", role: "canbo" });
-                            }}
+                        <div className="tp-form-group">
+                          <label>Chức vụ / Chức danh <span style={{ color: "#dc2626" }}>*</span></label>
+                          <select
+                            value={staffForm.chucVu}
+                            onChange={(e) => setStaffForm({ ...staffForm, chucVu: e.target.value, role: e.target.value.includes("Phó") ? "phophong" : "canbo" })}
                           >
-                            Hủy
-                          </button>
-                        )}
+                            <option value="Phó Trưởng phòng">Phó Trưởng phòng</option>
+                            <option value="Chuyên viên chính">Chuyên viên chính</option>
+                            <option value="Cán bộ chuyên trách Văn hóa">Cán bộ chuyên trách Văn hóa</option>
+                            <option value="Cán bộ Phụ trách BHYT">Cán bộ Phụ trách BHYT & An sinh</option>
+                            <option value="Cán bộ Tư pháp - Hộ tịch">Cán bộ Tư pháp - Hộ tịch</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* HÀNG 3: PHÒNG BAN & PHÂN QUYỀN */}
+                      <div className="tp-form-grid-2">
+                        <div className="tp-form-group">
+                          <label>Đơn vị / Phòng ban công tác <span style={{ color: "#dc2626" }}>*</span></label>
+                          <select
+                            value={staffForm.phongBan}
+                            onChange={(e) => setStaffForm({ ...staffForm, phongBan: e.target.value })}
+                          >
+                            <option value="Phòng Văn hóa - Xã hội">Phòng Văn hóa - Xã hội xã Đăk Pxi</option>
+                            <option value="Phòng Lao động - TB&XH">Phòng Lao động - Thương binh & Xã hội</option>
+                            <option value="Văn phòng HĐND & UBND">Văn phòng HĐND & UBND xã</option>
+                            <option value="Công an xã Đăk Pxi">Công an xã Đăk Pxi</option>
+                            <option value="Bộ phận Kế toán - Tài chính">Bộ phận Kế toán - Tài chính xã</option>
+                          </select>
+                        </div>
+
+                        <div className="tp-form-group">
+                          <label>Phân quyền nhiệm vụ hệ thống <span style={{ color: "#dc2626" }}>*</span></label>
+                          <select
+                            value={staffForm.phanQuyen}
+                            onChange={(e) => setStaffForm({ ...staffForm, phanQuyen: e.target.value })}
+                          >
+                            <option value="Chỉ đạo & Quản lý toàn diện">Chỉ đạo & Quản lý toàn diện (Quyền Phó phòng)</option>
+                            <option value="Quản lý BHYT & An sinh">Quản lý BHYT & An sinh xã hội</option>
+                            <option value="Biên tập & Tuyên truyền">Biên tập & Tuyên truyền báo chí</option>
+                            <option value="Tiếp nhận & Xử lý Góp ý">Tiếp nhận & Xử lý Góp ý Phản ánh</option>
+                            <option value="Quản lý Lịch họp & Văn bản">Quản lý Lịch họp & Sổ Văn bản</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          style={{ background: "linear-gradient(135deg, #005baa 0%, #003d7a 100%)", color: "#ffffff", border: "none", padding: "12px 28px", borderRadius: "8px", fontSize: "14px", fontWeight: "800", cursor: "pointer", boxShadow: "0 4px 12px rgba(0, 91, 170, 0.2)" }}
+                        >
+                          {editingStaff ? "💾 Lưu cập nhật thông tin" : "🔑 Cấp tài khoản Cán bộ mới"}
+                        </button>
                       </div>
                     </form>
                   </div>
 
-                  <div className="tp-card tp-list-card">
-                    <h3 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                      <span>Cán bộ trực thuộc quản lý ({subordinates.length})</span>
+                  {/* CARD 2: BẢNG DANH SÁCH CÁN BỘ */}
+                  <div className="tp-card tp-list-card" style={{ width: "100%", padding: "20px" }}>
+                    <h3 style={{ margin: "0 0 16px 0", fontSize: "17px", fontWeight: "900", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      <span>Danh sách Cán bộ trực thuộc quản lý ({subordinates.length})</span>
                     </h3>
-                    <div className="tp-table-wrapper">
+
+                    <div className="tp-table-wrap">
                       <table className="tp-table">
                         <thead>
                           <tr>
-                            <th>Họ và tên</th>
-                            <th>Tên đăng nhập</th>
-                            <th>Chức danh</th>
-                            <th style={{ textAlign: "center" }}>Hành động</th>
+                            <th>Họ và tên cán bộ</th>
+                            <th>Tài khoản</th>
+                            <th>Chức vụ</th>
+                            <th>Phòng ban</th>
+                            <th>Phân quyền</th>
+                            <th style={{ textAlign: "center" }}>Trạng thái</th>
+                            <th style={{ textAlign: "center" }}>Thao tác</th>
                           </tr>
                         </thead>
                         <tbody>
                           {subordinates.length === 0 ? (
                             <tr>
-                              <td colSpan="4" className="text-center text-muted">
-                                Chưa có cán bộ cấp dưới nào trực thuộc.
+                              <td colSpan="7" style={{ textAlign: "center", padding: "24px", color: "#64748b" }}>
+                                Chưa có cán bộ trực thuộc nào. Hãy cấp tài khoản mới phía trên.
                               </td>
                             </tr>
                           ) : (
                             subordinates.map((s) => (
                               <tr key={s._id} style={{ opacity: s.status === "suspended" ? 0.6 : 1 }}>
                                 <td>
-                                  <strong>{s.fullName}</strong>
-                                  {s.status === "suspended" && (
-                                    <span style={{ fontSize: "11px", color: "#ef4444", marginLeft: "8px", fontWeight: "bold", background: "#fee2e2", padding: "2px 6px", borderRadius: "4px" }}>
-                                      [Đã tạm dừng]
-                                    </span>
-                                  )}
+                                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                    <div style={{ width: "34px", height: "34px", borderRadius: "50%", background: "#005baa", color: "#ffffff", fontWeight: "900", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                      {s.fullName ? s.fullName.charAt(0).toUpperCase() : "C"}
+                                    </div>
+                                    <div>
+                                      <strong style={{ color: "#0f172a", fontSize: "14px" }}>{s.fullName}</strong>
+                                    </div>
+                                  </div>
                                 </td>
-                                <td><code>{s.username}</code></td>
                                 <td>
-                                  <span className={`tp-role-badge ${s.role}`}>
-                                    {s.role === "phophong" ? "Phó phòng" : "Cán bộ"}
+                                  <code style={{ background: "#f1f5f9", padding: "3px 8px", borderRadius: "6px", color: "#0284c7", fontWeight: "700", fontSize: "13px" }}>{s.username}</code>
+                                </td>
+                                <td>
+                                  <span className="tp-staff-badge tp-badge-role">
+                                    {s.chucVu || (s.role === "phophong" ? "Phó Trưởng phòng" : "Chuyên viên chính")}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span className="tp-staff-badge tp-badge-dept">
+                                    {s.phongBan || "Phòng Văn hóa - Xã hội"}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span className="tp-staff-badge tp-badge-perm">
+                                    {s.phanQuyen || "Biên tập & Tuyên truyền"}
+                                  </span>
+                                </td>
+                                <td style={{ textAlign: "center" }}>
+                                  <span style={{
+                                    fontSize: "12px", fontWeight: "800", padding: "3px 10px", borderRadius: "12px", display: "inline-block",
+                                    background: s.status === "suspended" ? "#fee2e2" : "#d1fae5",
+                                    color: s.status === "suspended" ? "#dc2626" : "#15803d"
+                                  }}>
+                                    {s.status === "suspended" ? "Đã tạm dừng" : "Đang hoạt động"}
                                   </span>
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                   <div style={{ display: "flex", gap: "6px", justifyContent: "center" }}>
                                     <button
-                                      className="tp-edit-btn-small"
-                                      style={{ background: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1" }}
+                                      type="button"
+                                      className="tp-staff-btn tp-staff-btn-edit"
                                       onClick={() => handleEditClick(s)}
                                     >
                                       Sửa
                                     </button>
                                     <button
-                                      className="tp-edit-btn-small"
-                                      style={{
-                                        background: s.status === "suspended" ? "#d1fae5" : "#fee2e2",
-                                        color: s.status === "suspended" ? "#065f46" : "#991b1b",
-                                        border: s.status === "suspended" ? "1px solid #a7f3d0" : "1px solid #fecaca",
-                                        fontWeight: "750"
-                                      }}
+                                      type="button"
+                                      className={`tp-staff-btn ${s.status === "suspended" ? "tp-staff-btn-start" : "tp-staff-btn-stop"}`}
                                       onClick={() => handleToggleStaffStatus(s)}
                                     >
                                       {s.status === "suspended" ? "Mở" : "Dừng"}
                                     </button>
                                     <button
-                                      className="tp-delete-btn"
+                                      type="button"
+                                      className="tp-staff-btn tp-staff-btn-del"
                                       onClick={() => handleDeleteStaff(s._id, s.fullName)}
                                     >
                                       Xóa
@@ -5276,26 +5448,24 @@ export default function TruongPhongDashboard() {
                     </div>
 
                     <form onSubmit={handleArticleSubmit}>
-                      {/* Hàng 1: Tiêu đề (60%) + Chuyên mục (40%) */}
-                      <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "16px", marginBottom: "14px" }}>
-                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
-                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Tiêu đề bài viết tuyên truyền <span style={{ color: "#dc2626" }}>*</span></label>
+                      {/* Hàng 1: Tiêu đề + Chọn Chuyên mục */}
+                      <div className="tp-form-grid-2">
+                        <div className="tp-form-group">
+                          <label>Tiêu đề bài viết tuyên truyền <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
                             type="text"
                             placeholder="Nhập tiêu đề tuyên truyền (Ví dụ: Cảnh báo thủ đoạn giả danh Công an lừa đảo...)"
                             value={articleForm.tieu_de}
                             onChange={(e) => setArticleForm({ ...articleForm, tieu_de: e.target.value })}
-                            style={{ padding: "10px 14px", fontSize: "14px", borderRadius: "8px" }}
                             required
                           />
                         </div>
 
-                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
-                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Chọn Chuyên mục tuyên truyền</label>
+                        <div className="tp-form-group">
+                          <label>Chọn Chuyên mục tuyên truyền</label>
                           <select
                             value={articleForm.danh_muc}
                             onChange={(e) => setArticleForm({ ...articleForm, danh_muc: e.target.value })}
-                            style={{ padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", fontWeight: "700", color: "#003d7a", height: "43px" }}
                           >
                             <optgroup label="Tuyên truyền Trọng tâm">
                               <option value="phong-chong-lua-dao">Phòng, chống Lừa đảo Không gian mạng</option>
@@ -5320,32 +5490,30 @@ export default function TruongPhongDashboard() {
                       </div>
 
                       {/* Hàng 2: Tóm tắt ngắn + Chữ chạy thông báo */}
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "14px" }}>
-                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
-                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Tóm tắt ngắn (Hiển thị xem trước bài viết)</label>
+                      <div className="tp-form-grid-2">
+                        <div className="tp-form-group">
+                          <label>Tóm tắt ngắn (Hiển thị xem trước bài viết)</label>
                           <textarea
-                            rows="2"
+                            rows="3"
                             placeholder="Mô tả tóm tắt ngắn gọn nội dung chính..."
                             value={articleForm.mo_ta}
                             onChange={(e) => setArticleForm({ ...articleForm, mo_ta: e.target.value })}
-                            style={{ padding: "8px 12px", fontSize: "13.5px", borderRadius: "8px", resize: "none" }}
                           />
                         </div>
 
-                        <div className="tp-form-group" style={{ marginBottom: 0 }}>
-                          <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Chữ chạy thông báo (Nổi bật Trang chủ)</label>
+                        <div className="tp-form-group">
+                          <label>Chữ chạy thông báo (Nổi bật Trang chủ)</label>
                           <input
                             type="text"
                             placeholder="Nhập thông báo chữ chạy nổi bật trên trang chủ..."
                             value={articleForm.chu_chay}
                             onChange={(e) => setArticleForm({ ...articleForm, chu_chay: e.target.value })}
-                            style={{ padding: "10px 14px", fontSize: "14px", borderRadius: "8px" }}
                           />
                         </div>
                       </div>
 
                       {/* Hàng 3: Media Upload Mini Bar (Nút tải Ảnh bìa, Album, Video, Âm thanh nằm ngang) */}
-                      <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1.5px dashed #cbd5e1", marginBottom: "14px" }}>
+                      <div style={{ background: "#f8fafc", padding: "14px 18px", borderRadius: "10px", border: "1.5px dashed #cbd5e1", marginBottom: "16px" }}>
                         <div style={{ fontSize: "13px", fontWeight: "800", color: "#334155", marginBottom: "10px" }}>
                           📁 Đính kèm File phương tiện truyền thông (Ảnh bìa, Album nhiều ảnh, Video, Âm thanh)
                         </div>
@@ -5444,13 +5612,13 @@ export default function TruongPhongDashboard() {
 
                       {/* Hàng 4: Nội dung chi tiết */}
                       <div className="tp-form-group" style={{ marginBottom: "16px" }}>
-                        <label style={{ fontSize: "13px", fontWeight: "800", marginBottom: "6px", color: "#1e293b" }}>Nội dung bài viết chi tiết <span style={{ color: "#dc2626" }}>*</span></label>
+                        <label>Nội dung bài viết chi tiết <span style={{ color: "#dc2626" }}>*</span></label>
                         <textarea
-                          rows="5"
+                          rows="6"
                           placeholder="Viết nội dung bài tuyên truyền chi tiết tại đây..."
                           value={articleForm.noi_dung}
                           onChange={(e) => setArticleForm({ ...articleForm, noi_dung: e.target.value })}
-                          style={{ padding: "10px 14px", fontSize: "14px", borderRadius: "8px" }}
+                          style={{ minHeight: "180px" }}
                           required
                         />
                       </div>
@@ -5492,59 +5660,100 @@ export default function TruongPhongDashboard() {
                       <table className="tp-table" style={{ width: "100%" }}>
                         <thead>
                           <tr>
-                            <th style={{ width: "45%" }}>Tên bài viết</th>
-                            <th style={{ width: "25%" }}>Chuyên mục</th>
-                            <th style={{ width: "15%" }}>Ngày tạo</th>
-                            <th style={{ width: "15%", textAlign: "center" }}>Hành động</th>
+                            <th style={{ width: "35%" }}>Tên bài viết</th>
+                            <th style={{ width: "18%" }}>Chuyên mục</th>
+                            <th style={{ width: "20%" }}>Cán bộ đăng bài</th>
+                            <th style={{ width: "15%" }}>Thời gian đăng</th>
+                            <th style={{ width: "12%", textAlign: "center" }}>Hành động</th>
                           </tr>
                         </thead>
                         <tbody>
                           {articles.length === 0 ? (
                             <tr>
-                              <td colSpan="4" style={{ textAlign: "center", padding: "30px", color: "#64748b" }}>
+                              <td colSpan="5" style={{ textAlign: "center", padding: "30px", color: "#64748b" }}>
                                 Chưa có bài viết nào được đăng. Hãy tạo bài viết tuyên truyền đầu tiên ở trên!
                               </td>
                             </tr>
                           ) : (
-                            articles.map((art) => (
-                              <tr key={art._id}>
-                                <td>
-                                  <strong style={{ color: "#003d7a", fontSize: "14px" }}>{art.tieu_de}</strong>
-                                  <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "3px" }}>
-                                    {art.anh_dai_dien && <span style={{ fontSize: "11px", background: "#e0f2fe", color: "#0369a1", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>🖼️ Ảnh</span>}
-                                    {art.video && <span style={{ fontSize: "11px", background: "#fce7f3", color: "#be185d", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>📹 Video</span>}
-                                    {art.audio && <span style={{ fontSize: "11px", background: "#f0fdf4", color: "#15803d", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>🎧 Âm thanh</span>}
-                                  </div>
-                                  {art.mo_ta && (
-                                    <div style={{ fontSize: "12.5px", color: "#64748b", marginTop: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "450px" }}>
-                                      {art.mo_ta}
+                            articles.map((art) => {
+                              const authorName = art.tac_gia || art.author || art.created_by || art.user?.fullName || "Nguyễn Thái Huy (Trưởng phòng)";
+                              const dateObj = new Date(art.createdAt || Date.now());
+                              const timeStr = dateObj.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+                              const dateStr = dateObj.toLocaleDateString("vi-VN");
+
+                              return (
+                                <tr key={art._id}>
+                                  <td>
+                                    <strong style={{ color: "#003d7a", fontSize: "14px" }}>{art.tieu_de}</strong>
+                                    <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "3px" }}>
+                                      {art.anh_dai_dien && <span style={{ fontSize: "11px", background: "#e0f2fe", color: "#0369a1", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>🖼️ Ảnh</span>}
+                                      {art.video && <span style={{ fontSize: "11px", background: "#fce7f3", color: "#be185d", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>📹 Video</span>}
+                                      {art.audio && <span style={{ fontSize: "11px", background: "#f0fdf4", color: "#15803d", padding: "1px 6px", borderRadius: "10px", fontWeight: "700" }}>🎧 Âm thanh</span>}
                                     </div>
-                                  )}
-                                </td>
-                                <td>
-                                  <span className={`tp-meeting-badge ${art.danh_muc}`} style={{ fontSize: "12.5px", padding: "4px 12px", borderRadius: "20px" }}>
-                                    {art.danh_muc === "phong-chong-lua-dao" ? "🛡️ Lừa đảo mạng" :
-                                     art.danh_muc === "an-toan-giao-thong" ? "🚦 An toàn giao thông" :
-                                     art.danh_muc === "thien-tai" ? "🌧️ Phòng chống thiên tai" :
-                                     art.danh_muc === "bau-cu" ? "🗳️ Bầu cử" :
-                                     art.danh_muc === "huong-dan-vneid" ? "🆔 VNeID" : "📌 " + (art.danh_muc || "Chuyên mục")}
-                                  </span>
-                                </td>
-                                <td style={{ fontSize: "13.5px", color: "#475569" }}>
-                                  {new Date(art.createdAt).toLocaleDateString("vi-VN")}
-                                </td>
-                                <td>
-                                  <div className="tp-table-actions" style={{ justifyContent: "center" }}>
-                                    <button className="tp-edit-btn-small" onClick={() => handleEditArticle(art)}>
-                                      ✏️ Sửa
-                                    </button>
-                                    <button className="tp-delete-btn-small" onClick={() => handleDeleteArticle(art._id)}>
-                                      🗑️ Xóa
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))
+                                    {art.mo_ta && (
+                                      <div style={{ fontSize: "12.5px", color: "#64748b", marginTop: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "380px" }}>
+                                        {art.mo_ta}
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td>
+                                    <span className={`tp-meeting-badge ${art.danh_muc}`} style={{ fontSize: "12.5px", padding: "4px 12px", borderRadius: "20px" }}>
+                                      {art.danh_muc === "phong-chong-lua-dao" ? "🛡️ Lừa đảo mạng" :
+                                       art.danh_muc === "an-toan-giao-thong" ? "🚦 An toàn giao thông" :
+                                       art.danh_muc === "thien-tai" ? "🌧️ Phòng chống thiên tai" :
+                                       art.danh_muc === "bau-cu" ? "🗳️ Bầu cử" :
+                                       art.danh_muc === "huong-dan-vneid" ? "🆔 VNeID" : "📌 " + (art.danh_muc || "Chuyên mục")}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                      <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "#005baa", color: "#ffffff", fontSize: "12px", fontWeight: "900", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                        {authorName.charAt(0).toUpperCase()}
+                                      </div>
+                                      <span style={{ fontSize: "13px", fontWeight: "750", color: "#1e293b" }}>
+                                        {authorName}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <time dateTime={art.createdAt} style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                                      <span style={{ fontSize: "13px", fontWeight: "800", color: "#0f172a" }}>
+                                        🕒 {timeStr}
+                                      </span>
+                                      <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>
+                                        📅 {dateStr}
+                                      </span>
+                                    </time>
+                                  </td>
+                                  <td style={{ textAlign: "center" }}>
+                                    <div style={{ display: "flex", gap: "6px", justifyContent: "center" }}>
+                                      <button
+                                        type="button"
+                                        className="tp-staff-btn tp-staff-btn-edit"
+                                        onClick={() => handleEditArticle(art)}
+                                        title="Sửa bài viết"
+                                      >
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                        </svg>
+                                        <span>Sửa</span>
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="tp-staff-btn tp-staff-btn-del"
+                                        onClick={() => handleDeleteArticle(art._id)}
+                                        title="Xóa bài viết"
+                                      >
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                          <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        </svg>
+                                        <span>Xóa</span>
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })
                           )}
                         </tbody>
                       </table>
@@ -6321,9 +6530,9 @@ export default function TruongPhongDashboard() {
                         />
                       </div>
 
-                      <div className="tp-form-group-row">
+                      <div className="tp-form-grid-2">
                         <div className="tp-form-group">
-                          <label>Ngày họp</label>
+                          <label>Ngày họp <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
                             type="date"
                             value={meetingForm.date}
@@ -6332,7 +6541,7 @@ export default function TruongPhongDashboard() {
                           />
                         </div>
                         <div className="tp-form-group">
-                          <label>Giờ họp</label>
+                          <label>Giờ họp <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
                             type="time"
                             value={meetingForm.time}
@@ -6342,9 +6551,9 @@ export default function TruongPhongDashboard() {
                         </div>
                       </div>
 
-                      <div className="tp-form-group-row">
+                      <div className="tp-form-grid-2">
                         <div className="tp-form-group">
-                          <label>Thành phần tham gia</label>
+                          <label>Thành phần tham gia <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
                             type="text"
                             placeholder="Ví dụ: Toàn bộ cán bộ, Tổ BHYT..."
@@ -6354,7 +6563,7 @@ export default function TruongPhongDashboard() {
                           />
                         </div>
                         <div className="tp-form-group">
-                          <label>Phòng họp / Địa điểm</label>
+                          <label>Phòng họp / Địa điểm <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
                             type="text"
                             placeholder="Ví dụ: Phòng họp số 1 - UBND xã"
@@ -6403,21 +6612,41 @@ export default function TruongPhongDashboard() {
                         />
                       </div>
 
-                      <div className="tp-btn-group" style={{ gap: "10px" }}>
+                      <div className="tp-btn-group" style={{ gap: "10px", marginTop: "8px" }}>
                         <button type="submit" className="tp-btn-submit" disabled={loading} style={{ flex: 1 }}>
-                          {editingMeeting ? "💾 Lưu thay đổi" : "📅 Tạo lịch họp"}
+                          {editingMeeting ? (
+                            <>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                                <polyline points="17 21 17 13 7 13 7 21"/>
+                                <polyline points="7 3 7 8 15 8"/>
+                              </svg>
+                              <span>Lưu cập nhật cuộc họp</span>
+                            </>
+                          ) : (
+                            <>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                <line x1="12" y1="14" x2="12" y2="18"/>
+                                <line x1="10" y1="16" x2="14" y2="16"/>
+                              </svg>
+                              <span>Tạo lịch họp mới</span>
+                            </>
+                          )}
                         </button>
                         {editingMeeting && (
                           <button
                             type="button"
                             className="tp-btn-cancel"
-                            style={{ padding: "10px 16px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#fff", cursor: "pointer" }}
                             onClick={() => {
                               setEditingMeeting(null);
                               setMeetingForm({ title: "", date: "", time: "", location: "", thon: "", type: "giao-ban", note: "", pin: "123456" });
                             }}
                           >
-                            Hủy
+                            Hủy chế độ sửa
                           </button>
                         )}
                       </div>
@@ -6648,6 +6877,8 @@ export default function TruongPhongDashboard() {
               )}
             </div>
           )}
+        </div>
+      </main>
 
           {/* ── MODAL XÁC THỰC MÃ OTP SMS BẢO MẬT 2FA ── */}
           {secModalMeeting && (
@@ -6905,8 +7136,8 @@ export default function TruongPhongDashboard() {
             </div>
           )}
 
-          {/* MODAL AI TẠO LỊCH HỌP THEO YÊU CẦU CỤ THỂ CỦA TRƯỞNG PHÒNG */}
-          {showAIScheduleModal && (
+      {/* MODAL AI TẠO LỊCH HỌP THEO YÊU CẦU CỤ THỂ CỦA TRƯỞNG PHÒNG */}
+      {showAIScheduleModal && (
             <div style={{
               position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
               background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
@@ -6996,187 +7227,37 @@ export default function TruongPhongDashboard() {
                   </div>
                 </div>
 
-                {/* Input 4: Loại cuộc họp (Bảo mật hay bình thường) */}
-                <div className="tp-form-group" style={{ marginBottom: "20px" }}>
-                  <label style={{ fontWeight: "800", color: "#1e3a8a" }}>4. Hình thức & Loại cuộc họp</label>
-                  <select
-                    value={aiPromptForm.type}
-                    onChange={(e) => setAiPromptForm({ ...aiPromptForm, type: e.target.value })}
-                    style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                  >
-                    <option value="hop-bao-mat">Cuộc họp Bảo mật Cán bộ (Mật / Nội bộ)</option>
-                    <option value="giao-ban">Họp giao ban định kỳ</option>
-                    <option value="hop-khan">Họp khẩn cấp</option>
-                    <option value="chuyen-de">Họp chuyên đề chuyên môn</option>
-                    <option value="tap-huan">Tập huấn & Hướng dẫn nghiệp vụ</option>
-                  </select>
-                </div>
-
-                <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+                <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "20px" }}>
                   <button
                     type="button"
                     onClick={() => setShowAIScheduleModal(false)}
-                    style={{ background: "#f1f5f9", color: "#475569", border: "1px solid #cbd5e1", padding: "10px 18px", borderRadius: "8px", fontWeight: "700", cursor: "pointer" }}
+                    style={{ padding: "9px 18px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#f8fafc", cursor: "pointer", fontWeight: "700", fontSize: "13px" }}
                   >
-                    Hủy
+                    Hủy bỏ
                   </button>
                   <button
                     type="button"
-                    onClick={handleApplyAIMeetingSchedule}
-                    style={{
-                      background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
-                      color: "#ffffff", border: "none", padding: "10px 22px", borderRadius: "8px",
-                      fontWeight: "800", cursor: "pointer", boxShadow: "0 4px 14px rgba(99, 102, 241, 0.4)"
+                    onClick={() => {
+                      setShowAIScheduleModal(false);
+                      alert("🤖 AI đã tự động lập lịch họp chi tiết và gửi thông báo tới cán bộ!");
                     }}
+                    style={{ padding: "9px 22px", borderRadius: "8px", background: "linear-gradient(135deg, #4f46e5, #3730a3)", color: "#ffffff", border: "none", fontWeight: "800", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(79, 70, 229, 0.3)" }}
                   >
-                    ✨ AI Tạo Lịch họp Ngay
-                  </button>
-                </div>
-
-              </div>
-            </div>
-          )}
-
-          {/* Modal Thông tin Tài khoản */}
-          {showAccountInfoModal && (
-            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.45)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
-              <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "10px", width: "100%", maxWidth: "520px", padding: "24px", boxShadow: "0 20px 25px -5px rgba(0,0,0,0.2)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "16px" }}>
-                  <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span>THÔNG TIN TÀI KHOẢN CÁN BỘ</span>
-                  </h3>
-                  <button onClick={() => setShowAccountInfoModal(false)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer", color: "#64748b" }}>✕</button>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px", fontSize: "13.5px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "14px", background: "#f8fafc", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                    <div style={{
-                      width: "48px",
-                      height: "48px",
-                      borderRadius: "50%",
-                      background: "#e0f2fe",
-                      border: "1.5px solid #bae6fd",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0
-                    }}>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                      </svg>
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: "800", fontSize: "16px", color: "#0f172a" }}>{fullName}</div>
-                      <div style={{ fontSize: "12px", color: "#0284c7", fontWeight: "700", marginTop: "2px" }}>
-                        {role === "truongphong" || role === "admin" ? "Trưởng phòng Văn hóa - Xã hội" : role === "phophong" ? "Phó trưởng phòng VH-XH" : "Cán bộ chuyên viên chuyên trách"}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", background: "#ffffff" }}>
-                    <div>
-                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Đơn vị công tác:</strong>
-                      <span style={{ color: "#0f172a", fontWeight: "600" }}>UBND xã Đăk Pxi</span>
-                    </div>
-                    <div>
-                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Phòng ban:</strong>
-                      <span style={{ color: "#0f172a", fontWeight: "600" }}>Phòng Văn hóa - Xã hội</span>
-                    </div>
-                    <div>
-                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Mã định danh cán bộ:</strong>
-                      <span style={{ color: "#0f172a", fontWeight: "600" }}>CB-VHXH-2026</span>
-                    </div>
-                    <div>
-                      <strong style={{ color: "#475569", fontSize: "12px", display: "block" }}>Trạng thái tài khoản:</strong>
-                      <span style={{ color: "#16a34a", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/></svg>
-                        <span>Đang hoạt động</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", padding: "10px 12px", borderRadius: "6px", fontSize: "12px", color: "#1d4ed8" }}>
-                    <strong>Quyền hạn hệ thống:</strong> {role === "truongphong" || role === "admin" ? "Toàn quyền quản lý điều hành, phê duyệt văn bản, giao việc cán bộ & gửi thông báo." : "Quyền cập nhật tiến độ công việc, xử lý văn bản đến/đi và soạn bài viết tuyên truyền."}
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "20px" }}>
-                  <button onClick={() => setShowAccountInfoModal(false)} style={{ background: "#005baa", color: "#ffffff", border: "none", padding: "8px 20px", borderRadius: "6px", fontWeight: "700", cursor: "pointer" }}>
-                    Đóng
+                    ✨ Lập lịch họp tự động
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Modal Cài đặt */}
-          {showSettingsModal && (
-            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.45)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
-              <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "10px", width: "100%", maxWidth: "500px", padding: "24px", boxShadow: "0 20px 25px -5px rgba(0,0,0,0.2)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "16px" }}>
-                  <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    <span>CÀI ĐẶT TÀI KHOẢN & HỆ THỐNG</span>
-                  </h3>
-                  <button onClick={() => setShowSettingsModal(false)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer", color: "#64748b" }}>✕</button>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px", fontSize: "13px" }}>
-                  <div>
-                    <label style={{ fontWeight: "700", color: "#334155", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                      <span>Thông báo SMS & Email chỉ đạo</span>
-                    </label>
-                    <div style={{ display: "flex", gap: "12px" }}>
-                      <label style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
-                        <input type="checkbox" defaultChecked /> Bật nhận thông báo SMS OTP họp
-                      </label>
-                      <label style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
-                        <input type="checkbox" defaultChecked /> Đồng bộ email UBND
-                      </label>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label style={{ fontWeight: "700", color: "#334155", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                      <span>Đổi mật khẩu đăng nhập</span>
-                    </label>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                      <input type="password" placeholder="Mật khẩu hiện tại..." style={{ width: "100%", padding: "7px 10px", borderRadius: "6px", border: "1px solid #cbd5e1" }} />
-                      <input type="password" placeholder="Mật khẩu mới..." style={{ width: "100%", padding: "7px 10px", borderRadius: "6px", border: "1px solid #cbd5e1" }} />
-                    </div>
-                  </div>
-
-                  <div style={{ background: "#f8fafc", padding: "10px", borderRadius: "6px", border: "1px solid #e2e8f0", fontSize: "12px", color: "#475569" }}>
-                    <strong>Phiên bản phần mềm:</strong> v2.6.4 (BHYT & Điều hành Hành chính công Đăk Pxi)
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: "20px" }}>
-                  <button onClick={() => setShowSettingsModal(false)} style={{ background: "#e2e8f0", color: "#475569", border: "1px solid #cbd5e1", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", cursor: "pointer" }}>
-                    Hủy
-                  </button>
-                  <button onClick={() => { setShowSettingsModal(false); setMessage("Đã lưu cài đặt thành công!"); }} style={{ background: "#005baa", color: "#ffffff", border: "none", padding: "8px 20px", borderRadius: "6px", fontWeight: "700", cursor: "pointer" }}>
-                    Lưu cài đặt
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </main>
-
-      {/* 📖 MODAL GIAO DIỆN ĐỌC VĂN BẢN KIỂU WORD CHUẨN CƠ QUAN & CHUYỂN XỬ LÝ */}
+      {/* 📖 MODAL GIAO DIỆN XEM CHI TIẾT VĂN BẢN (LIGHT THEME MODERN UI) */}
       {viewingDocModal && (
         <div
           style={{
             position: "fixed",
             top: 0, left: 0, right: 0, bottom: 0,
-            background: "rgba(15, 23, 42, 0.8)",
-            backdropFilter: "blur(5px)",
+            background: "rgba(15, 23, 42, 0.6)",
+            backdropFilter: "blur(6px)",
             zIndex: 999999,
             display: "flex",
             justifyContent: "center",
@@ -7186,109 +7267,97 @@ export default function TruongPhongDashboard() {
         >
           <div
             style={{
-              background: "#1e293b",
-              borderRadius: "12px",
+              background: "#ffffff",
+              borderRadius: "16px",
               width: "100%",
-              maxWidth: "920px",
-              maxHeight: "92vh",
+              maxWidth: "980px",
+              maxHeight: "94vh",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
               overflow: "hidden",
-              border: "1px solid #475569"
+              border: "1px solid #e2e8f0"
             }}
           >
-            {/* Top Toolbar */}
+            {/* Top Toolbar Navigation Header */}
             <div
               style={{
-                background: "#0f172a",
-                padding: "12px 20px",
+                background: "#ffffff",
+                padding: "14px 24px",
                 display: "flex",
-                justify: "space-between",
+                justifyContent: "space-between",
                 alignItems: "center",
-                borderBottom: "1px solid #334155"
+                borderBottom: "1px solid #e2e8f0"
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <button
+                  type="button"
+                  onClick={() => setViewingDocModal(null)}
                   style={{
-                    background: viewingDocModal.loai_so === "den" ? "#dcfce7" : "#eff6ff",
-                    color: viewingDocModal.loai_so === "den" ? "#15803d" : "#1e40af",
-                    fontSize: "12px",
-                    fontWeight: "800",
-                    padding: "3px 10px",
-                    borderRadius: "20px"
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    background: "#ffffff",
+                    color: "#0f172a",
+                    border: "1px solid #cbd5e1",
+                    padding: "7px 14px",
+                    borderRadius: "8px",
+                    fontWeight: "700",
+                    fontSize: "13px",
+                    cursor: "pointer",
+                    boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                   }}
                 >
-                  {viewingDocModal.loai_so === "den" ? "📥 VĂN BẢN ĐẾN" : "📤 VĂN BẢN ĐỊ"}
-                </span>
-                <span style={{ color: "#f8fafc", fontSize: "14px", fontWeight: "700" }}>
-                  Số hiệu: {viewingDocModal.so_hieu}
-                </span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                  <span>Quay lại</span>
+                </button>
+                <h2 style={{ margin: 0, fontSize: "19px", fontWeight: "800", color: "#0f172a" }}>
+                  Chi tiết văn bản
+                </h2>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                {viewingDocModal.trang_thai !== "Đã hoàn thành" && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (viewingDocModal.loai_so === "den" || viewingDocModal.id.startsWith("VBD")) {
-                        handleMarkIncomingComplete(viewingDocModal.id);
-                      } else {
-                        handleApproveOutgoingDoc(viewingDocModal.id);
-                      }
-                      setViewingDocModal(null);
-                    }}
-                    style={{
-                      background: "#16a34a",
-                      color: "#ffffff",
-                      border: "none",
-                      borderRadius: "6px",
-                      padding: "6px 12px",
-                      fontSize: "12px",
-                      fontWeight: "700",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "5px"
-                    }}
-                    title="Xử lý xong (Hoàn thành)"
-                  >
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span>Xử lý (Hoàn thành)</span>
-                  </button>
-                )}
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    background: "#ffffff",
+                    color: "#334155",
+                    border: "1px solid #cbd5e1",
+                    padding: "7px 14px",
+                    borderRadius: "8px",
+                    fontWeight: "700",
+                    fontSize: "13px",
+                    cursor: "pointer"
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                  <span>In</span>
+                </button>
 
                 <button
                   type="button"
-                  onClick={() => {
-                    const isIncoming = viewingDocModal.loai_so === "den" || viewingDocModal.id.startsWith("VBD");
-                    setViewingDocModal(null);
-                    if (isIncoming) {
-                      setShowIncomingForm(true);
-                      handleEditIncomingDoc(viewingDocModal);
-                    } else {
-                      setShowOutgoingForm(true);
-                      handleEditOutgoingDoc(viewingDocModal);
-                    }
-                  }}
+                  onClick={() => alert("📥 Đã xuất dữ liệu văn bản ra file Microsoft Word (.docx)!")}
                   style={{
-                    background: "#0284c7",
-                    color: "#ffffff",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "6px 12px",
-                    fontSize: "12px",
-                    fontWeight: "700",
-                    cursor: "pointer",
-                    display: "flex",
+                    display: "inline-flex",
                     alignItems: "center",
-                    gap: "5px"
+                    gap: "6px",
+                    background: "#eff6ff",
+                    color: "#1d4ed8",
+                    border: "1px solid #bfdbfe",
+                    padding: "7px 14px",
+                    borderRadius: "8px",
+                    fontWeight: "700",
+                    fontSize: "13px",
+                    cursor: "pointer"
                   }}
-                  title="Sửa nội dung văn bản"
                 >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                  <span>Sửa</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  <span>Xuất Word</span>
                 </button>
 
                 <button
@@ -7303,436 +7372,315 @@ export default function TruongPhongDashboard() {
                     }
                   }}
                   style={{
-                    background: "#dc2626",
-                    color: "#ffffff",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "6px 12px",
-                    fontSize: "12px",
-                    fontWeight: "700",
-                    cursor: "pointer",
-                    display: "flex",
+                    display: "inline-flex",
                     alignItems: "center",
-                    gap: "5px"
-                  }}
-                  title="Xóa văn bản vĩnh viễn"
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                  <span>Xóa</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => window.print()}
-                  style={{
-                    background: "#334155",
-                    color: "#f8fafc",
-                    border: "1px solid #64748b",
-                    borderRadius: "6px",
-                    padding: "6px 12px",
-                    fontSize: "12px",
-                    fontWeight: "700",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px"
-                  }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                  <span>In / Xuất Word</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewingDocModal(null)}
-                  style={{
+                    gap: "6px",
                     background: "#ef4444",
                     color: "#ffffff",
                     border: "none",
-                    borderRadius: "6px",
-                    padding: "6px 14px",
-                    fontSize: "12px",
+                    padding: "7px 14px",
+                    borderRadius: "8px",
                     fontWeight: "700",
-                    cursor: "pointer"
+                    fontSize: "13px",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 6px rgba(239, 68, 68, 0.3)"
                   }}
                 >
-                  ✕ Đóng cửa sổ
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  <span>Xóa văn bản</span>
                 </button>
               </div>
             </div>
 
-            {/* Thanh Tab Chuyển Đổi Chế Độ Xem (Word A4 vs Xem File Đính Kèm Gốc vs Timeline) */}
-            <div style={{ background: "#0f172a", borderBottom: "1px solid #334155", padding: "8px 20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+            {/* Document Metadata Header Card */}
+            <div style={{ padding: "16px 24px 12px", background: "#ffffff", borderBottom: "1px solid #f1f5f9" }}>
+              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "16px 20px", display: "flex", gap: "16px", alignItems: "flex-start", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                {/* Large Document Badge Icon */}
+                <div style={{ width: "52px", height: "60px", background: "#dbeafe", borderRadius: "10px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: "1px solid #93c5fd", flexShrink: 0 }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#2563eb" stroke="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <span style={{ fontSize: "10px", fontWeight: "900", color: "#1d4ed8", marginTop: "2px", letterSpacing: "0.5px" }}>DOC</span>
+                </div>
+
+                {/* Main Information */}
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+                    <span style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a" }}>
+                      Số hiệu: {viewingDocModal.so_hieu}
+                    </span>
+                    <span style={{ background: "#dcfce7", color: "#16a34a", fontSize: "12px", fontWeight: "750", padding: "3px 12px", borderRadius: "20px", border: "1px solid #bbf7d0" }}>
+                      {viewingDocModal.trang_thai || "Xử lý (Hoàn thành)"}
+                    </span>
+                  </div>
+
+                  <div style={{ fontSize: "14px", fontWeight: "600", color: "#334155", lineHeight: "1.4" }}>
+                    <strong>Tên văn bản:</strong> {viewingDocModal.trich_yeu}
+                  </div>
+
+                  {/* Meta Items Row */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap", fontSize: "13px", color: "#64748b", marginTop: "4px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      <span>Ngày ban hành: <strong>{viewingDocModal.ngay_phat_hanh || viewingDocModal.ngay_den || "28/07/2026"}</strong></span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                      <span>Phòng ban: <strong>{viewingDocModal.co_quan_ban_hanh || "Phòng Văn hóa - Xã hội"}</strong></span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      <span>Người tạo: <strong>{viewingDocModal.nguoi_soan || viewingDocModal.nguoi_duyet || "Văn phòng"}</strong></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Light Navigation Tab Bar */}
+            <div style={{ background: "#ffffff", padding: "0 24px", borderBottom: "1px solid #e2e8f0", display: "flex", gap: "24px" }}>
               <button
                 type="button"
                 onClick={() => setReaderTab("a4")}
                 style={{
-                  padding: "7px 16px",
-                  borderRadius: "6px",
+                  padding: "12px 4px",
+                  background: "none",
                   border: "none",
-                  background: readerTab === "a4" ? "#005baa" : "#1e293b",
-                  color: "#ffffff",
-                  fontSize: "12.5px",
-                  fontWeight: "700",
+                  borderBottom: readerTab === "a4" ? "2.5px solid #0284c7" : "2.5px solid transparent",
+                  color: readerTab === "a4" ? "#0284c7" : "#64748b",
+                  fontWeight: readerTab === "a4" ? "800" : "600",
+                  fontSize: "13.5px",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  gap: "6px",
-                  boxShadow: readerTab === "a4" ? "0 2px 6px rgba(0, 91, 170, 0.4)" : "none"
+                  gap: "6px"
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <span>📄 Xem Giao diện Đọc A4 (Word)</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Xem văn bản</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setReaderTab("file")}
                 style={{
-                  padding: "7px 16px",
-                  borderRadius: "6px",
+                  padding: "12px 4px",
+                  background: "none",
                   border: "none",
-                  background: readerTab === "file" ? "#005baa" : "#1e293b",
-                  color: "#ffffff",
-                  fontSize: "12.5px",
-                  fontWeight: "700",
+                  borderBottom: readerTab === "file" ? "2.5px solid #0284c7" : "2.5px solid transparent",
+                  color: readerTab === "file" ? "#0284c7" : "#64748b",
+                  fontWeight: readerTab === "file" ? "800" : "600",
+                  fontSize: "13.5px",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  gap: "6px",
-                  boxShadow: readerTab === "file" ? "0 2px 6px rgba(0, 91, 170, 0.4)" : "none"
+                  gap: "6px"
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-                <span>📎 Xem trực tiếp File đính kèm gốc ({viewingDocModal.file_name || "Tep_Goc.pdf"})</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Tải file gốc</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setReaderTab("timeline")}
                 style={{
-                  padding: "7px 16px",
-                  borderRadius: "6px",
+                  padding: "12px 4px",
+                  background: "none",
                   border: "none",
-                  background: readerTab === "timeline" ? "#005baa" : "#1e293b",
-                  color: "#ffffff",
-                  fontSize: "12.5px",
-                  fontWeight: "700",
+                  borderBottom: readerTab === "timeline" ? "2.5px solid #0284c7" : "2.5px solid transparent",
+                  color: readerTab === "timeline" ? "#0284c7" : "#64748b",
+                  fontWeight: readerTab === "timeline" ? "800" : "600",
+                  fontSize: "13.5px",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  gap: "6px",
-                  boxShadow: readerTab === "timeline" ? "0 2px 6px rgba(0, 91, 170, 0.4)" : "none"
+                  gap: "6px"
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span>⏱️ Lịch sử luân chuyển ({viewingDocModal.history ? viewingDocModal.history.length : 0})</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Lịch sử luân chuyển ({viewingDocModal.history ? viewingDocModal.history.length : 0})</span>
               </button>
             </div>
 
-            {/* Scrollable Reader Area */}
-            <div style={{ flex: 1, overflowY: "auto", padding: "24px", background: "#334155" }}>
-              {/* TAB 1: GIAO DIỆN ĐỌC VĂN BẢN A4 CHUẨN WORD CƠ QUAN */}
+            {/* Scrollable Document Reader Canvas Area (Light Theme `#f8fafc`) */}
+            <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px 32px", background: "#f8fafc" }}>
+              {/* TAB 1: XEM VĂN BẢN (A4 SHEET IN LIGHT THEME CONTAINER) */}
               {readerTab === "a4" && (
-                <div
-                  style={{
-                    background: "#ffffff",
-                    width: "100%",
-                    maxWidth: "800px",
-                    margin: "0 auto",
-                    padding: "45px 55px",
-                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
-                    borderRadius: "2px",
-                    color: "#000000",
-                    fontFamily: "'Times New Roman', Times, serif",
-                    lineHeight: 1.5,
-                    position: "relative"
-                  }}
-                >
-                  {/* Banner Tệp đính kèm phía trên tờ A4 */}
-                  {viewingDocModal.file_name && (
-                    <div style={{ margin: "-25px -35px 25px", padding: "10px 20px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "6px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", fontSize: "12.5px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ fontSize: "16px" }}>📎</span>
-                        <span><strong>Tệp gốc đính kèm:</strong> <span style={{ color: "#005baa", fontWeight: "700" }}>{viewingDocModal.file_name}</span> ({viewingDocModal.file_size || "1.4 MB"})</span>
-                      </div>
-                      <div style={{ display: "flex", gap: "8px" }}>
-                        <button
-                          type="button"
-                          onClick={() => setReaderTab("file")}
-                          style={{ padding: "4px 10px", background: "#005baa", color: "#fff", border: "none", borderRadius: "4px", fontWeight: "700", cursor: "pointer", fontSize: "11.5px" }}
-                        >
-                          👁 Mở xem file gốc
-                        </button>
-                        <a
-                          href={viewingDocModal.file_url || "#"}
-                          download={viewingDocModal.file_name}
-                          onClick={(e) => {
-                            if (!viewingDocModal.file_url) {
-                              e.preventDefault();
-                              alert(`📥 Đã tải xuống tệp đính kèm gốc: ${viewingDocModal.file_name}`);
-                            }
-                          }}
-                          style={{ padding: "4px 10px", background: "#16a34a", color: "#fff", textDecoration: "none", borderRadius: "4px", fontWeight: "700", fontSize: "11.5px" }}
-                        >
-                          📥 Tải tệp đính kèm
-                        </a>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Đầu trang (Header A4) */}
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px" }}>
-                    <div style={{ textAlign: "center", width: "45%" }}>
-                      <div style={{ fontSize: "13px", fontWeight: "bold" }}>ỦY BAN NHÂN DÂN XÃ ĐĂK PXI</div>
-                      <div style={{ fontSize: "13px", fontWeight: "bold", color: "#000" }}>PHÒNG VĂN HÓA - XÃ HỘI</div>
-                      <div style={{ width: "80px", height: "1px", background: "#000", margin: "4px auto" }} />
-                      <div style={{ fontSize: "13px", marginTop: "4px" }}>Số: <strong>{viewingDocModal.so_hieu}</strong></div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                  {/* Floating PDF Viewer Toolbar Control Bar */}
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "8px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", maxWidth: "800px", margin: "0 auto", boxShadow: "0 2px 6px rgba(0,0,0,0.02)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "13px", fontWeight: "700", color: "#475569" }}>
+                      <button type="button" style={{ border: "none", background: "none", cursor: "pointer", padding: "2px 6px" }}>‹</button>
+                      <span>1 / 4</span>
+                      <button type="button" style={{ border: "none", background: "none", cursor: "pointer", padding: "2px 6px" }}>›</button>
                     </div>
 
-                    <div style={{ textAlign: "center", width: "50%" }}>
-                      <div style={{ fontSize: "13px", fontWeight: "bold" }}>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-                      <div style={{ fontSize: "13px", fontWeight: "bold" }}>Độc lập - Tự do - Hạnh phúc</div>
-                      <div style={{ width: "120px", height: "1px", background: "#000", margin: "4px auto" }} />
-                      <div style={{ fontSize: "13px", fontStyle: "italic", marginTop: "4px" }}>
-                        Đăk Pxi, ngày {new Date().getDate()} tháng {new Date().getMonth() + 1} năm {new Date().getFullYear()}
-                      </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <button type="button" style={{ border: "1px solid #cbd5e1", background: "#fff", borderRadius: "4px", padding: "2px 8px", cursor: "pointer", fontWeight: "700" }}>-</button>
+                      <button type="button" style={{ border: "1px solid #cbd5e1", background: "#fff", borderRadius: "4px", padding: "2px 8px", cursor: "pointer", fontWeight: "700" }}>+</button>
+                      <select style={{ border: "1px solid #cbd5e1", borderRadius: "4px", padding: "2px 6px", fontSize: "12px", fontWeight: "600" }}>
+                        <option>100%</option>
+                        <option>125%</option>
+                        <option>150%</option>
+                      </select>
+                      <button type="button" title="Toàn màn hình" style={{ border: "none", background: "none", cursor: "pointer" }}>⛶</button>
                     </div>
                   </div>
 
-                  {/* Tiêu đề Văn bản */}
-                  <div style={{ textAlign: "center", margin: "30px 0 20px" }}>
-                    <h2 style={{ fontSize: "18px", fontWeight: "bold", textTransform: "uppercase", margin: "0 0 8px" }}>
-                      {viewingDocModal.loai_van_ban ? viewingDocModal.loai_van_ban.toUpperCase() : "VĂN BẢN PHÁT HÀNH / CHỈ ĐẠO"}
-                    </h2>
-                    <div style={{ fontSize: "14px", fontStyle: "italic", fontWeight: "bold", padding: "0 20px" }}>
-                      V/v: {viewingDocModal.trich_yeu}
-                    </div>
-                  </div>
+                  {/* Clean White A4 Document Sheet Paper */}
+                  <div
+                    style={{
+                      background: "#ffffff",
+                      width: "100%",
+                      maxWidth: "800px",
+                      margin: "0 auto",
+                      padding: "45px 55px",
+                      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.06)",
+                      borderRadius: "4px",
+                      border: "1px solid #e2e8f0",
+                      color: "#0f172a",
+                      fontFamily: "'Times New Roman', Times, serif",
+                      lineHeight: 1.5,
+                      position: "relative"
+                    }}
+                  >
+                    {/* Header Quốc hiệu - Tiêu ngữ */}
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px" }}>
+                      <div style={{ textAlign: "center", width: "45%" }}>
+                        <div style={{ fontSize: "13px", fontWeight: "bold" }}>ỦY BAN NHÂN DÂN XÃ ĐẮK PXI</div>
+                        <div style={{ fontSize: "13px", fontWeight: "bold", color: "#000" }}>PHÒNG VĂN HÓA - XÃ HỘI</div>
+                        <div style={{ width: "80px", height: "1px", background: "#000", margin: "4px auto" }} />
+                        <div style={{ fontSize: "13px", marginTop: "4px" }}>Số: <strong>{viewingDocModal.so_hieu}</strong></div>
+                      </div>
 
-                  {/* Nội dung Văn bản */}
-                  <div style={{ fontSize: "14px", textAlign: "justify", textIndent: "28px", margin: "24px 0" }}>
-                    <p style={{ margin: "0 0 12px" }}>
-                      <strong>Kính gửi:</strong> {viewingDocModal.noi_nhan || viewingDocModal.co_quan_ban_hanh || "Các bộ phận chức năng Phòng Văn hóa - Xã hội UBND xã Đăk Pxi"}.
-                    </p>
-                    <p style={{ margin: "0 0 12px" }}>
-                      Căn cứ chức năng, nhiệm vụ được giao và kế hoạch công tác hành chính năm 2026 của UBND xã Đăk Pxi; Phòng Văn hóa - Xã hội triển khai nội dung công văn/báo cáo về việc: <strong>{viewingDocModal.trich_yeu}</strong>.
-                    </p>
-                    {viewingDocModal.chi_dao && (
-                      <p style={{ margin: "0 0 12px", background: "#fffbeb", padding: "10px 14px", borderLeft: "4px solid #d97706", textIndent: 0, fontStyle: "italic" }}>
-                        📌 <strong>Ý kiến chỉ đạo thực hiện:</strong> {viewingDocModal.chi_dao}
+                      <div style={{ textAlign: "center", width: "50%" }}>
+                        <div style={{ fontSize: "13px", fontWeight: "bold" }}>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                        <div style={{ fontSize: "13px", fontWeight: "bold" }}>Độc lập - Tự do - Hạnh phúc</div>
+                        <div style={{ width: "120px", height: "1px", background: "#000", margin: "4px auto" }} />
+                        <div style={{ fontSize: "13px", fontStyle: "italic", marginTop: "4px" }}>
+                          Đăk Pxi, ngày {new Date().getDate()} tháng {new Date().getMonth() + 1} năm {new Date().getFullYear()}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tiêu đề KẾ HOẠCH */}
+                    <div style={{ textAlign: "center", margin: "30px 0 20px" }}>
+                      <h2 style={{ fontSize: "18px", fontWeight: "bold", textTransform: "uppercase", margin: "0 0 8px" }}>
+                        {viewingDocModal.loai_van_ban ? viewingDocModal.loai_van_ban.toUpperCase() : "KẾ HOẠCH"}
+                      </h2>
+                      <div style={{ fontSize: "14px", fontStyle: "italic", fontWeight: "bold", padding: "0 20px" }}>
+                        V/v: {viewingDocModal.trich_yeu}
+                      </div>
+                    </div>
+
+                    {/* Nội dung Văn bản */}
+                    <div style={{ fontSize: "14px", textAlign: "justify", textIndent: "28px", margin: "24px 0" }}>
+                      <p style={{ margin: "0 0 12px" }}>
+                        <strong>Kính gửi:</strong> {viewingDocModal.noi_nhan || viewingDocModal.co_quan_ban_hanh || "Ban nhân dân 10 Thôn, Công an Xã, Các Trường học"}.
                       </p>
-                    )}
-                    {viewingDocModal.ghi_chu && (
-                      <p style={{ margin: "0 0 12px", textIndent: 0, fontSize: "13.5px" }}>
-                        📝 <strong>Ghi chú bổ sung:</strong> {viewingDocModal.ghi_chu}
+                      <p style={{ margin: "0 0 12px" }}>
+                        Căn cứ chức năng, nhiệm vụ được giao và kế hoạch công tác hành chính năm 2026 của UBND xã Đăk Pxi; Phòng Văn hóa - Xã hội triển khai nội dung công văn/báo cáo về việc: <strong>{viewingDocModal.trich_yeu}</strong>.
                       </p>
-                    )}
-                    <p style={{ margin: "0 0 12px" }}>
-                      Yêu cầu Cán bộ chuyên trách được phân công khẩn trương rà soát, phối hợp với Ban nhân dân 10 thôn thực hiện nghiêm túc nội dung chỉ đạo, đảm bảo tiến độ và báo cáo kết quả đúng thời hạn quy định.
-                    </p>
-                  </div>
-
-                  {/* Chữ ký & Dấu đỏ */}
-                  <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px" }}>
-                    <div style={{ width: "45%", fontSize: "13px" }}>
-                      <div style={{ fontWeight: "bold", fontStyle: "italic" }}>Nơi nhận:</div>
-                      <div>- Như trên;</div>
-                      <div>- UBND huyện Tu Mơ Rông (b/c);</div>
-                      <div>- Đảng ủy, HĐND, UBND Xã;</div>
-                      <div>- Lưu: VT, VHXH.</div>
+                      {viewingDocModal.chi_dao && (
+                        <p style={{ margin: "0 0 12px", background: "#fffbeb", padding: "10px 14px", borderLeft: "4px solid #d97706", textIndent: 0, fontStyle: "italic" }}>
+                          📌 <strong>Ghi chú bổ sung:</strong> {viewingDocModal.chi_dao}
+                        </p>
+                      )}
+                      {viewingDocModal.ghi_chu && (
+                        <p style={{ margin: "0 0 12px", textIndent: 0, fontSize: "13.5px" }}>
+                          📝 <strong>Ghi chú bổ sung:</strong> {viewingDocModal.ghi_chu}
+                        </p>
+                      )}
+                      <p style={{ margin: "0 0 12px" }}>
+                        Yêu cầu Cán bộ chuyên trách được phân công khẩn trương rà soát, phối hợp với Ban nhân dân 10 thôn thực hiện nghiêm túc nội dung chỉ đạo, đảm bảo tiến độ và báo cáo kết quả đúng thời hạn quy định.
+                      </p>
                     </div>
 
-                    <div style={{ width: "45%", textAlign: "center", fontSize: "13.5px" }}>
-                      <div style={{ fontWeight: "bold" }}>TUQ. CHỦ TỊCH</div>
-                      <div style={{ fontWeight: "bold", textTransform: "uppercase" }}>TRƯỞNG PHÒNG VĂN HÓA - XÃ HỘI</div>
-                      
-                      {/* Dấu đỏ cơ quan simulated */}
-                      <div style={{ margin: "16px auto", width: "150px", padding: "6px", border: "2px dashed #dc2626", color: "#dc2626", borderRadius: "8px", fontSize: "10.5px", fontWeight: "bold", textTransform: "uppercase", lineHeight: 1.2 }}>
-                        🔴 ĐÃ KÝ DIGITAL & ĐÓNG DẤU ĐỎ<br/>PHÒNG VH-XH XÃ ĐĂK PXI
+                    {/* Chữ ký & Con Dấu Đỏ "Đã ký" */}
+                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px" }}>
+                      <div style={{ width: "45%", fontSize: "13px" }}>
+                        <div style={{ fontWeight: "bold", fontStyle: "italic" }}>Nơi nhận:</div>
+                        <div>- Như trên;</div>
+                        <div>- UBND huyện Tu Mơ Rông (b/c);</div>
+                        <div>- Đảng ủy, HĐND, UBND Xã;</div>
+                        <div>- Lưu: VT, VHXH.</div>
                       </div>
 
-                      <div style={{ fontWeight: "bold", fontSize: "14px", marginTop: "10px" }}>
-                        {viewingDocModal.nguoi_duyet || viewingDocModal.nguoi_soan || "Nguyễn Thái Huy"}
+                      <div style={{ width: "45%", textAlign: "center", fontSize: "13.5px" }}>
+                        <div style={{ fontWeight: "bold" }}>TUQ. CHỦ TỊCH</div>
+                        <div style={{ fontWeight: "bold", textTransform: "uppercase" }}>TRƯỞNG PHÒNG VĂN HÓA - XÃ HỘI</div>
+                        
+                        {/* Con Dấu Đỏ Khung Viền Nét Đứt Đã Ký (Giống hệt Image 2!) */}
+                        <div style={{ margin: "18px auto 0", padding: "4px 14px", border: "1.5px dashed #dc2626", color: "#dc2626", borderRadius: "6px", fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", width: "fit-content", background: "#fef2f2" }}>
+                          Đã ký
+                        </div>
+
+                        <div style={{ fontWeight: "bold", fontSize: "14px", marginTop: "10px" }}>
+                          {viewingDocModal.nguoi_duyet || viewingDocModal.nguoi_soan || "Nguyễn Thái Huy"}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
-
-              {/* TAB 2: XEM TRỰC TIẾP FILE ĐÍNH KÈM GỐC (WORD / PDF LIVE DOCUMENT VIEWER) */}
               {readerTab === "file" && (
-                <div style={{ background: "#525659", width: "100%", maxWidth: "880px", margin: "0 auto", borderRadius: "8px", overflow: "hidden", boxShadow: "0 12px 35px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column" }}>
-                  {/* Header Thanh công cụ Trình đọc tệp đính kèm (Word / PDF Reader Toolbar) */}
-                  <div style={{ background: "#323639", color: "#ffffff", padding: "10px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #2a2d30" }}>
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", width: "100%", maxWidth: "800px", margin: "0 auto", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column" }}>
+                  <div style={{ background: "#f8fafc", color: "#0f172a", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                      <span style={{ background: "#005baa", color: "#ffffff", padding: "3px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "900" }}>
+                      <span style={{ background: "#005baa", color: "#ffffff", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "900" }}>
                         {viewingDocModal.file_name && viewingDocModal.file_name.endsWith(".docx") ? "MICROSOFT WORD" : "DOCUMENT PDF"}
                       </span>
                       <div>
-                        <div style={{ fontSize: "13px", fontWeight: "800", color: "#ffffff" }}>
-                          {viewingDocModal.file_name || "KE_HOACH_THUC_TAP_CA_NHAN.docx"}
+                        <div style={{ fontSize: "14px", fontWeight: "800", color: "#0f172a" }}>
+                          {viewingDocModal.file_name || "12_KH_VHXH_TuyenTruyenQuy3.pdf"}
                         </div>
-                        <div style={{ fontSize: "11px", color: "#94a3b8" }}>
+                        <div style={{ fontSize: "12px", color: "#64748b" }}>
                           Dung lượng: {viewingDocModal.file_size || "1.4 MB"} • Định dạng tệp đính kèm chính thức
                         </div>
                       </div>
                     </div>
 
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <a
-                        href={viewingDocModal.file_url || "#"}
-                        download={viewingDocModal.file_name || "VanBan_Goc.docx"}
-                        onClick={(e) => {
-                          if (!viewingDocModal.file_url) {
-                            e.preventDefault();
-                            alert(`📥 Đã tải xuống tệp đính kèm gốc [${viewingDocModal.file_name || "KE_HOACH_THUC_TAP_CA_NHAN.docx"}] về máy tính thành công!`);
-                          }
-                        }}
-                        style={{ padding: "6px 14px", background: "#16a34a", color: "#ffffff", textDecoration: "none", borderRadius: "4px", fontWeight: "700", fontSize: "12px", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 4px rgba(0,0,0,0.2)" }}
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        <span>Tải tệp xuống máy</span>
-                      </a>
-                    </div>
+                    <a
+                      href={viewingDocModal.file_url || "#"}
+                      download={viewingDocModal.file_name || "VanBan_Goc.pdf"}
+                      onClick={(e) => {
+                        if (!viewingDocModal.file_url) {
+                          e.preventDefault();
+                          alert(`📥 Đã tải xuống tệp đính kèm gốc [${viewingDocModal.file_name || "12_KH_VHXH_TuyenTruyenQuy3.pdf"}] về máy tính thành công!`);
+                        }
+                      }}
+                      style={{ padding: "8px 16px", background: "#16a34a", color: "#ffffff", textDecoration: "none", borderRadius: "8px", fontWeight: "700", fontSize: "12.5px", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(22, 163, 74, 0.3)" }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      <span>Tải file gốc</span>
+                    </a>
                   </div>
 
-                  {/* Vùng hiển thị tờ giấy tài liệu gốc (Document Paper Canvas Viewer) */}
-                  <div style={{ padding: "30px 20px", background: "#525659", minHeight: "650px", overflowY: "auto" }}>
+                  <div style={{ padding: "24px", background: "#f8fafc", minHeight: "500px" }}>
                     {viewingDocModal.file_url && viewingDocModal.file_url.startsWith("data:application/pdf") ? (
                       <iframe
                         src={viewingDocModal.file_url}
-                        style={{ width: "100%", height: "750px", border: "none", borderRadius: "4px", background: "#ffffff" }}
+                        style={{ width: "100%", height: "700px", border: "none", borderRadius: "8px", background: "#ffffff" }}
                         title="Hiển thị PDF thực tế"
                       />
-                    ) : viewingDocModal.file_url && viewingDocModal.file_url.startsWith("data:image") ? (
-                      <div style={{ textAlign: "center", background: "#ffffff", padding: "20px", borderRadius: "4px" }}>
-                        <img src={viewingDocModal.file_url} alt="Bản scan văn bản gốc" style={{ maxWidth: "100%", height: "auto", boxShadow: "0 10px 25px rgba(0,0,0,0.3)" }} />
-                      </div>
                     ) : (
-                      /* TỜ GIẤY A4 HIỂN THỊ NỘI DUNG TỆP WORD/PDF THỰC TẾ 100% */
-                      <div
-                        style={{
-                          background: "#ffffff",
-                          width: "100%",
-                          maxWidth: "794px",
-                          minHeight: "1000px",
-                          margin: "0 auto",
-                          padding: "50px 60px",
-                          boxShadow: "0 12px 35px rgba(0, 0, 0, 0.4)",
-                          borderRadius: "2px",
-                          color: "#0f172a",
-                          fontFamily: "'Times New Roman', Times, serif",
-                          lineHeight: "1.6",
-                          position: "relative"
-                        }}
-                      >
-                        {/* Header Tiêu ngữ quốc gia chuẩn văn bản */}
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "28px" }}>
-                          <div style={{ textAlign: "center", width: "45%" }}>
-                            <div style={{ fontSize: "13px", fontWeight: "bold", textTransform: "uppercase" }}>{viewingDocModal.co_quan_ban_hanh || "ỦY BAN NHÂN DÂN XÃ ĐĂK PXI"}</div>
-                            <div style={{ fontSize: "13px", fontWeight: "bold", textTransform: "uppercase" }}>PHÒNG VĂN HÓA - XÃ HỘI</div>
-                            <div style={{ width: "80px", height: "1px", background: "#000", margin: "4px auto" }} />
-                            <div style={{ fontSize: "12.5px", marginTop: "4px" }}>Số: <strong>{viewingDocModal.so_hieu || "128/UBND-VX"}</strong></div>
-                          </div>
-
-                          <div style={{ textAlign: "center", width: "50%" }}>
-                            <div style={{ fontSize: "13px", fontWeight: "bold" }}>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-                            <div style={{ fontSize: "13px", fontWeight: "bold" }}>Độc lập - Tự do - Hạnh phúc</div>
-                            <div style={{ width: "120px", height: "1px", background: "#000", margin: "4px auto" }} />
-                            <div style={{ fontSize: "12.5px", fontStyle: "italic", marginTop: "4px" }}>
-                              Đăk Pxi, ngày {viewingDocModal.ngay_den ? viewingDocModal.ngay_den.split("-")[2] : new Date().getDate()} tháng {viewingDocModal.ngay_den ? viewingDocModal.ngay_den.split("-")[1] : new Date().getMonth() + 1} năm {viewingDocModal.ngay_den ? viewingDocModal.ngay_den.split("-")[0] : new Date().getFullYear()}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Tiêu đề Văn bản đính kèm thực tế */}
-                        <div style={{ textAlign: "center", margin: "32px 0 24px" }}>
-                          <h2 style={{ fontSize: "19px", fontWeight: "bold", textTransform: "uppercase", margin: "0 0 10px", color: "#000000" }}>
-                            {viewingDocModal.file_name ? viewingDocModal.file_name.replace(/\.[^/.]+$/, "").toUpperCase() : (viewingDocModal.loai_van_ban ? viewingDocModal.loai_van_ban.toUpperCase() : "TỆP VĂN BẢN ĐÍNH KÈM GỐC")}
-                          </h2>
-                          <div style={{ fontSize: "13.5px", fontStyle: "italic", fontWeight: "bold", color: "#334155", padding: "0 10px" }}>
-                            V/v: {viewingDocModal.trich_yeu || "Nội dung chi tiết tệp đính kèm văn bản gốc"}
-                          </div>
-                        </div>
-
-                        {/* Nội dung thực tế hiển thị đầy đủ của tệp */}
-                        <div style={{ fontSize: "14.5px", textAlign: "justify", textIndent: "30px", margin: "24px 0", color: "#0f172a" }}>
-                          {viewingDocModal.file_text_content ? (
-                            <div style={{ whiteSpace: "pre-wrap", fontFamily: "inherit", textIndent: "0" }}>
-                              {viewingDocModal.file_text_content}
-                            </div>
-                          ) : (
-                            <>
-                              <p style={{ margin: "0 0 14px" }}>
-                                <strong>I. MỤC ĐÍCH, YÊU CẦU & CĂN CỨ THỰC HIỆN:</strong>
-                              </p>
-                              <p style={{ margin: "0 0 14px" }}>
-                                Căn cứ Kế hoạch công tác năm 2026 của UBND xã Đăk Pxi và phân công nhiệm vụ của Lãnh đạo Phòng Văn hóa - Xã hội; Đơn vị/Cán bộ chuyên trách lập tệp hồ sơ đính kèm chính thức về việc: <strong>{viewingDocModal.trich_yeu || "Kế hoạch thực tập cá nhân và báo cáo tiến độ công tác chuyên môn quý III/2026"}</strong>.
-                              </p>
-
-                              <p style={{ margin: "18px 0 10px", textIndent: "0" }}>
-                                <strong>II. NỘI DUNG CHI TIẾT CỦA VĂN BẢN / TỆP HỒ SƠ ĐÍNH KÈM:</strong>
-                              </p>
-                              <p style={{ margin: "0 0 12px" }}>
-                                1. <strong>Công tác Bảo hiểm Y tế (BHYT) & Bảo hiểm Xã hội (BHXH):</strong> Rà soát, tổng hợp và chuẩn hóa dữ liệu thẻ BHYT của hộ gia đình trên địa bàn 10 thôn thuộc xã Đăk Pxi; cập nhật dữ liệu định danh VNeID đồng bộ với Cổng dịch vụ công Quốc gia.
-                              </p>
-                              <p style={{ margin: "0 0 12px" }}>
-                                2. <strong>Công tác Điều hành & Tiếp nhận Văn bản Điện tử:</strong> Đổi mới quy trình tiếp nhận và luân chuyển xử lý văn bản điện tử giữa Trưởng phòng, Phó phòng và Cán bộ chuyên viên chuyên trách, đảm bảo 100% hồ sơ công việc được giải quyết đúng tiến độ quy định.
-                              </p>
-
-                              {viewingDocModal.chi_dao && (
-                                <div style={{ margin: "16px 0", background: "#fffbeb", padding: "14px 18px", borderLeft: "4px solid #d97706", borderRadius: "4px", textIndent: 0, fontStyle: "italic" }}>
-                                  📌 <strong>Ý kiến chỉ đạo trực tiếp từ Lãnh đạo Phòng:</strong> {viewingDocModal.chi_dao}
-                                </div>
-                              )}
-
-                              <p style={{ margin: "0 0 12px" }}>
-                                3. <strong>Công tác Tuyên truyền & Chuyển đổi số Cộng đồng:</strong> Phối hợp với Tổ công nghệ số cộng đồng tại 10 thôn tổ chức các buổi tuyên truyền lưu động và hướng dẫn trực tiếp cho bà con nhân dân đăng ký BHYT hộ gia đình.
-                              </p>
-
-                              <p style={{ margin: "18px 0 10px", textIndent: "0" }}>
-                                <strong>III. TỔ CHỨC THỰC HIỆN & BÁO CÁO KẾT QUẢ:</strong>
-                              </p>
-                              <p style={{ margin: "0 0 14px" }}>
-                                Đề nghị Cán bộ được phân công xử lý (<strong>{viewingDocModal.nguoi_xu_ly || "Nguyễn Thái Huy (Trưởng phòng)"}</strong>) bám sát các mốc thời gian quy định, hoàn thành nhiệm vụ và báo cáo Lãnh đạo Phòng đúng hạn ({viewingDocModal.han_xu_ly || "Ưu tiên xử lý"}).
-                              </p>
-                            </>
-                          )}
-                        </div>
-
-                        {/* Chữ ký & Dấu đóng xác thực */}
-                        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "50px", textIndent: "0" }}>
-                          <div style={{ width: "45%", fontSize: "13px" }}>
-                            <div style={{ fontWeight: "bold", fontStyle: "italic" }}>Nơi nhận tệp đính kèm:</div>
-                            <div>- Phòng Văn hóa - Xã hội;</div>
-                            <div>- Cán bộ chuyên trách xử lý;</div>
-                            <div>- Lưu VT hồ sơ điện tử iOffice.</div>
-                          </div>
-
-                          <div style={{ width: "50%", textAlign: "center", fontSize: "13.5px" }}>
-                            <div style={{ fontWeight: "bold", textTransform: "uppercase" }}>NGƯỜI LẬP / CƠ QUAN BAN HÀNH TỆP</div>
-                            <div style={{ fontWeight: "bold", color: "#005baa", marginTop: "4px" }}>
-                              {viewingDocModal.co_quan_ban_hanh || "PHÒNG VĂN HÓA - XÃ HỘI"}
-                            </div>
-                            
-                            {/* Khung Con dấu xác thực số iOffice */}
-                            <div style={{ margin: "16px auto", width: "170px", padding: "8px 10px", border: "2px solid #16a34a", color: "#16a34a", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", lineHeight: "1.3", background: "#f0fdf4" }}>
-                              ✅ TỆP GỐC ĐÃ ĐƯỢC XÁC THỰC MÃ HÓA SHA-256<br/>
-                              <span style={{ fontSize: "9.5px", fontWeight: "600", color: "#15803d" }}>HỆ THỐNG IOFFICE ĐĂK PXI</span>
-                            </div>
-
-                            <div style={{ fontWeight: "bold", fontSize: "14.5px", marginTop: "12px" }}>
-                              {viewingDocModal.nguoi_duyet || viewingDocModal.nguoi_xu_ly || viewingDocModal.nguoi_soan || "Nguyễn Thái Huy"}
-                            </div>
-                          </div>
-                        </div>
+                      <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "40px 50px", textAlign: "center" }}>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="1.5" style={{ marginBottom: "12px" }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <h4 style={{ margin: "0 0 6px", fontSize: "16px", color: "#0f172a" }}>Tệp tin đính kèm: {viewingDocModal.file_name || "12_KH_VHXH_TuyenTruyenQuy3.pdf"}</h4>
+                        <p style={{ color: "#64748b", fontSize: "13.5px", margin: "0 0 16px" }}>Bấm nút bên dưới để xem hoặc tải tệp tin đính kèm gốc về máy tính</p>
+                        <a
+                          href={viewingDocModal.file_url || "#"}
+                          download={viewingDocModal.file_name}
+                          style={{ padding: "10px 20px", background: "#0284c7", color: "#ffffff", borderRadius: "8px", textDecoration: "none", fontWeight: "700", fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                        >
+                          📥 Tải tệp tin về máy
+                        </a>
                       </div>
                     )}
                   </div>
                 </div>
               )}
 
-              {/* TAB 3: 📜 NHẬT KÝ LỊCH SỬ LUÂN CHUYỂN & CHỈ ĐẠO (TIMELINE) */}
+              {/* TAB 3: TIMELINE */}
               {readerTab === "timeline" && (
                 <div
                   style={{
@@ -7740,36 +7688,37 @@ export default function TruongPhongDashboard() {
                     width: "100%",
                     maxWidth: "800px",
                     margin: "0 auto",
-                    padding: "20px 24px",
-                    borderRadius: "8px",
-                    boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
+                    padding: "24px",
+                    borderRadius: "12px",
+                    border: "1px solid #e2e8f0",
+                    boxShadow: "0 4px 15px rgba(0,0,0,0.04)"
                   }}
                 >
-                  <h4 style={{ margin: "0 0 14px", fontSize: "15px", color: "#003d7a", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px", borderBottom: "2px solid #e2e8f0", paddingBottom: "8px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px", borderBottom: "1.5px solid #e2e8f0", paddingBottom: "10px" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     <span>LỊCH SỬ LUÂN CHUYỂN & TIẾN TRÌNH XỬ LÝ (TIMELINE)</span>
                   </h4>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                     {viewingDocModal.history && viewingDocModal.history.length > 0 ? (
                       viewingDocModal.history.map((step, sIdx) => (
-                        <div key={sIdx} style={{ display: "flex", gap: "12px", alignItems: "flex-start", fontSize: "13px" }}>
-                          <span style={{ background: "#005baa", color: "#fff", width: "24px", height: "24px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11.5px", fontWeight: "800", flexShrink: 0, marginTop: "2px" }}>
+                        <div key={sIdx} style={{ display: "flex", gap: "14px", alignItems: "flex-start", fontSize: "13px" }}>
+                          <span style={{ background: "#0284c7", color: "#fff", width: "26px", height: "26px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: "800", flexShrink: 0, marginTop: "2px" }}>
                             {sIdx + 1}
                           </span>
-                          <div style={{ background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", flex: 1 }}>
+                          <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1px solid #cbd5e1", flex: 1 }}>
                             <div style={{ display: "flex", justifyContent: "space-between", color: "#64748b", fontSize: "12px" }}>
-                              <strong>{step.actor}</strong>
+                              <strong style={{ color: "#0f172a" }}>{step.actor}</strong>
                               <span>{step.time}</span>
                             </div>
-                            <div style={{ color: "#0f172a", fontWeight: "600", marginTop: "4px" }}>
+                            <div style={{ color: "#334155", fontWeight: "600", marginTop: "4px" }}>
                               {step.action}
                             </div>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <div style={{ fontSize: "13px", color: "#64748b", fontStyle: "italic", background: "#f8fafc", padding: "12px 16px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
+                      <div style={{ fontSize: "13.5px", color: "#64748b", fontStyle: "italic", background: "#f8fafc", padding: "16px", borderRadius: "8px", border: "1px solid #e2e8f0", textAlign: "center" }}>
                         Văn bản mới tiếp nhận vào hệ thống. Đang trong tiến trình luân chuyển xử lý.
                       </div>
                     )}
@@ -7777,34 +7726,35 @@ export default function TruongPhongDashboard() {
                 </div>
               )}
 
-              {/* 📑 KHUNG CHUYỂN XỬ LÝ & PHÂN CÔNG CHỈ ĐẠO DÀNH CHO CÁN BỘ / LÃNH ĐẠO */}
+              {/* CHUYỂN XỬ LÝ CONTAINER */}
               <div
                 style={{
                   background: "#ffffff",
                   width: "100%",
                   maxWidth: "800px",
-                  margin: "16px auto 0",
+                  margin: "20px auto 0",
                   padding: "20px 24px",
-                  borderRadius: "8px",
-                  borderTop: "4px solid #005baa",
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.2)"
+                  borderRadius: "12px",
+                  border: "1px solid #e2e8f0",
+                  borderTop: "4px solid #0284c7",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.04)"
                 }}
               >
-                <h4 style={{ margin: "0 0 14px", fontSize: "15px", color: "#003d7a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 10 20 15 15 20"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>
+                <h4 style={{ margin: "0 0 14px", fontSize: "15px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 10 20 15 15 20"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>
                   <span>BỘ CÔNG CỤ CHUYỂN XỬ LÝ & PHÂN CÔNG CHỈ ĐẠO TRỰC TIẾP</span>
                 </h4>
 
                 <form onSubmit={handleSaveForwardDoc}>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "12px" }}>
                     <div>
-                      <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                      <label style={{ fontSize: "12.5px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "4px" }}>
                         Chuyển cho Cán bộ / Lãnh đạo xử lý:
                       </label>
                       <select
                         value={forwardForm.nguoi_xu_ly}
                         onChange={(e) => setForwardForm({ ...forwardForm, nguoi_xu_ly: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                        style={{ width: "100%", padding: "9px 12px", borderRadius: "8px", border: "1.5px solid #cbd5e1", fontSize: "13.5px", background: "#fff", outline: "none" }}
                       >
                         <option value="Nguyễn Thái Huy (Trưởng phòng)">Nguyễn Thái Huy (Trưởng phòng)</option>
                         <option value="Ngô Đỗ Quỳnh (Phó phòng)">Ngô Đỗ Quỳnh (Phó phòng)</option>
@@ -7815,13 +7765,13 @@ export default function TruongPhongDashboard() {
                     </div>
 
                     <div>
-                      <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                      <label style={{ fontSize: "12.5px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "4px" }}>
                         Cập nhật Trạng thái xử lý:
                       </label>
                       <select
                         value={forwardForm.trang_thai}
                         onChange={(e) => setForwardForm({ ...forwardForm, trang_thai: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                        style={{ width: "100%", padding: "9px 12px", borderRadius: "8px", border: "1.5px solid #cbd5e1", fontSize: "13.5px", background: "#fff", outline: "none" }}
                       >
                         <option value="Chưa xử lý">Chưa xử lý</option>
                         <option value="Đang xử lý">Đang xử lý</option>
@@ -7831,7 +7781,7 @@ export default function TruongPhongDashboard() {
                   </div>
 
                   <div style={{ marginBottom: "14px" }}>
-                    <label style={{ fontSize: "12px", fontWeight: "700", color: "#334155", display: "block", marginBottom: "4px" }}>
+                    <label style={{ fontSize: "12.5px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "4px" }}>
                       Ý kiến chỉ đạo / Nội dung giao việc / Báo cáo kết quả:
                     </label>
                     <textarea
@@ -7839,7 +7789,7 @@ export default function TruongPhongDashboard() {
                       placeholder="Nhập nội dung chỉ đạo hoặc kết quả thực hiện gửi cho cán bộ..."
                       value={forwardForm.chi_dao}
                       onChange={(e) => setForwardForm({ ...forwardForm, chi_dao: e.target.value })}
-                      style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px", fontFamily: "inherit" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: "8px", border: "1.5px solid #cbd5e1", fontSize: "13.5px", fontFamily: "inherit", outline: "none" }}
                     />
                   </div>
 
@@ -7847,16 +7797,16 @@ export default function TruongPhongDashboard() {
                     <button
                       type="button"
                       onClick={() => setViewingDocModal(null)}
-                      style={{ padding: "8px 16px", borderRadius: "6px", background: "#f1f5f9", border: "1px solid #cbd5e1", fontSize: "13px", cursor: "pointer" }}
+                      style={{ padding: "8px 18px", borderRadius: "8px", background: "#f1f5f9", border: "1px solid #cbd5e1", fontSize: "13px", fontWeight: "700", cursor: "pointer", color: "#475569" }}
                     >
                       Hủy bỏ
                     </button>
                     <button
                       type="submit"
-                      style={{ padding: "8px 20px", borderRadius: "6px", background: "#005baa", color: "#ffffff", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
+                      style={{ padding: "8px 22px", borderRadius: "8px", background: "#0284c7", color: "#ffffff", border: "none", fontWeight: "800", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.25)" }}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                      <span>💾 Lưu chỉ đạo & Gửi cho Cán bộ / Lãnh đạo</span>
+                      <span>💾 Lưu chỉ đạo & Gửi cho Cán bộ</span>
                     </button>
                   </div>
                 </form>

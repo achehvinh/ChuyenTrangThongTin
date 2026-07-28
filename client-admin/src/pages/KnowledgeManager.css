@@ -300,20 +300,25 @@
 
 .km-ai-tools-group {
   display: flex;
-  gap: 5px;
+  gap: 8px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .km-gen-btn {
   background: #e0f2fe;
   color: #0369a1;
   border: 1px solid #bae6fd;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .km-gen-btn:hover {
@@ -331,6 +336,35 @@
   background: #005baa;
   color: #ffffff;
   border-color: #005baa;
+}
+
+@media (max-width: 767px) {
+  .km-label-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+  .km-ai-tools-group {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .km-gen-btn {
+    width: 100% !important;
+    text-align: center !important;
+    white-space: normal !important;
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .km-ai-tools-group {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 .km-input,

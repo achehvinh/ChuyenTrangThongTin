@@ -12,20 +12,20 @@
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --heading: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
+  --heading: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  /* ── FLUID RESPONSIVE TYPOGRAPHY TOKENS ── */
-  --fs-xs: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
-  --fs-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
-  --fs-base: clamp(0.875rem, 0.825rem + 0.3vw, 1rem);
-  --fs-lg: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
-  --fs-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.75rem);
-  --fs-2xl: clamp(1.5rem, 1.25rem + 1vw, 2.25rem);
+  /* ── MOBILE-FIRST DESIGN TOKENS ── */
+  --mb-padding: 16px;
+  --mb-gap: 12px;
+  --mb-radius: 12px;
+  --mb-title-size: 20px;
+  --mb-body-size: 15px;
+  --mb-btn-size: 14px;
 
-  font: 16px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 15px/1.5 var(--sans);
+  letter-spacing: 0.01em;
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
@@ -48,10 +48,6 @@
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
 }
 
 *, *::before, *::after {
@@ -59,7 +55,7 @@
 }
 
 html, body {
-  font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--sans);
   margin: 0;
   padding: 0;
   width: 100%;
@@ -83,99 +79,129 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-h);
-  line-height: 1.25;
-}
-
-h1 {
-  font-size: var(--fs-2xl);
-  letter-spacing: -1px;
-  margin: 16px 0;
-}
-
-h2 {
-  font-size: var(--fs-xl);
+  line-height: 1.3;
   margin: 0 0 12px;
 }
 
+h1 {
+  font-size: clamp(20px, 4vw, 32px);
+}
+
+h2 {
+  font-size: var(--mb-title-size);
+}
+
 p {
+  font-size: var(--mb-body-size);
   margin: 0;
+  line-height: 1.5;
 }
 
-/* ── UNIVERSAL RESPONSIVE UTILITIES ── */
-.table-responsive-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin-bottom: 1rem;
-  border-radius: 10px;
+/* MOBILE FIRST UNIVERSAL FORM CONTROLS */
+input, select, textarea, button {
+  font-family: inherit;
+  font-size: var(--mb-body-size);
+  box-sizing: border-box;
 }
 
-.table-responsive-wrapper table {
-  width: 100%;
-  min-width: 600px;
-  border-collapse: collapse;
+button {
+  font-size: var(--mb-btn-size);
+  border-radius: var(--mb-radius);
+  font-weight: 600;
 }
 
-.grid-responsive-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: 16px;
-}
-
-.form-grid-responsive {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-@media (max-width: 768px) {
-  .form-grid-responsive {
-    grid-template-columns: 1fr;
+@media (max-width: 767px) {
+  input, select, textarea {
+    width: 100% !important;
+    border-radius: var(--mb-radius) !important;
+  }
+  
+  .full-width-mobile {
+    width: 100% !important;
   }
 }
 
-/* ── SKELETON LOADER ANIMATION ── */
-.skeleton-loader {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeletonLoading 1.5s infinite;
-  border-radius: 6px;
+/* MOBILE FIRST CARD & GRID UTILITIES */
+.card-equal-height-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--mb-gap);
 }
 
-@keyframes skeletonLoading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@media (max-width: 1199px) {
+  .card-equal-height-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-/* Thẻ gợi ý chọn loại */
-.type-prompt { margin: 24px 0; }
-.type-prompt-grid { display: flex; gap: 12px; flex-wrap: wrap; }
-.type-prompt-card {
-  flex: 1; min-width: 120px; padding: 20px 12px;
-  border: 2px solid #e2e8f0; border-radius: 12px;
-  background: #f8fafc; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  font-size: 14px; transition: all 0.2s;
+@media (max-width: 767px) {
+  .card-equal-height-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
 }
-.type-prompt-card:hover { border-color: #3b82f6; background: #eff6ff; }
-.type-prompt-icon { font-size: 28px; }
 
-/* Sidebar item active */
-.quick-type-item {
-  cursor: pointer; padding: 10px 12px; border-radius: 8px;
-  display: flex; align-items: center; gap: 8px;
-  transition: background 0.15s; list-style: none;
+.mobile-card-item {
+  background: #ffffff;
+  border-radius: var(--mb-radius);
+  padding: var(--mb-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border);
 }
-.quick-type-item:hover { background: #f1f5f9; }
-.quick-type-item.active { background: #eff6ff; color: #2563eb; font-weight: 600; }
-.quick-type-arrow { margin-left: auto; font-size: 18px; }
+
+/* MODAL FULLY CENTERED & RESPONSIVE (MAX 95%) */
+.modal-responsive-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 12px;
+}
+
+.modal-responsive-container {
+  width: 100%;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: var(--mb-radius);
+  padding: var(--mb-padding);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .modal-responsive-container {
+    max-width: 600px;
+    padding: 24px;
+  }
+}
+
+/* TABLE WRAPPER ZERO HORIZONTAL OVERFLOW */
+.table-responsive-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 12px;
+  border-radius: var(--mb-radius);
+}
+
+.table-responsive-container table {
+  width: 100%;
+  min-width: 580px;
+  border-collapse: collapse;
+}
 
 /* ── HIDE GOOGLE TRANSLATE BANNER & UI ELEMENTS ── */
-body {
-  top: 0 !important;
-}
+body { top: 0 !important; }
 .skiptranslate, .goog-te-banner-frame, .goog-te-gadget, .goog-te-balloon-frame, #goog-gt-tt {
   display: none !important;
 }

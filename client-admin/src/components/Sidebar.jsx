@@ -40,18 +40,6 @@ export default function Sidebar() {
             </span>
             <span>Tri thức AI</span>
           </NavLink>
-
-          <NavLink to="/gop-y" className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}>
-            <span className="sidebar-item-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z" fill="#d946ef"/>
-                <circle cx="8" cy="10" r="1.5" fill="#ffffff"/>
-                <circle cx="12" cy="10" r="1.5" fill="#ffffff"/>
-                <circle cx="16" cy="10" r="1.5" fill="#ffffff"/>
-              </svg>
-            </span>
-            <span>Hỏi đáp</span>
-          </NavLink>
         </div>
 
         {/* NHÓM NGHIỆP VỤ XÃ */}
@@ -129,7 +117,7 @@ export default function Sidebar() {
                 <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" fill="#a855f7"/>
               </svg>
             </span>
-            <span>Phản ánh người dân</span>
+            <span>Phản ánh & Hỏi đáp</span>
           </NavLink>
         </div>
       </nav>

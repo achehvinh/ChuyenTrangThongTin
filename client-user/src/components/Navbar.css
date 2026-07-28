@@ -249,20 +249,42 @@
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .navbar-top {
-    padding: 10px 16px;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .navbar-brand {
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
   }
 
   .navbar-main {
-    font-size: 15px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    white-space: normal !important;
+    word-break: break-word;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    color: #1a3a5c;
   }
 
   .navbar-sub {
     font-size: 11px;
+    white-space: normal;
   }
 
   .navbar-logo {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .navbar-mobile-toggle {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    font-size: 12px;
   }
 
   .navbar-nav {
@@ -587,16 +609,17 @@
 .navbar-mobile-toggle {
   display: none;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   background: #1a3a5c;
   color: #ffffff;
   border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 700;
+  border-radius: 8px;
+  padding: 0;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
 }
 
 .navbar-drawer-overlay {
@@ -705,6 +728,41 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.drawer-accordion-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  font-weight: 700;
+  color: #1a3a5c;
+}
+
+.drawer-accordion-btn .accordion-arrow {
+  font-size: 14px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.drawer-sub-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 12px;
+  margin-top: 4px;
+  border-left: 2.5px solid #2563eb;
+  animation: slideSubMenu 0.2s ease;
+}
+
+@keyframes slideSubMenu {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .drawer-user-btn {
