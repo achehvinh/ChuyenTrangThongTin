@@ -1,19 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './AnToanGiaoThongPage.css';
 
-// ── BỘ ICON SVG CHUẨN HTML5 ──
+// ── BỘ ICON VECTOR CHUẨN ĐỒNG BỘ ──
 const SvgIcons = {
+  ShieldCheck: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  ),
   Traffic: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect width="10" height="20" x="7" y="2" rx="3" />
-      <circle cx="12" cy="6" r="1.5" />
-      <circle cx="12" cy="12" r="1.5" />
-      <circle cx="12" cy="18" r="1.5" />
+      <circle cx="12" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+      <circle cx="12" cy="18" r="1.5" fill="currentColor" />
     </svg>
   ),
   VolumeUp: () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
       <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
     </svg>
@@ -23,53 +29,28 @@ const SvgIcons = {
       <rect x="4" y="4" width="16" height="16" rx="2" />
     </svg>
   ),
-  Clipboard: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+  Megaphone: () => (
+    <svg width="68" height="58" viewBox="0 0 68 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Handle */}
+      <path d="M22 36L25.5 48.5C25.8 49.5 27 50 28 49.7L30 49C31 48.7 31.5 47.5 31.2 46.5L28.5 36" stroke="#1D4ED8" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" fill="#1D4ED8" fillOpacity="0.12" />
+      {/* Cone */}
+      <path d="M14 22L37 12V36L14 26V22Z" stroke="#1D4ED8" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" fill="#1D4ED8" fillOpacity="0.08" />
+      {/* Front Rim */}
+      <ellipse cx="37" cy="24" rx="4" ry="12" stroke="#1D4ED8" strokeWidth="3.5" fill="#1D4ED8" fillOpacity="0.18" />
+      {/* Back Base */}
+      <rect x="7" y="19.5" width="7" height="9" rx="2" stroke="#1D4ED8" strokeWidth="3.5" fill="#1D4ED8" fillOpacity="0.18" />
+      {/* Back Cap */}
+      <path d="M7 21.5C5.2 21.5 4 22.8 4 24C4 25.2 5.2 26.5 7 26.5" stroke="#1D4ED8" strokeWidth="3.5" strokeLinecap="round" />
+      {/* Radiating Sound Waves (4 lines) */}
+      <path d="M46 11L50 7" stroke="#1D4ED8" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M48 18L54 15.5" stroke="#1D4ED8" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M49 25.5L56 25.5" stroke="#1D4ED8" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M48 33L54 35.5" stroke="#1D4ED8" strokeWidth="3.5" strokeLinecap="round" />
     </svg>
   ),
-  Search: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-  ),
-  Pin: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="12" y1="17" x2="12" y2="22" />
-      <path d="M5 17h14l-1.5-6H6.5L5 17Z" />
-      <path d="M9 11V4a3 3 0 0 1 6 0v7" />
-    </svg>
-  ),
-  ShieldCheck: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  ),
-  Siren: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M7 12a5 5 0 0 1 10 0v7H7v-7Z" />
-      <path d="M5 19h14" />
-      <path d="M12 2v3" />
-    </svg>
-  ),
-  AlertTriangle: () => (
+  PhoneAlert: () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-      <line x1="12" y1="9" x2="12" y2="13" />
-      <line x1="12" y1="17" x2="12.01" y2="17" />
-    </svg>
-  ),
-  Landmark: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="3" y1="22" x2="21" y2="22" />
-      <line x1="6" y1="18" x2="6" y2="11" />
-      <line x1="10" y1="18" x2="10" y2="11" />
-      <line x1="14" y1="18" x2="14" y2="11" />
-      <line x1="18" y1="18" x2="18" y2="11" />
-      <polygon points="12 2 20 7 4 7 12 2" />
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
     </svg>
   ),
   BookOpen: () => (
@@ -78,19 +59,84 @@ const SvgIcons = {
       <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
     </svg>
   ),
-  Scale: () => (
+  Users: () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-      <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-      <path d="M7 21h10" />
-      <path d="M12 3v18" />
-      <path d="M3 7h18" />
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
   ),
-  Megaphone: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m3 11 18-5v12L3 13v-2z" />
-      <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+  UsersRound: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 21a8 8 0 0 0-12 0" />
+      <circle cx="12" cy="10" r="5" />
+    </svg>
+  ),
+  MessageSquare: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+  Helmet: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 4a8 8 0 0 0-8 8v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3a8 8 0 0 0-8-8z" />
+      <path d="M4 14h16" />
+      <path d="M12 14v5" />
+    </svg>
+  ),
+  NoBeer: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" strokeWidth="2.5" />
+      <path d="M17 11V6a2 2 0 0 0-2-2H9" />
+      <path d="M5 6v9a5 5 0 0 0 5 5h4a5 5 0 0 0 4.9-4.1" />
+    </svg>
+  ),
+  BikeWay: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="5.5" cy="17.5" r="3.5" />
+      <circle cx="18.5" cy="17.5" r="3.5" />
+      <path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor" />
+      <path d="m12 17.5 3.5-7 3 2.5" />
+      <path d="M5.5 17.5 9 10.5h4" />
+    </svg>
+  ),
+  NoPhone: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" strokeWidth="2.5" />
+      <rect x="7" y="4" width="10" height="16" rx="2" />
+    </svg>
+  ),
+  Eye: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ),
+  WalkPedestrian: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="13.5" cy="4.5" r="2.5" fill="currentColor" />
+      <path d="M11 21v-4l-3-3 1.6-4.2a2 2 0 0 1 1.7-1.3l3.7-.5a2 2 0 0 1 1.7.9l2.8 4.2" />
+      <path d="m7 12 3-1.5" />
+    </svg>
+  ),
+  ChildNoDrive: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="7" r="3" />
+      <path d="M6 21v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3" />
+      <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" strokeWidth="2.5" />
+    </svg>
+  ),
+  Globe: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  ),
+  Facebook: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.12 8.44 9.88v-6.99H7.9v-2.89h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.89h-2.34v6.99C18.34 21.12 22 16.99 22 12z" />
     </svg>
   ),
   ExternalLink: () => (
@@ -99,347 +145,560 @@ const SvgIcons = {
       <polyline points="15 3 21 3 21 9" />
       <line x1="10" y1="14" x2="21" y2="3" />
     </svg>
+  ),
+  ArrowDown: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <polyline points="19 12 12 19 5 12" />
+    </svg>
+  ),
+  CarBelt: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1 .4-1 1v4c0 .6.4 1 1 1h12" />
+      <circle cx="7.5" cy="17.5" r="2.5" fill="currentColor" />
+      <circle cx="16.5" cy="17.5" r="2.5" fill="currentColor" />
+    </svg>
+  ),
+  VestReflective: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 3h12l2 5v13H4V8l2-5z" />
+      <path d="m6 3 6 7 6-7" />
+      <path d="M4 13h16" />
+      <path d="M4 17h16" />
+    </svg>
+  ),
+  WheelCheck: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="3" />
+      <line x1="12" y1="3" x2="12" y2="9" />
+      <line x1="12" y1="15" x2="12" y2="21" />
+      <line x1="3" y1="12" x2="9" y2="12" />
+      <line x1="15" y1="12" x2="21" y2="12" />
+    </svg>
+  ),
+  Quote: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" />
+    </svg>
   )
 };
 
 const DATA = {
-  title: 'Tuyên truyền An toàn Giao thông',
+  title: 'TUYÊN TRUYỀN AN TOÀN GIAO THÔNG',
   subtitle: 'Chung tay xây dựng văn hóa giao thông an toàn, văn minh trên địa bàn xã Đăk Pxi',
   content:
-    'Xã Đăk Pxi có địa hình đường nông thôn nhiều đèo dốc quanh co, sương mù và đường trơn trượt vào mùa mưa lũ. Để bảo vệ tính mạng, sức khỏe và tài sản của bản thân cùng gia đình, Phòng Văn hóa - Xã hội UBND xã Đăk Pxi đề nghị toàn thể bà con nhân dân, học sinh và các lực lượng tham gia giao thông nâng cao tinh thần tự giác, chấp hành nghiêm các quy định về an toàn giao thông đường bộ.',
+    'Xã Đăk Pxi có địa hình đường rừng, nhiều đèo dốc quanh co, sương mù và đường trơn trượt vào mùa mưa. Để bảo vệ tính mạng, tài sản của bản thân, gia đình và cộng đồng, mỗi người dân hãy nâng cao ý thức và tuân thủ pháp luật giao thông.',
 
   visualSteps: [
     {
       stt: '01',
-      title: 'Tuyên truyền diễu hành & Đội mũ bảo hiểm đạt chuẩn cho con em',
+      title: 'TUYÊN TRUYỀN, GIÁO DỤC VÀ NÂNG CAO Ý THỨC',
       tag: 'Tuyên truyền lưu động',
       img: '/huong-dan/atgt-1.png',
-      desc: 'Phòng Văn hóa - Xã hội xã Đăk Pxi phối hợp tổ chức tuyên truyền lưu động và diễu hành an toàn giao thông trên các tuyến đường chính. Vận động 100% bà con nhân dân và học sinh chấp hành nghiêm việc đội mũ bảo hiểm đạt chuẩn chất lượng, gài quai chắc chắn khi đi xe máy.',
+      badgeText: 'AN TOÀN GIAO THÔNG LÀ HẠNH PHÚC CỦA MỌI NHÀ',
+      color: '#0B5ED7',
       highlights: [
-        'Đội mũ bảo hiểm đạt chuẩn CR khi đi xe máy, xe điện.',
-        'Gài quai đúng quy cách, bảo vệ an toàn cho bản thân và con em.',
-        'Giảm tốc độ và quan sát kỹ khi ra từ đường nhánh liên thôn.'
+        { icon: <SvgIcons.BookOpen />, text: 'Tuyên truyền pháp luật, phổ biến kiến thức về an toàn giao thông đến từng thôn, làng, từng hộ dân.' },
+        { icon: <SvgIcons.Users />, text: 'Nâng cao ý thức tự giác chấp hành pháp luật, xây dựng văn hóa giao thông văn minh.' },
+        { icon: <SvgIcons.ShieldCheck />, text: 'Mỗi người là một tuyên truyền viên, gương mẫu trong việc chấp hành luật giao thông.' }
       ]
     },
     {
       stt: '02',
-      title: 'Sinh hoạt tập trung & Tuyên truyền văn hóa giao thông tại Nhà Rông',
+      title: 'SINH HOẠT CỘNG ĐỒNG VÀ TUYÊN TRUYỀN TẠI NHÀ RÔNG',
       tag: 'Sinh hoạt cộng đồng',
       img: '/huong-dan/atgt-2.png',
-      desc: 'Tổ chức các buổi sinh hoạt tập trung tại Nhà Rông các thôn để hướng dẫn trực quan cho bà con nhân dân xã Đăk Pxi. Nhắc nhở thông điệp "An toàn giao thông là hạnh phúc của mọi nhà", nâng cao ý thức văn hóa giao thông chung.',
+      badgeText: 'AN TOÀN GIAO THÔNG - TRÁCH NHIỆM CỦA MỘI NGƯỜI',
+      color: '#198754',
       highlights: [
-        'Tuyệt đối "Đã uống rượu bia — Không điều khiển phương tiện".',
-        'Tuyên truyền sâu rộng đến từng hộ gia đình và thôn làng.',
-        'Nhường đường cho người đi bộ và xe ưu tiên.'
+        { icon: <SvgIcons.UsersRound />, text: 'Tổ chức sinh hoạt định kỳ tại nhà rông, chi hội đoàn thể, trường học để chia sẻ kiến thức, kinh nghiệm tham gia giao thông.' },
+        { icon: <SvgIcons.Megaphone />, text: 'Lồng ghép giáo dục pháp luật cho thanh thiếu niên, học sinh và người dân.' },
+        { icon: <SvgIcons.MessageSquare />, text: 'Thảo luận, giải đáp thắc mắc, nêu gương người tốt — việc tốt trong chấp hành giao thông.' }
       ]
     },
     {
       stt: '03',
-      title: 'Hướng dẫn trực quan Quy định & Biển báo Giao thông đường bộ',
-      tag: 'Phổ biến pháp luật',
+      title: 'HƯỚNG DẪN THỰC QUY AN TOÀN VÀ KIẾN THỨC GIAO THÔNG BỔ ÍCH',
+      tag: 'Phổ biến thực hành',
       img: '/huong-dan/atgt-3.png',
-      desc: 'Cán bộ tuyên truyền trực tiếp giảng giải các biển báo nguy hiểm, độ tuổi được phép lái xe và mức phạt theo quy định pháp luật. Giúp bà con và học sinh dễ nhận biết, dễ nhớ và chủ động phòng tránh tai nạn giao thông.',
+      badgeText: 'ĐÃ UỐNG RƯỢU BIA - KHÔNG LÁI XE',
+      color: '#FD7E14',
       highlights: [
-        'Không giao xe máy cho học sinh chưa đủ tuổi, chưa có GPLX.',
-        'Nhận biết các đoạn đường dốc nguy hiểm, cua hẹp và ngầm tràn.',
-        'Chấp hành nghiêm sự chỉ dẫn của Cảnh sát Giao thông và biển báo.'
+        { icon: <SvgIcons.Helmet />, text: 'Đội mũ bảo hiểm đúng quy cách; không chở quá số người quy định.' },
+        { icon: <SvgIcons.NoBeer />, text: 'Tuyệt đối không uống rượu, bia khi điều khiển phương tiện giao thông.' },
+        { icon: <SvgIcons.BikeWay />, text: 'Đi đúng phần đường, làn đường, bật xi nhan khi rẽ, giảm tốc độ khi qua đoạn nguy hiểm.' },
+        { icon: <SvgIcons.NoPhone />, text: 'Tuyệt đối không sử dụng điện thoại di động khi đang lái xe.' }
       ]
     }
   ],
 
-  warning: [
-    'Tuyệt đối không điều khiển phương tiện giao thông sau khi đã uống rượu, bia.',
-    '100% người đi xe máy phải đội mũ bảo hiểm đạt chuẩn chất lượng và cài quai đúng quy cách.',
-    'Giảm tốc độ dưới 30km/h tại các khúc cua hẹp, đường dốc quanh co và tuyến đường đèo dốc nông thôn.',
-    'Không dùng điện thoại di động, tai nghe khi đang lái xe máy, ô tô.',
-    'Chú ý quan sát các điểm ngầm tràn, sạt lở đá mùa mưa bão; không đi qua khi nước chảy xiết.',
-    'Phụ huynh đưa đón con đi học dừng đỗ xe đúng nơi quy định, không gây ùn tắc trước cổng trường.',
+  rules: [
+    {
+      icon: <SvgIcons.NoBeer />,
+      text: 'Tuyệt đối không điều khiển phương tiện sau khi đã sử dụng rượu, bia hoặc chất kích thích.',
+      color: '#DC3545'
+    },
+    {
+      icon: <SvgIcons.BikeWay />,
+      text: 'Không phóng nhanh, vượt ẩu, lạng lách, đánh võng trên đường liên thôn, đèo dốc.',
+      color: '#0B5ED7'
+    },
+    {
+      icon: <SvgIcons.Eye />,
+      text: 'Quan sát kỹ, giảm tốc độ ở nơi đông người, đường cong hẹp, dốc cao và ngầm tràn.',
+      color: '#198754'
+    },
+    {
+      icon: <SvgIcons.WalkPedestrian />,
+      text: 'Nhường đường cho người đi bộ, người khuyết tật, xe ưu tiên theo quy định.',
+      color: '#0D6EFD'
+    },
+    {
+      icon: <SvgIcons.ChildNoDrive />,
+      text: 'Trẻ em dưới 16 tuổi không điều khiển xe mô tô, xe gắn máy khi tham gia giao thông.',
+      color: '#FD7E14'
+    }
   ],
 
   preparednessItems: [
-    { title: 'Mũ bảo hiểm đạt chuẩn', desc: 'Có tem CR chất lượng, kính chắn gió chống bụi và quai cài chắc chắn.' },
-    { title: 'Hệ thống đèn & Phanh xe', desc: 'Đèn pha chiếu sáng tốt khi sương mù, phanh ăn nhạy trước sau.' },
-    { title: 'Áo mưa bộ gọn gàng', desc: 'Sử dụng áo mưa bộ hai mảnh để không bị vướng vào bánh xe máy.' },
+    {
+      icon: <SvgIcons.Helmet />,
+      title: 'Mũ bảo hiểm đạt chuẩn',
+      desc: 'Có tem CR chất lượng, kính chắn gió chống bụi và quai cài chắc chắn khi đi xe máy, xe điện.'
+    },
+    {
+      icon: <SvgIcons.CarBelt />,
+      title: 'Dây an toàn trên ô tô',
+      desc: 'Thắt dây an toàn đúng cách giúp bảo vệ tối đa tính mạng khi xe phanh gấp hoặc gặp sự cố.'
+    },
+    {
+      icon: <SvgIcons.VestReflective />,
+      title: 'Áo phản quang đêm',
+      desc: 'Sử dụng trang phục nhận diện phản quang khi di chuyển ban đêm hoặc trời sương mù đèo dốc.'
+    },
+    {
+      icon: <SvgIcons.WheelCheck />,
+      title: 'Kiểm tra phanh & lốp xe',
+      desc: 'Hệ thống phanh ăn nhạy, lốp đủ áp suất, đèn chiếu sáng tốt trước khi khởi hành.'
+    }
   ],
 
   emergencyPhones: [
-    { label: 'Cảnh sát Giao thông (CSGT)', number: '113' },
-    { label: 'Cấp cứu Y tế khẩn cấp', number: '115' },
-    { label: 'Công an xã Đăk Pxi', number: '0339310915' },
-  ],
-
-  slogans: [
-    'An toàn giao thông là hạnh phúc của mọi nhà.',
-    'Đã uống rượu bia — Không lái xe.',
-    'Đội mũ bảo hiểm để bảo vệ chính mình.',
-    'Chấp hành Luật Giao thông là trách nhiệm của mỗi công dân.',
-    'Đi chậm một phút, an toàn cả đời.',
-    'Nhường đường cho người đi bộ — Nét đẹp văn hóa giao thông.',
+    { label: 'Cảnh sát giao thông (CSGT)', number: '113', color: '#DC3545' },
+    { label: 'Cấp cứu y tế khẩn cấp', number: '115', color: '#DC3545' },
+    { label: 'Công an xã Đăk Pxi', number: '02602 356 115', color: '#0B5ED7' },
+    { label: 'Phòng Y tế xã Đăk Pxi', number: '02602 246 789', color: '#0B5ED7' }
   ]
 };
 
 export default function AnToanGiaoThongPage() {
+  const audioRef = useRef(null);
   const [activeImg, setActiveImg] = useState(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [speaking, setSpeaking] = useState(false);
-  const [sloganIdx, setSloganIdx] = useState(0);
 
+  // Tự động phát âm thanh khi vừa truy cập trang 🚦 TUYÊN TRUYỀN AN TOÀN GIAO THÔNG
   useEffect(() => {
-    const timer = setInterval(() => {
-      setSloganIdx(prev => (prev + 1) % DATA.slogans.length);
-    }, 4000);
-    return () => clearInterval(timer);
+    const timer = setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play()
+          .then(() => {
+            setIsPlayingAudio(true);
+            setSpeaking(true);
+          })
+          .catch(() => {
+            playTTS();
+          });
+      } else {
+        playTTS();
+      }
+    }, 600);
+
+    return () => {
+      clearTimeout(timer);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
   }, []);
 
-  function handleSpeak() {
-    if (!('speechSynthesis' in window)) return;
-
-    if (speaking) {
-      window.speechSynthesis.cancel();
+  function handleSpeak(customText) {
+    if (isPlayingAudio || speaking) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setIsPlayingAudio(false);
       setSpeaking(false);
       return;
     }
 
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play()
+        .then(() => {
+          setIsPlayingAudio(true);
+          setSpeaking(true);
+        })
+        .catch(() => {
+          playTTS(customText);
+        });
+    } else {
+      playTTS(customText);
+    }
+  }
+
+  function playTTS(customText) {
+    if (!('speechSynthesis' in window)) return;
+
     window.speechSynthesis.cancel();
-    const textToRead =
+    const textToRead = customText || (
       `Kính mời bà con xã Đăk Pxi lắng nghe thông báo tuyên truyền an toàn giao thông. ` +
       DATA.content +
-      ` Các bước hướng dẫn an toàn giao thông trực quan. ` +
-      DATA.visualSteps.map((s, idx) => `Bước ${idx + 1}: ${s.title}. ${s.desc}`).join(' ');
+      ` Các bước hướng dẫn an toàn giao thông theo từng bước. ` +
+      DATA.visualSteps.map((s, idx) => `Bước ${idx + 1}: ${s.title}.`).join(' ')
+    );
 
     const u = new SpeechSynthesisUtterance(textToRead);
     u.lang = 'vi-VN';
     u.rate = 0.92;
-    u.onend = () => setSpeaking(false);
-    u.onerror = () => setSpeaking(false);
+    u.onend = () => {
+      setSpeaking(false);
+      setIsPlayingAudio(false);
+    };
+    u.onerror = () => {
+      setSpeaking(false);
+      setIsPlayingAudio(false);
+    };
     setSpeaking(true);
     window.speechSynthesis.speak(u);
   }
 
   return (
-    <div className="atgt-page">
-      <div className="atgt-container">
+    <div className="atgt-page-poster">
 
-        {/* ── HEADER TIÊU ĐỀ TRANG + LOA PHÁT THANH ── */}
-        <div className="atgt-header-top">
-          <div className="atgt-header-left">
-            <span className="atgt-header-badge">
-              <SvgIcons.Traffic />
-              <span>TUYÊN TRUYỀN AN TOÀN GIAO THÔNG</span>
-            </span>
-            <h1 className="atgt-title">{DATA.title}</h1>
-            <p className="atgt-subtitle">{DATA.subtitle}</p>
-          </div>
+      {/* Audio ngầm phát file giao-thong.mp3 */}
+      <audio
+        ref={audioRef}
+        style={{ display: 'none' }}
+        preload="auto"
+        onPlay={() => {
+          setIsPlayingAudio(true);
+          setSpeaking(true);
+        }}
+        onPause={() => {
+          setIsPlayingAudio(false);
+          setSpeaking(false);
+        }}
+        onEnded={() => {
+          setIsPlayingAudio(false);
+          setSpeaking(false);
+        }}
+      >
+        <source src="/video/giao-thong.mp3" type="audio/mpeg" />
+        <source src="/audio/giao-thong.mp3" type="audio/mpeg" />
+        <source src="/giao-thong.mp3" type="audio/mpeg" />
+      </audio>
 
-          <div className="atgt-header-right">
-            {speaking && (
-              <div className="sound-wave">
-                <span className="wave-bar"></span>
-                <span className="wave-bar"></span>
-                <span className="wave-bar"></span>
-                <span className="wave-bar"></span>
+      {/* INFOGRAPHIC CONTAINER A4 PORTRAIT RATIO */}
+      <div className="atgt-poster-container">
+
+        {/* ════════════ 1. HEADER CHÍNH PHỦ ĐIỆN TỬ (SLANTED BANNER DẠNG ẢNH MẪU) ════════════ */}
+        <header className="atgt-banner-header">
+
+          {/* Cột trái chứa Hexagon Shield + Tiêu đề */}
+          <div className="atgt-banner-left">
+            <div className="atgt-shield-hexagon">
+              <div className="atgt-shield-white">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="3.8" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
               </div>
-            )}
-            <button
-              type="button"
-              className={`atgt-speak-btn ${speaking ? 'speaking' : ''}`}
-              onClick={handleSpeak}
-            >
-              <span className="audio-icon">{speaking ? <SvgIcons.SquareStop /> : <SvgIcons.VolumeUp />}</span>
-              <span>{speaking ? 'Dừng đọc phát thanh' : 'Nghe loa đọc tuyên truyền'}</span>
-            </button>
+            </div>
+
+            <div className="atgt-banner-text">
+              <h1 className="atgt-banner-title">
+                <span className="title-top">TUYÊN TRUYỀN</span>
+                <span className="title-bottom">AN TOÀN GIAO THÔNG</span>
+              </h1>
+              <p className="atgt-banner-sub">
+                Chung tay xây dựng văn hóa giao thông an toàn, văn minh<br />
+                <strong>trên địa bàn xã Đăk Pxi</strong>
+              </p>
+            </div>
           </div>
+
+          {/* Đường chéo thủy tinh tạo điểm cắt */}
+          <div className="atgt-banner-slanted-accent"></div>
+
+          {/* Cột phải chứa hình ảnh nền + Thẻ nổi */}
+          <div className="atgt-banner-right">
+            <img src="/huong-dan/hinh-nen05.jpg" alt="Cổng UBND xã Đăk Pxi" className="atgt-banner-bg-img" />
+
+            <div className="atgt-banner-pill-tag">
+              <div className="pill-icon">
+                <SvgIcons.Users />
+              </div>
+              <div className="pill-text">
+                <strong>Nghĩ an toàn</strong>
+                <span>Hành động văn minh</span>
+              </div>
+            </div>
+          </div>
+
+        </header>
+
+        {/* ════════════ 2. KHỐI GIỚI THIỆU + CỘT PHẢI KHẨN CẤP ════════════ */}
+        <div className="atgt-top-row">
+
+          {/* KHỐI GIỚI THIỆU ngắn ~60 từ */}
+          <div className="atgt-intro-box">
+            <div className="atgt-intro-icon-bg">
+              <SvgIcons.Megaphone />
+            </div>
+            <div className="atgt-intro-text">
+              <p>{DATA.content}</p>
+            </div>
+          </div>
+
+          {/* CỘT PHẢI - SỐ ĐIỆN THOẠI KHẨN CẤP */}
+          <div className="atgt-emergency-card">
+            <div className="atgt-emergency-head">
+              <SvgIcons.PhoneAlert />
+              <span>SỐ ĐIỆN THOẠI HỖ TRỢ KHẨN CẤP</span>
+            </div>
+            <div className="atgt-emergency-body">
+              {DATA.emergencyPhones.map((p, i) => (
+                <div key={i} className="atgt-em-item">
+                  <span className="em-label">{p.label}</span>
+                  <a href={`tel:${p.number.replace(/\s+/g, '')}`} className="em-num" style={{ color: p.color }}>
+                    <SvgIcons.PhoneAlert />
+                    <span>{p.number}</span>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
-        {/* ── KHUNG BỐ CỤC 2 CỘT ── */}
-        <div className="atgt-layout">
+        {/* ════════════ 3. BỐ CỤC 2 CỘT CHÍNH (KHỐI LỚN HƯỚNG DẪN 3 BƯỚC + SIDEBAR) ════════════ */}
+        <div className="atgt-main-grid">
 
-          {/* CỘT TRÁI (MAIN CONTENT) */}
-          <div className="atgt-main">
+          {/* CỘT TRÁI: HƯỚNG DẪN THEO TỪNG BƯỚC */}
+          <div className="atgt-steps-column">
 
-            {/* Mô tả tuyên truyền */}
-            <section className="atgt-section">
-              <p className="atgt-content-lead">{DATA.content}</p>
-            </section>
+            {/* Thanh tiêu đề khối lớn */}
+            <div className="atgt-section-header-bar">
+              <span className="arr-left">»»</span>
+              <h2>HƯỚNG DẪN AN TOÀN GIAO THÔNG THEO TỪNG BƯỚC</h2>
+              <span className="arr-right">««</span>
+            </div>
 
-            {/* HƯỚNG DẪN TRỰC QUAN */}
-            <section className="atgt-section atgt-visual-section">
-              <div className="atgt-steps-header">
-                <h2 className="atgt-section-title">
-                  <SvgIcons.Clipboard />
-                  <span>Hướng dẫn an toàn giao thông từng bước trực quan</span>
-                </h2>
-                <span className="atgt-steps-sub">Hình ảnh tuyên truyền thực tế & Nội dung hướng dẫn sinh động cho bà con xã Đăk Pxi</span>
-              </div>
+            <div className="atgt-steps-list">
+              {DATA.visualSteps.map((step, i) => (
+                <div key={i} className="atgt-step-wrapper">
 
-              <div className="atgt-visual-steps-list">
-                {DATA.visualSteps.map((step, i) => (
-                  <div key={i} className={`atgt-vstep-card step-${i + 1}`}>
+                  {/* Step Card */}
+                  <div className="atgt-step-card" style={{ borderColor: step.color }}>
 
-                    {/* Header thông tin bước */}
-                    <div className="atgt-vstep-head">
-                      <span className="atgt-vstep-stt">Bước {step.stt}</span>
-                      <h3 className="atgt-vstep-title">{step.title}</h3>
-                      <span className="atgt-vstep-tag">{step.tag}</span>
+                    {/* Header Bước */}
+                    <div className="atgt-step-card-head">
+                      <div className="atgt-step-badge" style={{ background: step.color }}>
+                        <span>{step.stt}</span>
+                      </div>
+                      <h3 className="atgt-step-title">{step.title}</h3>
                     </div>
 
-                    {/* Ảnh TO RỘNG minh họa */}
-                    <div className="atgt-vstep-img-box" onClick={() => setActiveImg(step.img)}>
-                      <img src={step.img} alt={step.title} className="atgt-vstep-img" />
-                      <div className="atgt-vstep-img-badge">
-                        <SvgIcons.Search />
-                        <span>Bấm phóng to ảnh xem chi tiết</span>
-                      </div>
-                    </div>
+                    {/* Nội dung Bước 2 cột (Ảnh + 3/4 Nội dung có Icon) */}
+                    <div className="atgt-step-card-body">
 
-                    {/* Nội dung chi tiết */}
-                    <div className="atgt-vstep-content">
-                      <p className="atgt-vstep-desc">{step.desc}</p>
-
-                      <div className="atgt-vstep-highlights">
-                        <strong>
-                          <SvgIcons.Pin />
-                          <span>Lưu ý quan trọng cho bà con:</span>
-                        </strong>
-                        <ul>
-                          {step.highlights.map((h, idx) => (
-                            <li key={idx}>{h}</li>
-                          ))}
-                        </ul>
+                      <div className="atgt-step-img-box" onClick={() => setActiveImg(step.img)}>
+                        <img src={step.img} alt={step.title} className="atgt-step-img" />
+                        <div className="atgt-step-img-banner">
+                          <span>{step.badgeText}</span>
+                        </div>
                       </div>
+
+                      <div className="atgt-step-points-list">
+                        {step.highlights.map((item, idx) => (
+                          <div key={idx} className="atgt-point-item">
+                            <span className="point-icon" style={{ color: step.color }}>
+                              {item.icon}
+                            </span>
+                            <span className="point-text">{item.text}</span>
+                          </div>
+                        ))}
+                      </div>
+
                     </div>
 
                   </div>
-                ))}
-              </div>
-            </section>
 
-            {/* Bộ thiết bị an toàn cần có */}
-            <section className="atgt-section">
-              <h2 className="atgt-section-title">
+                  {/* Mũi tên chỉ hướng giữa các bước */}
+                  {i < DATA.visualSteps.length - 1 && (
+                    <div className="atgt-step-connector">
+                      <div className="connector-line"></div>
+                      <div className="connector-arrow">
+                        <SvgIcons.ArrowDown />
+                      </div>
+                      <div className="connector-line"></div>
+                    </div>
+                  )}
+
+                </div>
+              ))}
+            </div>
+
+            {/* KHỐI PHỤ: THIẾT BỊ AN TOÀN BẮT BUỘC KHl THAM GIA GIAO THÔNG */}
+            <div className="atgt-prep-block">
+              <div className="atgt-prep-block-title">
                 <SvgIcons.ShieldCheck />
-                <span>Thiết bị an toàn bắt buộc khi tham gia giao thông</span>
-              </h2>
-              <div className="atgt-prep-grid">
+                <span>THIẾT BỊ AN TOÀN BẮT BUỘC KHl THAM GIA GIAO THÔNG</span>
+              </div>
+              <div className="atgt-prep-items-grid">
                 {DATA.preparednessItems.map((item, i) => (
-                  <div key={i} className="atgt-prep-card">
-                    <div className="atgt-prep-body">
-                      <h4>{item.title}</h4>
-                      <p>{item.desc}</p>
-                    </div>
+                  <div key={i} className="atgt-prep-box">
+                    <div className="atgt-prep-box-icon">{item.icon}</div>
+                    <h4>{item.title}</h4>
+                    <p>{item.desc}</p>
                   </div>
                 ))}
               </div>
-            </section>
+            </div>
 
           </div>
 
-          {/* CỘT PHẢI (SIDEBAR) */}
-          <aside className="atgt-sidebar">
+          {/* CỘT PHẢI SIDEBAR: QUY TẮC + PHÁP LUẬT + THÔNG ĐIỆP */}
+          <aside className="atgt-sidebar-column">
 
-            {/* Số điện thoại khẩn cấp */}
-            <div className="atgt-box atgt-box--danger">
-              <div className="atgt-box-title">
-                <SvgIcons.Siren />
-                <span>Số điện thoại hỗ trợ khẩn cấp</span>
+            {/* CỘT PHẢI - QUY TẮC AN TOÀN GIAO THÔNG */}
+            <div className="atgt-sidebar-box atgt-box-rules">
+              <div className="atgt-sbox-head">
+                <SvgIcons.Traffic />
+                <span>QUY TẮC AN TOÀN GIAO THÔNG</span>
               </div>
-              <div className="atgt-phones-list">
-                {DATA.emergencyPhones.map((p, i) => (
-                  <div key={i} className="atgt-phone-item">
-                    <span>{p.label}:</span>
-                    <a href={`tel:${p.number}`} className="atgt-phone-link">{p.number}</a>
+              <div className="atgt-rules-list">
+                {DATA.rules.map((rule, idx) => (
+                  <div key={idx} className="atgt-rule-item">
+                    <div className="rule-icon" style={{ color: rule.color, background: `${rule.color}15` }}>
+                      {rule.icon}
+                    </div>
+                    <div className="rule-text">{rule.text}</div>
                   </div>
                 ))}
               </div>
-              <p className="atgt-phone-note">Phòng VH-XH & Công an xã Đăk Pxi trực 24/7</p>
             </div>
 
-            {/* Lưu ý quan trọng */}
-            <div className="atgt-box">
-              <div className="atgt-box-title">
-                <SvgIcons.AlertTriangle />
-                <span>Lưu ý an toàn giao thông</span>
+            {/* CỘT PHẢI - CỔNG THÔNG TIN PHÁP LUẬT */}
+            <div className="atgt-sidebar-box atgt-box-law">
+              <div className="atgt-sbox-head">
+                <SvgIcons.Globe />
+                <span>CỔNG THÔNG TIN PHÁP LUẬT</span>
               </div>
-              <ul className="atgt-warning-list">
-                {DATA.warning.map((w, i) => (
-                  <li key={i}>{w}</li>
-                ))}
-              </ul>
-            </div>
+              <p className="atgt-law-desc">Tra cứu văn bản pháp luật, thông tin tuyên truyền, tài liệu chính thức về ATGT:</p>
 
-            {/* CỔNG THÔNG TIN PHÁP LUẬT QUỐC GIA */}
-            <div className="atgt-box atgt-box--law">
-              <div className="atgt-box-title">
-                <SvgIcons.Landmark />
-                <span>Cổng Thông tin Pháp luật Quốc gia</span>
-              </div>
-              <p className="atgt-law-box-desc">Tra cứu chính thức các quy định Luật Giao thông đường bộ & Nghị định xử phạt:</p>
-              <div className="atgt-sidebar-law-links">
+              <div className="atgt-law-buttons">
                 <a
-                  href="https://vbpl.vn/TW/Pages/home.aspx"
+                  href="https://pbgdpl.moj.gov.vn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="atgt-side-law-btn"
+                  className="atgt-law-btn blue"
                 >
-                  <span className="ico"><SvgIcons.BookOpen /></span>
-                  <div>
-                    <strong>Cơ sở dữ liệu VBPL Quốc gia</strong>
-                    <span>vbpl.vn — Tra cứu Luật GTĐB</span>
+                  <SvgIcons.Globe />
+                  <div className="btn-txt">
+                    <strong>https://pbgdpl.moj.gov.vn</strong>
+                    <span>Trang PBGDPL Quốc gia</span>
                   </div>
-                  <span className="arr"><SvgIcons.ExternalLink /></span>
+                  <SvgIcons.ExternalLink />
                 </a>
 
                 <a
                   href="https://phapluat.gov.vn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="atgt-side-law-btn secondary"
+                  className="atgt-law-btn navy"
                 >
-                  <span className="ico"><SvgIcons.Scale /></span>
-                  <div>
+                  <SvgIcons.Facebook />
+                  <div className="btn-txt">
                     <strong>Cổng Thông tin Pháp luật Quốc gia</strong>
-                    <span>phapluat.gov.vn — Hệ thống văn bản</span>
+                    <span>Kênh truyền thông chính thức</span>
                   </div>
-                  <span className="arr"><SvgIcons.ExternalLink /></span>
+                  <SvgIcons.ExternalLink />
                 </a>
 
                 <a
-                  href="https://luatvietnam.vn/giao-thong.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="atgt-side-law-btn accent"
+                  href="tel:1900636387"
+                  className="atgt-law-btn yellow"
                 >
-                  <span className="ico"><SvgIcons.Search /></span>
-                  <div>
-                    <strong>Mức phạt Nghị định 100 & 123</strong>
-                    <span>Tra cứu mức phạt vi phạm ATGT</span>
+                  <SvgIcons.PhoneAlert />
+                  <div className="btn-txt">
+                    <strong>Tổng đài pháp luật: 1900 63 63 87</strong>
+                    <span>Tư vấn luật Giao thông 24/7</span>
                   </div>
-                  <span className="arr"><SvgIcons.ExternalLink /></span>
                 </a>
               </div>
             </div>
 
-            {/* Thông điệp tuyên truyền */}
-            <div className="atgt-box atgt-box--slogan">
-              <div className="atgt-box-title">
-                <SvgIcons.Megaphone />
-                <span>Thông điệp tuyên truyền</span>
+            {/* CỘT PHẢI - THÔNG ĐIỆP TUYÊN TRUYỀN */}
+            <div className="atgt-sidebar-box atgt-box-slogan">
+              <div className="atgt-slogan-icon">
+                <SvgIcons.Quote />
               </div>
-              <blockquote className="atgt-slogan-text">
-                "{DATA.slogans[sloganIdx]}"
+              <blockquote className="atgt-slogan-content">
+                "An toàn giao thông là hạnh phúc của mọi nhà. Mỗi người dân Đăk Pxi hãy chấp hành nghiêm pháp luật giao thông."
               </blockquote>
+              <div className="atgt-slogan-illustration">
+                <img src="/huong-dan/atgt-1.png" alt="Gia đình tham gia giao thông an toàn" className="slogan-img" />
+              </div>
             </div>
 
           </aside>
 
         </div>
+
+        {/* ════════════ 4. FOOTER THỦ TƯỚNG / BỘ CÔNG AN BANNER ════════════ */}
+        <footer className="atgt-poster-footer">
+          <SvgIcons.ShieldCheck />
+          <span>Chấp hành nghiêm luật giao thông là bảo vệ chính mình, gia đình và cộng đồng.</span>
+        </footer>
+
       </div>
 
-      {/* MODAL XEM ẢNH RÕ NẾT */}
+      {/* NÚT LOA PHÁT THANH CỐ ĐỊNH GÓC MÀN HÌNH (FLOATING AUDIO WIDGET - XUẤT HIỆN Ở BẤT KỲ ĐÂU KHI CUỘN) */}
+      <div
+        className={`atgt-floating-audio-widget ${speaking ? 'active-speaking' : ''}`}
+        onClick={() => handleSpeak()}
+        title={speaking ? 'Bấm để dừng phát thanh' : 'Bấm để nghe loa đọc tuyên truyền'}
+      >
+        <div className="widget-pulse-ring"></div>
+        <div className="widget-icon-box">
+          {speaking ? <SvgIcons.SquareStop /> : <SvgIcons.VolumeUp />}
+        </div>
+        <div className="widget-text-box">
+          <span className="widget-label">{speaking ? 'ĐANG PHÁT THANH' : 'LOA PHÁT THANH'}</span>
+          <span className="widget-sub">{speaking ? 'Bấm để tạm dừng' : 'Nghe loa phát thanh'}</span>
+        </div>
+        <div className="widget-equalizer-bars">
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
+        </div>
+      </div>
+
+      {/* MODAL PHÓNG TO ẢNH */}
       {activeImg && (
-        <div className="atgt-img-modal-overlay" onClick={() => setActiveImg(null)}>
-          <div className="atgt-img-modal-content" onClick={e => e.stopPropagation()}>
-            <button className="atgt-img-modal-close" onClick={() => setActiveImg(null)}>✕</button>
-            <img src={activeImg} alt="Ảnh phóng to" className="atgt-modal-full-img" />
+        <div className="atgt-modal-overlay" onClick={() => setActiveImg(null)}>
+          <div className="atgt-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="atgt-modal-close" onClick={() => setActiveImg(null)}>✕</button>
+            <img src={activeImg} alt="Ảnh phóng to" className="atgt-modal-img" />
           </div>
         </div>
       )}

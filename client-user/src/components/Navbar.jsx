@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 import { useLang } from '../LanguageContext';
 import { useFontSize } from '../FontSizeContext';
-import { User } from 'lucide-react';
+import { User, Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
   { to: '/', label: 'TRANG CHỦ' },
@@ -30,40 +30,43 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const { lang, toggleLang } = useLang();
   const { increase, decrease, sizeIndex, max, currentLabel } = useFontSize();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isLoggedIn = !!localStorage.getItem("admin_token");
   const userFullName = localStorage.getItem("admin_fullname") || localStorage.getItem("admin_username") || "Cán bộ";
   const userRole = localStorage.getItem("admin_role");
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin_token");
-    localStorage.removeItem("admin_role");
-    localStorage.removeItem("admin_username");
-    localStorage.removeItem("admin_fullname");
-    window.location.reload();
-  };
+  const closeDrawer = () => setDrawerOpen(false);
 
   return (
     <header className="navbar">
 
-      {/* Hàng 1 — Logo + Tên + Cỡ chữ */}
+      {/* Hàng 1 — Logo + Tên + Hamburger Button */}
       <div className="navbar-top">
-        <NavLink to="/" className="navbar-brand">
+        <NavLink to="/" className="navbar-brand" onClick={closeDrawer}>
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjZ1BrruhiReTVU_7ul40Ev2emExnG9Moo4A&s"
             alt="Logo UBND"
             className="navbar-logo"
           />
           <div className="navbar-title">
-
             <span className="navbar-main">TRANG THÔNG TIN ĐIỆN TỬ PHÒNG VĂN HÓA - XÃ HỘI XÃ ĐĂK PXI</span>
           </div>
         </NavLink>
 
-        {/* Các nút tiện ích đã được chuyển xuống cuối thanh menu chính */}
+        {/* Nút Hamburger Menu trên Mobile */}
+        <button
+          type="button"
+          className="navbar-mobile-toggle"
+          onClick={() => setDrawerOpen(!drawerOpen)}
+          aria-label="Toggle menu nav"
+        >
+          {drawerOpen ? <X size={24} /> : <Menu size={24} />}
+          <span>MENU</span>
+        </button>
       </div>
 
-      {/* Hàng 2 — Menu */}
+      {/* Hàng 2 — Menu Desktop */}
       <div className="navbar-bottom">
         <nav className="navbar-nav">
           <div className="nav-links-left">
@@ -103,7 +106,7 @@ export default function Navbar() {
               <button
                 className="lang-toggle-btn"
                 onClick={toggleLang}
-                title={lang === 'vi' ? 'Switch to English / Chuyển sang Tiếng Anh' : 'Chuyển sang Tiếng Việt / Switch to Vietnamese'}
+                title={lang === 'vi' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
               >
                 <img
                   src={lang === 'vi' ? '/flag-vi.png' : '/flag-en.png'}
@@ -122,15 +125,7 @@ export default function Navbar() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="header-user-btn"
-                    title={`Chức danh: ${
-                      userRole === 'admin'
-                        ? 'Quản trị viên'
-                        : userRole === 'truongphong'
-                        ? 'Trưởng phòng'
-                        : userRole === 'phophong'
-                        ? 'Phó phòng'
-                        : 'Cán bộ'
-                    } — Nhấp để mở không gian làm việc chuyên trách`}
+                    title={`Chức danh: ${userRole === 'admin' ? 'Quản trị viên' : userRole === 'truongphong' ? 'Trưởng phòng' : 'Cán bộ'}`}
                   >
                     <User size={18} strokeWidth={2} />
                     <span>{userFullName}</span>
@@ -146,6 +141,72 @@ export default function Navbar() {
           </div>
         </nav>
       </div>
+
+      {/* DRAWER SLIDE-OVER MENU TRÊN MOBILE (<768px) */}
+      {drawerOpen && (
+        <div className="navbar-drawer-overlay" onClick={closeDrawer}>
+          <div className="navbar-drawer-content" onClick={e => e.stopPropagation()}>
+            <div className="drawer-header">
+              <span className="drawer-title">MENU BÀN PHÍM / ĐIỀU HƯỚNG</span>
+              <button className="drawer-close-btn" onClick={closeDrawer}><X size={20} /></button>
+            </div>
+            
+            <div className="drawer-body">
+              {NAV_ITEMS.map(item => (
+                <div key={item.label} className="drawer-item-group">
+                  {item.dropdown ? (
+                    <>
+                      <div className="drawer-group-title">{item.label}</div>
+                      {item.dropdown.map(sub => (
+                        <NavLink
+                          key={sub.to}
+                          to={sub.to}
+                          className="drawer-link sub-link"
+                          onClick={closeDrawer}
+                        >
+                          {sub.label}
+                        </NavLink>
+                      ))}
+                    </>
+                  ) : (
+                    <NavLink
+                      to={item.to}
+                      className="drawer-link"
+                      onClick={closeDrawer}
+                    >
+                      {item.label}
+                    </NavLink>
+                  )}
+                </div>
+              ))}
+
+              <div className="drawer-divider"></div>
+
+              {/* Utility buttons inside drawer */}
+              <div className="drawer-utilities">
+                <div className="font-size-controls notranslate">
+                  <span>Cỡ chữ: </span>
+                  <button className="font-btn" onClick={decrease} disabled={sizeIndex === 0}>A−</button>
+                  <span className="font-label">{currentLabel}</span>
+                  <button className="font-btn" onClick={increase} disabled={sizeIndex === max}>A+</button>
+                </div>
+
+                {isLoggedIn ? (
+                  <a href="/truong-phong" className="drawer-user-btn" onClick={closeDrawer}>
+                    <User size={18} />
+                    <span>{userFullName} (Không gian làm việc)</span>
+                  </a>
+                ) : (
+                  <NavLink to="/dang-nhap" className="drawer-user-btn" onClick={closeDrawer}>
+                    <User size={18} />
+                    <span>Đăng nhập cán bộ</span>
+                  </NavLink>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </header>
   );
