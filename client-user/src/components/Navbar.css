@@ -31,10 +31,11 @@
 }
 
 .navbar-logo {
-  width: 56px;
-  height: 56px;
+  width: 76px;
+  height: 76px;
   object-fit: contain;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
 .navbar-title {
@@ -42,6 +43,7 @@
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  padding: 4px 0;
 }
 
 .navbar-sub {
@@ -56,13 +58,15 @@
 }
 
 .navbar-main {
-  font-size: clamp(16px, 1.8vw, 26px);
+  font-size: clamp(16px, 1.8vw, 25px);
   font-weight: 700;
   color: #1a3a5c;
-  line-height: 1.2;
+  line-height: 1.45;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-top: 6px;
+  padding-bottom: 4px;
 }
 
 /* ── Actions ── */
@@ -262,12 +266,14 @@
   .navbar-main {
     font-size: 13px;
     font-weight: 700;
-    line-height: 1.35;
+    line-height: 1.45;
     white-space: normal !important;
     word-break: break-word;
     overflow: visible !important;
     text-overflow: unset !important;
     color: #1a3a5c;
+    padding-top: 4px;
+    padding-bottom: 2px;
   }
 
   .navbar-sub {
@@ -276,8 +282,8 @@
   }
 
   .navbar-logo {
-    width: 40px;
-    height: 40px;
+    width: 54px;
+    height: 54px;
     flex-shrink: 0;
   }
 

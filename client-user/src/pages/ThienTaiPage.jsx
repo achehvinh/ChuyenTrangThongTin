@@ -168,9 +168,27 @@ export default function ThienTaiPage() {
     const handleEnded = () => setSpeaking(false);
     audio.addEventListener('ended', handleEnded);
 
+    const timer = setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play()
+          .then(() => {
+            setSpeaking(true);
+          })
+          .catch(() => {
+            playTTSFallback();
+          });
+      }
+    }, 600);
+
     return () => {
+      clearTimeout(timer);
       audio.removeEventListener('ended', handleEnded);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
       audio.pause();
+      audio.currentTime = 0;
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
@@ -226,22 +244,6 @@ export default function ThienTaiPage() {
       }
     }
   }
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (audioRef.current) {
-        audioRef.current.play()
-          .then(() => {
-            setSpeaking(true);
-          })
-          .catch(() => {
-            playTTSFallback();
-          });
-      }
-    }, 600);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <div className="tt-page">
@@ -325,7 +327,7 @@ export default function ThienTaiPage() {
 
               <div className="canva-steps-flow">
                 {DATA.steps.map((s, i) => {
-                  const stepIcons = [<SvgIcons.Home key="h"/>, <SvgIcons.Package key="p"/>, <SvgIcons.FileText key="f"/>, <SvgIcons.Siren key="s"/>];
+                  const stepIcons = [<SvgIcons.Home key="h" />, <SvgIcons.Package key="p" />, <SvgIcons.FileText key="f" />, <SvgIcons.Siren key="s" />];
                   const stepTags = ['Trước mưa bão', 'Chuẩn bị 3 - 5 ngày', 'Túi chống nước', 'Khẩn cấp'];
                   return (
                     <div key={i} className={`canva-step-card canva-step-${i + 1}`}>

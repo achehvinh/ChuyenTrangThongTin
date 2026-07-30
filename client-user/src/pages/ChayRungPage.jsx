@@ -1,5 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './ChayRungPage.css';
+
+const SvgIcons = {
+  VolumeUp: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </svg>
+  ),
+  SquareStop: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+    </svg>
+  )
+};
 
 const DATA = {
   title: 'Phòng chống cháy rừng',
@@ -43,10 +58,118 @@ const DATA = {
 };
 
 export default function ChayRungPage() {
+  const audioRef = useRef(null);
   const [activeImgIndex, setActiveImgIndex] = useState(0);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+
+  // Tự động phát âm thanh khi vừa truy cập trang PHÒNG CHỐNG CHÁY RỪNG
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play()
+          .then(() => {
+            setIsPlayingAudio(true);
+            setSpeaking(true);
+          })
+          .catch(() => {
+            playTTS();
+          });
+      } else {
+        playTTS();
+      }
+    }, 600);
+
+    return () => {
+      clearTimeout(timer);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  function handleSpeak(customText) {
+    if (isPlayingAudio || speaking) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setIsPlayingAudio(false);
+      setSpeaking(false);
+      return;
+    }
+
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play()
+        .then(() => {
+          setIsPlayingAudio(true);
+          setSpeaking(true);
+        })
+        .catch(() => {
+          playTTS(customText);
+        });
+    } else {
+      playTTS(customText);
+    }
+  }
+
+  function playTTS(customText) {
+    if (!('speechSynthesis' in window)) return;
+
+    window.speechSynthesis.cancel();
+    const textToRead = customText || (
+      `Kính mời bà con xã Đăk Pxi lắng nghe thông báo tuyên truyền phòng chống cháy rừng. ` +
+      DATA.content +
+      ` Bốn bước bắt buộc khi bà con đốt nương rẫy. ` +
+      DATA.steps.map((s, idx) => `Bước ${idx + 1}: ${s.title}. ${s.desc}`).join(' ')
+    );
+
+    const u = new SpeechSynthesisUtterance(textToRead);
+    u.lang = 'vi-VN';
+    u.rate = 0.92;
+    u.onend = () => {
+      setSpeaking(false);
+      setIsPlayingAudio(false);
+    };
+    u.onerror = () => {
+      setSpeaking(false);
+      setIsPlayingAudio(false);
+    };
+    setSpeaking(true);
+    window.speechSynthesis.speak(u);
+  }
 
   return (
     <div className="cr-page">
+      {/* Audio ngầm phát file /huong-dan/chay-rung.mp3 */}
+      <audio
+        ref={audioRef}
+        style={{ display: 'none' }}
+        preload="auto"
+        onPlay={() => {
+          setIsPlayingAudio(true);
+          setSpeaking(true);
+        }}
+        onPause={() => {
+          setIsPlayingAudio(false);
+          setSpeaking(false);
+        }}
+        onEnded={() => {
+          setIsPlayingAudio(false);
+          setSpeaking(false);
+        }}
+      >
+        <source src="/huong-dan/chay-rung.mp3" type="audio/mpeg" />
+        <source src="/video/chay-rung.mp3" type="audio/mpeg" />
+        <source src="/chay-rung.mp3" type="audio/mpeg" />
+      </audio>
       {/* Thanh cảnh báo khẩn cấp đầu trang */}
       <div className="cr-alert-bar">
         <span className="cr-alert-pulse">🔴</span> BÁO ĐỘNG ĐỎ: CẢNH BÁO CHÁY RỪNG CẤP V (CẤP CỰC KỲ NGUY HIỂM) TRÊN ĐỊA BÀN XÃ ĐĂK PXI
@@ -188,6 +311,28 @@ export default function ChayRungPage() {
               </div>
             </div>
           </aside>
+        </div>
+      </div>
+
+      {/* NÚT LOA PHÁT THANH CỐ ĐỊNH GÓC MÀN HÌNH (FLOATING AUDIO WIDGET) */}
+      <div
+        className={`cr-floating-audio-widget ${speaking ? 'active-speaking' : ''}`}
+        onClick={() => handleSpeak()}
+        title={speaking ? 'Bấm để dừng phát thanh' : 'Bấm để nghe loa đọc tuyên truyền'}
+      >
+        <div className="widget-pulse-ring"></div>
+        <div className="widget-icon-box">
+          {speaking ? <SvgIcons.SquareStop /> : <SvgIcons.VolumeUp />}
+        </div>
+        <div className="widget-text-box">
+          <span className="widget-label">{speaking ? 'ĐANG PHÁT THANH' : 'LOA PHÁT THANH'}</span>
+          <span className="widget-sub">{speaking ? 'Bấm để tạm dừng' : 'Nghe loa phát thanh'}</span>
+        </div>
+        <div className="widget-equalizer-bars">
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
+          <span className={`eq-bar ${speaking ? 'playing' : ''}`}></span>
         </div>
       </div>
     </div>

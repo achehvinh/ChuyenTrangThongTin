@@ -77,7 +77,11 @@ export default function TeNanXaHoiPage() {
       clearTimeout(timer);
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.currentTime = 0;
         audioRef.current = null;
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
       }
       setSpeaking(false);
     };

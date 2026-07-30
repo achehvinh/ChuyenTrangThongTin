@@ -319,6 +319,7 @@ export default function AnToanGiaoThongPage() {
       clearTimeout(timer);
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.currentTime = 0;
       }
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();

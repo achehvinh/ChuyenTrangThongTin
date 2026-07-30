@@ -277,8 +277,11 @@ export default function HuongDanBHXHPage() {
     }, 1000);
     return () => {
       clearTimeout(timer);
-      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
-      if (stepAudioRef.current) { stepAudioRef.current.pause(); stepAudioRef.current = null; }
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; audioRef.current = null; }
+      if (stepAudioRef.current) { stepAudioRef.current.pause(); stepAudioRef.current.currentTime = 0; stepAudioRef.current = null; }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
       setSpeaking(false);
     };
   }, []);

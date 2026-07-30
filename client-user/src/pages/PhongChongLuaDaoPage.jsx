@@ -155,6 +155,7 @@ export default function PhongChongLuaDaoPage() {
       clearTimeout(timer);
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.currentTime = 0;
       }
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();

@@ -55,7 +55,7 @@ export default function Navbar() {
       <div className="navbar-top">
         <NavLink to="/" className="navbar-brand" onClick={closeDrawer}>
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjZ1BrruhiReTVU_7ul40Ev2emExnG9Moo4A&s"
+            src="/huong-dan/anh-logo.jpg"
             alt="Logo UBND"
             className="navbar-logo"
           />
