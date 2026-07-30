@@ -1,795 +1,767 @@
-/* ══════════════════════════════════════
-   Navbar — đơn giản, ít màu
-   Palette: trắng + xanh navy + xám nhạt
-══════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════════════
+   SITE HEADER & NAVBAR REDESIGN - PIXEL PERFECT TO SAMPLE IMAGE
+   ════════════════════════════════════════════════════════════════════════ */
 
-.navbar {
+.site-header-redesign {
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d1d5db;
-  font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  box-sizing: border-box;
 }
 
-/* ── Hàng 1 ── */
-.navbar-top {
+/* ── 1. TOP BANNER HEADER ── */
+.header-banner-top {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  height: clamp(190px, 15vw, 240px);
+  background-image: url('/huong-dan/dak_pxi_header_bg.png');
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  background-color: #f7ede2;
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid #d9ccb9;
+}
+
+.header-banner-overlay {
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(
+    90deg, 
+    #f7ede2 0%, 
+    #f7ede2 32%, 
+    rgba(247, 237, 226, 0.85) 42%, 
+    rgba(247, 237, 226, 0.2) 56%, 
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.header-banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1540px;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 20px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 12px 20px;
-  gap: 16px;
-  box-sizing: border-box;
-  overflow-x: hidden;
+  gap: 20px;
 }
 
-.navbar-brand {
+/* BRANDING SECTION */
+.header-brand-box {
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-width: 0;
+  gap: 18px;
+  text-decoration: none;
+  color: inherit;
 }
 
-.navbar-logo {
-  width: 76px;
-  height: 76px;
-  object-fit: contain;
+.brand-emblem-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 4px;
+  box-shadow: 0 4px 14px rgba(90, 40, 10, 0.18);
+  border: 2px solid #d49f53;
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.navbar-title {
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.brand-text-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-  padding: 4px 0;
 }
 
-.navbar-sub {
-  font-size: clamp(12px, 1.1vw, 16px);
-  color: #6b7280;
+.brand-subtext {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #4a3e35;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-family: Arial, sans-serif;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.navbar-main {
-  font-size: clamp(16px, 1.8vw, 25px);
+.brand-main-title {
+  font-size: clamp(24px, 2.7vw, 32px);
+  font-weight: 900;
+  color: #3b1606;
+  margin: 1px 0 0 0;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
+}
+
+.brand-sub-title {
+  font-size: clamp(24px, 2.7vw, 32px);
+  font-weight: 900;
+  color: #3b1606;
+  margin: 0;
+  line-height: 1.15;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
+}
+
+.brand-slogan {
+  font-size: 19.5px;
   font-weight: 700;
-  color: #1a3a5c;
-  line-height: 1.45;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-top: 6px;
-  padding-bottom: 4px;
+  color: #b85413;
+  margin: 4px 0 0 0;
+  font-style: italic;
+  font-family: 'Dancing Script', 'Caveat', 'Georgia', cursive, serif;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* ── Actions ── */
-.navbar-actions {
+/* TOP RIGHT CONTROLS */
+.header-top-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
+  gap: 12px;
+  margin-top: 4px;
 }
 
-.font-size-controls {
+/* SEARCH FORM */
+.header-search-form {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  padding: 4px 8px;
-  background: #f9fafb;
 }
 
-.font-btn {
-  background: none;
-  border: none;
+.header-search-input {
+  width: 210px;
+  height: 38px;
+  background: #ffffff;
+  border: 1px solid #d4c5b3;
+  border-radius: 20px;
+  padding: 0 42px 0 16px;
   font-size: 13px;
-  font-weight: 700;
-  color: #374151;
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-.font-btn:hover:not(:disabled) {
-  background: #e5e7eb;
-}
-
-.font-btn:disabled {
-  color: #d1d5db;
-  cursor: not-allowed;
-}
-
-.font-label {
-  font-size: 12px;
-  color: #6b7280;
-  padding: 0 4px;
-  font-family: Arial, sans-serif;
-}
-
-.lang-toggle-wrapper {
-  display: inline-block;
-}
-
-.lang-toggle-btn {
-  display: flex;
-  align-items: center;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  padding: 5px 8px;
-  background: #f9fafb;
-  cursor: pointer;
+  color: #333333;
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease;
 }
 
-.lang-toggle-btn:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-  transform: scale(1.05);
+.header-search-input:focus {
+  width: 250px;
+  border-color: #36532b;
+  box-shadow: 0 0 0 3px rgba(54, 83, 43, 0.15);
 }
 
-.lang-flag-img {
-  width: 22px;
-  height: 14px;
-  object-fit: cover;
-  border-radius: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  display: block;
-}
-
-/* ── Hàng 2: Menu ── */
-.navbar-bottom {
-  border-top: 3px solid #1a3a5c;
-  background: #1a3a5c;
-}
-
-.navbar-nav {
+.header-search-btn {
+  position: absolute;
+  right: 3px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #2b4524;
+  border: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.header-search-btn:hover {
+  background: #1c3017;
+}
+
+/* FONT SIZE PILL */
+.font-size-pill {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #d4c5b3;
+  border-radius: 20px;
+  padding: 3px 6px;
+  gap: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.font-size-btn {
+  background: transparent;
+  border: none;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #555555;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.font-size-btn:hover,
+.font-size-btn.active {
+  background: #2b4524;
+  color: #ffffff;
+}
+
+/* CIRCLE BUTTONS */
+.header-circle-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #d4c5b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.header-circle-icon-btn:hover {
+  transform: translateY(-1px);
+  border-color: #2b4524;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vn-flag-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 2. MAIN NAVIGATION BAR WITH ETHNIC BROCADE STRIPS ── */
+.header-nav-bar {
+  position: relative;
   width: 100%;
-  max-width: 1550px;
-  margin: 0 auto;
-  padding: 0 8px 0 24px;
+  background: #233b1e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
 }
 
-.nav-links-left {
+/* BROCADE BORDER STRIPS */
+.brocade-border-strip {
+  width: 100%;
+  height: 6px;
+  background: repeating-linear-gradient(90deg,
+      #9e3a24 0px,
+      #9e3a24 12px,
+      #d49f53 12px,
+      #d49f53 24px,
+      #233b1e 24px,
+      #233b1e 36px,
+      #e2c286 36px,
+      #e2c286 48px,
+      #8c261e 48px,
+      #8c261e 60px);
+}
+
+.nav-container {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.nav-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
+  gap: 4px;
+}
+
+.nav-item {
+  position: relative;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
-  height: 42px;
-  padding: 0 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #e5e7eb;
+  gap: 7px;
+  padding: 12px 14px;
+  color: #f2e9dc;
   text-decoration: none;
-  font-family: Arial, sans-serif;
-  border-bottom: 3px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .nav-link:hover {
-  color: #fff;
-  border-bottom-color: #fbbf24;
-}
-
-.nav-link--active {
-  color: #fbbf24;
-  border-bottom-color: #fbbf24;
-}
-
-/* ── Dropdown ── */
-.nav-dropdown {
-  position: relative;
-  height: 42px;
-  display: flex;
-  align-items: center;
-}
-
-.nav-dropdown-trigger {
-  cursor: pointer;
-  user-select: none;
-}
-
-.nav-dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 200px;
-  background: #fff;
-  border: 1px solid #d1d5db;
-  border-top: 3px solid #1a3a5c;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
-  z-index: 999;
-}
-
-.nav-dropdown:hover .nav-dropdown-menu {
-  display: block;
-}
-
-.nav-dropdown-item {
-  display: block;
-  padding: 10px 16px;
-  font-size: 14px;
-  color: #1f2937;
-  text-decoration: none;
-  border-bottom: 1px solid #f3f4f6;
-  font-family: Arial, sans-serif;
-}
-
-.nav-dropdown-item:last-child {
-  border-bottom: none;
-}
-
-.nav-dropdown-item:hover {
-  background: #1a3a5c;
-  color: #ffffff; /* Đổi màu chữ hover thành trắng */
-}
-
-.nav-dropdown-item.active {
-  background: #f3f4f6;
-  color: #1a3a5c;
-  font-weight: 700;
-}
-
-.nav-dropdown-item.active:hover {
-  background: #1a3a5c;
   color: #ffffff;
-}
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .navbar-top {
-    padding: 10px 12px;
-    gap: 10px;
-  }
-
-  .navbar-brand {
-    gap: 10px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .navbar-main {
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.45;
-    white-space: normal !important;
-    word-break: break-word;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    color: #1a3a5c;
-    padding-top: 4px;
-    padding-bottom: 2px;
-  }
-
-  .navbar-sub {
-    font-size: 11px;
-    white-space: normal;
-  }
-
-  .navbar-logo {
-    width: 54px;
-    height: 54px;
-    flex-shrink: 0;
-  }
-
-  .navbar-mobile-toggle {
-    flex-shrink: 0;
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-
-  .navbar-nav {
-    padding: 0 8px;
-    overflow-x: auto;
-  }
-
-  .nav-link {
-    font-size: 13px;
-    padding: 0 10px;
-  }
-
-  .font-label {
-    display: none;
-  }
-}
-
-.navbar-nav {
-  display: flex;
-  align-items: center;
-}
-
-.nav-login-btn {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  border: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-  text-decoration: none;
-  transition: opacity 0.2s;
-  position: relative;
-}
-
-/* Tooltip hiển thị bên trái biểu tượng đăng nhập */
-.nav-login-tooltip {
-  position: absolute;
-  right: 120%; /* Đặt bên trái logo */
-  top: 50%;
-  transform: translateY(-50%) translateX(10px);
-  background-color: #1e293b;
-  color: #ffffff;
-  padding: 5px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  pointer-events: none;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Mũi tên nhỏ trỏ về phía logo */
-.nav-login-tooltip::after {
-  content: '';
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent transparent #1e293b;
-}
-
-.nav-login-btn:hover .nav-login-tooltip {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-50%) translateX(0);
-}
-
-.nav-login-btn:hover {
-  text-decoration: none;
-}
-
-/* Dropdown thông tin cán bộ đăng nhập */
-.nav-user-dropdown {
-  margin-left: auto;
-  position: relative;
-  height: 42px;
-  display: flex;
-  align-items: center;
-}
-
-.nav-user-trigger {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
-
-.nav-user-dropdown:hover .nav-user-trigger {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.nav-user-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  min-width: 270px;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-top: 3px solid #1a3a5c;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 999;
-  border-radius: 0 0 8px 8px;
-  padding: 8px 0;
-}
-
-.nav-user-dropdown:hover .nav-user-menu {
-  display: block;
-}
-
-.nav-user-role-label {
-  padding: 8px 16px;
-  font-size: 12px;
-  color: #6b7280;
-  border-bottom: 1px solid #f3f4f6;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.nav-user-item {
-  display: block;
-  width: 100%;
-  padding: 10px 16px;
-  font-size: 14px;
-  color: #1f2937;
-  text-decoration: none;
-  text-align: left;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-family: inherit;
-  box-sizing: border-box;
-}
-
-.nav-user-item:hover {
-  background: #1a3a5c;
-  color: #ffffff;
-}
-
-.nav-user-item.logout-btn {
-  color: #dc2626;
-  border-top: 1px solid #f3f4f6;
-}
-
-.nav-user-item.logout-btn:hover {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-
-.navbar-brand {
-  text-decoration: none;
-  color: inherit;
-}
-
-.navbar-brand:hover {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* ── Hàng 2: Menu Utilities (Cỡ chữ, Ngôn ngữ, Đăng nhập) ── */
-.nav-actions-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.nav-actions-right .font-size-controls {
-  border: none;
-  background: transparent;
-  color: #ffffff;
-  padding: 4px 2px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 30px;
-}
-
-.nav-actions-right .font-btn {
-  color: #ffffff;
-}
-
-.nav-actions-right .font-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.nav-actions-right .font-btn:disabled {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.nav-actions-right .font-label {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.nav-actions-right .lang-toggle-btn {
-  border: none;
-  background: transparent;
-  padding: 5px 2px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: all 0.2s ease;
-  height: 30px;
-}
-
-.nav-actions-right .lang-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.navbar-user-actions {
-  display: flex;
-  align-items: center;
-}
-
-.header-login-btn {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  border: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  height: 30px;
-  box-sizing: border-box;
-  padding: 5px 2px;
-}
-
-.header-login-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  gap: 8px;
-  padding: 5px 12px;
-}
-
-.header-login-btn .login-text {
-  color: #ffffff;
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-}
-
-.header-login-btn:hover .login-text {
-  max-width: 80px;
-  opacity: 1;
-}
-
-.navbar-user-logged-in-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.header-user-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: none;
-  padding: 5px 8px;
-  background: transparent;
-  color: #ffffff;
-  font-size: 13.5px;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  height: 30px;
-  box-sizing: border-box;
-}
-
-.header-user-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
-.header-logout-btn {
-  border: none;
-  background: transparent;
-  color: #ffffff;
-  padding: 5px 8px;
-  font-size: 14px;
-  cursor: pointer;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.header-logout-btn:hover {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border-radius: 4px;
-}
-
-/* ── HAMBURGER TOGGLE BUTTON & MOBILE DRAWER (<768px) ── */
-.navbar-mobile-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: #1a3a5c;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 0;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+.nav-icon {
+  color: #e2c286;
   flex-shrink: 0;
 }
 
-.navbar-drawer-overlay {
+.nav-link:hover .nav-icon {
+  color: #ffffff;
+}
+
+/* RIBBON TAB HIGHLIGHT FOR "TRANG CHỦ" */
+.nav-link--home {
+  position: relative;
+  background: #9e3a24 !important;
+  color: #ffffff !important;
+  padding: 12px 20px;
+  font-weight: 800;
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
+  border-radius: 0;
+  margin-right: 6px;
+}
+
+.nav-link--home .nav-icon {
+  color: #ffffff;
+}
+
+.nav-link--home:hover {
+  background: #b8442c !important;
+}
+
+/* DROPDOWN MENUS */
+.dropdown-caret {
+  color: #d49f53;
+  transition: transform 0.2s ease;
+}
+
+.nav-item:hover .dropdown-caret {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #d4c5b3;
+  border-top: 3px solid #9e3a24;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  z-index: 100;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+.nav-dropdown-menu.right-aligned {
+  left: auto;
+  right: 0;
+}
+
+.nav-dropdown-menu li a {
+  display: block;
+  padding: 10px 16px;
+  color: #333333;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.nav-dropdown-menu li a:hover {
+  background: #f7ede2;
+  color: #9e3a24;
+  padding-left: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── RESPONSIVE MEDIA QUERIES ── */
+@media (max-width: 1200px) {
+  .nav-menu-list {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .nav-link {
+    padding: 10px 10px;
+    font-size: 12.5px;
+  }
+
+  .header-search-input {
+    width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .header-top-controls {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .brand-main-title,
+  .brand-sub-title {
+    font-size: 22px;
+  }
+
+  .brand-emblem-wrap {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* ── MOBILE MENU TOGGLE & DRAWER STYLES ── */
+.mobile-menu-toggle-btn {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #d4c5b3;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 992px) {
+  .mobile-menu-toggle-btn {
+    display: flex;
+  }
+
+  .desktop-only-search {
+    display: none;
+  }
+}
+
+/* MOBILE DRAWER PANEL */
+.mobile-drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
-  z-index: 99999;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9999;
   display: flex;
-  justify-content: flex-start;
-  animation: fadeInOverlay 0.25s ease;
+  justify-content: flex-end;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
-@keyframes fadeInOverlay {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.navbar-drawer-content {
-  width: 280px;
-  max-width: 82vw;
+.mobile-drawer-panel {
+  width: 290px;
+  max-width: 85vw;
   height: 100%;
   background: #ffffff;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  animation: slideDrawer 0.25s ease;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
 }
 
-@keyframes slideDrawer {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
-}
-
-.drawer-header {
-  padding: 16px 20px;
-  background: #1a3a5c;
-  color: #ffffff;
+.mobile-drawer-header {
+  background: linear-gradient(180deg, #962828 0%, #6e1a1a 100%);
+  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: #ffffff;
 }
 
 .drawer-title {
-  font-size: 12.5px;
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
 }
 
 .drawer-close-btn {
-  background: none;
+  background: transparent;
   border: none;
-  color: #ffffff;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-search-form {
+  padding: 14px 16px;
+  background: #f7ede2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #e2d3be;
+}
+
+.mobile-search-input {
+  flex-grow: 1;
+  height: 36px;
+  border: 1px solid #d4c5b3;
+  border-radius: 18px;
+  padding: 0 14px;
+  font-size: 13px;
+  outline: none;
+}
+
+.mobile-search-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #233b1e;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
-.drawer-body {
-  padding: 16px;
-  overflow-y: auto;
+.mobile-drawer-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
-.drawer-item-group {
+.mobile-drawer-menu li a {
+  display: block;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2b1d14;
+  text-decoration: none;
+  border-bottom: 1px solid #f0e6d8;
+  transition: background 0.15s ease;
+}
+
+.mobile-drawer-menu li a:hover {
+  background: #f7ede2;
+  color: #9e3a24;
+}
+
+.accordion-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2b1d14;
+  cursor: pointer;
+  border-bottom: 1px solid #f0e6d8;
+}
+
+.accordion-icon {
+  transition: transform 0.2s ease;
+}
+
+.accordion-icon.open {
+  transform: rotate(180deg);
+}
+
+.accordion-sub-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fbf7f0;
+}
+
+.accordion-sub-menu a {
+  padding-left: 36px !important;
+  font-size: 13.5px !important;
+  color: #4a382b !important;
+}
+
+/* ── LOGGED IN USER BADGE & DROPDOWN POPOVER ── */
+.header-user-logged-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1.5px solid #2e7d32;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1b4d24;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
+  transition: all 0.2s ease;
+}
+
+.header-user-logged-badge:hover {
+  background: #f0f7f1;
+  border-color: #1b4d24;
+  transform: translateY(-1px);
+}
+
+.user-online-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #2e7d32;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px #2e7d32;
+}
+
+.user-name-text {
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 290px;
+  max-height: 480px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #d4c5b3;
+  border-top: 3px solid #2e7d32;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  z-index: 99999;
+  padding: 14px;
+  animation: fadeIn 0.2s ease;
+}
+
+.user-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+.user-avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-info-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-fullname {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b4d24;
+}
+
+.user-role-label {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 2px;
+}
+
+.user-dropdown-divider {
+  height: 1px;
+  background: #eeeeee;
+  margin: 10px 0;
+}
+
+.user-dropdown-actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.drawer-group-title {
-  font-size: 12px;
-  font-weight: 800;
-  color: #1a3a5c;
-  padding: 6px 8px;
-  text-transform: uppercase;
-}
-
-.drawer-link {
-  padding: 10px 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-  text-decoration: none;
+.user-dropdown-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 9px 12px;
   border-radius: 6px;
-  transition: background 0.15s;
-}
-
-.drawer-link.sub-link {
-  padding-left: 20px;
   font-size: 13.5px;
+  font-weight: 600;
+  color: #333333;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.drawer-link:hover, .drawer-link.active {
-  background: #eff6ff;
-  color: #1a3a5c;
+.user-dropdown-item:hover {
+  background: #f0f7f1;
+  color: #1b4d24;
 }
 
-.drawer-divider {
-  height: 1px;
-  background: #e5e7eb;
-  margin: 8px 0;
+.user-dropdown-item.active-dash-head {
+  background: #004b87;
+  color: #ffffff;
 }
 
-.drawer-utilities {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.drawer-accordion-btn {
+.user-dropdown-item.has-badge-flex {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  text-align: left;
-  font-weight: 700;
-  color: #1a3a5c;
 }
 
-.drawer-accordion-btn .accordion-arrow {
-  font-size: 14px;
-  color: #6b7280;
-  transition: transform 0.2s ease;
-}
-
-.drawer-sub-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding-left: 12px;
-  margin-top: 4px;
-  border-left: 2.5px solid #2563eb;
-  animation: slideSubMenu 0.2s ease;
-}
-
-@keyframes slideSubMenu {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.drawer-user-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #1a3a5c;
+.badge-count-red {
+  background: #ef4444;
   color: #ffffff;
-  padding: 10px 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 10px;
+  padding: 2px 7px;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.4);
 }
 
-@media (max-width: 768px) {
-  .navbar-mobile-toggle {
-    display: flex;
-  }
+.badge-count-orange {
+  background: #f59e0b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 10px;
+  padding: 2px 7px;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.4);
+}
 
-  .navbar-bottom {
-    display: none;
-  }
+.logout-li-wrap {
+  margin-top: 6px;
+  border-top: 1px solid #eeeeee;
+  padding-top: 6px;
+}
+
+.user-dropdown-item.logout-item {
+  color: #d32f2f;
+}
+
+.user-dropdown-item.logout-item:hover {
+  background: #ffebee;
 }

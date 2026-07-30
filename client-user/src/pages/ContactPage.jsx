@@ -21,7 +21,7 @@ export default function ContactPage() {
               <SvgPhoneCall />
             </div>
             <div className="contact-brand-text">
-              <span className="sub-title">CỔNG THÔNG TIN ĐIỆN TỬ UBND XÃ ĐẮK PXI</span>
+              <span className="sub-title">CỔNG THÔNG TIN ĐIỆN TỬ UBND XÃ ĐĂK PXI</span>
               <h1>Liên hệ & Hỗ trợ Nhân dân</h1>
               <p>Thông tin liên hệ chính thức, địa chỉ trụ sở và kênh tiếp nhận góp ý của nhân dân xã Đăk Pxi.</p>
             </div>

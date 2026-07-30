@@ -214,7 +214,7 @@ export default function BaiVietDetailPage() {
         <div className="bvd-breadcrumb-inner">
           <Link to="/">Trang chủ</Link>
           <span aria-hidden="true">›</span>
-          <Link to="/chuyen-trang">Chuyên trang</Link>
+          <Link to="/tin-tuc">Chuyên trang tin tức</Link>
           {bv && (
             <>
               <span aria-hidden="true">›</span>

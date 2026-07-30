@@ -57,6 +57,9 @@ function Breadcrumbs() {
 
   // Xác định các cấp bậc dựa vào path
   const segments = path.split("/").filter(Boolean);
+
+  // Ẩn breadcrumbs trên trang chi tiết bài viết (vì trang chi tiết có breadcrumb riêng)
+  if (segments[0] === "tin-tuc" && segments[1]) return null;
   const breadcrumbsList = [];
 
   // Mặc định luôn có Trang chủ ở đầu
@@ -137,14 +140,19 @@ function AppLayout() {
 
   const isLoginPage = location.pathname === "/dang-nhap";
   const isMeetingRoom = location.pathname.startsWith("/cuoc-hop-truc-tuyen");
-  const isDashboardPage = location.pathname === "/truong-phong";
+  const isDashboardPage =
+    location.pathname === "/truong-phong" ||
+    location.pathname === "/truong-phong-dashboard" ||
+    location.pathname === "/quan-ly" ||
+    location.pathname === "/quan-tri";
   const hideLayout =
     location.pathname.startsWith("/thu-tuc-hanh-chinh") ||
     location.pathname.startsWith("/huong-dan") ||
     location.pathname.startsWith("/tro-giup") ||
     location.pathname.startsWith("/lien-he") ||
     isLoginPage ||
-    isMeetingRoom;
+    isMeetingRoom ||
+    isDashboardPage;
 
   useEffect(() => {
     const sendVisitorHit = async () => {
@@ -213,6 +221,9 @@ function AppLayout() {
           <Route path="/video" element={<VideoPage />} />
           <Route path="/chat" element={<ChatWindow />} />
           <Route path="/truong-phong" element={<TruongPhongDashboard />} />
+          <Route path="/truong-phong-dashboard" element={<TruongPhongDashboard />} />
+          <Route path="/quan-ly" element={<TruongPhongDashboard />} />
+          <Route path="/quan-tri" element={<TruongPhongDashboard />} />
           <Route path="/an-toan-giao-thong" element={<AnToanGiaoThongPage />} />
           <Route path="/phong-chong-lua-dao" element={<PhongChongLuaDaoPage />} />
           <Route path="/cuoc-hop-truc-tuyen/:id" element={<CuocHopTrucTuyen />} />

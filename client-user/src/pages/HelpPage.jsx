@@ -79,7 +79,7 @@ export default function HelpPage() {
               <SvgIcons.Help />
             </div>
             <div className="help-brand-text">
-              <span className="sub-title">CỔNG THÔNG TIN ĐIỆN TỬ UBND XÃ ĐẮK PXI</span>
+              <span className="sub-title">CỔNG THÔNG TIN ĐIỆN TỬ UBND XÃ ĐĂK PXI</span>
               <h1>Trung tâm trợ giúp</h1>
               <p>Hỗ trợ người dân tra cứu và sử dụng các chức năng trên website một cách dễ dàng và nhanh chóng.</p>
             </div>

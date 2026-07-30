@@ -154,7 +154,7 @@ const SvgIcons = {
   )
 };
 
-// Dữ liệu mẫu nông sản xã Đắk Pxi
+// Dữ liệu mẫu nông sản xã Đăk Pxi
 const INITIAL_PRODUCTS = [
   {
     _id: '1',
@@ -164,7 +164,7 @@ const INITIAL_PRODUCTS = [
     typeIcon: 'coffee',
     giahientai: 125000,
     giaTuanTruoc: 120000,
-    noiThuMua: 'HTX Nông nghiệp Đắk Pxi / Đại lý Thu mua',
+    noiThuMua: 'HTX Nông nghiệp Đăk Pxi / Đại lý Thu mua',
     ngayCapNhat: '24/07/2026',
     ghiChu: 'Giá đạt đỉnh mùa thu hoạch',
     history: [115000, 117000, 118000, 120000, 122000, 124000, 125000]
@@ -177,7 +177,7 @@ const INITIAL_PRODUCTS = [
     typeIcon: 'rubber',
     giahientai: 380,
     giaTuanTruoc: 375,
-    noiThuMua: 'Nông trường Cao su Đắk Pxi',
+    noiThuMua: 'Nông trường Cao su Đăk Pxi',
     ngayCapNhat: '24/07/2026',
     ghiChu: 'Độ mủ trung bình 32-35%',
     history: [360, 365, 370, 372, 375, 378, 380]
@@ -249,13 +249,13 @@ const INITIAL_PRODUCTS = [
   },
   {
     _id: '8',
-    tenCayTrong: 'Chuối Laba Đắk Pxi',
+    tenCayTrong: 'Chuối Laba Đăk Pxi',
     loai: 'Cây ăn trái',
     donVi: 'Kg',
     typeIcon: 'fruit',
     giahientai: 11000,
     giaTuanTruoc: 11000,
-    noiThuMua: 'HTX Nông nghiệp Đắk Pxi',
+    noiThuMua: 'HTX Nông nghiệp Đăk Pxi',
     ngayCapNhat: '24/07/2026',
     ghiChu: 'Nải đều đẹp',
     history: [11000, 11000, 11000, 11000, 11000, 11000, 11000]
@@ -266,13 +266,13 @@ export default function Gianongsan() {
   const [data, setData] = useState(INITIAL_PRODUCTS);
   const [loading, setLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState('24/07/2026 - 14:30');
-  
+
   // Bộ lọc thanh công cụ
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLoai, setSelectedLoai] = useState('ALL');
   const [selectedDonVi, setSelectedDonVi] = useState('ALL');
   const [selectedKhoangGia, setSelectedKhoangGia] = useState('ALL');
-  
+
   // Mặt hàng chọn xem biểu đồ
   const [chartProduct, setChartProduct] = useState(INITIAL_PRODUCTS[0]);
 
@@ -350,8 +350,8 @@ export default function Gianongsan() {
   const filteredData = useMemo(() => {
     return data.filter(item => {
       const matchName = item.tenCayTrong.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        item.noiThuMua.toLowerCase().includes(searchTerm.toLowerCase());
-      
+        item.noiThuMua.toLowerCase().includes(searchTerm.toLowerCase());
+
       const matchLoai = selectedLoai === 'ALL' || item.loai === selectedLoai;
       const matchDonVi = selectedDonVi === 'ALL' || item.donVi === selectedDonVi;
 
@@ -383,7 +383,7 @@ export default function Gianongsan() {
   }
 
   function renderCropSvgIcon(type) {
-    switch(type) {
+    switch (type) {
       case 'coffee': return <SvgIcons.CropCoffee />;
       case 'rubber': return <SvgIcons.CropRubber />;
       case 'rice': return <SvgIcons.CropRice />;
@@ -716,7 +716,7 @@ export default function Gianongsan() {
            7 & 8. THÔNG TIN HỖ TRỢ & NGUỒN DỮ LIỆU
            ════════════════════════════════════════════════ */}
         <div className="gov-bottom-grid">
-          
+
           {/* SECTION 7: THÔNG TIN HỖ TRỢ CÁN BỘ NÔNG NGHIỆP */}
           <section className="gov-card-info">
             <div className="card-info-header">
@@ -738,7 +738,7 @@ export default function Gianongsan() {
               </div>
               <div className="info-row">
                 <span className="info-label"><SvgIcons.Building /> Địa chỉ:</span>
-                <span className="info-val">Bộ phận Một cửa — UBND xã Đắk Pxi</span>
+                <span className="info-val">Bộ phận Một cửa — UBND xã Đăk Pxi</span>
               </div>
               <div className="info-row">
                 <span className="info-label"><SvgIcons.Clock /> Giờ làm việc:</span>
@@ -763,7 +763,7 @@ export default function Gianongsan() {
                 Dữ liệu bảng giá nông sản được Phòng Nông nghiệp & Phát triển Nông thôn tổng hợp chính thức từ:
               </p>
               <ul className="source-list">
-                <li>• <strong>Hợp tác xã Nông nghiệp xã Đắk Pxi</strong></li>
+                <li>• <strong>Hợp tác xã Nông nghiệp xã Đăk Pxi</strong></li>
                 <li>• <strong>Thương lái & Đại lý thu mua chính tại địa phương</strong></li>
                 <li>• <strong>Phòng Nông nghiệp & Phát triển Nông thôn huyện</strong></li>
                 <li>• <strong>Cán bộ nông nghiệp xã khảo sát thực tế trực tiếp</strong></li>
@@ -788,7 +788,7 @@ export default function Gianongsan() {
             <span>Tổng số mặt hàng: <strong>{data.length} mặt hàng</strong></span>
           </div>
           <div className="footer-col">
-            <span>Người cập nhật: <strong>Cán bộ Nông nghiệp xã Đắk Pxi</strong></span>
+            <span>Người cập nhật: <strong>Cán bộ Nông nghiệp xã Đăk Pxi</strong></span>
           </div>
           <div className="footer-col">
             <span>Phiên bản dữ liệu: <strong>v2.4 (Hệ thống Quản lý Hành chính)</strong></span>
