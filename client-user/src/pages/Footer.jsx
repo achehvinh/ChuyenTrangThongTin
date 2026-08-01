@@ -17,6 +17,7 @@ export default function Footer() {
 
     return (
         <footer className="site-footer">
+            <div className="brocade-border-strip"></div>
             <div className="footer-top">
                 <div className="footer-info">
                     <h3 className="footer-org-name">PHÒNG VĂN HÓA - XÃ HỘI XÃ ĐĂK PXI</h3>
@@ -51,6 +52,7 @@ export default function Footer() {
                 </div>
             </div>
 
+            <div className="brocade-border-strip"></div>
             <div className="footer-bottom">
                 <span className="footer-bottom-left">
                     TUYÊN TRUYỀN & HỖ TRỢ DỊCH VỤ CÔNG

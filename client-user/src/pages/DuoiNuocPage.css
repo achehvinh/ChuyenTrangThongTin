@@ -5,8 +5,8 @@
 
 .dn-page-v2 {
   font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #fcf8f2;
+  color: #3b1606;
   min-height: 100vh;
   margin: 0;
   padding: 0 0 50px;
@@ -15,11 +15,11 @@
 
 /* ── 1. NEW HERO BANNER ── */
 .new-hero-banner {
-  background: #e0f2fe;
+  background: #faf4eb;
   padding: 30px 24px 44px;
   position: relative;
   overflow: hidden;
-  border-bottom: 3px solid #bae6fd;
+  border-bottom: 3px solid #e5d8c5;
 }
 
 .hero-banner-cover-img {

@@ -1,662 +1,917 @@
 /* ════════════════════════════════════════════════════════════════
-   TraCuuPage.css - MINIMALIST HTML5 STANDARD COMPACT DESIGN SYSTEM
+   TraCuuPage.css — WARM ETHNIC GOVERNMENT DESIGN SYSTEM
+   Synchronized to match Homepage / Main Picture Theme
    ════════════════════════════════════════════════════════════════ */
 
 .clean-tracuu-page {
-  background: #f8fafc;
+  background-color: #f7ede2;
+  background-image: radial-gradient(#e5d5c3 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
   min-height: 100vh;
-  padding: 16px 0 40px;
-  font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
-  color: #1e293b;
+  padding: 24px 20px 60px;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  color: #3b1606;
   box-sizing: border-box;
-  width: 100%;
 }
 
 .clean-tracuu-container {
-  max-width: 1320px;
-  width: 100%;
+  max-width: 1560px;
   margin: 0 auto;
-  padding: 0 16px;
-  box-sizing: border-box;
 }
 
-/* ── HEADER CHÍNH GỌN GÀNG GỒM CẢ PREP BAR & SEGMENT TABS ── */
+/* ── 0. TOP NAVIGATION: BACK TO HOME ── */
+.tracuu-back-nav {
+  margin-bottom: 14px;
+}
+
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fbf7f0;
+  border: 1px solid #dfd1bd;
+  color: #3b1606;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(92, 53, 22, 0.05);
+}
+
+.back-home-btn:hover {
+  background: #233b1e;
+  color: #ffffff;
+  border-color: #233b1e;
+  transform: translateX(-3px);
+  box-shadow: 0 4px 14px rgba(35, 59, 30, 0.25);
+}
+
+.back-home-btn svg {
+  transition: transform 0.2s ease;
+  color: #8c261e;
+}
+
+.back-home-btn:hover svg {
+  transform: translateX(-3px);
+  color: #ffffff;
+}
+
+/* ── 1. TOP HEADER & INLINE STEPPER ── */
 .clean-top-header {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 14px 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  background: #fbf7f0;
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 20px rgba(92, 53, 22, 0.07);
+  border: 1px solid #dfd1bd;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .clean-header-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
   flex-wrap: wrap;
-}
-
-.clean-badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 800;
-  color: #005bac;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 2px 10px;
-  border-radius: 12px;
-  margin-bottom: 2px;
 }
 
 .clean-title {
-  font-size: 19px;
+  font-size: 25px;
   font-weight: 900;
-  color: #0f172a;
-  margin: 0;
-  line-height: 1.3;
+  color: #3b1606;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.3px;
 }
 
-.clean-title .highlight {
-  color: #005bac;
+.clean-subtitle {
+  font-size: 20px;
+  font-weight: 900;
+  color: #8c261e;
 }
 
-/* SEGMENT TABS CHỌN CÁCH 1 & CÁCH 2 */
 .clean-mode-tabs {
   display: flex;
   align-items: center;
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  padding: 3px;
-  border-radius: 10px;
-  gap: 4px;
+  gap: 12px;
 }
 
 .clean-mode-btn {
-  padding: 7px 14px;
-  border: none;
-  background: transparent;
-  border-radius: 8px;
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 14px;
   font-weight: 800;
-  color: #475569;
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.clean-mode-btn:hover {
-  color: #0f172a;
+  background: #ffffff;
+  border: 1.5px solid #233b1e;
+  color: #233b1e;
 }
 
 .clean-mode-btn.active {
-  background: #005bac;
+  background: #233b1e;
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 91, 172, 0.2);
+  border-color: #233b1e;
+  box-shadow: 0 4px 14px rgba(35, 59, 30, 0.25);
 }
 
-/* BAR CHUẨN BỊ 4 BƯỚC INLINE GỌN GÀNG */
+/* Inline Stepper Bar */
 .clean-prep-inline {
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 8px;
+  justify-content: space-between;
+  gap: 16px;
   flex-wrap: wrap;
+  border-top: 1px solid #e8dbca;
+  padding-top: 14px;
 }
 
-.clean-prep-inline .prep-label {
-  font-size: 12px;
-  font-weight: 800;
-  color: #0f172a;
-  white-space: nowrap;
-}
-
-.clean-prep-inline .prep-chips {
+.prep-chips {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-.chip-pill {
-  font-size: 11.5px;
-  font-weight: 700;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  color: #334155;
-  padding: 3px 10px;
-  border-radius: 14px;
-}
-
-.chip-sep {
-  color: #94a3b8;
-  font-size: 11px;
+.chip-step-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #faf4eb;
+  border: 1px solid #e2d3be;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 13.5px;
   font-weight: 800;
+  color: #3b1606;
+  box-shadow: 0 2px 6px rgba(92, 53, 22, 0.04);
 }
 
-.chip-done {
-  background: #dcfce7;
-  border-color: #86efac;
-  color: #15803d;
+.chip-step-item.chip-done {
+  background: #eafaf1;
+  border-color: #a3e8ca;
+  color: #059669;
+}
+
+.chip-svg {
+  flex-shrink: 0;
+  color: #8c261e;
+}
+
+.chip-done .chip-svg {
+  color: #059669;
+}
+
+.chip-num-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #8c261e;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.chip-arrow {
+  color: #b87b32;
+  font-weight: 700;
+  font-size: 14px;
 }
 
 .clean-tts-badge {
-  margin-left: auto;
-  font-size: 11px;
-  font-weight: 700;
-  background: #e0e7ff;
-  color: #3730a3;
-  padding: 2px 10px;
-  border-radius: 10px;
-}
-
-/* ── GIAO DIỆN MASTER-DETAIL GỌN GÀNG ── */
-.clean-master-detail {
-  display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: 16px;
-  align-items: start;
-  margin-bottom: 24px;
-}
-
-/* SIDEBAR BÊN TRÁI */
-.clean-sidebar {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: sticky;
-  top: 16px;
-}
-
-.sidebar-title {
-  font-size: 11px;
-  font-weight: 900;
-  color: #64748b;
-  letter-spacing: 0.05em;
-  padding-bottom: 6px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.sidebar-menu {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
+  align-items: center;
   gap: 6px;
+  background: #fdf4e3;
+  border: 1px solid #e2c286;
+  color: #8c261e;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.sidebar-item {
+/* ── 2. 3-COLUMN DASHBOARD LAYOUT ── */
+.tracuu-3col-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 270px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── CỘT TRÁI (LEFT SIDEBAR) ── */
+.col-left-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-section-card {
+  background: #fbf7f0;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #dfd1bd;
+  box-shadow: 0 6px 18px rgba(92, 53, 22, 0.06);
+}
+
+.sidebar-card-header {
   display: flex;
   align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #8c261e;
+  margin-bottom: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.app-list-menu {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  padding: 8px 10px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  cursor: pointer;
+}
+
+.app-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1.5px solid #e5d8c6;
+  border-radius: 12px;
   text-align: left;
+  cursor: pointer;
   transition: all 0.2s ease;
   width: 100%;
 }
 
-.sidebar-item:hover {
-  background: #ffffff;
-  border-color: #cbd5e1;
+.app-menu-btn:hover,
+.app-menu-btn.active {
+  border-color: #8c261e;
+  background: #faf4eb;
+  box-shadow: 0 4px 12px rgba(140, 38, 30, 0.1);
 }
 
-.sidebar-item.active {
-  background: #ffffff;
-  border-color: #93c5fd;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.app-icon-small {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  flex-shrink: 0;
-}
-
-.app-meta {
-  flex: 1;
-  min-width: 0;
-}
-
-.app-name {
-  font-size: 13px;
-  font-weight: 800;
-  color: #0f172a;
-  line-height: 1.25;
-}
-
-.app-sub {
-  font-size: 10.5px;
-  color: #64748b;
-  line-height: 1.2;
-}
-
-.sidebar-qr-compact {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 8px;
-  text-align: center;
-  margin-top: 4px;
-}
-
-.qr-thumb {
-  width: 80px;
-  height: 80px;
-  border-radius: 6px;
-  margin: 0 auto 6px;
-  display: block;
-}
-
-.qr-btn {
-  width: 100%;
-  padding: 4px 8px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #334155;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.qr-btn:hover {
-  background: #005bac;
-  color: #ffffff;
-  border-color: #005bac;
-}
-
-/* CỘT MAIN DETAIL (BÊN PHẢI) */
-.clean-main-content {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-  min-width: 0;
-}
-
-.app-banner-strip {
-  border-radius: 10px;
-  padding: 10px 16px;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.app-banner-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.app-banner-icon {
+.app-btn-icon {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.app-banner-title {
-  font-size: 17px;
-  font-weight: 900;
-  margin: 0;
-  color: #ffffff;
-}
-
-.app-banner-sub {
-  font-size: 11.5px;
-  opacity: 0.9;
-}
-
-.app-download-btn {
-  background: #ffffff;
-  color: #0f172a;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-weight: 800;
-  font-size: 12px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-/* WIZARD BAR */
-.clean-step-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 8px 12px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.progress-info {
-  font-size: 12px;
-  color: #475569;
-  font-weight: 700;
-}
-
-.progress-info strong {
-  color: #005bac;
-}
-
-.wizard-pills {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.wizard-btn {
-  padding: 5px 12px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #334155;
-  font-size: 12px;
-  font-weight: 800;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.wizard-btn:hover {
-  border-color: #005bac;
-  color: #005bac;
-  background: #eff6ff;
-}
-
-.wizard-btn.active {
-  background: #005bac;
-  border-color: #005bac;
-  color: #ffffff;
-}
-
-.wizard-btn.done {
-  border-color: #86efac;
-  background: #f0fdf4;
-  color: #15803d;
-}
-
-.wizard-btn.active.done {
-  background: #16a34a;
-  border-color: #16a34a;
-  color: #ffffff;
-}
-
-/* STEPS VIEW MODE */
-.steps-view.single-mode {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.steps-view.grid-mode {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 14px;
-}
-
-.step-card-box {
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-}
-
-.step-card-box.is-done {
-  border-color: #86efac;
-  background: #f0fdf4;
-}
-
-.step-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  gap: 8px;
-}
-
-.step-tag-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.step-badge {
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 900;
-  padding: 2px 8px;
-  border-radius: 12px;
-  flex-shrink: 0;
-}
-
-.step-title-text {
-  font-size: 15px;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 0;
-  line-height: 1.3;
-}
-
-.step-audio-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1d4ed8;
-  font-size: 11.5px;
-  font-weight: 700;
-  border-radius: 14px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.step-audio-btn.playing {
-  background: #fee2e2;
-  border-color: #fca5a5;
-  color: #dc2626;
-  animation: pulseBlink 1.2s infinite;
-}
-
-.step-desc-text {
-  font-size: 12.5px;
-  color: #475569;
-  margin: 0 0 10px;
-  line-height: 1.4;
-}
-
-/* KHUNG ẢNH CỰC DỄ NHÌN */
-.step-img-container {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  max-height: 420px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #f8fafc;
-  position: relative;
-  cursor: pointer;
-  border: 1px solid #cbd5e1;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.step-img-real {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #ffffff;
-  display: block;
-}
-
-.step-img-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.75);
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 800;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  padding: 12px;
-  text-align: center;
-}
-
-.step-img-container:hover .step-img-overlay {
-  opacity: 1;
-}
-
-.step-action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 12px;
-  padding: 10px 14px;
-  background: #ffffff;
-  border: 1.5px solid #cbd5e1;
-  color: #0f172a;
+.app-btn-name {
   font-size: 13px;
   font-weight: 800;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: #3b1606;
+}
+
+.app-btn-sub {
+  font-size: 11px;
+  color: #5c4a3e;
+}
+
+/* SIDEBAR QR CARD */
+.sidebar-qr-card {
+  background: #fbf7f0;
+  border-radius: 16px;
+  padding: 18px 16px;
+  border: 1px solid #dfd1bd;
   text-align: center;
+  box-shadow: 0 6px 18px rgba(92, 53, 22, 0.06);
 }
 
-.step-action-btn:hover {
-  border-color: #005bac;
-  color: #005bac;
-  background: #eff6ff;
-}
-
-.step-action-btn.done {
-  background: #dcfce7;
-  border-color: #86efac;
-  color: #15803d;
-}
-
-.congrats-banner {
-  margin-top: 16px;
-  background: #dcfce7;
-  border: 1.5px solid #86efac;
-  border-radius: 12px;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: #14532d;
-}
-
-.congrats-banner strong {
-  font-size: 15px;
-  display: block;
+.qr-card-title {
+  font-size: 12px;
+  font-weight: 900;
+  color: #8c261e;
+  letter-spacing: 0.04em;
   margin-bottom: 2px;
 }
 
-.congrats-banner p {
-  margin: 0;
-  font-size: 13px;
-  color: #166534;
+.qr-card-sub {
+  font-size: 11px;
+  color: #5c4a3e;
+  margin-bottom: 12px;
 }
 
-/* VIDEO CARD */
-.clean-video-card {
-  margin-top: 16px;
+.qr-img-wrapper {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5d8c6;
+  border-radius: 12px;
+  padding: 10px;
+  display: inline-block;
+  margin-bottom: 12px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.qr-img-code {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+
+.app-store-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.store-badge-btn img {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ── CỘT GIỮA (CENTER MAIN CONTENT) ── */
+.col-center-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* App Top Banner Strip */
+.app-top-banner-card {
   border-radius: 14px;
+  padding: 18px 22px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, #233b1e 0%, #1c3017 100%) !important;
+  border-bottom: 2px solid #d49f53;
+  box-shadow: 0 6px 20px rgba(35, 59, 30, 0.2);
+}
+
+.app-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.app-banner-icon-bg {
+  width: 46px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.app-banner-main-title {
+  font-size: 21px;
+  font-weight: 900;
+  margin: 0;
+  color: #ffffff;
+}
+
+.app-banner-main-sub {
+  font-size: 13px;
+  color: #f7ede2;
+}
+
+.app-action-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #8c261e;
+  font-size: 13.5px;
+  font-weight: 800;
+  padding: 9px 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.app-action-download-btn:hover {
+  transform: translateY(-2px);
+  background: #fdf4e3;
+}
+
+.btn-chevron {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* Step Wizard Bar */
+.step-wizard-bar {
+  background: #fbf7f0;
+  border-radius: 14px;
+  padding: 14px 20px;
+  border: 1px solid #dfd1bd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.progress-status-text {
+  font-size: 13.5px;
+  color: #5c4a3e;
+}
+
+.progress-status-text strong {
+  color: #8c261e;
+}
+
+.wizard-step-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-pill-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid #dfd1bd;
+  background: #ffffff;
+  color: #4a3e35;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.step-pill-btn.active {
+  background: #8c261e;
+  color: #ffffff;
+  border-color: #8c261e;
+  box-shadow: 0 3px 10px rgba(140, 38, 30, 0.22);
+}
+
+.step-pill-btn.done {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #059669;
+}
+
+/* Step Split Card */
+.steps-container-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step-split-card {
+  background: #fbf7f0;
+  border-radius: 16px;
+  border: 1px solid #dfd1bd;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(92, 53, 22, 0.06);
+}
+
+.step-left-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.step-split-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #3b1606;
+  margin: 0;
+}
+
+.step-split-desc {
+  font-size: 14px;
+  color: #5c4a3e;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.step-audio-listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fdf4e3;
+  border: 1px solid #e2c286;
+  color: #8c261e;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: all 0.2s ease;
+}
+
+.step-audio-listen-btn:hover {
+  background: #fcebd0;
+}
+
+.steps-checklist-box {
+  background: #faf4eb;
+  border: 1px solid #e5d8c5;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.checklist-heading {
+  font-size: 13px;
+  font-weight: 800;
+  color: #3b1606;
+  margin-bottom: 12px;
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checklist-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  color: #4a3e35;
+  line-height: 1.4;
+}
+
+.checklist-row.active .chk-num {
+  background: #8c261e;
+  color: #ffffff;
+}
+
+.chk-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #d49f53;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-toggle-done-btn {
+  background: #233b1e;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(35, 59, 30, 0.2);
+}
+
+.step-toggle-done-btn:hover {
+  background: #1c3017;
+}
+
+.step-toggle-done-btn.done {
+  background: #10b981;
+}
+
+/* Step Right Photo */
+.step-right-photo {
+  position: relative;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  height: 270px;
+  cursor: zoom-in;
+  border: 1px solid #e5d8c5;
+}
+
+.photo-real-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-zoom-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(59, 22, 6, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.step-right-photo:hover .photo-zoom-overlay {
+  opacity: 1;
+}
+
+/* 4 Features Grid */
+.four-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.feature-card-item {
+  background: #fbf7f0;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid #dfd1bd;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 0 4px 14px rgba(92, 53, 22, 0.04);
+}
+
+.feature-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feature-icon-box.green { background: #dcfce7; color: #16a34a; }
+.feature-icon-box.blue { background: #fdf4e3; color: #8c261e; }
+.feature-icon-box.purple { background: #f3e8ff; color: #9333ea; }
+.feature-icon-box.amber { background: #fef3c7; color: #d97706; }
+
+.feature-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #3b1606;
+  margin: 0 0 2px 0;
+}
+
+.feature-desc {
+  font-size: 11.5px;
+  color: #5c4a3e;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── CỘT PHẢI (RIGHT SIDEBAR) ── */
+.col-right-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-widget-card {
+  background: #fbf7f0;
+  border-radius: 16px;
+  padding: 18px 16px;
+  border: 1px solid #dfd1bd;
+  box-shadow: 0 6px 18px rgba(92, 53, 22, 0.06);
+}
+
+.widget-card-title {
+  font-size: 12px;
+  font-weight: 900;
+  color: #8c261e;
+  letter-spacing: 0.05em;
+  margin: 0 0 14px 0;
+  text-transform: uppercase;
+}
+
+.quick-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-link-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e5d8c6;
+  text-decoration: none;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #3b1606;
+  transition: all 0.2s ease;
+}
+
+.quick-link-item:hover {
+  background: #faf4eb;
+  border-color: #8c261e;
+  color: #8c261e;
+}
+
+.link-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.link-chevron {
+  font-size: 16px;
+  color: #b87b32;
+}
+
+/* SUPPORT METHODS LIST */
+.support-methods-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.support-method-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.support-icon-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.support-icon-circle.blue {
+  background: #fdf4e3;
+  color: #8c261e;
+}
+
+.support-phone-number {
+  font-size: 13px;
+  font-weight: 900;
+  color: #8c261e;
+}
+
+.support-time {
+  font-size: 10.5px;
+  color: #5c4a3e;
+}
+
+.support-main-label {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #3b1606;
+}
+
+.support-sub-label {
+  font-size: 11px;
+  color: #5c4a3e;
+}
+
+/* SECURITY BANNER CARD */
+.security-banner-card {
+  background: linear-gradient(135deg, #233b1e 0%, #1c3017 100%);
+  border-radius: 16px;
+  padding: 18px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d49f53;
+  box-shadow: 0 6px 18px rgba(35, 59, 30, 0.2);
+}
+
+.security-banner-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.security-icon-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #d49f53;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.security-title {
+  font-size: 13px;
+  font-weight: 900;
+  margin: 0 0 4px 0;
+  color: #ffffff;
+}
+
+.security-desc {
+  font-size: 11px;
+  color: #f7ede2;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.security-lock-icon {
+  position: absolute;
+  bottom: -6px;
+  right: 6px;
+  font-size: 40px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Video Card & Footer tip */
+.clean-video-card {
+  background: #fbf7f0;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #dfd1bd;
+  margin-top: 20px;
 }
 
 .video-header {
-  padding: 10px 16px;
-  background: #0f172a;
-  color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
+  color: #3b1606;
+  margin-bottom: 14px;
 }
 
 .video-player {
   width: 100%;
-  display: block;
-  background: #000000;
-  max-height: 380px;
+  border-radius: 12px;
+  max-height: 480px;
+  background: #000;
 }
 
-/* FOOTER */
 .clean-footer-tip {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  gap: 14px;
+  background: #faf4eb;
+  border: 1px solid #e2d3be;
   border-radius: 14px;
-  padding: 12px 18px;
-  margin-top: 16px;
+  padding: 16px 20px;
+  margin-top: 20px;
 }
 
 .footer-icon {
   font-size: 24px;
 }
 
-.clean-footer-tip strong {
-  font-size: 14px;
-  color: #1e3a8a;
-  display: block;
-}
-
 .clean-footer-tip p {
-  margin: 0;
+  margin: 2px 0 0 0;
   font-size: 13px;
-  color: #1e40af;
+  color: #4a3e35;
 }
 
-/* RESPONSIVE */
-@media (max-width: 860px) {
-  .clean-master-detail {
+/* RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+  .tracuu-3col-layout {
     grid-template-columns: 1fr;
   }
-  .clean-sidebar {
-    position: static;
+  .four-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .step-split-card {
+    grid-template-columns: 1fr;
+  }
+  .four-features-grid {
+    grid-template-columns: 1fr;
+  }
+  .clean-mode-tabs {
+    flex-direction: column;
+    width: 100%;
+  }
+  .clean-mode-btn {
+    width: 100%;
+    justify-content: center;
   }
 }

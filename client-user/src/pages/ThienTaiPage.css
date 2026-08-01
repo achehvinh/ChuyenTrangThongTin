@@ -4,7 +4,7 @@
 
 .tt-page {
   font-family: inherit;
-  background: #f8fafc;
+  background: #fcf8f2;
   min-height: 100vh;
 }
 
@@ -19,7 +19,7 @@
 /* ── Header chính hợp nhất (Màu sắc đẹp mắt, Nhỏ gọn & Sang trọng) ── */
 .tt-header {
   position: relative;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e40af 100%);
+  background: linear-gradient(135deg, #233b1e 0%, #1c3017 100%);
   border-radius: 14px;
   padding: 18px 24px;
   margin-bottom: 20px;
@@ -28,8 +28,9 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #f59e0b;
+  box-shadow: 0 6px 20px rgba(35, 59, 30, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #d49f53;
+  border: 1px solid #d49f53;
   overflow: hidden;
 }
 

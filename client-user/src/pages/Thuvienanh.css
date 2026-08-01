@@ -4,15 +4,16 @@
 ═══════════════════════════════════ */
 
 .thuvien-page {
-  background: #0f172a;
+  background: #fcf8f2;
   min-height: 100vh;
 }
 
 /* ── Header ── */
 .thuvien-header {
-  background: linear-gradient(135deg, #005bac 0%, #0f172a 100%);
+  background: linear-gradient(135deg, #233b1e 0%, #1c3017 100%);
   padding: 60px 40px 40px;
   text-align: center;
+  border-bottom: 2px solid #d49f53;
 }
 
 .thuvien-header h1 {

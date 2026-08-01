@@ -1,16 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
 
 .info-page {
-  background: #f8fafc;
+  background: #fcf8f2;
   min-height: 100vh;
 }
 
 /* ── Hero Header ── */
 .info-hero {
-  background: #0f172a;
+  background: linear-gradient(135deg, #233b1e 0%, #1c3017 100%);
   padding: 48px 40px 36px;
   position: relative;
   overflow: hidden;
+  border-bottom: 2px solid #d49f53;
 }
 
 .info-hero::before {

@@ -2,7 +2,7 @@
 .all-features-container {
     width: 100%;
     min-height: 100vh;
-    background-color: #f8fafc;
+    background-color: #fcf8f2;
 }
 
 .feature-group-single {
@@ -19,14 +19,14 @@
 }
 
 .header-content h1 {
-    color: #005bac;
+    color: #3b1606;
     font-size: 42px;
     margin-bottom: 20px;
 }
 
 .header-content p {
     font-size: 18px;
-    color: #475569;
+    color: #5c4a3e;
     line-height: 1.6;
 }
 

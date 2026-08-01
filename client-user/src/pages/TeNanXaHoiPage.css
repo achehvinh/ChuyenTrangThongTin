@@ -1,9 +1,9 @@
 .te-nan-page {
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-  color: #f1f5f9;
+  background: linear-gradient(135deg, #233b1e 0%, #1c3017 100%);
+  color: #f7ede2;
   min-height: 100vh;
   padding: 40px 20px;
-  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Be Vietnam Pro', 'Inter', 'Segoe UI', Roboto, sans-serif;
 }
 
 .te-nan-inner {

@@ -1,8 +1,8 @@
 /* ContactPage.css — Phong cách Cổng thông tin Điện tử Nhà nước */
 
 .contact-page-root {
-  background: #f8fafc;
-  color: #0f172a;
+  background: #fcf8f2;
+  color: #3b1606;
   font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   line-height: 1.5;
@@ -11,9 +11,9 @@
 /* ── HEADER ── */
 .contact-header {
   background: #ffffff;
-  border-bottom: 2px solid #005baa;
+  border-bottom: 2px solid #8c261e;
   padding: 20px 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(90, 40, 10, 0.04);
 }
 
 .contact-header-inner {

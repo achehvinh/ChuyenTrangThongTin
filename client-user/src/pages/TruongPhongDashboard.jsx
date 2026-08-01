@@ -54,15 +54,15 @@ export default function TruongPhongDashboard() {
   };
 
   const getMeetingBadgeLabel = (t) => {
-    if (t === "hop-bao-mat") return "🔒 Họp Mật Cán bộ";
-    if (t === "giao-ban") return "👥 Giao ban";
-    if (t === "hop-khan") return "🚨 Họp khẩn";
-    if (t === "chuyen-de") return "📑 Chuyên đề";
-    if (t === "tap-huan") return "📚 Tập huấn";
-    if (t === "hop-dan") return "👥 Họp dân";
-    if (t === "tiem-chung") return "💉 Tiêm chủng";
-    if (t === "phat-ho-tro") return "🎁 Hỗ trợ";
-    return "📌 Khác";
+    if (t === "hop-bao-mat") return "Họp Mật Cán bộ";
+    if (t === "giao-ban") return "Giao ban";
+    if (t === "hop-khan") return "Họp khẩn";
+    if (t === "chuyen-de") return "Chuyên đề";
+    if (t === "tap-huan") return "Tập huấn";
+    if (t === "hop-dan") return "Họp dân";
+    if (t === "tiem-chung") return "Tiêm chủng";
+    if (t === "phat-ho-tro") return "Hỗ trợ";
+    return "Khác";
   };
 
   const getMeetingCountdown = (dateStr, timeStr) => {
@@ -102,13 +102,13 @@ export default function TruongPhongDashboard() {
           const secs = Math.floor((remainingMs % 60000) / 1000);
           return {
             status: "ongoing",
-            label: `⚡ Đang diễn ra (${mins}m ${secs}s)`,
+            label: `Đang diễn ra (${mins}m ${secs}s)`,
             className: "meeting-status-ongoing"
           };
         } else {
           return {
             status: "completed",
-            label: "✅ Đã kết thúc",
+            label: "Đã kết thúc",
             className: "meeting-status-completed"
           };
         }
@@ -201,6 +201,34 @@ export default function TruongPhongDashboard() {
     time: "08:30",
     type: "hop-bao-mat",
   });
+
+  // Subscriber State
+  const [subscribersList, setSubscribersList] = useState([]);
+  const [subscriberSearch, setSubscriberSearch] = useState("");
+
+  const fetchSubscribersList = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/v1/subscribers`);
+      if (res.data && res.data.data) {
+        setSubscribersList(res.data.data);
+      }
+    } catch (e) {
+      try {
+        const saved = JSON.parse(localStorage.getItem('subscribed_emails') || '[]');
+        setSubscribersList(saved.map((item, idx) => ({
+          _id: `local-${idx}`,
+          email: typeof item === 'string' ? item : item.email,
+          createdAt: (typeof item === 'object' && item.subscribedAt) ? item.subscribedAt : new Date().toISOString()
+        })));
+      } catch (err) {}
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "subscribers") {
+      fetchSubscribersList();
+    }
+  }, [activeTab]);
 
   const handleAIGenerateMeetingSchedule = () => {
     setShowAIScheduleModal(true);
@@ -433,7 +461,7 @@ export default function TruongPhongDashboard() {
   const [incomingDocs, setIncomingDocs] = useState(() => {
     const saved = localStorage.getItem("vhxh_incoming_docs");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
+      try { return JSON.parse(saved); } catch (e) { }
     }
     return defaultInitialIncomingDocs;
   });
@@ -493,7 +521,7 @@ export default function TruongPhongDashboard() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `So_Quan_Ly_Van_Ban_Den_${new Date().toISOString().substring(0,10)}.csv`);
+    link.setAttribute("download", `So_Quan_Ly_Van_Ban_Den_${new Date().toISOString().substring(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -503,7 +531,7 @@ export default function TruongPhongDashboard() {
   const [outgoingDocs, setOutgoingDocs] = useState(() => {
     const saved = localStorage.getItem("vhxh_outgoing_docs");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
+      try { return JSON.parse(saved); } catch (e) { }
     }
     return defaultInitialOutgoingDocs;
   });
@@ -1585,10 +1613,10 @@ export default function TruongPhongDashboard() {
     setError("");
     try {
       const newStatus = staff.status === "suspended" ? "active" : "suspended";
-      const confirmMsg = newStatus === "suspended" 
+      const confirmMsg = newStatus === "suspended"
         ? `Bạn có muốn tạm dừng tài khoản cán bộ "${staff.fullName}"?`
         : `Bạn có muốn kích hoạt lại tài khoản cán bộ "${staff.fullName}"?`;
-      
+
       if (!window.confirm(confirmMsg)) return;
 
       await axios.put(
@@ -1828,7 +1856,7 @@ export default function TruongPhongDashboard() {
         setMessage("Đăng bài viết tuyên truyền thành công!");
       }
       setArticleForm({ tieu_de: "", mo_ta: "", noi_dung: "", danh_muc: "su-kien", trang_thai: "da-dang", chu_chay: "" });
-      
+
       // Reset upload files
       setCoverImage(null);
       setCoverPreview("");
@@ -1923,23 +1951,23 @@ export default function TruongPhongDashboard() {
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <line x1="3" y1="12" x2="21" y2="12"/>
-              <line x1="3" y1="18" x2="21" y2="18"/>
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
         </div>
 
         {!isSidebarCollapsed ? (
           <div className="tp-profile-section tp-profile-menu-wrapper" style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px", width: "100%", paddingBottom: "12px", borderBottom: "1px solid #e2e8f0" }}>
-            <div 
+            <div
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              style={{ 
-                display: "flex", 
-                alignItems: "center", 
-                gap: "8px", 
-                minWidth: 0, 
-                flex: 1, 
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                minWidth: 0,
+                flex: 1,
                 cursor: "pointer",
                 padding: "4px",
                 borderRadius: "8px",
@@ -1965,13 +1993,13 @@ export default function TruongPhongDashboard() {
                 </svg>
               </div>
               <div className="tp-profile-info" style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
-                <h4 className="tp-profile-name" style={{ 
-                  fontSize: "12px", 
-                  fontWeight: "700", 
-                  color: "#0f172a", 
-                  margin: 0, 
+                <h4 className="tp-profile-name" style={{
+                  fontSize: "12px",
+                  fontWeight: "700",
+                  color: "#0f172a",
+                  margin: 0,
                   lineHeight: "1.2",
-                  whiteSpace: "nowrap", 
+                  whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis"
                 }}>
@@ -1984,7 +2012,7 @@ export default function TruongPhongDashboard() {
             </div>
 
             {/* Icon thông báo (Hình tròn với 🔔 SVG và chấm đỏ) */}
-            <div 
+            <div
               onClick={() => {
                 if (role === "truongphong" || role === "admin") {
                   setActiveTab("updates");
@@ -1992,17 +2020,17 @@ export default function TruongPhongDashboard() {
                   setActiveTab("schedule");
                 }
               }}
-              style={{ 
-                position: "relative", 
-                cursor: "pointer", 
-                display: "inline-flex", 
+              style={{
+                position: "relative",
+                cursor: "pointer",
+                display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
                 width: "34px",
                 height: "34px",
-                borderRadius: "50%", 
-                background: "#ffffff", 
-                border: "1px solid #cbd5e1", 
+                borderRadius: "50%",
+                background: "#ffffff",
+                border: "1px solid #cbd5e1",
                 color: "#475569",
                 flexShrink: 0,
                 boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
@@ -2013,15 +2041,15 @@ export default function TruongPhongDashboard() {
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
               </svg>
-              <span style={{ 
-                position: "absolute", 
-                top: "1px", 
-                right: "1px", 
-                width: "8px", 
-                height: "8px", 
-                borderRadius: "50%", 
-                background: "#ef4444", 
-                border: "1.5px solid #ffffff" 
+              <span style={{
+                position: "absolute",
+                top: "1px",
+                right: "1px",
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "#ef4444",
+                border: "1.5px solid #ffffff"
               }} />
             </div>
 
@@ -2047,7 +2075,7 @@ export default function TruongPhongDashboard() {
                   onClick={() => { setShowProfileMenu(false); setShowAccountInfoModal(true); }}
                   style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "8px 12px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "13px", fontWeight: "600", color: "#334155", cursor: "pointer", textAlign: "left" }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                   <span>Thông tin tài khoản</span>
                 </button>
                 <button
@@ -2055,7 +2083,7 @@ export default function TruongPhongDashboard() {
                   onClick={() => { setShowProfileMenu(false); setShowSettingsModal(true); }}
                   style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "8px 12px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "13px", fontWeight: "600", color: "#334155", cursor: "pointer", textAlign: "left" }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
                   <span>Cài đặt</span>
                 </button>
                 <div style={{ height: "1px", background: "#e2e8f0", margin: "4px 0" }} />
@@ -2064,7 +2092,7 @@ export default function TruongPhongDashboard() {
                   onClick={() => { setShowProfileMenu(false); handleLogout(); }}
                   style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "8px 12px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "13px", fontWeight: "600", color: "#dc2626", cursor: "pointer", textAlign: "left" }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
                   <span>Đăng xuất</span>
                 </button>
               </div>
@@ -2072,7 +2100,7 @@ export default function TruongPhongDashboard() {
           </div>
         ) : (
           <div style={{ display: "flex", justifyContent: "center", paddingBottom: "10px", borderBottom: "1px solid #e2e8f0", position: "relative" }}>
-            <div 
+            <div
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               style={{
                 width: "40px",
@@ -2090,7 +2118,7 @@ export default function TruongPhongDashboard() {
               title={`Cán bộ: ${fullName}`}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
               </svg>
               <span style={{ position: "absolute", top: "0", right: "0", width: "9px", height: "9px", borderRadius: "50%", background: "#ef4444", border: "1.5px solid #ffffff" }} />
             </div>
@@ -2137,7 +2165,7 @@ export default function TruongPhongDashboard() {
                 title="Trang tổng quan"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+                  <rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" />
                 </svg>
                 <span>Trang tổng quan</span>
               </button>
@@ -2149,7 +2177,7 @@ export default function TruongPhongDashboard() {
                 title="Điều hành & Giao việc"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
                 <span>Điều hành & Giao việc</span>
               </button>
@@ -2161,7 +2189,7 @@ export default function TruongPhongDashboard() {
                 title="Quản lý cán bộ"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
                 <span>Quản lý cán bộ</span>
               </button>
@@ -2177,10 +2205,10 @@ export default function TruongPhongDashboard() {
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/>
-                      <line x1="16" y1="13" x2="8" y2="13"/>
-                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                      <line x1="16" y1="13" x2="8" y2="13" />
+                      <line x1="16" y1="17" x2="8" y2="17" />
                     </svg>
                     <span style={{ fontWeight: "800" }}>Quản lý Văn bản</span>
                   </div>
@@ -2200,7 +2228,7 @@ export default function TruongPhongDashboard() {
                       title={`Quản lý Văn bản đến (${pendingIncomingCount} cần xử lý)`}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
                       </svg>
                       <span style={{ flex: 1, textAlign: "left" }}>Văn bản đến</span>
                       {pendingIncomingCount > 0 && (
@@ -2233,7 +2261,7 @@ export default function TruongPhongDashboard() {
                       title={`Quản lý Văn bản đi (${pendingOutgoingCount} dự thảo)`}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
                       </svg>
                       <span style={{ flex: 1, textAlign: "left" }}>Văn bản đi</span>
                       {pendingOutgoingCount > 0 && (
@@ -2267,7 +2295,7 @@ export default function TruongPhongDashboard() {
                 title="Lịch họp cơ quan"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 <span>Lịch họp cơ quan</span>
               </button>
@@ -2279,7 +2307,7 @@ export default function TruongPhongDashboard() {
                 title="Viết bài tuyên truyền"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                  <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                 </svg>
                 <span>Viết bài tuyên truyền</span>
               </button>
@@ -2291,7 +2319,7 @@ export default function TruongPhongDashboard() {
                 title="Nhật ký & Thông báo"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" />
                 </svg>
                 <span>Nhật ký & Thông báo</span>
               </button>
@@ -2303,7 +2331,7 @@ export default function TruongPhongDashboard() {
                 title="Trợ lý AI Hành chính & Văn bản"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /><circle cx="12" cy="12" r="4" />
                 </svg>
                 <span>Trợ lý AI Hành chính & Văn bản</span>
               </button>
@@ -2319,7 +2347,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+                  <rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" />
                 </svg>
                 <span>Trang tổng quan</span>
               </button>
@@ -2329,7 +2357,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
                 <span>Điều hành & Giao việc</span>
               </button>
@@ -2339,7 +2367,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đến</span>
                 {pendingIncomingCount > 0 && (
@@ -2368,7 +2396,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đi</span>
                 {pendingOutgoingCount > 0 && (
@@ -2397,7 +2425,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 <span>Lịch họp cơ quan</span>
               </button>
@@ -2407,7 +2435,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 12"/>
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" ry="1" /><polyline points="9 14 11 16 15 12" />
                 </svg>
                 <span>Chỉ đạo & Nhiệm vụ</span>
               </button>
@@ -2417,7 +2445,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                  <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                 </svg>
                 <span>Viết bài tuyên truyền</span>
               </button>
@@ -2427,7 +2455,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /><circle cx="12" cy="12" r="4" />
                 </svg>
                 <span>Trợ lý AI Hành chính & Văn bản</span>
               </button>
@@ -2443,7 +2471,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+                  <rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" />
                 </svg>
                 <span>Trang tổng quan</span>
               </button>
@@ -2453,7 +2481,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
                 <span>Điều hành & Giao việc</span>
               </button>
@@ -2463,7 +2491,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đến</span>
                 {pendingIncomingCount > 0 && (
@@ -2492,7 +2520,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
                 </svg>
                 <span style={{ flex: 1, textAlign: "left" }}>Quản lý Văn bản đi</span>
                 {pendingOutgoingCount > 0 && (
@@ -2521,7 +2549,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 <span>Lịch họp cơ quan</span>
               </button>
@@ -2531,7 +2559,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 12"/>
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" ry="1" /><polyline points="9 14 11 16 15 12" />
                 </svg>
                 <span>Chỉ đạo & Nhiệm vụ</span>
               </button>
@@ -2541,7 +2569,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                  <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                 </svg>
                 <span>Viết bài tuyên truyền</span>
               </button>
@@ -2551,9 +2579,20 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
                 <span>Góp ý & Phản hồi</span>
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "subscribers" ? "active" : ""}`}
+                onClick={() => { setActiveTab("subscribers"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <span>Email Đăng ký nhận tin</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
@@ -2561,7 +2600,7 @@ export default function TruongPhongDashboard() {
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /><circle cx="12" cy="12" r="4" />
                 </svg>
                 <span>Trợ lý AI Hành chính & Văn bản</span>
               </button>
@@ -2597,7 +2636,7 @@ export default function TruongPhongDashboard() {
             <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "8px 16px", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <span style={{ fontSize: "11px", color: "#475569", fontWeight: "600", textAlign: "right", marginBottom: "2px" }}>Thời gian hiện tại</span>
               <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                 <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
               </div>
             </div>
@@ -2641,7 +2680,7 @@ export default function TruongPhongDashboard() {
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
                   }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"/>
+                      <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
                   <div style={{ flex: 1, fontSize: "13.5px", fontWeight: "700", color: "#14532d", lineHeight: "1.4" }}>
@@ -2680,7 +2719,7 @@ export default function TruongPhongDashboard() {
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
                   }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                      <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                     </svg>
                   </div>
                   <div style={{ flex: 1, fontSize: "13.5px", fontWeight: "700", color: "#7f1d1d", lineHeight: "1.4" }}>
@@ -2710,7 +2749,7 @@ export default function TruongPhongDashboard() {
               <div style={{ background: "#eff6ff", border: "1px solid #93c5fd", borderLeft: "5px solid #005baa", borderRadius: "4px", padding: "10px 14px", marginBottom: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                    <path d="M22 8a6 6 0 0 0-6-6H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h2l4 4 4-4h2a6 6 0 0 0 6-6V8z"/>
+                    <path d="M22 8a6 6 0 0 0-6-6H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h2l4 4 4-4h2a6 6 0 0 0 6-6V8z" />
                   </svg>
                   <div>
                     <strong style={{ fontSize: "13.5px", color: "#1e3a8a" }}>
@@ -2726,7 +2765,7 @@ export default function TruongPhongDashboard() {
                   style={{ padding: "6px 14px", background: "#005baa", color: "#ffffff", border: "none", borderRadius: "4px", fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                   </svg>
                   <span>Xem & Báo cáo tiến độ</span>
                 </button>
@@ -2738,7 +2777,7 @@ export default function TruongPhongDashboard() {
             // Tính toán số liệu thực tế từ database
             const activeCardsCount = citizens.filter(c => c.insuranceCard && c.insuranceCard.status === 'active').length;
             const pendingCardsCount = citizens.filter(c => !c.insuranceCard).length;
-            
+
             // Phân bổ thôn dân cư thực tế
             let dakWek = 0;
             let dakXe = 0;
@@ -2770,7 +2809,7 @@ export default function TruongPhongDashboard() {
 
             return (
               <div className="tp-dashboard-wrapper" style={{ animation: "fadeIn 0.25s ease-out", display: "flex", flexDirection: "column", gap: "15px" }}>
-                
+
                 {/* CSS cục bộ cho Tooltip và Hover */}
                 <style>{`
                   .tp-tooltip-container {
@@ -2858,7 +2897,7 @@ export default function TruongPhongDashboard() {
 
                 {/* Khối phía trên: Nền Xanh dương đậm (Navy) */}
                 <div style={{ background: "linear-gradient(135deg, #1a3a5c 0%, #2b5c8f 100%)", borderRadius: "8px", padding: "24px", color: "#ffffff", display: "grid", gridTemplateColumns: "1fr 1.3fr 1fr", gap: "24px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
-                  
+
                   {/* Cột 1: 3 hàng chỉ số thực tế */}
                   <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px" }}>
                     <div className="tp-tooltip-container" style={{ cursor: "pointer" }}>
@@ -2886,11 +2925,11 @@ export default function TruongPhongDashboard() {
                       <div style={{ fontSize: "26px", fontWeight: "850", lineHeight: 1 }}>8 giờ / ngày</div>
                       <div style={{ fontSize: "11px", opacity: 0.85, textTransform: "uppercase", fontWeight: "700", marginTop: "4px", letterSpacing: "0.5px" }}>Thời gian hoạt động hành chính</div>
                     </div>
-                    
+
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", height: "85px", padding: "0 10px" }}>
                       {countsByMonth.map((val, i) => {
-                        const h = maxMonthCount === 0 
-                          ? [20, 25, 30, 35, 30, 25, 20, 28, 35, 42, 38, 45][i] 
+                        const h = maxMonthCount === 0
+                          ? [20, 25, 30, 35, 30, 25, 20, 28, 35, 42, 38, 45][i]
                           : (val / maxMonthCount) * 65 + 15;
                         return (
                           <div key={i} className="tp-tooltip-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "6%" }}>
@@ -2928,7 +2967,7 @@ export default function TruongPhongDashboard() {
 
                 {/* Khối phía dưới: Nền trắng 3 Cột */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.2fr", gap: "20px" }}>
-                  
+
                   {/* Hộp 1: Tăng trưởng cộng dồn thực tế */}
                   <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "260px" }}>
                     <div>
@@ -2948,12 +2987,12 @@ export default function TruongPhongDashboard() {
                         });
                         const maxCumulative = Math.max(...cumulative, 0);
                         return cumulative.map((val, i) => {
-                          const h = maxCumulative === 0 
-                            ? [10, 18, 25, 38, 48, 55, 62, 75, 88, 98, 110, 120][i] 
+                          const h = maxCumulative === 0
+                            ? [10, 18, 25, 38, 48, 55, 62, 75, 88, 98, 110, 120][i]
                             : (val / maxCumulative) * 95 + 15;
                           return (
                             <div key={i} className="tp-tooltip-container tp-hover-bar" style={{ width: "6%", height: `${h}px`, background: "#1a3a5c", borderRadius: "1px" }}>
-                              <div className="tp-tooltip-box" style={{ bottom: "105%" }}>Tháng {i+1}: Tích lũy {maxCumulative === 0 ? i * 2 + 1 : val} người</div>
+                              <div className="tp-tooltip-box" style={{ bottom: "105%" }}>Tháng {i + 1}: Tích lũy {maxCumulative === 0 ? i * 2 + 1 : val} người</div>
                             </div>
                           );
                         });
@@ -2986,17 +3025,17 @@ export default function TruongPhongDashboard() {
 
                     <div style={{ display: "flex", justifyContent: "center", gap: "8px", flexWrap: "wrap", fontSize: "10px", color: "#64748b", borderTop: "1px solid #f1f5f9", paddingTop: "8px" }}>
                       <span className="tp-tooltip-container" style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#1a3a5c" }}></span> 
+                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#1a3a5c" }}></span>
                         Đăk Wek ({wekPct}%)
                         <div className="tp-tooltip-box">Địa bàn: {dakWek} công dân</div>
                       </span>
                       <span className="tp-tooltip-container" style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#3b82f6" }}></span> 
+                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#3b82f6" }}></span>
                         Đăk Xế Kơ Ne ({xePct}%)
                         <div className="tp-tooltip-box">Địa bàn: {dakXe} công dân</div>
                       </span>
                       <span className="tp-tooltip-container" style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#93c5fd" }}></span> 
+                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#93c5fd" }}></span>
                         Đăk Pxi ({pxiPct}%)
                         <div className="tp-tooltip-box">Địa bàn: {dakPxi} công dân</div>
                       </span>
@@ -3005,7 +3044,7 @@ export default function TruongPhongDashboard() {
 
                   {/* Hộp 3: Chi tiết chỉ số công tác thực tế */}
                   <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px", display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "15px", minHeight: "260px" }}>
-                    
+
                     {/* Cột trái: 3 chỉ số thực tế */}
                     <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                       <div>
@@ -3035,7 +3074,7 @@ export default function TruongPhongDashboard() {
 
                     {/* Cột phải: Đồ thị SVG lượn sóng */}
                     <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                      
+
                       <div className="tp-tooltip-container tp-hover-wave" style={{ height: "45px" }}>
                         <svg width="100%" height="100%" viewBox="0 0 100 40" preserveAspectRatio="none">
                           <path d="M 0 30 Q 15 10 30 25 T 60 15 T 90 20 T 100 15 L 100 40 L 0 40 Z" fill="rgba(26, 58, 92, 0.15)" stroke="#1a3a5c" strokeWidth="2" />
@@ -3117,7 +3156,7 @@ export default function TruongPhongDashboard() {
 
                   {/* Sơ đồ quy trình & Đường theo dõi chi tiết */}
                   <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px 24px", display: "flex", flexDirection: "column", gap: "20px", marginTop: "5px" }}>
-                    
+
                     <div style={{ fontSize: "12px", color: "#475569", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.5px", display: "flex", alignItems: "center", gap: "8px" }}>
                       <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#3b82f6" }}></span>
                       Sơ đồ quy trình & Đường theo dõi: {
@@ -3133,10 +3172,10 @@ export default function TruongPhongDashboard() {
 
                     {/* Sơ đồ Timeline ngang chuyên nghiệp */}
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", position: "relative", padding: "10px 0 20px 0", minHeight: "90px" }}>
-                      
+
                       {/* Đường nối ngang phía sau */}
                       <div style={{ position: "absolute", top: "25px", left: "10%", right: "10%", height: "2px", background: "#cbd5e1", zIndex: 1 }} />
-                      
+
                       {/* Các bước quy trình */}
                       {(() => {
                         const stepsMap = {
@@ -3201,7 +3240,7 @@ export default function TruongPhongDashboard() {
 
                     {/* Dữ liệu và Trạng thái chi tiết tương ứng với tab được chọn */}
                     <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "15px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-                      
+
                       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                         <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "700", textTransform: "uppercase" }}>Chỉ số thời gian thực từ Database</div>
                         {selectedDetailTab === "tuyen-truyen" && (
@@ -3277,9 +3316,9 @@ export default function TruongPhongDashboard() {
             // Lọc công việc theo bộ lọc
             const filteredTasks = dispatchTasks.filter(t => {
               const matchSearch = t.title.toLowerCase().includes(searchDispatch.toLowerCase()) ||
-                                  t.description.toLowerCase().includes(searchDispatch.toLowerCase()) ||
-                                  t.assignee.toLowerCase().includes(searchDispatch.toLowerCase()) ||
-                                  t.id.toLowerCase().includes(searchDispatch.toLowerCase());
+                t.description.toLowerCase().includes(searchDispatch.toLowerCase()) ||
+                t.assignee.toLowerCase().includes(searchDispatch.toLowerCase()) ||
+                t.id.toLowerCase().includes(searchDispatch.toLowerCase());
               const matchStatus = filterDispatchStatus === "ALL" || t.status === filterDispatchStatus;
               const matchPriority = filterDispatchPriority === "ALL" || t.priority === filterDispatchPriority;
               const matchAssignee = filterDispatchAssignee === "ALL" || t.assignee === filterDispatchAssignee;
@@ -3291,7 +3330,7 @@ export default function TruongPhongDashboard() {
 
             return (
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                
+
                 {/* 8. Bảng Khối Thông báo Cảnh báo (Alert Banner Top) */}
                 {(overdueTasks.length > 0 || upcomingTasks.length > 0 || newTasks.length > 0) && (
                   <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", padding: "12px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -3420,12 +3459,12 @@ export default function TruongPhongDashboard() {
                   >
                     {showDispatchForm ? (
                       <>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                         <span>Đóng form</span>
                       </>
                     ) : (
                       <>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                         <span>Giao công việc</span>
                       </>
                     )}
@@ -3438,12 +3477,12 @@ export default function TruongPhongDashboard() {
                     <div style={{ fontSize: "14px", fontWeight: "800", color: "#1e3a8a", marginBottom: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
                       {editingDispatchTask ? (
                         <>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                           <span>CẬP NHẬT CÔNG VIỆC GIAO</span>
                         </>
                       ) : (
                         <>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" ry="1" /></svg>
                           <span>FORM GIAO CÔNG VIỆC MỚI</span>
                         </>
                       )}
@@ -3576,7 +3615,7 @@ export default function TruongPhongDashboard() {
                               onClick={() => document.getElementById("dispatch-file-upload").click()}
                               style={{ padding: "6px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
                             >
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
                               <span>Chọn file</span>
                             </button>
                           </div>
@@ -3674,7 +3713,7 @@ export default function TruongPhongDashboard() {
                                 </div>
                                 {t.file_name && (
                                   <div style={{ fontSize: "11.5px", color: "#2563eb", marginTop: "2px", display: "flex", alignItems: "center", gap: "4px" }}>
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
                                     <u>{t.file_name}</u>
                                   </div>
                                 )}
@@ -3685,7 +3724,7 @@ export default function TruongPhongDashboard() {
                               <td style={{ padding: "10px 12px", fontWeight: "600", color: "#0f172a", fontSize: "12.5px" }}>
                                 {t.assignee && t.assignee.includes("Tất cả Cán bộ") ? (
                                   <span style={{ fontSize: "11px", fontWeight: "800", color: "#1e3a8a", background: "#dbeafe", border: "1px solid #93c5fd", padding: "3px 8px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
                                     <span>Toàn thể Phòng VH-XH</span>
                                   </span>
                                 ) : (
@@ -3723,11 +3762,11 @@ export default function TruongPhongDashboard() {
                                 <span style={{
                                   fontSize: "11.5px", fontWeight: "700", padding: "3px 8px", borderRadius: "3px", display: "inline-block",
                                   background: t.status === "Hoàn thành" ? "#d1fae5" :
-                                              t.status === "Đang xử lý" ? "#e0f2fe" :
-                                              t.status === "Quá hạn" ? "#fee2e2" : "#f1f5f9",
+                                    t.status === "Đang xử lý" ? "#e0f2fe" :
+                                      t.status === "Quá hạn" ? "#fee2e2" : "#f1f5f9",
                                   color: t.status === "Hoàn thành" ? "#15803d" :
-                                         t.status === "Đang xử lý" ? "#0369a1" :
-                                         t.status === "Quá hạn" ? "#b91c1c" : "#475569"
+                                    t.status === "Đang xử lý" ? "#0369a1" :
+                                      t.status === "Quá hạn" ? "#b91c1c" : "#475569"
                                 }}>
                                   {t.status}
                                 </span>
@@ -3757,7 +3796,7 @@ export default function TruongPhongDashboard() {
                                         className="tp-dropdown-item"
                                       >
                                         <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
-                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                         </span>
                                         <span>Xem chi tiết</span>
                                       </button>
@@ -3771,7 +3810,7 @@ export default function TruongPhongDashboard() {
                                         className="tp-dropdown-item"
                                       >
                                         <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
-                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                                         </span>
                                         <span>Sửa công việc</span>
                                       </button>
@@ -3787,7 +3826,7 @@ export default function TruongPhongDashboard() {
                                         className="tp-dropdown-item"
                                       >
                                         <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
-                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
                                         </span>
                                         <span>Cập nhật tiến độ</span>
                                       </button>
@@ -3802,7 +3841,7 @@ export default function TruongPhongDashboard() {
                                           className="tp-dropdown-item tp-dropdown-item-complete"
                                         >
                                           <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                                           </span>
                                           <span>Đánh dấu Hoàn thành</span>
                                         </button>
@@ -3819,7 +3858,7 @@ export default function TruongPhongDashboard() {
                                         className="tp-dropdown-item tp-dropdown-item-delete"
                                       >
                                         <span className="tp-dropdown-icon" style={{ display: "flex", alignItems: "center" }}>
-                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
                                         </span>
                                         <span>Xóa công việc</span>
                                       </button>
@@ -3841,7 +3880,7 @@ export default function TruongPhongDashboard() {
                     <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "6px", width: "100%", maxWidth: "650px", maxHeight: "90vh", overflowY: "auto", padding: "20px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "10px", marginBottom: "14px" }}>
                         <h3 style={{ margin: 0, fontSize: "16px", color: "#1e3a8a", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px" }}>
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                           <span>CHI TIẾT CÔNG VIỆC: {viewingDetailTask.id}</span>
                         </h3>
                         <button onClick={() => setViewingDetailTask(null)} style={{ background: "none", border: "none", fontSize: "18px", cursor: "pointer" }}>✕</button>
@@ -4060,7 +4099,7 @@ export default function TruongPhongDashboard() {
                 <div className="tp-card" style={{ padding: "16px", background: "#ffffff", display: "flex", flexDirection: "column", gap: "12px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
                     <h3 style={{ margin: 0, fontSize: "16px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 1 2 2h16a2 2 0 0 1 2-2v-6l-3.45-6.89A2 2 0 0 1 16.76 4H7.24a2 2 0 0 1-1.79 1.11z"/></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11L2 12v6a2 2 0 0 1 2 2h16a2 2 0 0 1 2-2v-6l-3.45-6.89A2 2 0 0 1 16.76 4H7.24a2 2 0 0 1-1.79 1.11z" /></svg>
                       <span>QUẢN LÝ VĂN BẢN ĐẾN CƠ QUAN</span>
                     </h3>
 
@@ -4084,7 +4123,7 @@ export default function TruongPhongDashboard() {
                         }}
                         style={{ padding: "8px 16px", borderRadius: "6px", background: "#005baa", color: "#fff", border: "none", fontWeight: "700", fontSize: "12.5px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
                       >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                         <span>{showIncomingForm ? "Đóng form" : "Tiếp nhận Văn bản đến Mới"}</span>
                       </button>
 
@@ -4094,7 +4133,7 @@ export default function TruongPhongDashboard() {
                         style={{ padding: "8px 14px", borderRadius: "6px", background: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", fontWeight: "700", fontSize: "12.5px", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
                         title="Làm mới dữ liệu từ hệ thống"
                       >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
                         <span>Làm mới</span>
                       </button>
 
@@ -4104,7 +4143,7 @@ export default function TruongPhongDashboard() {
                         style={{ padding: "8px 14px", borderRadius: "6px", background: "#16a34a", color: "#ffffff", border: "none", fontWeight: "700", fontSize: "12.5px", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
                         title="Xuất bảng dữ liệu ra file Excel"
                       >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><polyline points="9 15 12 12 15 15" /></svg>
                         <span>Xuất Excel</span>
                       </button>
 
@@ -4114,7 +4153,7 @@ export default function TruongPhongDashboard() {
                         style={{ padding: "8px 14px", borderRadius: "6px", background: "#475569", color: "#ffffff", border: "none", fontWeight: "700", fontSize: "12.5px", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
                         title="In danh sách văn bản"
                       >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>
                         <span>In danh sách</span>
                       </button>
                     </div>
@@ -4423,7 +4462,7 @@ export default function TruongPhongDashboard() {
                       <div style={{ background: "#ffffff", border: "1.5px dashed #005baa", padding: "14px 16px", borderRadius: "8px", marginTop: "14px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
                           <label style={{ fontSize: "13px", fontWeight: "800", color: "#003d7a", display: "flex", alignItems: "center", gap: "6px" }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
                             <span>Tệp đính kèm văn bản gốc (*.PDF, *.DOCX, *.DOC, Ảnh Scan)</span>
                           </label>
 
@@ -4443,7 +4482,7 @@ export default function TruongPhongDashboard() {
                                 boxShadow: "0 2px 4px rgba(0, 91, 170, 0.2)"
                               }}
                             >
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
                               <span>{incomingForm.file_name ? "Tải tệp đính kèm mới" : "Tải tệp đính kèm từ máy"}</span>
                               <input
                                 type="file"
@@ -4646,7 +4685,7 @@ export default function TruongPhongDashboard() {
                                     }}
                                     title="Xem văn bản & Xử lý"
                                   >
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                     <span>Xem văn bản</span>
                                   </button>
                                 </td>
@@ -4708,8 +4747,8 @@ export default function TruongPhongDashboard() {
           {activeTab === "outgoing-docs" && (() => {
             const filteredOutgoing = outgoingDocs.filter(doc => {
               const matchSearch = doc.so_hieu.toLowerCase().includes(searchOutgoing.toLowerCase()) ||
-                                  doc.trich_yeu.toLowerCase().includes(searchOutgoing.toLowerCase()) ||
-                                  doc.noi_nhan.toLowerCase().includes(searchOutgoing.toLowerCase());
+                doc.trich_yeu.toLowerCase().includes(searchOutgoing.toLowerCase()) ||
+                doc.noi_nhan.toLowerCase().includes(searchOutgoing.toLowerCase());
               const matchType = filterOutgoingType === "ALL" || doc.loai_van_ban === filterOutgoingType;
               return matchSearch && matchType;
             });
@@ -4720,7 +4759,7 @@ export default function TruongPhongDashboard() {
                 <div className="tp-card" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
                   <div>
                     <h3 style={{ margin: 0, fontSize: "17px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
                       <span>SỔ QUẢN LÝ VĂN BẢN ĐỊ CƠ QUAN ({filteredOutgoing.length})</span>
                     </h3>
                     <span style={{ fontSize: "12px", color: "#64748b" }}>
@@ -4771,12 +4810,12 @@ export default function TruongPhongDashboard() {
                     >
                       {showOutgoingForm ? (
                         <>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                           <span>Đóng biểu mẫu</span>
                         </>
                       ) : (
                         <>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                           <span>Soạn thảo Văn bản đi Mới</span>
                         </>
                       )}
@@ -4790,12 +4829,12 @@ export default function TruongPhongDashboard() {
                     <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#003d7a", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px" }}>
                       {editingOutgoingDoc ? (
                         <>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                           <span>CẬP NHẬT VĂN BẢN ĐỊ</span>
                         </>
                       ) : (
                         <>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
                           <span>SOẠN THẢO & PHÁT HÀNH VĂN BẢN ĐỊ MỚI</span>
                         </>
                       )}
@@ -4913,7 +4952,7 @@ export default function TruongPhongDashboard() {
                               onClick={() => document.getElementById("outgoing-file-upload").click()}
                               style={{ padding: "7px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontSize: "12px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
                             >
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
                               <span>Chọn file</span>
                             </button>
                           </div>
@@ -4945,7 +4984,7 @@ export default function TruongPhongDashboard() {
                           Hủy bỏ
                         </button>
                         <button type="submit" className="tp-btn-submit" style={{ padding: "7px 20px", fontSize: "13px", display: "flex", alignItems: "center", gap: "6px" }}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
                           <span>{editingOutgoingDoc ? "Lưu cập nhật văn bản đi" : "Phát hành / Lưu văn bản đi"}</span>
                         </button>
                       </div>
@@ -5045,7 +5084,7 @@ export default function TruongPhongDashboard() {
                                   }}
                                   title="Xem văn bản & Xử lý"
                                 >
-                                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                   <span>Xem văn bản</span>
                                 </button>
                               </td>
@@ -5072,7 +5111,7 @@ export default function TruongPhongDashboard() {
                   <div className="tp-card tp-form-card" style={{ width: "100%", padding: "24px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px", paddingBottom: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
                       <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#003d7a", display: "flex", alignItems: "center", gap: "8px" }}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><line x1="20" y1="8" x2="20" y2="14" /><line x1="17" y1="11" x2="23" y2="11" /></svg>
                         <span>{editingStaff ? "Chỉnh sửa Thông tin & Phân quyền Cán bộ" : "Thêm mới & Cấp tài khoản Cán bộ"}</span>
                       </h3>
                       {editingStaff && (
@@ -5242,7 +5281,7 @@ export default function TruongPhongDashboard() {
                   {/* CARD 2: BẢNG DANH SÁCH CÁN BỘ */}
                   <div className="tp-card tp-list-card" style={{ width: "100%", padding: "20px" }}>
                     <h3 style={{ margin: "0 0 16px 0", fontSize: "17px", fontWeight: "900", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
                       <span>Danh sách Cán bộ trực thuộc quản lý ({subordinates.length})</span>
                     </h3>
 
@@ -5392,7 +5431,7 @@ export default function TruongPhongDashboard() {
                 <div className="tp-tasks-section">
                   <div className="tp-card">
                     <h3 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                       <span>Chỉ đạo công việc từ Trưởng phòng Nguyễn Thái Huy</span>
                     </h3>
                     <div className="tp-activity-list" style={{ marginTop: "15px" }}>
@@ -5405,7 +5444,7 @@ export default function TruongPhongDashboard() {
                             <span style={{ fontSize: "12px", color: "#64748b" }}>Hạn chót: {task.deadline}</span>
                           </div>
                           <strong style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                             <span>{task.title}</span>
                           </strong>
                           <p style={{ marginTop: "6px", color: "#334155" }}>{task.description}</p>
@@ -5427,7 +5466,7 @@ export default function TruongPhongDashboard() {
                   <div className="tp-card tp-form-card" style={{ width: "100%", padding: "24px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", pb: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
                       <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#003d7a", display: "flex", alignItems: "center", gap: "8px" }}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                         <span>{editingArticle ? "Sửa bài viết tuyên truyền" : "Soạn thảo bài viết tuyên truyền mới"}</span>
                       </h3>
                       {editingArticle && (
@@ -5699,10 +5738,10 @@ export default function TruongPhongDashboard() {
                                   <td>
                                     <span className={`tp-meeting-badge ${art.danh_muc}`} style={{ fontSize: "12.5px", padding: "4px 12px", borderRadius: "20px" }}>
                                       {art.danh_muc === "phong-chong-lua-dao" ? "🛡️ Lừa đảo mạng" :
-                                       art.danh_muc === "an-toan-giao-thong" ? "🚦 An toàn giao thông" :
-                                       art.danh_muc === "thien-tai" ? "🌧️ Phòng chống thiên tai" :
-                                       art.danh_muc === "bau-cu" ? "🗳️ Bầu cử" :
-                                       art.danh_muc === "huong-dan-vneid" ? "🆔 VNeID" : "📌 " + (art.danh_muc || "Chuyên mục")}
+                                        art.danh_muc === "an-toan-giao-thong" ? "🚦 An toàn giao thông" :
+                                          art.danh_muc === "thien-tai" ? "🌧️ Phòng chống thiên tai" :
+                                            art.danh_muc === "bau-cu" ? "🗳️ Bầu cử" :
+                                              art.danh_muc === "huong-dan-vneid" ? "🆔 VNeID" : "📌 " + (art.danh_muc || "Chuyên mục")}
                                     </span>
                                   </td>
                                   <td>
@@ -5734,7 +5773,7 @@ export default function TruongPhongDashboard() {
                                         title="Sửa bài viết"
                                       >
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                          <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                                         </svg>
                                         <span>Sửa</span>
                                       </button>
@@ -5745,7 +5784,7 @@ export default function TruongPhongDashboard() {
                                         title="Xóa bài viết"
                                       >
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                          <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                          <polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                                         </svg>
                                         <span>Xóa</span>
                                       </button>
@@ -6029,7 +6068,7 @@ export default function TruongPhongDashboard() {
                             </span>
                           </div>
                           <p style={{ marginTop: "8px", color: "#334155" }}>{fb.content}</p>
-                          
+
                           {fb.status === "resolved" ? (
                             <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "10px 14px", borderRadius: "8px", marginTop: "10px", fontSize: "13.5px" }}>
                               <strong style={{ color: "#15803d" }}>💬 Phản hồi:</strong> {fb.reply}
@@ -6048,7 +6087,7 @@ export default function TruongPhongDashboard() {
 
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px" }}>
                             <span style={{ fontSize: "11px", color: "#94a3b8" }}>Ngày gửi: {new Date(fb.createdAt).toLocaleDateString("vi-VN")}</span>
-                            
+
                             <div style={{ display: "flex", gap: "8px" }}>
                               {fb.status === "pending" && (
                                 <button
@@ -6064,11 +6103,11 @@ export default function TruongPhongDashboard() {
                                     setMessage("Đã gửi phản hồi thành công!");
                                   }}
                                 >
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
                                   <span>Gửi phản hồi</span>
                                 </button>
                               )}
-                              
+
                               <a
                                 href={`https://zalo.me/${fb.phone}`}
                                 target="_blank"
@@ -6076,7 +6115,7 @@ export default function TruongPhongDashboard() {
                                 className="tp-edit-btn-small"
                                 style={{ background: "#0068ff", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", fontWeight: "700" }}
                               >
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
                                 <span>Nhắn Zalo riêng</span>
                               </a>
                             </div>
@@ -6088,9 +6127,118 @@ export default function TruongPhongDashboard() {
                 </div>
               )}
 
+              {activeTab === "subscribers" && (
+                <div className="tp-panel-card" style={{ background: '#ffffff', padding: '24px', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.04)', animation: 'fadeIn 0.25s ease-out' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+                    <div>
+                      <h2 style={{ fontSize: '20px', fontWeight: '900', color: '#1e293b', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                          <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        DANH SÁCH EMAIL CÔNG DÂN ĐĂNG KÝ NHẬN TIN
+                      </h2>
+                      <p style={{ fontSize: '13.5px', color: '#64748b', margin: '4px 0 0 0' }}>
+                        Tất cả địa chỉ email do công dân gửi qua widget "ĐĂNG KÝ NHẬN TIN" được lưu vĩnh viễn trong CSDL MongoDB xã Đăk Pxi.
+                      </p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ background: '#dcfce7', color: '#15803d', fontWeight: '900', padding: '8px 16px', borderRadius: '20px', fontSize: '13.5px', border: '1px solid #bbf7d0' }}>
+                        Tổng cộng: {subscribersList.length} Email
+                      </span>
+                      <button
+                        onClick={fetchSubscribersList}
+                        style={{ background: '#16a34a', color: '#ffffff', border: 'none', padding: '9px 18px', borderRadius: '10px', fontWeight: '800', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 10px rgba(22, 163, 74, 0.25)' }}
+                      >
+                        🔄 Tải lại danh sách
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Ô TÌM KIẾM */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <input
+                      type="text"
+                      placeholder="🔍 Tìm kiếm nhanh email công dân..."
+                      value={subscriberSearch}
+                      onChange={e => setSubscriberSearch(e.target.value)}
+                      style={{ width: '100%', padding: '12px 18px', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '14px', outline: 'none' }}
+                    />
+                  </div>
+
+                  {/* BẢNG HIỂN THỊ */}
+                  <div style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+                      <thead>
+                        <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0', color: '#475569' }}>
+                          <th style={{ padding: '14px 18px', fontWeight: '800', width: '60px' }}>STT</th>
+                          <th style={{ padding: '14px 18px', fontWeight: '800' }}>ĐỊA CHỈ EMAIL CÔNG DÂN</th>
+                          <th style={{ padding: '14px 18px', fontWeight: '800' }}>THỜI GIAN ĐĂNG KÝ</th>
+                          <th style={{ padding: '14px 18px', fontWeight: '800' }}>LƯU CƠ SỞ DỮ LIỆU</th>
+                          <th style={{ padding: '14px 18px', fontWeight: '800', textAlign: 'center' }}>THAO TÁC</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {subscribersList.filter(s => (s.email || '').toLowerCase().includes(subscriberSearch.toLowerCase())).length === 0 ? (
+                          <tr>
+                            <td colSpan="5" style={{ padding: '36px', textAlign: 'center', color: '#94a3b8', fontStyle: 'italic' }}>
+                              Chưa có email đăng ký nào được tìm thấy.
+                            </td>
+                          </tr>
+                        ) : (
+                          subscribersList
+                            .filter(s => (s.email || '').toLowerCase().includes(subscriberSearch.toLowerCase()))
+                            .map((item, idx) => (
+                              <tr key={item._id || idx} style={{ borderBottom: '1px solid #f1f5f9', background: idx % 2 === 0 ? '#ffffff' : '#fafafa' }}>
+                                <td style={{ padding: '14px 18px', fontWeight: '700', color: '#64748b' }}>{idx + 1}</td>
+                                <td style={{ padding: '14px 18px', fontWeight: '800', color: '#0f172a' }}>
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                                    ✉️ {item.email}
+                                  </span>
+                                </td>
+                                <td style={{ padding: '14px 18px', color: '#475569', fontWeight: '600' }}>
+                                  {new Date(item.createdAt || item.subscribedAt).toLocaleString('vi-VN')}
+                                </td>
+                                <td style={{ padding: '14px 18px' }}>
+                                  <span style={{ background: '#e0f2fe', color: '#0369a1', fontWeight: '800', padding: '4px 12px', borderRadius: '14px', fontSize: '12px', border: '1px solid #bae6fd' }}>
+                                    🔒 CSDL vĩnh viễn (MongoDB)
+                                  </span>
+                                </td>
+                                <td style={{ padding: '14px 18px', textAlign: 'center' }}>
+                                  <button
+                                    onClick={async () => {
+                                      if (window.confirm(`Bạn có chắc chắn muốn xóa email ${item.email} khỏi danh sách?`)) {
+                                        try {
+                                          if (item._id && !item._id.startsWith('local-')) {
+                                            await axios.delete(`${BASE_URL}/api/v1/subscribers/${item._id}`);
+                                          }
+                                          const saved = JSON.parse(localStorage.getItem('subscribed_emails') || '[]');
+                                          const updated = saved.filter(s => (typeof s === 'string' ? s : s.email) !== item.email);
+                                          localStorage.setItem('subscribed_emails', JSON.stringify(updated));
+                                          fetchSubscribersList();
+                                          setMessage('✅ Đã xóa email thành công!');
+                                        } catch (e) {
+                                          setError('Có lỗi khi xóa email!');
+                                        }
+                                      }
+                                    }}
+                                    style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '6px 14px', borderRadius: '8px', fontWeight: '800', cursor: 'pointer', fontSize: '12.5px' }}
+                                  >
+                                    🗑️ Xóa
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
               {activeTab === "ai-assistant" && (
                 <div className="tp-ai-assistant-wrapper" style={{ animation: "fadeIn 0.25s ease-out", display: "flex", flexDirection: "column", gap: "20px" }}>
-                  
+
                   {/* Top Header Banner */}
                   <div style={{
                     background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
@@ -6121,7 +6269,7 @@ export default function TruongPhongDashboard() {
                     }}>
                       <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600", textAlign: "right" }}>Thời gian hiện tại</span>
                       <div style={{ fontSize: "15px", fontWeight: "800", color: "#38bdf8", display: "flex", alignItems: "center", gap: "6px" }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                         <span style={{ fontFamily: "monospace" }}>{formatCurrentTime(currentTime)}</span>
                       </div>
                     </div>
@@ -6134,7 +6282,7 @@ export default function TruongPhongDashboard() {
                     gap: "6px",
                     width: "100%"
                   }}>
-                    
+
                     {/* Card 1: Soạn Báo cáo */}
                     <div
                       onClick={() => handleExecuteAIQuery("Soạn báo cáo kết quả công tác VH-XH và BHYT")}
@@ -6155,7 +6303,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="1. Soạn Báo cáo kết quả công tác"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>1. Soạn Báo cáo</span>
                     </div>
 
@@ -6179,7 +6327,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="2. Soạn Kế hoạch công tác"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" ry="1" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>2. Soạn Kế hoạch</span>
                     </div>
 
@@ -6203,7 +6351,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="3. Soạn Thông báo nội bộ / khẩn"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>3. Soạn Thông báo</span>
                     </div>
 
@@ -6227,7 +6375,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="4. Bài viết Tuyên truyền & Slogan"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M22 8a6 6 0 0 0-6-6H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h2l4 4 4-4h2a6 6 0 0 0 6-6V8z"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M22 8a6 6 0 0 0-6-6H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h2l4 4 4-4h2a6 6 0 0 0 6-6V8z" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>4. Tuyên truyền</span>
                     </div>
 
@@ -6251,7 +6399,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="5. Tóm tắt Văn bản PDF/Word"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>5. Tóm tắt File</span>
                     </div>
 
@@ -6275,7 +6423,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="6. Tóm tắt Cuộc họp & Biên bản"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>6. Tóm tắt Họp</span>
                     </div>
 
@@ -6299,7 +6447,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="7. Tìm kiếm Văn bản CSDL"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>7. Tìm Văn bản</span>
                     </div>
 
@@ -6323,7 +6471,7 @@ export default function TruongPhongDashboard() {
                       className="tp-hover-card"
                       title="8. Gợi ý Công việc ưu tiên hôm nay"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.64 2.94 1.68 3.96.72.76 1.18 1.52 1.36 2.54"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><line x1="9" y1="18" x2="15" y2="18" /><line x1="10" y1="22" x2="14" y2="22" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.64 2.94 1.68 3.96.72.76 1.18 1.52 1.36 2.54" /></svg>
                       <span style={{ color: "#1e3a8a", fontSize: "11.5px", fontWeight: "800", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>8. Gợi ý Việc</span>
                     </div>
 
@@ -6346,7 +6494,7 @@ export default function TruongPhongDashboard() {
 
                   {/* CHAT TERMINAL & ACTION PREVIEWS */}
                   <div style={{ display: "grid", gridTemplateColumns: aiGeneratedDocContent ? "1fr 1fr" : "1fr", gap: "16px" }}>
-                    
+
                     {/* Left: Interactive Chat Terminal */}
                     <div className="tp-card" style={{ display: "flex", flexDirection: "column", minHeight: "450px", padding: "16px 20px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2e8f0", paddingBottom: "10px", marginBottom: "12px" }}>
@@ -6381,7 +6529,7 @@ export default function TruongPhongDashboard() {
                                 onClick={() => handleTextToSpeech(msg.text)}
                                 style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", marginTop: "6px", padding: 0, display: "inline-flex", alignItems: "center", gap: "4px" }}
                               >
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>
                                 <span>Đọc thành tiếng</span>
                               </button>
                             )}
@@ -6424,7 +6572,7 @@ export default function TruongPhongDashboard() {
                             style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "8px 14px", cursor: "pointer", fontSize: "16px", display: "flex", alignItems: "center" }}
                             title="Tải tệp PDF/Word để AI tóm tắt"
                           >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
                           </button>
                           <input
                             type="text"
@@ -6617,21 +6765,21 @@ export default function TruongPhongDashboard() {
                           {editingMeeting ? (
                             <>
                               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                                <polyline points="17 21 17 13 7 13 7 21"/>
-                                <polyline points="7 3 7 8 15 8"/>
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                <polyline points="17 21 17 13 7 13 7 21" />
+                                <polyline points="7 3 7 8 15 8" />
                               </svg>
                               <span>Lưu cập nhật cuộc họp</span>
                             </>
                           ) : (
                             <>
                               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="16" y1="2" x2="16" y2="6"/>
-                                <line x1="8" y1="2" x2="8" y2="6"/>
-                                <line x1="3" y1="10" x2="21" y2="10"/>
-                                <line x1="12" y1="14" x2="12" y2="18"/>
-                                <line x1="10" y1="16" x2="14" y2="16"/>
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                                <line x1="12" y1="14" x2="12" y2="18" />
+                                <line x1="10" y1="16" x2="14" y2="16" />
                               </svg>
                               <span>Tạo lịch họp mới</span>
                             </>
@@ -6668,7 +6816,7 @@ export default function TruongPhongDashboard() {
                           return (
                             <div key={m._id} className="tp-meeting-card">
                               <div className={`tp-meeting-indicator ${m.type}`}></div>
-                              
+
                               <div className="tp-meeting-card-left">
                                 <div className="tp-meeting-card-info">
                                   <div className="tp-meeting-card-title">
@@ -6698,7 +6846,7 @@ export default function TruongPhongDashboard() {
                                   </div>
                                 </div>
                               </div>
-                              
+
                               <div className="tp-meeting-card-right">
                                 <div className="tp-meeting-card-time">
                                   <div className="tp-time-val">{m.time}</div>
@@ -6803,7 +6951,7 @@ export default function TruongPhongDashboard() {
                         return (
                           <div key={m._id} className="tp-meeting-card">
                             <div className={`tp-meeting-indicator ${m.type}`}></div>
-                            
+
                             <div className="tp-meeting-card-left">
                               <div className="tp-meeting-card-info">
                                 <div className="tp-meeting-card-title">
@@ -6833,7 +6981,7 @@ export default function TruongPhongDashboard() {
                                 </div>
                               </div>
                             </div>
-                            
+
                             <div className="tp-meeting-card-right">
                               <div className="tp-meeting-card-time" style={{ marginRight: "10px" }}>
                                 <div className="tp-time-val">{m.time}</div>
@@ -6880,375 +7028,375 @@ export default function TruongPhongDashboard() {
         </div>
       </main>
 
-          {/* ── MODAL XÁC THỰC MÃ OTP SMS BẢO MẬT 2FA ── */}
-          {secModalMeeting && (
+      {/* ── MODAL XÁC THỰC MÃ OTP SMS BẢO MẬT 2FA ── */}
+      {secModalMeeting && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999
+        }}>
+          <div style={{
+            background: "#ffffff", borderRadius: "20px", padding: "28px 32px", width: "100%", maxWidth: "480px",
+            boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #3b82f6"
+          }}>
+            <div style={{ textAlign: "center", marginBottom: "16px" }}>
+              <div style={{ fontSize: "42px", marginBottom: "6px" }}>📱</div>
+              <h3 style={{ margin: "0 0 4px", color: "#1e3a8a", fontSize: "19px", fontWeight: "900" }}>
+                XÁC THỰC OTP 2FA THAM GIA CUỘC HỌP
+              </h3>
+              <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "12px", fontWeight: "800", padding: "4px 14px", borderRadius: "20px", border: "1px solid #93c5fd" }}>
+                🛡️ BẢO BẬT BẢN GIAO ĐIỆN TỬ BHYT
+              </span>
+            </div>
+
+            <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1px solid #e2e8f0", marginBottom: "16px", fontSize: "13px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <span style={{ color: "#64748b" }}>Cán bộ xác thực:</span>
+                <strong style={{ color: "#1e293b" }}>{fullName || "Trưởng phòng Nguyễn Thái Huy"}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <span style={{ color: "#64748b" }}>Số điện thoại SMS:</span>
+                <strong style={{ color: "#0369a1" }}>0984.***.888</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#64748b" }}>Cuộc họp tham gia:</span>
+                <strong style={{ color: "#1e3a8a" }}>{secModalMeeting.title}</strong>
+              </div>
+            </div>
+
+            {/* Notice banner */}
+            <div style={{ background: "#f0fdf4", color: "#166534", padding: "10px 14px", borderRadius: "8px", fontSize: "12.5px", marginBottom: "16px", border: "1px solid #bbf7d0", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }}>
+              <span>📲</span>
+              <span>Đã gửi mã SMS OTP 6 chữ số tới điện thoại. Mã thử nghiệm: <strong style={{ letterSpacing: "2px", color: "#15803d", fontSize: "14px" }}>{generatedOtp}</strong></span>
+            </div>
+
+            {secError && (
+              <div style={{ background: "#fef2f2", color: "#dc2626", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", border: "1px solid #fca5a5", fontWeight: "600" }}>
+                {secError}
+              </div>
+            )}
+
+            <form onSubmit={handleVerifySecPin}>
+              <div style={{ marginBottom: "20px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "700", color: "#1e293b" }}>
+                    🔑 Nhập Mã OTP SMS 6 chữ số
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleSendOtpSMS}
+                    style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", textDecoration: "underline" }}
+                  >
+                    📲 Gửi lại mã OTP
+                  </button>
+                </div>
+
+                <input
+                  type="text"
+                  maxLength="6"
+                  placeholder="Nhập 6 số OTP (Ví dụ: 892104)..."
+                  value={secOtpInput || secPinInput}
+                  onChange={(e) => {
+                    setSecOtpInput(e.target.value);
+                    setSecPinInput(e.target.value);
+                  }}
+                  style={{
+                    width: "100%", padding: "12px 16px", borderRadius: "10px", border: "2px solid #3b82f6",
+                    fontSize: "20px", textAlign: "center", letterSpacing: "6px", fontWeight: "900", color: "#1e3a8a",
+                    boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)"
+                  }}
+                  autoFocus
+                  required
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  type="button"
+                  onClick={() => setSecModalMeeting(null)}
+                  style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #cbd5e1", background: "#f8fafc", color: "#475569", fontWeight: "700", cursor: "pointer" }}
+                >
+                  Hủy bỏ
+                </button>
+                <button
+                  type="submit"
+                  style={{ flex: 1.5, padding: "12px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)", color: "#ffffff", fontWeight: "800", boxShadow: "0 4px 14px rgba(37,99,235,0.35)", cursor: "pointer" }}
+                >
+                  🔓 Xác nhận OTP & Vào họp
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL XEM LỊCH SỬ HỌP VÀ BIÊN BẢN KẾT LUẬN LƯU VĨNH VIỄN */}
+      {selectedMeetingHistory && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999
+        }}>
+          <div style={{
+            background: "#ffffff", color: "#1e293b", borderRadius: "16px", padding: "28px 32px", width: "100%", maxWidth: "660px",
+            boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #3b82f6", maxHeight: "90vh", overflowY: "auto"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2px solid #e2e8f0", paddingBottom: "14px", marginBottom: "18px" }}>
+              <div>
+                <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "11px", fontWeight: "800", padding: "3px 10px", borderRadius: "4px", border: "1px solid #93c5fd" }}>
+                  LỊCH SỬ KẾT THÚC & LƯU VĨNH VIỄN IN MONGODB
+                </span>
+                <h2 style={{ margin: "8px 0 4px", fontSize: "20px", fontWeight: "900", color: "#1e3a8a" }}>
+                  📋 BIÊN BẢN & KẾT LUẬN CUỘC HỌP
+                </h2>
+                <p style={{ margin: 0, fontSize: "14px", fontWeight: "700", color: "#334155" }}>
+                  {selectedMeetingHistory.title}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedMeetingHistory(null)}
+                style={{ background: "none", border: "none", color: "#64748b", fontSize: "20px", cursor: "pointer", fontWeight: "800" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* KHỐI TRỢ LÝ AI TỰ ĐỘNG TẠO BIÊN BẢN HỌP CỤ THỂ DÀNH CHO TRƯỞNG PHÒNG */}
             <div style={{
-              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
-              display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999
+              background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)",
+              color: "#ffffff", padding: "14px 18px", borderRadius: "12px",
+              marginBottom: "18px", border: "1px solid #6366f1",
+              display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
+              boxShadow: "0 8px 20px rgba(49, 46, 129, 0.25)"
             }}>
-              <div style={{
-                background: "#ffffff", borderRadius: "20px", padding: "28px 32px", width: "100%", maxWidth: "480px",
-                boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #3b82f6"
-              }}>
-                <div style={{ textAlign: "center", marginBottom: "16px" }}>
-                  <div style={{ fontSize: "42px", marginBottom: "6px" }}>📱</div>
-                  <h3 style={{ margin: "0 0 4px", color: "#1e3a8a", fontSize: "19px", fontWeight: "900" }}>
-                    XÁC THỰC OTP 2FA THAM GIA CUỘC HỌP
-                  </h3>
-                  <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "12px", fontWeight: "800", padding: "4px 14px", borderRadius: "20px", border: "1px solid #93c5fd" }}>
-                    🛡️ BẢO BẬT BẢN GIAO ĐIỆN TỬ BHYT
-                  </span>
-                </div>
+              <div>
+                <strong style={{ fontSize: "13.5px", color: "#a5b4fc", display: "flex", alignItems: "center", gap: "6px" }}>
+                  🤖 AI AUTOMATION — BIÊN BẢN VĨNH VIỄN
+                </strong>
+                <span style={{ fontSize: "11.5px", color: "#e0e7ff", display: "block", marginTop: "2px" }}>
+                  Biên bản & Kết luận được tự động phân tích và ký số mã hóa bởi Trợ lý AI.
+                </span>
+              </div>
 
-                <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1px solid #e2e8f0", marginBottom: "16px", fontSize: "13px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span style={{ color: "#64748b" }}>Cán bộ xác thực:</span>
-                    <strong style={{ color: "#1e293b" }}>{fullName || "Trưởng phòng Nguyễn Thái Huy"}</strong>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span style={{ color: "#64748b" }}>Số điện thoại SMS:</span>
-                    <strong style={{ color: "#0369a1" }}>0984.***.888</strong>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span style={{ color: "#64748b" }}>Cuộc họp tham gia:</span>
-                    <strong style={{ color: "#1e3a8a" }}>{secModalMeeting.title}</strong>
-                  </div>
-                </div>
+              <button
+                onClick={() => alert("✨ Trợ lý AI đang cập nhật và xác thực lại Biên bản họp vĩnh viễn!")}
+                style={{
+                  background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                  color: "#ffffff", border: "none", padding: "8px 16px", borderRadius: "8px",
+                  fontWeight: "800", fontSize: "12px", cursor: "pointer", whiteSpace: "nowrap"
+                }}
+              >
+                ✨ AI Xác thực
+              </button>
+            </div>
 
-                {/* Notice banner */}
-                <div style={{ background: "#f0fdf4", color: "#166534", padding: "10px 14px", borderRadius: "8px", fontSize: "12.5px", marginBottom: "16px", border: "1px solid #bbf7d0", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span>📲</span>
-                  <span>Đã gửi mã SMS OTP 6 chữ số tới điện thoại. Mã thử nghiệm: <strong style={{ letterSpacing: "2px", color: "#15803d", fontSize: "14px" }}>{generatedOtp}</strong></span>
-                </div>
+            {/* Thông số cuộc họp */}
+            <div style={{ background: "#f8fafc", padding: "14px 18px", borderRadius: "10px", border: "1px solid #e2e8f0", marginBottom: "18px", fontSize: "13px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                <div><strong>Ngày tổ chức:</strong> {selectedMeetingHistory.date ? selectedMeetingHistory.date.split("-").reverse().join("/") : "N/A"} ({selectedMeetingHistory.time})</div>
+                <div><strong>Phòng họp / Địa điểm:</strong> {selectedMeetingHistory.location || "Phòng họp số 1"}</div>
+                <div><strong>Mã cuộc họp:</strong> <code style={{ background: "#e2e8f0", padding: "2px 6px", borderRadius: "4px" }}>{selectedMeetingHistory.meetingCode || "VHXH-98213"}</code></div>
+                <div><strong>Mã PIN bảo mật:</strong> <code style={{ background: "#e2e8f0", padding: "2px 6px", borderRadius: "4px" }}>{selectedMeetingHistory.passcode || "123456"}</code></div>
+                <div><strong>Loại cuộc họp:</strong> {getMeetingBadgeLabel(selectedMeetingHistory.type)}</div>
+                <div><strong>Trạng thái lưu trữ:</strong> <span style={{ color: "#166534", fontWeight: "800" }}>🟢 Đã lưu vĩnh viễn vào CSDL BHYT Xã</span></div>
+              </div>
+            </div>
 
-                {secError && (
-                  <div style={{ background: "#fef2f2", color: "#dc2626", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", border: "1px solid #fca5a5", fontWeight: "600" }}>
-                    {secError}
-                  </div>
+            {/* Nội dung Biên bản */}
+            <div style={{ marginBottom: "18px" }}>
+              <h4 style={{ margin: "0 0 8px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
+                📝 Biên bản Diễn biến & Tóm tắt Cuộc họp:
+              </h4>
+              <div style={{ background: "#f1f5f9", padding: "14px 16px", borderRadius: "10px", fontSize: "13.5px", lineHeight: "1.6", color: "#334155", borderLeft: "4px solid #3b82f6" }}>
+                {selectedMeetingHistory.summary?.bienBan || selectedMeetingHistory.note || "Hội nghị Ban Chỉ đạo Phòng Văn hóa - Xã hội đã hoàn thành rà soát 100% hồ sơ BHYT đợt 2 cho người dân 6 thôn. Thống nhất danh sách 45 hộ được hỗ trợ kinh phí bảo hiểm xã hội."}
+              </div>
+            </div>
+
+            {/* Kết luận & Phân công */}
+            <div style={{ marginBottom: "20px" }}>
+              <h4 style={{ margin: "0 0 10px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
+                ✅ Kết luận & Phân công Nhiệm vụ (Đã phê duyệt):
+              </h4>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {selectedMeetingHistory.summary?.ketLuan?.length > 0 ? (
+                  selectedMeetingHistory.summary.ketLuan.map((item, idx) => (
+                    <div key={idx} style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                      <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                      <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>{item.text || item}</span>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                      <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                      <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Đồng chí Y Byen hoàn thiện dữ liệu nhập lên cổng DVC trước 17h00 ngày 22/07.</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                      <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                      <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Đồng chí A Blong phối hợp Trưởng thôn Đăk Wek tuyên truyền lưu động.</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                      <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
+                      <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Giao Phó phòng Lê Thị C ký duyệt biên bản tổng hợp chuyển UBND Xã.</span>
+                    </div>
+                  </>
                 )}
-
-                <form onSubmit={handleVerifySecPin}>
-                  <div style={{ marginBottom: "20px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                      <label style={{ fontSize: "13px", fontWeight: "700", color: "#1e293b" }}>
-                        🔑 Nhập Mã OTP SMS 6 chữ số
-                      </label>
-                      <button
-                        type="button"
-                        onClick={handleSendOtpSMS}
-                        style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", textDecoration: "underline" }}
-                      >
-                        📲 Gửi lại mã OTP
-                      </button>
-                    </div>
-
-                    <input
-                      type="text"
-                      maxLength="6"
-                      placeholder="Nhập 6 số OTP (Ví dụ: 892104)..."
-                      value={secOtpInput || secPinInput}
-                      onChange={(e) => {
-                        setSecOtpInput(e.target.value);
-                        setSecPinInput(e.target.value);
-                      }}
-                      style={{
-                        width: "100%", padding: "12px 16px", borderRadius: "10px", border: "2px solid #3b82f6",
-                        fontSize: "20px", textAlign: "center", letterSpacing: "6px", fontWeight: "900", color: "#1e3a8a",
-                        boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)"
-                      }}
-                      autoFocus
-                      required
-                    />
-                  </div>
-
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <button
-                      type="button"
-                      onClick={() => setSecModalMeeting(null)}
-                      style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #cbd5e1", background: "#f8fafc", color: "#475569", fontWeight: "700", cursor: "pointer" }}
-                    >
-                      Hủy bỏ
-                    </button>
-                    <button
-                      type="submit"
-                      style={{ flex: 1.5, padding: "12px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)", color: "#ffffff", fontWeight: "800", boxShadow: "0 4px 14px rgba(37,99,235,0.35)", cursor: "pointer" }}
-                    >
-                      🔓 Xác nhận OTP & Vào họp
-                    </button>
-                  </div>
-                </form>
               </div>
             </div>
-          )}
 
-          {/* MODAL XEM LỊCH SỬ HỌP VÀ BIÊN BẢN KẾT LUẬN LƯU VĨNH VIỄN */}
-          {selectedMeetingHistory && (
-            <div style={{
-              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
-              display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999
-            }}>
-              <div style={{
-                background: "#ffffff", color: "#1e293b", borderRadius: "16px", padding: "28px 32px", width: "100%", maxWidth: "660px",
-                boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #3b82f6", maxHeight: "90vh", overflowY: "auto"
-              }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2px solid #e2e8f0", paddingBottom: "14px", marginBottom: "18px" }}>
-                  <div>
-                    <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "11px", fontWeight: "800", padding: "3px 10px", borderRadius: "4px", border: "1px solid #93c5fd" }}>
-                      LỊCH SỬ KẾT THÚC & LƯU VĨNH VIỄN IN MONGODB
-                    </span>
-                    <h2 style={{ margin: "8px 0 4px", fontSize: "20px", fontWeight: "900", color: "#1e3a8a" }}>
-                      📋 BIÊN BẢN & KẾT LUẬN CUỘC HỌP
-                    </h2>
-                    <p style={{ margin: 0, fontSize: "14px", fontWeight: "700", color: "#334155" }}>
-                      {selectedMeetingHistory.title}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setSelectedMeetingHistory(null)}
-                    style={{ background: "none", border: "none", color: "#64748b", fontSize: "20px", cursor: "pointer", fontWeight: "800" }}
-                  >
-                    ✕
-                  </button>
+            {/* Điểm danh Cán bộ dự họp */}
+            <div style={{ marginBottom: "22px" }}>
+              <h4 style={{ margin: "0 0 10px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
+                👥 Cán bộ Xác thực Tham gia:
+              </h4>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                  <strong>Trưởng phòng Nguyễn Thái Huy</strong> (Chủ trì)
                 </div>
-
-                {/* KHỐI TRỢ LÝ AI TỰ ĐỘNG TẠO BIÊN BẢN HỌP CỤ THỂ DÀNH CHO TRƯỞNG PHÒNG */}
-                <div style={{
-                  background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)",
-                  color: "#ffffff", padding: "14px 18px", borderRadius: "12px",
-                  marginBottom: "18px", border: "1px solid #6366f1",
-                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
-                  boxShadow: "0 8px 20px rgba(49, 46, 129, 0.25)"
-                }}>
-                  <div>
-                    <strong style={{ fontSize: "13.5px", color: "#a5b4fc", display: "flex", alignItems: "center", gap: "6px" }}>
-                      🤖 AI AUTOMATION — BIÊN BẢN VĨNH VIỄN
-                    </strong>
-                    <span style={{ fontSize: "11.5px", color: "#e0e7ff", display: "block", marginTop: "2px" }}>
-                      Biên bản & Kết luận được tự động phân tích và ký số mã hóa bởi Trợ lý AI.
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={() => alert("✨ Trợ lý AI đang cập nhật và xác thực lại Biên bản họp vĩnh viễn!")}
-                    style={{
-                      background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
-                      color: "#ffffff", border: "none", padding: "8px 16px", borderRadius: "8px",
-                      fontWeight: "800", fontSize: "12px", cursor: "pointer", whiteSpace: "nowrap"
-                    }}
-                  >
-                    ✨ AI Xác thực
-                  </button>
+                <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                  <strong>Phó phòng Lê Thị C</strong> (Xác thực BHYT)
                 </div>
-
-                {/* Thông số cuộc họp */}
-                <div style={{ background: "#f8fafc", padding: "14px 18px", borderRadius: "10px", border: "1px solid #e2e8f0", marginBottom: "18px", fontSize: "13px" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                    <div><strong>Ngày tổ chức:</strong> {selectedMeetingHistory.date ? selectedMeetingHistory.date.split("-").reverse().join("/") : "N/A"} ({selectedMeetingHistory.time})</div>
-                    <div><strong>Phòng họp / Địa điểm:</strong> {selectedMeetingHistory.location || "Phòng họp số 1"}</div>
-                    <div><strong>Mã cuộc họp:</strong> <code style={{ background: "#e2e8f0", padding: "2px 6px", borderRadius: "4px" }}>{selectedMeetingHistory.meetingCode || "VHXH-98213"}</code></div>
-                    <div><strong>Mã PIN bảo mật:</strong> <code style={{ background: "#e2e8f0", padding: "2px 6px", borderRadius: "4px" }}>{selectedMeetingHistory.passcode || "123456"}</code></div>
-                    <div><strong>Loại cuộc họp:</strong> {getMeetingBadgeLabel(selectedMeetingHistory.type)}</div>
-                    <div><strong>Trạng thái lưu trữ:</strong> <span style={{ color: "#166534", fontWeight: "800" }}>🟢 Đã lưu vĩnh viễn vào CSDL BHYT Xã</span></div>
-                  </div>
+                <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                  <strong>Cán bộ Y Byen</strong> (Chuyên môn)
                 </div>
-
-                {/* Nội dung Biên bản */}
-                <div style={{ marginBottom: "18px" }}>
-                  <h4 style={{ margin: "0 0 8px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
-                    📝 Biên bản Diễn biến & Tóm tắt Cuộc họp:
-                  </h4>
-                  <div style={{ background: "#f1f5f9", padding: "14px 16px", borderRadius: "10px", fontSize: "13.5px", lineHeight: "1.6", color: "#334155", borderLeft: "4px solid #3b82f6" }}>
-                    {selectedMeetingHistory.summary?.bienBan || selectedMeetingHistory.note || "Hội nghị Ban Chỉ đạo Phòng Văn hóa - Xã hội đã hoàn thành rà soát 100% hồ sơ BHYT đợt 2 cho người dân 6 thôn. Thống nhất danh sách 45 hộ được hỗ trợ kinh phí bảo hiểm xã hội."}
-                  </div>
+                <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
+                  <strong>Cán bộ A Blong</strong> (Cán bộ Xã)
                 </div>
-
-                {/* Kết luận & Phân công */}
-                <div style={{ marginBottom: "20px" }}>
-                  <h4 style={{ margin: "0 0 10px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
-                    ✅ Kết luận & Phân công Nhiệm vụ (Đã phê duyệt):
-                  </h4>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    {selectedMeetingHistory.summary?.ketLuan?.length > 0 ? (
-                      selectedMeetingHistory.summary.ketLuan.map((item, idx) => (
-                        <div key={idx} style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
-                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>{item.text || item}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
-                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Đồng chí Y Byen hoàn thiện dữ liệu nhập lên cổng DVC trước 17h00 ngày 22/07.</span>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
-                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Đồng chí A Blong phối hợp Trưởng thôn Đăk Wek tuyên truyền lưu động.</span>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f8fafc", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                          <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "16px" }}>✓</span>
-                          <span style={{ fontSize: "13.5px", color: "#1e293b", fontWeight: "600" }}>Giao Phó phòng Lê Thị C ký duyệt biên bản tổng hợp chuyển UBND Xã.</span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* Điểm danh Cán bộ dự họp */}
-                <div style={{ marginBottom: "22px" }}>
-                  <h4 style={{ margin: "0 0 10px", fontSize: "14px", color: "#1e3a8a", fontWeight: "800" }}>
-                    👥 Cán bộ Xác thực Tham gia:
-                  </h4>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
-                      <strong>Trưởng phòng Nguyễn Thái Huy</strong> (Chủ trì)
-                    </div>
-                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
-                      <strong>Phó phòng Lê Thị C</strong> (Xác thực BHYT)
-                    </div>
-                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
-                      <strong>Cán bộ Y Byen</strong> (Chuyên môn)
-                    </div>
-                    <div style={{ background: "#f1f5f9", padding: "8px 12px", borderRadius: "6px", fontSize: "12.5px" }}>
-                      <strong>Cán bộ A Blong</strong> (Cán bộ Xã)
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", borderTop: "1px solid #e2e8f0", paddingTop: "16px" }}>
-                  <button
-                    onClick={() => alert("Đã tải tệp Biên bản cuộc họp PDF chính thức về máy thành công!")}
-                    style={{ background: "#0284c7", color: "#fff", border: "none", padding: "10px 18px", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "13px" }}
-                  >
-                    📥 Xuất Biên bản PDF
-                  </button>
-                  <button
-                    onClick={() => setSelectedMeetingHistory(null)}
-                    style={{ background: "#1e3a8a", color: "#fff", border: "none", padding: "10px 22px", borderRadius: "8px", fontWeight: "800", cursor: "pointer", fontSize: "13px" }}
-                  >
-                    Đóng
-                  </button>
-                </div>
-
               </div>
             </div>
-          )}
+
+            <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", borderTop: "1px solid #e2e8f0", paddingTop: "16px" }}>
+              <button
+                onClick={() => alert("Đã tải tệp Biên bản cuộc họp PDF chính thức về máy thành công!")}
+                style={{ background: "#0284c7", color: "#fff", border: "none", padding: "10px 18px", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "13px" }}
+              >
+                📥 Xuất Biên bản PDF
+              </button>
+              <button
+                onClick={() => setSelectedMeetingHistory(null)}
+                style={{ background: "#1e3a8a", color: "#fff", border: "none", padding: "10px 22px", borderRadius: "8px", fontWeight: "800", cursor: "pointer", fontSize: "13px" }}
+              >
+                Đóng
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* MODAL AI TẠO LỊCH HỌP THEO YÊU CẦU CỤ THỂ CỦA TRƯỞNG PHÒNG */}
       {showAIScheduleModal && (
-            <div style={{
-              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
-              display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999
-            }}>
-              <div style={{
-                background: "#ffffff", color: "#1e293b", borderRadius: "16px", padding: "28px 32px", width: "100%", maxWidth: "560px",
-                boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #6366f1"
-              }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid #e2e8f0", paddingBottom: "12px", marginBottom: "18px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span style={{ fontSize: "22px" }}>🤖</span>
-                    <h3 style={{ margin: 0, fontSize: "17px", fontWeight: "900", color: "#1e1b4b", border: "none", padding: 0 }}>
-                      TRỢ LÝ AI ĐỀ XUẤT LỊCH HỌP CHUYÊN NGHIỆP
-                    </h3>
-                  </div>
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999
+        }}>
+          <div style={{
+            background: "#ffffff", color: "#1e293b", borderRadius: "16px", padding: "28px 32px", width: "100%", maxWidth: "560px",
+            boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #6366f1"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid #e2e8f0", paddingBottom: "12px", marginBottom: "18px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "22px" }}>🤖</span>
+                <h3 style={{ margin: 0, fontSize: "17px", fontWeight: "900", color: "#1e1b4b", border: "none", padding: 0 }}>
+                  TRỢ LÝ AI ĐỀ XUẤT LỊCH HỌP CHUYÊN NGHIỆP
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowAIScheduleModal(false)}
+                style={{ background: "none", border: "none", color: "#64748b", fontSize: "18px", cursor: "pointer", fontWeight: "800" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Quick preset buttons */}
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", fontSize: "12.5px", fontWeight: "700", color: "#475569", marginBottom: "6px" }}>
+                💡 Gợi ý nhanh chủ đề họp phòng VH-XH:
+              </label>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {[
+                  "Rà soát & cấp thẻ BHYT đợt 2 cho 10 thôn",
+                  "Tuyên truyền Bầu cử & Quyền lợi BHYT",
+                  "Ứng phó thiên tai lũ lụt & An sinh xã hội",
+                  "Tuyên truyền BHYT Học đường năm học mới",
+                  "Giải quyết phản ánh & khiếu nại công dân"
+                ].map((tag, idx) => (
                   <button
-                    onClick={() => setShowAIScheduleModal(false)}
-                    style={{ background: "none", border: "none", color: "#64748b", fontSize: "18px", cursor: "pointer", fontWeight: "800" }}
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                {/* Quick preset buttons */}
-                <div style={{ marginBottom: "16px" }}>
-                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: "700", color: "#475569", marginBottom: "6px" }}>
-                    💡 Gợi ý nhanh chủ đề họp phòng VH-XH:
-                  </label>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    {[
-                      "Rà soát & cấp thẻ BHYT đợt 2 cho 10 thôn",
-                      "Tuyên truyền Bầu cử & Quyền lợi BHYT",
-                      "Ứng phó thiên tai lũ lụt & An sinh xã hội",
-                      "Tuyên truyền BHYT Học đường năm học mới",
-                      "Giải quyết phản ánh & khiếu nại công dân"
-                    ].map((tag, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setAiPromptForm({ ...aiPromptForm, topic: tag })}
-                        style={{
-                          background: aiPromptForm.topic === tag ? "#e0e7ff" : "#f1f5f9",
-                          color: aiPromptForm.topic === tag ? "#4338ca" : "#334155",
-                          border: `1px solid ${aiPromptForm.topic === tag ? "#818cf8" : "#cbd5e1"}`,
-                          padding: "4px 10px", borderRadius: "6px", fontSize: "11.5px", fontWeight: "700", cursor: "pointer"
-                        }}
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Input 1: Nội dung chủ đề */}
-                <div className="tp-form-group" style={{ marginBottom: "14px" }}>
-                  <label style={{ fontWeight: "800", color: "#1e3a8a" }}>1. Nội dung / Chủ đề Trưởng phòng muốn họp</label>
-                  <input
-                    type="text"
-                    placeholder="Ví dụ: Rà soát cấp thẻ BHYT đợt 2 cho người dân 10 thôn"
-                    value={aiPromptForm.topic}
-                    onChange={(e) => setAiPromptForm({ ...aiPromptForm, topic: e.target.value })}
-                    required
-                    style={{ padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                  />
-                </div>
-
-                {/* Input 2 & 3: Ngày & Giờ họp */}
-                <div className="tp-form-group-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "14px" }}>
-                  <div className="tp-form-group">
-                    <label style={{ fontWeight: "800", color: "#1e3a8a" }}>2. Ngày họp</label>
-                    <input
-                      type="date"
-                      value={aiPromptForm.date}
-                      onChange={(e) => setAiPromptForm({ ...aiPromptForm, date: e.target.value })}
-                      style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                    />
-                  </div>
-                  <div className="tp-form-group">
-                    <label style={{ fontWeight: "800", color: "#1e3a8a" }}>3. Giờ họp</label>
-                    <input
-                      type="time"
-                      value={aiPromptForm.time}
-                      onChange={(e) => setAiPromptForm({ ...aiPromptForm, time: e.target.value })}
-                      style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "20px" }}>
-                  <button
+                    key={idx}
                     type="button"
-                    onClick={() => setShowAIScheduleModal(false)}
-                    style={{ padding: "9px 18px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#f8fafc", cursor: "pointer", fontWeight: "700", fontSize: "13px" }}
-                  >
-                    Hủy bỏ
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowAIScheduleModal(false);
-                      alert("🤖 AI đã tự động lập lịch họp chi tiết và gửi thông báo tới cán bộ!");
+                    onClick={() => setAiPromptForm({ ...aiPromptForm, topic: tag })}
+                    style={{
+                      background: aiPromptForm.topic === tag ? "#e0e7ff" : "#f1f5f9",
+                      color: aiPromptForm.topic === tag ? "#4338ca" : "#334155",
+                      border: `1px solid ${aiPromptForm.topic === tag ? "#818cf8" : "#cbd5e1"}`,
+                      padding: "4px 10px", borderRadius: "6px", fontSize: "11.5px", fontWeight: "700", cursor: "pointer"
                     }}
-                    style={{ padding: "9px 22px", borderRadius: "8px", background: "linear-gradient(135deg, #4f46e5, #3730a3)", color: "#ffffff", border: "none", fontWeight: "800", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(79, 70, 229, 0.3)" }}
                   >
-                    ✨ Lập lịch họp tự động
+                    {tag}
                   </button>
-                </div>
+                ))}
               </div>
             </div>
-          )}
+
+            {/* Input 1: Nội dung chủ đề */}
+            <div className="tp-form-group" style={{ marginBottom: "14px" }}>
+              <label style={{ fontWeight: "800", color: "#1e3a8a" }}>1. Nội dung / Chủ đề Trưởng phòng muốn họp</label>
+              <input
+                type="text"
+                placeholder="Ví dụ: Rà soát cấp thẻ BHYT đợt 2 cho người dân 10 thôn"
+                value={aiPromptForm.topic}
+                onChange={(e) => setAiPromptForm({ ...aiPromptForm, topic: e.target.value })}
+                required
+                style={{ padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
+              />
+            </div>
+
+            {/* Input 2 & 3: Ngày & Giờ họp */}
+            <div className="tp-form-group-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "14px" }}>
+              <div className="tp-form-group">
+                <label style={{ fontWeight: "800", color: "#1e3a8a" }}>2. Ngày họp</label>
+                <input
+                  type="date"
+                  value={aiPromptForm.date}
+                  onChange={(e) => setAiPromptForm({ ...aiPromptForm, date: e.target.value })}
+                  style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
+                />
+              </div>
+              <div className="tp-form-group">
+                <label style={{ fontWeight: "800", color: "#1e3a8a" }}>3. Giờ họp</label>
+                <input
+                  type="time"
+                  value={aiPromptForm.time}
+                  onChange={(e) => setAiPromptForm({ ...aiPromptForm, time: e.target.value })}
+                  style={{ padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "20px" }}>
+              <button
+                type="button"
+                onClick={() => setShowAIScheduleModal(false)}
+                style={{ padding: "9px 18px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#f8fafc", cursor: "pointer", fontWeight: "700", fontSize: "13px" }}
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAIScheduleModal(false);
+                  alert("🤖 AI đã tự động lập lịch họp chi tiết và gửi thông báo tới cán bộ!");
+                }}
+                style={{ padding: "9px 22px", borderRadius: "8px", background: "linear-gradient(135deg, #4f46e5, #3730a3)", color: "#ffffff", border: "none", fontWeight: "800", cursor: "pointer", fontSize: "13px", boxShadow: "0 4px 12px rgba(79, 70, 229, 0.3)" }}
+              >
+                ✨ Lập lịch họp tự động
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 📖 MODAL GIAO DIỆN XEM CHI TIẾT VĂN BẢN (LIGHT THEME MODERN UI) */}
       {viewingDocModal && (
@@ -7309,7 +7457,7 @@ export default function TruongPhongDashboard() {
                     boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                   }}
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
                   <span>Quay lại</span>
                 </button>
                 <h2 style={{ margin: 0, fontSize: "19px", fontWeight: "800", color: "#0f172a" }}>
@@ -7335,7 +7483,7 @@ export default function TruongPhongDashboard() {
                     cursor: "pointer"
                   }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>
                   <span>In</span>
                 </button>
 
@@ -7356,7 +7504,7 @@ export default function TruongPhongDashboard() {
                     cursor: "pointer"
                   }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>
                   <span>Xuất Word</span>
                 </button>
 
@@ -7386,7 +7534,7 @@ export default function TruongPhongDashboard() {
                     boxShadow: "0 2px 6px rgba(239, 68, 68, 0.3)"
                   }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
                   <span>Xóa văn bản</span>
                 </button>
               </div>
@@ -7397,7 +7545,7 @@ export default function TruongPhongDashboard() {
               <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "16px 20px", display: "flex", gap: "16px", alignItems: "flex-start", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
                 {/* Large Document Badge Icon */}
                 <div style={{ width: "52px", height: "60px", background: "#dbeafe", borderRadius: "10px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: "1px solid #93c5fd", flexShrink: 0 }}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#2563eb" stroke="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#2563eb" stroke="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /></svg>
                   <span style={{ fontSize: "10px", fontWeight: "900", color: "#1d4ed8", marginTop: "2px", letterSpacing: "0.5px" }}>DOC</span>
                 </div>
 
@@ -7419,15 +7567,15 @@ export default function TruongPhongDashboard() {
                   {/* Meta Items Row */}
                   <div style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap", fontSize: "13px", color: "#64748b", marginTop: "4px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
                       <span>Ngày ban hành: <strong>{viewingDocModal.ngay_phat_hanh || viewingDocModal.ngay_den || "28/07/2026"}</strong></span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
                       <span>Phòng ban: <strong>{viewingDocModal.co_quan_ban_hanh || "Phòng Văn hóa - Xã hội"}</strong></span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                       <span>Người tạo: <strong>{viewingDocModal.nguoi_soan || viewingDocModal.nguoi_duyet || "Văn phòng"}</strong></span>
                     </div>
                   </div>
@@ -7454,7 +7602,7 @@ export default function TruongPhongDashboard() {
                   gap: "6px"
                 }}
               >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
                 <span>Xem văn bản</span>
               </button>
 
@@ -7475,7 +7623,7 @@ export default function TruongPhongDashboard() {
                   gap: "6px"
                 }}
               >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                 <span>Tải file gốc</span>
               </button>
 
@@ -7496,7 +7644,7 @@ export default function TruongPhongDashboard() {
                   gap: "6px"
                 }}
               >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                 <span>Lịch sử luân chuyển ({viewingDocModal.history ? viewingDocModal.history.length : 0})</span>
               </button>
             </div>
@@ -7546,7 +7694,7 @@ export default function TruongPhongDashboard() {
                     {/* Header Quốc hiệu - Tiêu ngữ */}
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px" }}>
                       <div style={{ textAlign: "center", width: "45%" }}>
-                        <div style={{ fontSize: "13px", fontWeight: "bold" }}>ỦY BAN NHÂN DÂN XÃ ĐẮK PXI</div>
+                        <div style={{ fontSize: "13px", fontWeight: "bold" }}>ỦY BAN NHÂN DÂN XÃ ĐĂSSK PXI</div>
                         <div style={{ fontSize: "13px", fontWeight: "bold", color: "#000" }}>PHÒNG VĂN HÓA - XÃ HỘI</div>
                         <div style={{ width: "80px", height: "1px", background: "#000", margin: "4px auto" }} />
                         <div style={{ fontSize: "13px", marginTop: "4px" }}>Số: <strong>{viewingDocModal.so_hieu}</strong></div>
@@ -7608,7 +7756,7 @@ export default function TruongPhongDashboard() {
                       <div style={{ width: "45%", textAlign: "center", fontSize: "13.5px" }}>
                         <div style={{ fontWeight: "bold" }}>TUQ. CHỦ TỊCH</div>
                         <div style={{ fontWeight: "bold", textTransform: "uppercase" }}>TRƯỞNG PHÒNG VĂN HÓA - XÃ HỘI</div>
-                        
+
                         {/* Con Dấu Đỏ Khung Viền Nét Đứt Đã Ký (Giống hệt Image 2!) */}
                         <div style={{ margin: "18px auto 0", padding: "4px 14px", border: "1.5px dashed #dc2626", color: "#dc2626", borderRadius: "6px", fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", width: "fit-content", background: "#fef2f2" }}>
                           Đã ký
@@ -7650,7 +7798,7 @@ export default function TruongPhongDashboard() {
                       }}
                       style={{ padding: "8px 16px", background: "#16a34a", color: "#ffffff", textDecoration: "none", borderRadius: "8px", fontWeight: "700", fontSize: "12.5px", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(22, 163, 74, 0.3)" }}
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                       <span>Tải file gốc</span>
                     </a>
                   </div>
@@ -7664,7 +7812,7 @@ export default function TruongPhongDashboard() {
                       />
                     ) : (
                       <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "40px 50px", textAlign: "center" }}>
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="1.5" style={{ marginBottom: "12px" }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="1.5" style={{ marginBottom: "12px" }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>
                         <h4 style={{ margin: "0 0 6px", fontSize: "16px", color: "#0f172a" }}>Tệp tin đính kèm: {viewingDocModal.file_name || "12_KH_VHXH_TuyenTruyenQuy3.pdf"}</h4>
                         <p style={{ color: "#64748b", fontSize: "13.5px", margin: "0 0 16px" }}>Bấm nút bên dưới để xem hoặc tải tệp tin đính kèm gốc về máy tính</p>
                         <a
@@ -7695,7 +7843,7 @@ export default function TruongPhongDashboard() {
                   }}
                 >
                   <h4 style={{ margin: "0 0 16px", fontSize: "15px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px", borderBottom: "1.5px solid #e2e8f0", paddingBottom: "10px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                     <span>LỊCH SỬ LUÂN CHUYỂN & TIẾN TRÌNH XỬ LÝ (TIMELINE)</span>
                   </h4>
 
@@ -7741,7 +7889,7 @@ export default function TruongPhongDashboard() {
                 }}
               >
                 <h4 style={{ margin: "0 0 14px", fontSize: "15px", color: "#0f172a", fontWeight: "800", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 10 20 15 15 20"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 10 20 15 15 20" /><path d="M4 4v7a4 4 0 0 0 4 4h12" /></svg>
                   <span>BỘ CÔNG CỤ CHUYỂN XỬ LÝ & PHÂN CÔNG CHỈ ĐẠO TRỰC TIẾP</span>
                 </h4>
 
@@ -7805,7 +7953,7 @@ export default function TruongPhongDashboard() {
                       type="submit"
                       style={{ padding: "8px 22px", borderRadius: "8px", background: "#0284c7", color: "#ffffff", border: "none", fontWeight: "800", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.25)" }}
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
                       <span>💾 Lưu chỉ đạo & Gửi cho Cán bộ</span>
                     </button>
                   </div>
@@ -7850,7 +7998,7 @@ export default function TruongPhongDashboard() {
           title="Lên đầu trang"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="18 15 12 9 6 15"/>
+            <polyline points="18 15 12 9 6 15" />
           </svg>
         </button>
       )}

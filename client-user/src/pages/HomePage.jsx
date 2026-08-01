@@ -287,16 +287,16 @@ export default function HomePage() {
                   <span className="qa-tile-label">Góc pháp luật</span>
                 </button>
 
-                {/* TILE 3: LỊCH CÔNG TÁC */}
+                {/* TILE 3: HƯỚNG DẪN TRA CỨU BHYT */}
                 <button
                   type="button"
                   className="qa-tile qa-tile--orange"
-                  onClick={() => navigate('/lich-hop')}
+                  onClick={() => navigate('/huong-dan-bhxh')}
                 >
                   <div className="qa-tile-icon-box orange">
-                    <Calendar size={22} color="#f57c00" />
+                    <ShieldCheck size={22} color="#f57c00" />
                   </div>
-                  <span className="qa-tile-label">Lịch công tác</span>
+                  <span className="qa-tile-label">Hướng dẫn tra cứu BHYT</span>
                 </button>
 
                 {/* TILE 4: THÔNG BÁO */}
@@ -342,9 +342,13 @@ export default function HomePage() {
             <div className="cultural-banner-card">
               <div className="cultural-img-wrap">
                 <img
-                  src="/dak_pxi_cultural_card.png"
+                  src="/huong-dan/dan-toc-xo-dang.jpg"
                   alt="Văn hóa đồng bào Xơ Đăng xã Đăk Pxi"
                   className="cultural-img"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/huong-dan/hinh-nen05.jpg';
+                  }}
                 />
               </div>
               <div className="cultural-text-box">

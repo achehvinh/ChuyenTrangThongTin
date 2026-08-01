@@ -1,5 +1,5 @@
 .bhxh-page {
-  background: #f8fafc;
+  background: #fcf8f2;
   min-height: 100vh;
   padding: 60px 20px;
 }
@@ -18,8 +18,9 @@
 .bhxh-badge {
   display: inline-block;
   padding: 8px 20px;
-  background: #e0f2fe;
-  color: #0369a1;
+  background: #fdf4e3;
+  color: #8c261e;
+  border: 1px solid #e2c286;
   border-radius: 20px;
   font-size: 14px;
   font-weight: 700;
@@ -29,18 +30,18 @@
 .bhxh-header h1 {
   font-size: 34px;
   font-weight: 800;
-  color: #0f172a;
+  color: #3b1606;
   margin-bottom: 10px;
 }
 
 .bhxh-header p {
   font-size: 16px;
-  color: #64748b;
+  color: #5c4a3e;
 }
 
 .bhxh-tts {
   text-align: center;
-  color: #0369a1;
+  color: #8c261e;
   font-weight: 600;
   font-size: 15px;
   margin-top: 12px;

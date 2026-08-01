@@ -63,7 +63,7 @@ function Breadcrumbs() {
   const breadcrumbsList = [];
 
   // Mặc định luôn có Trang chủ ở đầu
-  breadcrumbsList.push({ label: "🏠 Trang chủ", path: "/" });
+  breadcrumbsList.push({ label: "Trang chủ", isHome: true, path: "/" });
 
   if (segments[0] === "chuyen-muc") {
     breadcrumbsList.push({ label: "Chuyên mục cho bà con", path: "/chuyen-muc" });
@@ -117,14 +117,25 @@ function Breadcrumbs() {
       <div className="global-breadcrumbs-inner">
         {breadcrumbsList.map((item, index) => {
           const isLast = index === breadcrumbsList.length - 1;
+          const content = (
+            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+              {item.isHome && (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" style={{ marginRight: '5px' }} aria-hidden="true">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              )}
+              <span>{item.label}</span>
+            </span>
+          );
           return (
             <span key={index} className="breadcrumb-item-wrapper">
               {index > 0 && <span className="breadcrumb-separator">›</span>}
               {isLast ? (
-                <span className="breadcrumb-current">{item.label}</span>
+                <span className="breadcrumb-current">{content}</span>
               ) : (
                 <Link to={item.path} className="breadcrumb-link">
-                  {item.label}
+                  {content}
                 </Link>
               )}
             </span>
@@ -218,6 +229,7 @@ function AppLayout() {
           <Route path="/chuyen-muc" element={<ChuyenMucPage />} />
           <Route path="/tin-tuc" element={<ChuyenTrangThongTin />} />
           <Route path="/tin-tuc/:id" element={<BaiVietDetailPage />} />
+          <Route path="/bai-viet/:id" element={<BaiVietDetailPage />} />
           <Route path="/video" element={<VideoPage />} />
           <Route path="/chat" element={<ChatWindow />} />
           <Route path="/truong-phong" element={<TruongPhongDashboard />} />

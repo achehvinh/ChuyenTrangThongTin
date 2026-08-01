@@ -4,10 +4,10 @@
 ════════════════════════════════════════ */
 
 .ct-page {
-  background: #f4f6f9;
+  background: #fcf8f2;
   min-height: 100vh;
-  font-family: -apple-system, "Segoe UI", Roboto, "Be Vietnam Pro", Arial, sans-serif;
-  color: #0f172a;
+  font-family: 'Be Vietnam Pro', -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #3b1606;
   -webkit-font-smoothing: antialiased;
   font-size: 14px; /* reset base */
 }
@@ -31,8 +31,8 @@
 
 /* ── HEADER ── */
 .ct-header {
-  background: #003087;
-  border-bottom: 4px solid #c8102e;
+  background: #233b1e;
+  border-bottom: 4px solid #d49f53;
 }
 
 .ct-header-inner {
@@ -275,16 +275,11 @@
   line-height: 1.2;
 }
 
-/* See all */
-.ct-see-all {
-  display: block;
-  text-align: right;
-  font-size: 12.5px !important;
-  font-weight: 700;
-  color: #c8102e;
-  margin-top: 6px;
+.featured-widget-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.ct-see-all:hover { text-decoration: underline; }
 
 /* ── BADGE ── */
 .ct-badge {

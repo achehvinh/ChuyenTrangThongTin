@@ -5,17 +5,17 @@
    ════════════════════════════════════════════════════════════════ */
 
 :root {
-  --gov-blue-dark: #003d7a;
-  --gov-blue-main: #005baa;
-  --gov-blue-hover: #004b90;
-  --gov-blue-light: #f0f7ff;
-  --gov-blue-border: #bfdbfe;
-  --gov-bg: #f8fafc;
-  --gov-border: #e2e8f0;
-  --gov-text-dark: #0f172a;
-  --gov-text-muted: #475569;
-  --gov-warning-red: #dc2626;
-  --gov-warning-bg: #fef2f2;
+  --gov-blue-dark: #233b1e;
+  --gov-blue-main: #8c261e;
+  --gov-blue-hover: #571618;
+  --gov-blue-light: #faf4eb;
+  --gov-blue-border: #e5d8c5;
+  --gov-bg: #fcf8f2;
+  --gov-border: #e5d8c5;
+  --gov-text-dark: #3b1606;
+  --gov-text-muted: #5c4a3e;
+  --gov-warning-red: #8c261e;
+  --gov-warning-bg: #fdf4e3;
 }
 
 .tthc-app-root {

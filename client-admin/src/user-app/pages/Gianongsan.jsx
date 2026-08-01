@@ -41,7 +41,7 @@ export default function Gianongsan() {
         <div className="gns-hero-inner">
           <div className="gns-hero-badge">🌾 Nông sản</div>
           <h1>Bảng giá <span>Nông sản</span></h1>
-          <p>Giá thu mua nông sản tại khu vực xã Đắk Pxi và vùng lân cận · Cập nhật hàng tuần</p>
+          <p>Giá thu mua nông sản tại khu vực xã Đăk Pxi và vùng lân cận · Cập nhật hàng tuần</p>
           {ngayCapNhat && (
             <div className="gns-update-time">🕐 Cập nhật: {ngayCapNhat}</div>
           )}

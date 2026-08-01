@@ -1,7 +1,24 @@
 .site-footer {
     position: relative;
     margin-top: 40px;
-    background: #e9edf3;
+    background: linear-gradient(180deg, #faf4eb 0%, #f5ebd9 100%);
+    border-top: 1px solid #e5d8c5;
+}
+
+.brocade-border-strip {
+    width: 100%;
+    height: 5px;
+    background: repeating-linear-gradient(90deg,
+        #9e3a24 0px,
+        #9e3a24 12px,
+        #d49f53 12px,
+        #d49f53 24px,
+        #233b1e 24px,
+        #233b1e 36px,
+        #e2c286 36px,
+        #e2c286 48px,
+        #8c261e 48px,
+        #8c261e 60px);
 }
 
 .footer-top {
@@ -16,18 +33,22 @@
 }
 
 .footer-org-name {
-    color: #333;
-    font-size: 18px;
+    color: #3b1606;
+    font-size: 19px;
     font-weight: 800;
     letter-spacing: 0.5px;
     margin: 0 0 10px;
 }
 
 .footer-info p {
-    margin: 4px 0;
-    color: #444;
+    margin: 5px 0;
+    color: #4a3e35;
     font-size: 14px;
     line-height: 1.6;
+}
+
+.footer-info p strong {
+    color: #2b1b12;
 }
 
 .footer-badge {
@@ -35,9 +56,10 @@
 }
 
 .footer-badge-img {
-    height: 60px;
+    height: 64px;
     width: auto;
     object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(90, 40, 10, 0.12));
 }
 
 .footer-bottom {
@@ -46,14 +68,15 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    background: #003087;
-    color: #ffffff;
+    background: #233b1e;
+    color: #f7ede2;
     padding: 14px 20px;
     font-size: 14px;
 }
 
 .footer-bottom-left {
     font-weight: 700;
+    letter-spacing: 0.04em;
 }
 
 .footer-bottom-right strong {
@@ -67,20 +90,32 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: none;
-    background: #003087;
+    border: 2px solid #d49f53;
+    background: #233b1e;
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    transition: background 0.2s;
+    box-shadow: 0 4px 14px rgba(35, 59, 30, 0.35);
+    transition: all 0.2s ease;
     z-index: 999;
 }
 
 .footer-scroll-top:hover {
-    background: #001d5c;
+    background: #1c3017;
+    border-color: #e2c286;
+    transform: translateY(-2px);
+}
+
+.footer-link {
+    color: #8c261e;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.footer-link:hover {
+    color: #571618;
 }
 
 @media (max-width: 640px) {
@@ -93,14 +128,4 @@
         flex-direction: column;
         align-items: flex-start;
     }
-}
-
-.footer-link {
-    color: #003087;
-    font-weight: 700;
-    text-decoration: underline;
-}
-
-.footer-link:hover {
-    color: #001d5c;
 }

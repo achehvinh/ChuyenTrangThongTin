@@ -3,8 +3,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 24px 60px;
-    font-family: system-ui, -apple-system, sans-serif;
-    color: #1e293b;
+    font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    color: #3b1606;
     line-height: 1.6;
 }
 
@@ -15,8 +15,8 @@
 }
 
 .cocau-badge {
-    background: #f1f5f9;
-    color: #475569;
+    background: #fdf4e3;
+    color: #8c261e;
     font-size: 14px;
     font-weight: 700;
     padding: 6px 16px;
@@ -25,12 +25,13 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 12px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e2c286;
+    box-shadow: 0 2px 6px rgba(184, 123, 50, 0.08);
 }
 
 .cocau-header h1 {
     font-size: 2.2rem;
-    color: #1a3a5c;
+    color: #3b1606;
     font-weight: 900;
     margin: 0 0 12px;
     letter-spacing: -0.02em;
@@ -38,13 +39,13 @@
 
 .cocau-subtitle {
     font-size: 1.1rem;
-    color: #64748b;
+    color: #5c4a3e;
     margin: 0;
 }
 
 .cocau-section-title {
     font-size: 1.6rem;
-    color: #1a3a5c;
+    color: #3b1606;
     font-weight: 800;
     margin: 0 0 12px;
     text-align: center;
@@ -60,18 +61,18 @@
     transform: translateX(-50%);
     width: 60px;
     height: 4px;
-    background: #b91c1c;
+    background: linear-gradient(90deg, #8c261e 0%, #d49f53 100%);
     border-radius: 2px;
 }
 
 /* ── Sơ đồ tổ chức (Flowchart) ── */
 .cocau-diagram-section {
-    background: #f8fafc;
+    background: #faf4eb;
     border-radius: 24px;
     padding: 50px 32px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e5d8c5;
     margin-bottom: 48px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+    box-shadow: 0 4px 20px rgba(90, 40, 10, 0.04);
 }
 
 .cocau-diagram-container {
@@ -83,18 +84,18 @@
 
 .diagram-node {
     background: #ffffff;
-    border: 1.5px solid #cbd5e1;
+    border: 1.5px solid #d9ccb9;
     border-radius: 12px;
     padding: 16px 24px;
     text-align: center;
     width: 320px;
-    box-shadow: 0 4px 12px rgba(16, 24, 40, 0.03);
+    box-shadow: 0 4px 12px rgba(90, 40, 10, 0.04);
     transition: all 0.25s ease;
 }
 
 .diagram-node:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 20px rgba(90, 40, 10, 0.08);
 }
 
 .node-title {
@@ -105,41 +106,41 @@
 
 .node-desc {
     font-size: 13px;
-    color: #64748b;
+    color: #5c4a3e;
 }
 
-/* Cấp UBND & Phòng Văn hóa - Xã hội: Màu xám/kem nhẹ giống hình 1 */
+/* Cấp UBND & Phòng Văn hóa - Xã hội: Màu kem đậm đồng bộ */
 .node-ubnd, .node-department {
-    background: #f4f3f0;
-    border-color: #cbd5e1;
+    background: #f5ebd9;
+    border-color: #d4c0a5;
 }
 .node-ubnd .node-title, .node-department .node-title {
-    color: #4b4b4b;
+    color: #3b1606;
 }
 
-/* Cấp Trưởng phòng & Phó Trưởng phòng: Màu xanh lá cây mạ nhẹ giống hình 1 */
+/* Cấp Trưởng phòng & Phó Trưởng phòng: Nổi bật với màu vàng đồng & đỏ đô */
 .node-head, .node-deputy {
-    background: #eaf6ed;
-    border-color: #a3cfb4;
+    background: #fcf1e2;
+    border-color: #d49f53;
 }
 .node-head .node-title, .node-deputy .node-title {
-    color: #0f5132;
+    color: #8c261e;
 }
 .node-head .node-desc, .node-deputy .node-desc {
-    color: #198754;
-    font-weight: 600;
+    color: #233b1e;
+    font-weight: 700;
 }
 
-/* Cấp Công chức chuyên môn & Người lao động: Màu cam/coral nhẹ giống hình 1 */
+/* Cấp Công chức chuyên môn & Người lao động: Màu kem ấm dịu nhẹ */
 .node-staff, .node-workers {
-    background: #fdf1ec;
-    border-color: #f5c2c7;
+    background: #ffffff;
+    border-color: #d9ccb9;
 }
 .node-staff .node-title, .node-workers .node-title {
-    color: #842029;
+    color: #3b1606;
 }
 .node-staff .node-desc, .node-workers .node-desc {
-    color: #b02a37;
+    color: #6b584b;
     font-weight: 600;
 }
 
@@ -147,7 +148,7 @@
 .diagram-connector-vertical {
     width: 2px;
     height: 36px;
-    background: #a0aec0;
+    background: #b87b32;
     position: relative;
 }
 
@@ -161,16 +162,16 @@
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 6px solid #a0aec0;
+    border-top: 6px solid #b87b32;
 }
 
 /* Đường rẽ nhánh ngang phía dưới */
 .diagram-branch-line {
     width: 360px; /* Độ rộng rẽ nhánh vừa khít */
     height: 20px;
-    border-top: 2px solid #a0aec0;
-    border-left: 2px solid #a0aec0;
-    border-right: 2px solid #a0aec0;
+    border-top: 2px solid #b87b32;
+    border-left: 2px solid #b87b32;
+    border-right: 2px solid #b87b32;
     margin-bottom: 0;
 }
 
@@ -196,16 +197,16 @@
 .table-subtitle-desc {
     text-align: center;
     font-size: 1.05rem;
-    color: #475569;
+    color: #5c4a3e;
     margin: -4px 0 24px;
     font-style: italic;
 }
 
 .cocau-table-wrapper {
     background: #ffffff;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e5d8c5;
     border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 16px rgba(90, 40, 10, 0.04);
     overflow: hidden;
 }
 
@@ -218,20 +219,20 @@
 
 .cocau-table th, .cocau-table td {
     padding: 16px 20px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e5d8c5;
 }
 
 .cocau-table th {
-    background: #f8fafc;
-    color: #0f172a;
+    background: #233b1e;
+    color: #f7ede2;
     font-weight: 800;
     text-transform: uppercase;
     font-size: 13.5px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
 }
 
 .cocau-table tbody tr:hover {
-    background: #f8fafc;
+    background: #faf4eb;
 }
 
 .text-center {
@@ -265,25 +266,26 @@
 }
 
 .back-home-btn {
-    background: #1a3a5c;
+    background: #233b1e;
     color: #ffffff;
-    border: none;
+    border: 1.5px solid #d49f53;
 }
 
 .back-home-btn:hover {
-    background: #112840;
+    background: #1c3017;
+    border-color: #e2c286;
     transform: translateY(-2px);
 }
 
 .print-page-btn {
-    background: #ffffff;
-    color: #475569;
-    border: 2px solid #cbd5e1;
+    background: #faf4eb;
+    color: #3b1606;
+    border: 2px solid #d4c0a5;
 }
 
 .print-page-btn:hover {
-    background: #f8fafc;
-    border-color: #94a3b8;
+    background: #f5ebd9;
+    border-color: #b87b32;
     transform: translateY(-2px);
 }
 
@@ -309,16 +311,17 @@
 }
 
 .copy-btn {
-    background: #e2e8f0;
-    color: #475569;
+    background: #f5ebd9;
+    color: #3b1606;
+    border: 1px solid #d4c0a5;
 }
 .copy-btn:hover {
-    background: #cbd5e1;
+    background: #ebdcc4;
     transform: translateY(-2px);
 }
 .copy-btn.copied {
-    background: #d1fae5;
-    color: #065f46;
+    background: #233b1e;
+    color: #ffffff;
 }
 
 .facebook-btn {

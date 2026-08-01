@@ -13,14 +13,15 @@
 /* ── HEADER BANNER ── */
 .lich-hop-header {
   position: relative;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
+  background: linear-gradient(135deg, #233b1e 0%, #1c3017 100%);
   border-radius: 16px;
   padding: 28px 32px;
   margin-bottom: 28px;
   color: #ffffff;
-  box-shadow: 0 10px 30px rgba(2, 132, 199, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(35, 59, 30, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  border-left: 5px solid #38bdf8;
+  border-left: 5px solid #d49f53;
+  border: 1px solid #d49f53;
 }
 
 .lich-hop-header::before {
@@ -30,7 +31,7 @@
   right: -10%;
   width: 320px;
   height: 320px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+  background: radial-gradient(circle, rgba(212, 159, 83, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
   pointer-events: none;
 }
 
@@ -38,8 +39,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.15);
-  color: #7dd3fc;
+  background: rgba(212, 159, 83, 0.25);
+  color: #f7ede2;
   font-size: 11.5px;
   font-weight: 800;
   padding: 5px 14px;
@@ -47,7 +48,7 @@
   letter-spacing: 0.06em;
   margin-bottom: 10px;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #e2c286;
 }
 
 .lich-hop-header h1 {
@@ -59,7 +60,7 @@
 }
 
 .lich-hop-header p {
-  color: rgba(226, 232, 240, 0.92);
+  color: rgba(247, 237, 226, 0.92);
   font-size: 14.5px;
   margin: 0;
   line-height: 1.5;

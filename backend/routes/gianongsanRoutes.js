@@ -52,8 +52,8 @@ router.post('/seed', async (req, res) => {
   try {
     await GiaNongSan.deleteMany({});
     await GiaNongSan.insertMany([
-      { tenCayTrong: 'Cà phê nhân xô', icon: '☕', donVi: 'kg', giahientai: 125000, giaTuanTruoc: 120000, noiThuMua: 'Đại lý Minh Hùng - TT Đắk Hà', ghiChu: 'Giá thu mua tại vườn' },
-      { tenCayTrong: 'Mì (Sắn) tươi', icon: '🌿', donVi: 'kg', giahientai: 3200, giaTuanTruoc: 3500, noiThuMua: 'Nhà máy tinh bột Đắk Tô', ghiChu: 'Chữ bột đạt 30% trở lên' },
+      { tenCayTrong: 'Cà phê nhân xô', icon: '☕', donVi: 'kg', giahientai: 125000, giaTuanTruoc: 120000, noiThuMua: 'Đại lý Minh Hùng - TT Đăk Hà', ghiChu: 'Giá thu mua tại vườn' },
+      { tenCayTrong: 'Mì (Sắn) tươi', icon: '🌿', donVi: 'kg', giahientai: 3200, giaTuanTruoc: 3500, noiThuMua: 'Nhà máy tinh bột Đăk Tô', ghiChu: 'Chữ bột đạt 30% trở lên' },
       { tenCayTrong: 'Cao su mủ khô', icon: '🌳', donVi: 'kg', giahientai: 28000, giaTuanTruoc: 27500, noiThuMua: 'Công ty Cao su Kon Tum', ghiChu: 'Mủ tạp SVR 10' },
       { tenCayTrong: 'Cà phê rang xay', icon: '🫘', donVi: 'kg', giahientai: 185000, giaTuanTruoc: 180000, noiThuMua: 'Thu mua tại xã', ghiChu: 'Loại 1, sơ chế sạch' },
     ]);

@@ -6,15 +6,15 @@
    ========================================================= */
 
 .pdp-content {
-  --pdp-blue-900: #0b2e4f;
-  --pdp-blue-700: #14497d;
-  --pdp-blue-600: #1d5a99;
-  --pdp-blue-50: #eef4fa;
-  --pdp-border: #dde3ea;
-  --pdp-text: #1f2937;
-  --pdp-text-muted: #5b6675;
+  --pdp-blue-900: #233b1e;
+  --pdp-blue-700: #8c261e;
+  --pdp-blue-600: #571618;
+  --pdp-blue-50: #faf4eb;
+  --pdp-border: #e5d8c5;
+  --pdp-text: #3b1606;
+  --pdp-text-muted: #5c4a3e;
   --pdp-bg-card: #ffffff;
-  --pdp-red: #b3261e;
+  --pdp-red: #8c261e;
   --pdp-radius: 10px;
   --pdp-radius-sm: 8px;
   --pdp-gap: 20px;

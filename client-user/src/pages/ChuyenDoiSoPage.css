@@ -4,15 +4,15 @@
    ════════════════════════════════════════════════════════════════ */
 
 :root {
-  --cds-blue-dark: #003d7a;
-  --cds-blue-main: #005baa;
-  --cds-blue-hover: #004b90;
-  --cds-blue-light: #f0f7ff;
-  --cds-blue-border: #bfdbfe;
-  --cds-bg: #f8fafc;
-  --cds-border: #e2e8f0;
-  --cds-text-dark: #0f172a;
-  --cds-text-muted: #475569;
+  --cds-blue-dark: #233b1e;
+  --cds-blue-main: #8c261e;
+  --cds-blue-hover: #571618;
+  --cds-blue-light: #faf4eb;
+  --cds-blue-border: #e5d8c5;
+  --cds-bg: #fcf8f2;
+  --cds-border: #e5d8c5;
+  --cds-text-dark: #3b1606;
+  --cds-text-muted: #5c4a3e;
 }
 
 .cds-app-root {

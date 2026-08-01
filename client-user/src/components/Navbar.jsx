@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   Home, Info, Settings, MapPin, Newspaper, FileText,
@@ -352,13 +352,15 @@ export default function Navbar() {
 
             <ul className="mobile-drawer-menu">
               <li>
-                <Link to="/" onClick={closeDrawer}>🏠 Trang chủ</Link>
+                <Link to="/" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Home size={16} /> <span>Trang chủ</span>
+                </Link>
               </li>
 
               {/* GIỚI THIỆU ACCORDION */}
               <li>
-                <div className="accordion-item-head" onClick={() => toggleAccordion('intro')}>
-                  <span>📋 Giới thiệu</span>
+                <div className="accordion-item-head" onClick={() => toggleAccordion('intro')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}><Info size={16} /> Giới thiệu</span>
                   <ChevronDown size={16} className={`accordion-icon ${openAccordions['intro'] ? 'open' : ''}`} />
                 </div>
                 {openAccordions['intro'] && (
@@ -369,17 +371,17 @@ export default function Navbar() {
                 )}
               </li>
 
-              <li><Link to="/chuyen-doi-so" onClick={closeDrawer}>⚙ Chuyển đổi số</Link></li>
-              <li><Link to="/Ban-do" onClick={closeDrawer}>🗺 Bản đồ</Link></li>
-              <li><Link to="/tin-tuc" onClick={closeDrawer}>📰 Tin tức – Sự kiện</Link></li>
-              <li><Link to="/phap-luat" onClick={closeDrawer}>📜 Văn bản pháp luật</Link></li>
-              <li><Link to="/thu-vien-anh" onClick={closeDrawer}>📚 Thư viện tài liệu</Link></li>
-              <li><Link to="/lien-he" onClick={closeDrawer}>📞 Liên hệ</Link></li>
+              <li><Link to="/chuyen-doi-so" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Settings size={16} /> <span>Chuyển đổi số</span></Link></li>
+              <li><Link to="/Ban-do" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><MapPin size={16} /> <span>Bản đồ</span></Link></li>
+              <li><Link to="/tin-tuc" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Newspaper size={16} /> <span>Tin tức – Sự kiện</span></Link></li>
+              <li><Link to="/phap-luat" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><FileText size={16} /> <span>Văn bản pháp luật</span></Link></li>
+              <li><Link to="/thu-vien-anh" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><BookOpen size={16} /> <span>Thư viện tài liệu</span></Link></li>
+              <li><Link to="/lien-he" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Phone size={16} /> <span>Liên hệ</span></Link></li>
 
               {/* KHÁC ACCORDION */}
               <li>
-                <div className="accordion-item-head" onClick={() => toggleAccordion('other')}>
-                  <span>🔲 Chuyên mục khác</span>
+                <div className="accordion-item-head" onClick={() => toggleAccordion('other')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}><Sliders size={16} /> Chuyên mục khác</span>
                   <ChevronDown size={16} className={`accordion-icon ${openAccordions['other'] ? 'open' : ''}`} />
                 </div>
                 {openAccordions['other'] && (

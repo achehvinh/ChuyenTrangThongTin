@@ -25,13 +25,13 @@ export const FEATURES = [
   },
   {
     title: 'Phòng chống tệ nạn xã hội',
-    image: 'https://tokyo-human.edu.vn/wp-content/uploads/2025/02/noi-khong-voi-te-nan-xa-hoi.webp',
+    image: '/huong-dan/anh-te-nan.jpg',
     desc: 'Nâng cao nhận thức về ma túy, cờ bạc và tệ nạn xã hội.',
     path: '/te-nan',
   },
   {
     title: 'Hướng dẫn VNeID',
-    image: 'https://image3.luatvietnam.vn/uploaded/images/original/2025/04/16/yeu-cau-100-ho-kinh-doanh-dang-ky-thanh-lap-tren-vneid_1604095754.png',
+    image: '/huong-dan/huong-dan-vneid.jpg',
     desc: 'Cách đăng ký, kích hoạt và sử dụng tài khoản VNeID.',
     path: '/huong-dan-vneid',
   },

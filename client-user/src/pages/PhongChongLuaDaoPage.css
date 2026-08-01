@@ -4,15 +4,15 @@
 ════════════════════════════════════════════════════════════════ */
 
 .pc-ld-page {
-  --blue-main:   #003d7a;
-  --blue-hover:  #005baa;
-  --blue-light:  #e8f0fb;
-  --red-accent:  #c62828;
-  --yellow-bg:   #fff8e1;
-  --text-dark:   #1e293b;
-  --text-muted:  #64748b;
-  --border-color:#cbd5e1;
-  --bg-color:    #f8fafc;
+  --blue-main:   #233b1e;
+  --blue-hover:  #1c3017;
+  --blue-light:  #faf4eb;
+  --red-accent:  #8c261e;
+  --yellow-bg:   #fdf4e3;
+  --text-dark:   #3b1606;
+  --text-muted:  #5c4a3e;
+  --border-color:#e5d8c5;
+  --bg-color:    #fcf8f2;
   --white:       #ffffff;
   --radius:      16px;
 

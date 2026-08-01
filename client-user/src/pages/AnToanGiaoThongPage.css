@@ -8,21 +8,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap');
 
 .atgt-page-poster {
-  --blue-primary: #0B5ED7;
-  --blue-dark: #003D7A;
-  --blue-navy: #0F172A;
-  --blue-light: #E8F0FE;
-  --gold-accent: #FFC107;
-  --gold-hover: #F59E0B;
-  --red-accent: #DC3545;
-  --green-accent: #198754;
-  --orange-accent: #FD7E14;
-  --bg-page: #F1F5F9;
+  --blue-primary: #8c261e;
+  --blue-dark: #233b1e;
+  --blue-navy: #3b1606;
+  --blue-light: #faf4eb;
+  --gold-accent: #d49f53;
+  --gold-hover: #b87b32;
+  --red-accent: #8c261e;
+  --green-accent: #233b1e;
+  --orange-accent: #b85413;
+  --bg-page: #fcf8f2;
   --card-bg: #FFFFFF;
-  --text-primary: #0F172A;
-  --text-secondary: #334155;
-  --text-muted: #64748B;
-  --border-color: #E2E8F0;
+  --text-primary: #3b1606;
+  --text-secondary: #4a3e35;
+  --text-muted: #5c4a3e;
+  --border-color: #e5d8c5;
   --radius-lg: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;

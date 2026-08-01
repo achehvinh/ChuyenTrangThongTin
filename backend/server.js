@@ -35,6 +35,7 @@ const knowledgeRoutes = require('./routes/knowledgeRoutes');
 const chatRoutes = require("./routes/chatRoutes");
 const visitorRoutes = require("./routes/visitorRoutes");
 const vanBanRoutes = require("./routes/vanBanRoutes");
+const subscriberRoutes = require("./routes/subscriberRoutes");
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
@@ -51,6 +52,8 @@ app.use("/api/v1/ai", aiRoutes);
 app.use('/api/v1/knowledge', knowledgeRoutes);
 app.use("/api/v1/chat", chatRoutes);
 app.use("/api/visitor", visitorRoutes);
+app.use("/api/v1/subscribe", subscriberRoutes);
+app.use("/api/v1/subscribers", subscriberRoutes);
 
 app.get("/api/v1", (req, res) => {
   res.json({ message: "UBND Dak Pxi API is running" });

@@ -28,7 +28,7 @@
    ════════════════════════════════════════════════════════════════════════ */
 .top-grid-section {
   display: grid;
-  grid-template-columns: 4.4fr 3.4fr 2.6fr;
+  grid-template-columns: 4.8fr 2.5fr 3.5fr;
   gap: 20px;
   align-items: stretch;
 }
@@ -42,9 +42,9 @@
 .hero-card-frame {
   background: #fbf7f0;
   border: 1px solid #dfd1bd;
-  border-radius: 12px;
-  padding: 14px;
-  box-shadow: 0 6px 18px rgba(92, 53, 22, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(92, 53, 22, 0.08);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -53,8 +53,8 @@
 
 .hero-img-wrapper {
   width: 100%;
-  height: 250px;
-  border-radius: 8px;
+  height: 310px;
+  border-radius: 10px;
   overflow: hidden;
   position: relative;
   background: #e6ded3;
@@ -322,9 +322,9 @@
 .quick-access-card {
   background: #fbf7f0;
   border: 1px solid #dfd1bd;
-  border-radius: 12px;
-  padding: 12px 14px;
-  box-shadow: 0 6px 18px rgba(92, 53, 22, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(92, 53, 22, 0.08);
 }
 
 .quick-access-header {
@@ -332,58 +332,59 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
   border-bottom: 1px solid #e8dbca;
-  padding-bottom: 6px;
+  padding-bottom: 10px;
 }
 
 .qa-diamond {
   color: #b87b32;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .qa-title {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 800;
   color: #6e3713;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   margin: 0;
 }
 
 .quick-access-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 12px;
 }
 
 .qa-tile {
   background: #ffffff;
   border: 1px solid #e5d8c6;
-  border-radius: 8px;
-  padding: 10px 6px;
+  border-radius: 10px;
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
 }
 
 .qa-tile:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(110, 55, 19, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(110, 55, 19, 0.14);
   border-color: #c8a374;
 }
 
 .qa-tile-icon-box {
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .qa-tile-icon-box.green { background: #e8f5e9; }
@@ -394,10 +395,11 @@
 .qa-tile-icon-box.teal { background: #e0f2f1; }
 
 .qa-tile-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: #4a3424;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #3b2516;
   text-align: center;
+  line-height: 1.3;
 }
 
 /* CULTURAL BANNER CARD */
