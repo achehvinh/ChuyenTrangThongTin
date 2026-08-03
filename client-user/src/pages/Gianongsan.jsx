@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
 import './Gianongsan.css';
+import { getApiUrl } from '../utils/apiConfig';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+const API = getApiUrl();
 
 // ── SVG ICONS CHUẨN HTML5 ──
 const SvgIcons = {

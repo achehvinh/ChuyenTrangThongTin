@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TruongPhongDashboard.css";
+import { getBackendServerUrl } from "../utils/apiConfig";
 
-const BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "http://localhost:5000";
+const BASE_URL = getBackendServerUrl();
 
 export default function TruongPhongDashboard() {
   const navigate = useNavigate();
@@ -168,13 +167,16 @@ export default function TruongPhongDashboard() {
         ? `${BASE_URL}/api/v1/quiz/results?search=${encodeURIComponent(search)}`
         : `${BASE_URL}/api/v1/quiz/results`;
       const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       if (data.success) {
         setQuizResults(data.data || []);
         if (data.stats) setQuizStats(data.stats);
       }
     } catch (err) {
-      console.error("Lỗi tải kết quả cuộc thi:", err);
+      console.warn("Chưa thể kết nối máy chủ để tải kết quả cuộc thi:", err?.message || err);
     } finally {
       setQuizLoading(false);
     }
@@ -1633,7 +1635,7 @@ export default function TruongPhongDashboard() {
         setVisitorStats(res.data);
       }
     } catch (err) {
-      console.error("Lỗi tải thông tin truy cập:", err);
+      console.warn("Chưa thể tải thông tin truy cập (máy chủ offline hoặc bận):", err?.message || err);
     }
   };
 

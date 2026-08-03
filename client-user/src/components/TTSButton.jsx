@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import "./TTSButton.css";
+import { getApiUrl } from "../utils/apiConfig";
 
 const TTS_TEXTS = {
   child:
@@ -26,7 +27,7 @@ export default function TTSButton({ type = "child", label = "Nhấn để nghe",
     }
 
     try {
-      const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+      const apiBase = getApiUrl();
       const visitorUrl = apiBase.replace("/api/v1", "/api/visitor/hit");
       const username = localStorage.getItem("admin_username") || "citizen";
       const role = localStorage.getItem("admin_role") || "citizen";

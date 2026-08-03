@@ -1,6 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getApiUrl } from './utils/apiConfig';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
@@ -170,11 +171,11 @@ function AppLayout() {
       try {
         const username = localStorage.getItem("admin_username") || "citizen";
         const role = localStorage.getItem("admin_role") || "citizen";
-        const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+        const apiBase = getApiUrl();
         const visitorUrl = apiBase.replace("/api/v1", "/api/visitor/hit");
         await axios.post(visitorUrl, { username, role, pathname: location.pathname });
       } catch (err) {
-        console.error("Heartbeat visitor error:", err);
+        // Ignored or minimal log to prevent devtools error cluttering
       }
     };
 
