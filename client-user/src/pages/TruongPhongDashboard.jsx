@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TruongPhongDashboard.css";
 import { getBackendServerUrl } from "../utils/apiConfig";
+import { FIELD_GROUPS, MOCK_PROCEDURES } from "../utils/procedureUtils";
 
 const BASE_URL = getBackendServerUrl();
 
@@ -10030,53 +10031,36 @@ function TthcManagementSection() {
       deletedIds = JSON.parse(localStorage.getItem("DAK_PXI_DELETED_TTHC_IDS") || "[]");
     } catch {}
 
-    let initialList = [
-      {
-        id: 1,
-        code: "TTHC-BHYT-01",
-        name: "Đăng ký cấp mới thẻ BHYT cho hộ nghèo, hộ cận nghèo năm 2026",
-        level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
-        levelBadge: "green",
-        agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
-        duration: "03 ngày làm việc",
-        fee: "Miễn phí 100%",
-        detailText: "Nộp hồ sơ trực tuyến hoặc nộp trực tiếp tại Bộ phận Một cửa xã. Cần mang theo CCCD và Giấy xác nhận hộ nghèo/cận nghèo.",
-        imageUrl: "/huong-dan/baucu-2.png",
-        guideLink: "https://dichvucong.gov.vn"
-      },
-      {
-        id: 2,
-        code: "TTHC-BHYT-02",
-        name: "Liên thông Đăng ký khai sinh, đăng ký thường trú và cấp thẻ BHYT cho trẻ em dưới 6 tuổi",
-        level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
-        levelBadge: "green",
-        agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
-        duration: "02 ngày làm việc",
-        fee: "Miễn phí 100%",
-        detailText: "Liên thông 3 trong 1 nhanh chóng cho trẻ sơ sinh có cha mẹ thường trú tại xã Đăk Pxi.",
-        imageUrl: "/huong-dan/hinh-nen05.jpg",
-        guideLink: "https://dichvucong.quangngai.gov.vn"
-      },
-      {
-        id: 3,
-        code: "TTHC-DATDAI-01",
-        name: "Đăng ký biến động đất đai, nhà ở và tài sản gắn liền với đất",
-        level: "Mức độ 3 (Nộp hồ sơ trực tuyến)",
-        levelBadge: "blue",
-        agency: "Cán bộ Địa chính - Xây dựng UBND Xã Đăk Pxi",
-        duration: "05 ngày làm việc",
-        fee: "Theo quy định định mức",
-        detailText: "Thủ tục kê khai biến động đất đai theo mẫu 09/ĐK.",
-        imageUrl: "",
-        guideLink: ""
-      }
-    ];
+    let initialList = MOCK_PROCEDURES.map((p, idx) => ({
+      id: p.id || idx + 1,
+      code: p.code || `1.000${idx + 100}.01`,
+      name: p.title,
+      fieldGroup: p.group_name || "Đất đai",
+      group_id: p.group_id,
+      level: p.online_type === "toan-trinh" ? "Dịch vụ công Trực tuyến toàn trình (Mức 4)" : "Mức độ 3 (Nộp hồ sơ trực tuyến)",
+      levelBadge: p.online_type === "toan-trinh" ? "green" : "blue",
+      agency: p.agency || "Bộ phận Một cửa — UBND Xã Đăk Pxi",
+      duration: p.processing_time || "03 ngày làm việc",
+      fee: p.fee || "Miễn phí 100%",
+      detailText: p.summary || `Thủ tục ${p.title} thuộc thẩm quyền giải quyết của UBND xã Đăk Pxi.`,
+      imageUrl: "",
+      guideLink: p.guideLink || `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(p.code || p.id)}`
+    }));
 
     try {
       const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) initialList = parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const savedMap = new Map(parsed.map(item => [String(item.id), item]));
+          initialList = initialList.map(item => savedMap.get(String(item.id)) || item);
+          const initialIds = new Set(initialList.map(item => String(item.id)));
+          parsed.forEach(item => {
+            if (!initialIds.has(String(item.id))) {
+              initialList.unshift(item);
+            }
+          });
+        }
       }
     } catch {}
 
@@ -10161,6 +10145,28 @@ const TTHC_FIELD_GROUPS = [
     guideLink: ""
   });
   const [showCatalogModal, setShowCatalogModal] = useState(false);
+  const [editingCatalogItem, setEditingCatalogItem] = useState(null);
+  const [catalogSearch, setCatalogSearch] = useState("");
+  const [catalogFieldFilter, setCatalogFieldFilter] = useState("ALL");
+
+  const filteredCatalog = catalog.filter(item => {
+    const matchSearch = !catalogSearch.trim() ||
+      (item.name && item.name.toLowerCase().includes(catalogSearch.toLowerCase())) ||
+      (item.code && item.code.toLowerCase().includes(catalogSearch.toLowerCase())) ||
+      (item.detailText && item.detailText.toLowerCase().includes(catalogSearch.toLowerCase()));
+
+    const matchGroup = catalogFieldFilter === "ALL" || item.fieldGroup === catalogFieldFilter;
+    return matchSearch && matchGroup;
+  });
+
+  const handleSaveCatalogEdit = (e) => {
+    e.preventDefault();
+    if (!editingCatalogItem) return;
+    setCatalog(prev => prev.map(c => c.id === editingCatalogItem.id ? editingCatalogItem : c));
+    setEditingCatalogItem(null);
+    setMessage(`Đã cập nhật thành công thông tin và link DVC chính xác cho thủ tục [${editingCatalogItem.name || editingCatalogItem.code}]!`);
+    setTimeout(() => setMessage(""), 5000);
+  };
 
   // Xử lý Cập nhật tiến trình
   const handleSaveProgress = (e) => {
@@ -10409,9 +10415,49 @@ const TTHC_FIELD_GROUPS = [
             </div>
           </div>
 
+          {/* BỘ LỌC TÌM KIẾM & PHÂN LOẠI THEO 49 NHÓM LĨNH VỰC */}
+          <div style={{ display: "flex", gap: "12px", marginBottom: "22px", flexWrap: "wrap", alignItems: "center", background: "#f8fafc", padding: "16px 20px", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
+            <div style={{ flex: "1 1 260px", position: "relative" }}>
+              <input
+                type="text"
+                placeholder="Tìm kiếm theo tên thủ tục hoặc mã TTHC..."
+                value={catalogSearch}
+                onChange={(e) => setCatalogSearch(e.target.value)}
+                style={{ width: "100%", padding: "10px 14px 10px 38px", borderRadius: "10px", border: "1.5px solid #cbd5e1", fontSize: "14px", outline: "none", background: "#ffffff" }}
+              />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }}>
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </div>
+
+            <select
+              value={catalogFieldFilter}
+              onChange={(e) => setCatalogFieldFilter(e.target.value)}
+              style={{ padding: "10px 14px", borderRadius: "10px", border: "1.5px solid #0284c7", fontSize: "13.5px", fontWeight: "700", color: "#005baa", background: "#ffffff", cursor: "pointer" }}
+            >
+              <option value="ALL">-- Tất cả 49 Nhóm Lĩnh Vực ({catalog.length} TTHC) --</option>
+              {TTHC_FIELD_GROUPS.map((g, i) => (
+                <option key={i} value={g}>{i + 1}. {g}</option>
+              ))}
+            </select>
+
+            <button
+              type="button"
+              onClick={() => setShowCatalogModal(true)}
+              style={{ background: "#16a34a", color: "#ffffff", border: "none", padding: "10px 18px", borderRadius: "10px", fontSize: "13.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "auto", boxShadow: "0 4px 10px rgba(22, 163, 74, 0.2)" }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Tạo TTHC Mới</span>
+            </button>
+          </div>
+
           {/* DANH SÁCH THỦ TỤC HÀNH CHÍNH DẠNG HÀNG NGANG (HORIZONTAL ROWS) */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {catalog.map((item, idx) => (
+            {filteredCatalog.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "30px", background: "#f8fafc", borderRadius: "12px", color: "#64748b", fontWeight: "600" }}>
+                Không tìm thấy thủ tục hành chính nào phù hợp với bộ lọc.
+              </div>
+            ) : filteredCatalog.map((item, idx) => (
               <div
                 key={item.id}
                 style={{
@@ -10525,7 +10571,11 @@ const TTHC_FIELD_GROUPS = [
                   )}
 
                   <div style={{ display: "flex", gap: "8px" }}>
-                    <button type="button" style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", padding: "6px 12px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "750", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                    <button
+                      type="button"
+                      style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", padding: "6px 12px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "750", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                      onClick={() => setEditingCatalogItem(item)}
+                    >
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                       <span>Sửa</span>
                     </button>
@@ -10746,6 +10796,133 @@ const TTHC_FIELD_GROUPS = [
                 <button type="submit" style={{ background: "#16a34a", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "10px", fontWeight: "900", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
                   <span>Lưu</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL CHỈNH SỬA TTHC & CẬP NHẬT LINK DVC CHÍNH XÁC ── */}
+      {editingCatalogItem && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 99999, background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }} onClick={() => setEditingCatalogItem(null)}>
+          <div style={{ background: "#ffffff", borderRadius: "20px", width: "100%", maxWidth: "640px", padding: "26px", boxShadow: "0 20px 50px rgba(0,0,0,0.3)", position: "relative", maxHeight: "90vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <button style={{ position: "absolute", top: "16px", right: "16px", background: "#f1f5f9", border: "none", width: "30px", height: "30px", borderRadius: "50%", cursor: "pointer", fontWeight: "800" }} onClick={() => setEditingCatalogItem(null)}>✕</button>
+
+            <h3 style={{ margin: "0 0 6px", fontSize: "19px", fontWeight: "900", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span>Chỉnh Sửa Thủ Tục & Cập Nhật Link DVC</span>
+            </h3>
+            <p style={{ margin: "0 0 16px", fontSize: "13px", color: "#64748b" }}>Cập nhật thông tin chi tiết và liên kết nộp hồ sơ DVC chính xác nhất</p>
+
+            <form onSubmit={handleSaveCatalogEdit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Mã TTHC *</label>
+                  <input
+                    type="text"
+                    value={editingCatalogItem.code || ""}
+                    onChange={(e) => setEditingCatalogItem({ ...editingCatalogItem, code: e.target.value })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Mức độ dịch vụ công</label>
+                  <select
+                    value={editingCatalogItem.level || "Dịch vụ công Trực tuyến toàn trình (Mức 4)"}
+                    onChange={(e) => setEditingCatalogItem({
+                      ...editingCatalogItem,
+                      level: e.target.value,
+                      levelBadge: e.target.value.includes("Mức 4") || e.target.value.includes("toàn trình") ? "green" : "blue"
+                    })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  >
+                    <option value="Dịch vụ công Trực tuyến toàn trình (Mức 4)">Mức độ 4 (Toàn trình)</option>
+                    <option value="Mức độ 3 (Nộp hồ sơ trực tuyến)">Mức độ 3 (Nộp trực tuyến)</option>
+                    <option value="Mức độ 2 (Tải mẫu biểu)">Mức độ 2 (Mẫu biểu)</option>
+                    <option value="Mức độ 1 (Công khai hướng dẫn)">Mức độ 1 (Hướng dẫn)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Nhóm Lĩnh vực *</label>
+                <select
+                  value={editingCatalogItem.fieldGroup || "Đất đai"}
+                  onChange={(e) => setEditingCatalogItem({ ...editingCatalogItem, fieldGroup: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px", fontWeight: "700", color: "#005baa" }}
+                >
+                  {TTHC_FIELD_GROUPS.map((group, idx) => (
+                    <option key={idx} value={group}>
+                      {idx + 1}. {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Tên Thủ tục Hành chính *</label>
+                <input
+                  type="text"
+                  value={editingCatalogItem.name || ""}
+                  onChange={(e) => setEditingCatalogItem({ ...editingCatalogItem, name: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  required
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#005baa" }}>🔗 Link liên kết hướng dẫn Cổng DVC / File (URL chính xác) *</label>
+                <input
+                  type="text"
+                  placeholder="https://dichvucong.gov.vn/..."
+                  value={editingCatalogItem.guideLink || ""}
+                  onChange={(e) => setEditingCatalogItem({ ...editingCatalogItem, guideLink: e.target.value })}
+                  style={{ padding: "10px 12px", border: "2px solid #0284c7", borderRadius: "8px", fontWeight: "600", color: "#0369a1", background: "#f0f9ff" }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Thời gian giải quyết</label>
+                  <input
+                    type="text"
+                    value={editingCatalogItem.duration || ""}
+                    onChange={(e) => setEditingCatalogItem({ ...editingCatalogItem, duration: e.target.value })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  />
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Lệ phí</label>
+                  <input
+                    type="text"
+                    value={editingCatalogItem.fee || ""}
+                    onChange={(e) => setEditingCatalogItem({ ...editingCatalogItem, fee: e.target.value })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Mô tả chi tiết & Điều kiện</label>
+                <textarea
+                  rows={3}
+                  value={editingCatalogItem.detailText || ""}
+                  onChange={(e) => setEditingCatalogItem({ ...editingCatalogItem, detailText: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "10px" }}>
+                <button type="button" style={{ background: "#f1f5f9", color: "#64748b", border: "1px solid #cbd5e1", padding: "10px 18px", borderRadius: "10px", fontWeight: "800", cursor: "pointer" }} onClick={() => setEditingCatalogItem(null)}>
+                  Hủy
+                </button>
+                <button type="submit" style={{ background: "#005baa", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "10px", fontWeight: "900", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  <span>Lưu cập nhật Link</span>
                 </button>
               </div>
             </form>
