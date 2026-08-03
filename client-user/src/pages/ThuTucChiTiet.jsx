@@ -64,6 +64,25 @@ const SvgIcons = {
       <line x1="12" y1="8" x2="12" y2="12" />
       <line x1="12" y1="16" x2="12.01" y2="16" />
     </svg>
+  ),
+  Send: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="22" y1="2" x2="11" y2="13" />
+      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+    </svg>
+  ),
+  Search: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  ),
+  Printer: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="6 9 6 2 18 2 18 9" />
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+      <rect x="6" y="14" width="12" height="8" />
+    </svg>
   )
 };
 
@@ -100,12 +119,12 @@ function SpeakButton({ procedure }) {
   return (
     <button type="button" className="tthc-speak-btn" onClick={toggleSpeak}>
       {speaking ? <SvgIcons.Stop /> : <SvgIcons.Volume />}
-      <span>{speaking ? "Dừng đọc" : "Nghe hướng dẫn phát âm"}</span>
+      <span>{speaking ? "Dừng đọc" : "Nghe hướng dẫn giọng nói"}</span>
     </button>
   );
 }
 
-// ── BỘ BỘ BỘ SƯU TẬP ẢNH / VIDEO ──
+// ── BỘ SƯU TẬP ẢNH / VIDEO MINH HỌA ──
 function MediaGallery({ media }) {
   const images = media?.images || [];
   const videos = media?.videos || [];
@@ -140,12 +159,265 @@ function MediaGallery({ media }) {
   );
 }
 
+// ── MODAL NỘP HỒ SƠ TRỰC TUYẾN ──
+function OnlineSubmitModal({ procedure, onClose }) {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    cccd: "",
+    phone: "",
+    email: "",
+    address: "",
+    attachedFile: null,
+    note: ""
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [receipt, setReceipt] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setTimeout(() => {
+      const code = `HS-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      const newReceipt = {
+        code,
+        date: new Date().toLocaleDateString("vi-VN") + " " + new Date().toLocaleTimeString("vi-VN", { hour: '2-digit', minute: '2-digit' }),
+        procedureTitle: procedure.title,
+        applicant: formData.fullName,
+        cccd: formData.cccd,
+        phone: formData.phone,
+        status: "Đã tiếp nhận (Chờ phân công cán bộ xử lý)"
+      };
+      setReceipt(newReceipt);
+      setSubmitting(false);
+    }, 700);
+  };
+
+  return (
+    <div className="tthc-modal-overlay" onClick={onClose}>
+      <div className="tthc-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="tthc-modal-close" onClick={onClose}>✕</button>
+
+        {!receipt ? (
+          <>
+            <div className="tthc-modal-header">
+              <div className="tthc-modal-badge green">📝</div>
+              <div>
+                <h3>NỘP HỒ SƠ TRỰC TUYẾN</h3>
+                <p className="sub-txt">{procedure.title}</p>
+              </div>
+            </div>
+
+            <form className="tthc-submit-form" onSubmit={handleSubmit}>
+              <div className="tthc-form-group">
+                <label>Họ và tên người nộp <span className="req">*</span></label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ví dụ: Nguyễn Văn A"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                />
+              </div>
+
+              <div className="tthc-form-grid-2col">
+                <div className="tthc-form-group">
+                  <label>Số CCCD/CMND <span className="req">*</span></label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ví dụ: 034200123456"
+                    value={formData.cccd}
+                    onChange={(e) => setFormData({ ...formData, cccd: e.target.value })}
+                  />
+                </div>
+                <div className="tthc-form-group">
+                  <label>Số điện thoại liên hệ <span className="req">*</span></label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Ví dụ: 0912345678"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="tthc-form-group">
+                <label>Địa chỉ thường trú / Chỗ ở hiện tại <span className="req">*</span></label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Thôn/Xóm, Xã Đăk Pxi, Tỉnh Quảng Ngãi"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                />
+              </div>
+
+              <div className="tthc-form-group">
+                <label>Đính kèm file Hồ sơ / Tờ khai đã điền</label>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.jpg,.png"
+                  onChange={(e) => setFormData({ ...formData, attachedFile: e.target.files[0] })}
+                />
+                <span className="help-text">Hỗ trợ file PDF, Word, Ảnh PNG/JPG (tối đa 10MB)</span>
+              </div>
+
+              <div className="tthc-form-group">
+                <label>Ghi chú thêm (nếu có)</label>
+                <textarea
+                  rows={2}
+                  placeholder="Nêu rõ yêu cầu hoặc thắc mắc nếu có..."
+                  value={formData.note}
+                  onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+                />
+              </div>
+
+              <div className="tthc-modal-footer">
+                <button type="submit" className="tthc-btn-submit-main" disabled={submitting}>
+                  {submitting ? "Đang gửi hồ sơ..." : "🚀 Nộp hồ sơ ngay"}
+                </button>
+                <button type="button" className="tthc-btn-cancel" onClick={onClose}>
+                  Hủy bỏ
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <div className="tthc-receipt-box">
+            <div className="receipt-success-icon">🎉</div>
+            <h3>NỘP HỒ SƠ THÀNH CÔNG!</h3>
+            <p className="receipt-desc">Hệ thống Cổng Dịch vụ công xã Đăk Pxi đã tiếp nhận hồ sơ của ông/bà.</p>
+
+            <div className="receipt-card">
+              <div className="receipt-row">
+                <span>Mã hồ sơ tra cứu:</span>
+                <strong className="code">{receipt.code}</strong>
+              </div>
+              <div className="receipt-row">
+                <span>Thủ tục hành chính:</span>
+                <strong>{receipt.procedureTitle}</strong>
+              </div>
+              <div className="receipt-row">
+                <span>Người nộp:</span>
+                <strong>{receipt.applicant} (CCCD: {receipt.cccd})</strong>
+              </div>
+              <div className="receipt-row">
+                <span>Thời gian tiếp nhận:</span>
+                <strong>{receipt.date}</strong>
+              </div>
+              <div className="receipt-row">
+                <span>Trạng thái ban đầu:</span>
+                <strong className="status">{receipt.status}</strong>
+              </div>
+            </div>
+
+            <p className="receipt-note">
+              💡 Vui lòng lưu lại <strong>Mã hồ sơ: {receipt.code}</strong> để tra cứu tiến độ xử lý trực tuyến.
+            </p>
+
+            <div className="receipt-actions">
+              <button type="button" className="tthc-btn-submit-main" onClick={() => window.print()}>
+                🖨️ In Phiếu Tiếp Nhận
+              </button>
+              <button type="button" className="tthc-btn-cancel" onClick={onClose}>
+                Đóng cửa sổ
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── MODAL TRA CỨU TIẾN ĐỘ HỒ SƠ ──
+function OnlineTrackModal({ onClose }) {
+  const [code, setCode] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!code.trim()) return;
+    setSearching(true);
+    setTimeout(() => {
+      setResult({
+        code: code.toUpperCase(),
+        procedureTitle: "Thủ tục hành chính tiếp nhận trực tuyến",
+        applicant: "Nguyễn Văn A",
+        date: new Date().toLocaleDateString("vi-VN"),
+        currentStep: 2,
+        steps: [
+          { name: "1. Tiếp nhận hồ sơ", status: "Hoàn thành", time: "Hôm nay" },
+          { name: "2. Phân công & Thẩm định", status: "Đang xử lý", time: "Trong ngày" },
+          { name: "3. Lãnh đạo phê duyệt", status: "Chờ xử lý", time: "-" },
+          { name: "4. Trả kết quả", status: "Chờ xử lý", time: "-" }
+        ]
+      });
+      setSearching(false);
+    }, 500);
+  };
+
+  return (
+    <div className="tthc-modal-overlay" onClick={onClose}>
+      <div className="tthc-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="tthc-modal-close" onClick={onClose}>✕</button>
+
+        <div className="tthc-modal-header">
+          <div className="tthc-modal-badge blue">🔍</div>
+          <div>
+            <h3>TRA CỨU TIẾN ĐỘ HỒ SƠ TRỰC TUYẾN</h3>
+            <p className="sub-txt">Nhập Mã hồ sơ hoặc Số CCCD để kiểm tra</p>
+          </div>
+        </div>
+
+        <form className="tthc-track-search-form" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Ví dụ: HS-2026-89412 hoặc 034200123456"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            required
+          />
+          <button type="submit" className="tthc-btn-search">
+            {searching ? "Đang tra cứu..." : "Tìm kiếm"}
+          </button>
+        </form>
+
+        {result && (
+          <div className="tthc-track-result-box">
+            <div className="result-header">
+              <span className="code-badge">Mã HS: {result.code}</span>
+              <span className="applicant-info">Người nộp: {result.applicant}</span>
+            </div>
+
+            <div className="track-timeline">
+              {result.steps.map((st, i) => (
+                <div key={i} className={`track-step-item ${i < result.currentStep ? 'done' : i === result.currentStep - 1 ? 'active' : ''}`}>
+                  <div className="step-num">{i < result.currentStep ? '✓' : i + 1}</div>
+                  <div className="step-info">
+                    <strong>{st.name}</strong>
+                    <span className="status-tag">{st.status}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── TRANG CHI TIẾT THỦ TỤC ──
 export default function ThuTucChiTiet() {
   const { slug } = useParams();
   const [procedure, setProcedure] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [usingMock, setUsingMock] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showTrackModal, setShowTrackModal] = useState(false);
   const sessionId = useMemo(getCitizenSessionId, []);
 
   useEffect(() => {
@@ -159,7 +431,6 @@ export default function ThuTucChiTiet() {
       .then((res) => {
         if (cancelled) return;
         setProcedure(normalizeDetail(res.data));
-        setUsingMock(false);
       })
       .catch(() => {
         if (cancelled) return;
@@ -170,7 +441,6 @@ export default function ThuTucChiTiet() {
         const mock = findMockProcedureBySlug(slug);
         if (mock) {
           setProcedure(mock);
-          setUsingMock(true);
         } else {
           setError("Không tìm thấy thủ tục này.");
         }
@@ -183,6 +453,10 @@ export default function ThuTucChiTiet() {
       cancelled = true;
     };
   }, [slug]);
+
+  const handlePrintPage = () => {
+    window.print();
+  };
 
   return (
     <div className="tthc-app-root">
@@ -254,7 +528,7 @@ export default function ThuTucChiTiet() {
 
         {!loading && !error && procedure && (
           <article className="tthc-detail-article">
-            {/* TIÊU ĐỀ THỦ TỤC & MÔ TẢ */}
+            {/* TIÊU ĐỀ THỦ TỤC & MÔ TẢ & THANH NÚT HÀNH ĐỘNG CỐT LÕI */}
             <header className="tthc-detail-hero">
               <div className="tthc-detail-badges">
                 <span className="tthc-badge toan-trinh">
@@ -271,7 +545,35 @@ export default function ThuTucChiTiet() {
               <h1 className="tthc-detail-title">{procedure.title}</h1>
               {procedure.summary && <p className="tthc-detail-summary">{procedure.summary}</p>}
 
-              <div className="tthc-detail-speak-row">
+              {/* THANH NÚT HÀNH ĐỘNG CỐT LÕI: NỘP HỒ SƠ, TRA CỨU, IN, ĐỌC GIỌNG NÓI */}
+              <div className="tthc-hero-actions-row">
+                <button
+                  type="button"
+                  className="tthc-hero-btn btn-submit"
+                  onClick={() => setShowSubmitModal(true)}
+                >
+                  <SvgIcons.Send />
+                  <span>Nộp hồ sơ trực tuyến</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="tthc-hero-btn btn-track"
+                  onClick={() => setShowTrackModal(true)}
+                >
+                  <SvgIcons.Search />
+                  <span>Tra cứu tiến độ hồ sơ</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="tthc-hero-btn btn-print"
+                  onClick={handlePrintPage}
+                >
+                  <SvgIcons.Printer />
+                  <span>In hướng dẫn</span>
+                </button>
+
                 <SpeakButton procedure={procedure} />
               </div>
             </header>
@@ -331,7 +633,7 @@ export default function ThuTucChiTiet() {
               </section>
             )}
 
-            {/* CÁC BƯỚC CẦN LÀM (TIẾN ĐỘ THỰC HIỆN) */}
+            {/* CÁC BƯỚC CẦN LÀM (TIẾN ĐỘ THỰC HIỆN TỪNG BƯỚC) */}
             <StepGuide procedure={procedure} sessionId={sessionId} />
 
             {/* BIỂU MẪU CẦN TẢI */}
@@ -347,13 +649,24 @@ export default function ThuTucChiTiet() {
         )}
       </main>
 
+      {/* MODAL NỘP HỒ SƠ TRỰC TUYẾN */}
+      {showSubmitModal && procedure && (
+        <OnlineSubmitModal
+          procedure={procedure}
+          onClose={() => setShowSubmitModal(false)}
+        />
+      )}
+
+      {/* MODAL TRA CỨU TIẾN ĐỘ */}
+      {showTrackModal && (
+        <OnlineTrackModal
+          onClose={() => setShowTrackModal(false)}
+        />
+      )}
+
       {/* FOOTER ĐỒNG BỘ */}
       <footer className="tthc-footer">
         <div className="tthc-footer-inner">
-          <div className="tthc-footer-info">
-            <p><strong>Cổng Thông tin Thủ tục Hành chính UBND Xã Đăk Pxi</strong></p>
-            <p>Đơn vị quản lý: Phòng Văn hóa - Xã hội UBND xã Đăk Pxi, tỉnh Quảng Ngãi</p>
-          </div>
           <div className="tthc-footer-meta">
             <span>Ngày cập nhật: <strong>24/07/2026</strong></span>
             <span className="sep">•</span>

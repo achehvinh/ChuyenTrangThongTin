@@ -5,7 +5,7 @@ const QuizResult = require("../models/QuizResult");
 // @access  Public
 exports.submitQuizResult = async (req, res, next) => {
   try {
-    const { playerName, score, totalQuestions = 10, passed } = req.body;
+    const { playerName, score, totalQuestions = 10, passed, details } = req.body;
 
     if (!playerName || playerName.trim() === "") {
       return res.status(400).json({
@@ -21,6 +21,7 @@ exports.submitQuizResult = async (req, res, next) => {
       score: Number(score) || 0,
       totalQuestions: Number(totalQuestions) || 10,
       passed: isPassed,
+      details: Array.isArray(details) ? details : [],
     });
 
     res.status(201).json({

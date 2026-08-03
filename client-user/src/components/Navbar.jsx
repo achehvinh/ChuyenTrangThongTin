@@ -1,9 +1,20 @@
-import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
-  Home, Info, Settings, MapPin, Newspaper, FileText,
-  BookOpen, Phone, ChevronDown, Search, User, Sliders, Menu, X
+  BookOpen,
+  ChevronDown,
+  FileText,
+  Home, Info,
+  MapPin,
+  Menu,
+  Newspaper,
+  Phone,
+  Search,
+  Settings,
+  Sliders,
+  User,
+  X
 } from 'lucide-react';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useFontSize } from '../FontSizeContext';
 import { useLang } from '../LanguageContext';
 import './Navbar.css';
@@ -81,21 +92,10 @@ export default function Navbar() {
         <div className="header-banner-overlay" />
         <div className="header-banner-content">
 
-          {/* BRANDING: LOGO + TITLES */}
+          {/* BRANDING: TITLE ONLY (SINGLE LINE) */}
           <Link to="/" className="header-brand-box" onClick={closeDrawer}>
-            <div className="brand-emblem-wrap">
-              <img
-                src="/huong-dan/anh-logo.jpg"
-                alt="Logo Xã Đăk Pxi"
-                className="brand-logo-img"
-              />
-            </div>
-
             <div className="brand-text-group">
-              <span className="brand-subtext">TRANG THÔNG TIN ĐIỆN TỬ</span>
-              <h1 className="brand-main-title">PHÒNG VĂN HÓA - XÃ HỘI</h1>
-              <h2 className="brand-sub-title">XÃ ĐĂK PXI</h2>
-              <p className="brand-slogan">Kết nối – Dân chủ – Minh bạch – Phát triển</p>
+              <h1 className="brand-main-title">CHUYÊN TRANG VĂN HÓA - XÃ HỘI XÃ ĐĂK PXI</h1>
             </div>
           </Link>
 
@@ -309,7 +309,6 @@ export default function Navbar() {
                   <li><Link to="/lich-hop">Lịch họp Ủy ban</Link></li>
                   <li><Link to="/bau-cu">Tuyên truyền Bầu cử</Link></li>
                   <li><Link to="/video">Kênh Video</Link></li>
-                  <li><Link to="/quiz/bhyt">Trắc nghiệm BHYT</Link></li>
                   <li><Link to="/chuyen-muc">Tất cả Chuyên mục</Link></li>
                 </ul>
               )}
@@ -390,7 +389,6 @@ export default function Navbar() {
                     <li><Link to="/lich-hop" onClick={closeDrawer}>Lịch họp Ủy ban</Link></li>
                     <li><Link to="/bau-cu" onClick={closeDrawer}>Tuyên truyền Bầu cử</Link></li>
                     <li><Link to="/video" onClick={closeDrawer}>Kênh Video</Link></li>
-                    <li><Link to="/quiz/bhyt" onClick={closeDrawer}>Trắc nghiệm BHYT</Link></li>
                     <li><Link to="/chuyen-muc" onClick={closeDrawer}>Tất cả Chuyên mục</Link></li>
                   </ul>
                 )}

@@ -555,10 +555,6 @@ export default function ChuyenDoiSoPage() {
       {/* ── FOOTER CHUẨN CỔNG ĐIỆN TỬ NHÀ NƯỚC ── */}
       <footer className="cds-footer">
         <div className="cds-footer-inner">
-          <div className="footer-left">
-            <p><strong>Cổng Thông tin Chuyển đổi số UBND Xã Đăk Pxi</strong></p>
-            <p>Đơn vị quản lý: Phòng Văn hóa - Xã hội UBND xã Đăk Pxi, tỉnh Quảng Ngãi</p>
-          </div>
           <div className="footer-right">
             <span>Ngày cập nhật: <strong>24/07/2026</strong></span>
             <span className="sep">•</span>

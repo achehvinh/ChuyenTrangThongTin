@@ -26,21 +26,6 @@ export default function Footer() {
                         Điện thoại: <strong>0339.310.915</strong>{' '}
                         &nbsp;–&nbsp; Email: <strong>vhxh.dakpxi@gmail.com</strong>
                     </p>
-                    <p>
-                        Đơn vị quản lý & vận hành nội dung: <strong>Phòng Văn hóa – Xã hội xã Đăk Pxi.</strong>
-                    </p>
-                    <p>
-                        Trang tuyên truyền chính thức xã Đăk Pxi:{' '}
-
-                        <a
-                            href="https://dakpxi.gov.vn/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="footer-link"
-                        >
-                            dakpxi.gov.vn
-                        </a>
-                    </p>
                 </div>
 
                 <div className="footer-badge">

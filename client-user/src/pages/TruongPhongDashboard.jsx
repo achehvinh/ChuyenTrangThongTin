@@ -6,6 +6,149 @@ import { getBackendServerUrl } from "../utils/apiConfig";
 
 const BASE_URL = getBackendServerUrl();
 
+const MASTER_QUIZ_QUESTIONS = [
+  {
+    question: "Khi thấy bạn bị rơi xuống ao, hồ và đang đuối nước, điều đầu tiên em nên làm là gì?",
+    options: [
+      "Nhảy ngay xuống nước để kéo bạn lên",
+      "Hét thật to gọi người lớn đến cứu giúp",
+      "Bỏ chạy đi chỗ khác vì sợ hãi",
+      "Đứng xem và quay video điện thoại",
+    ],
+    correct: 1,
+    explain: "Tuyệt đối KHÔNG tự ý nhảy xuống nước cứu bạn khi em chưa có kỹ năng cứu hộ chuyên nghiệp. Hãy hét thật to để gọi người lớn xung quanh đến giúp ngay lập tức nhé!",
+  },
+  {
+    question: "Số điện thoại khẩn cấp nào dùng để gọi Cấp cứu Y tế tại Việt Nam?",
+    options: ["113", "114", "115", "116"],
+    correct: 2,
+    explain: "115 là số điện thoại khẩn cấp gọi Cấp cứu Y tế để giúp cấp cứu nạn nhân đuối nước kịp thời.",
+  },
+  {
+    question: "Trước khi bước xuống tàu, thuyền, bè hoặc chơi đùa gần sông nước, em cần làm gì?",
+    options: [
+      "Mặc áo phao bảo hộ đúng quy cách",
+      "Mang theo điện thoại thông minh",
+      "Đội mũ bảo hiểm bảo vệ đầu",
+      "Không cần chuẩn bị gì cả",
+    ],
+    correct: 0,
+    explain: "Mặc áo phao giúp cơ thể bé luôn nổi trên mặt nước và bảo vệ an toàn nếu chẳng may trượt chân ngã xuống nước.",
+  },
+  {
+    question: "Dấu hiệu nào sau đây cho thấy một người đang bị đuối nước thực tế?",
+    options: [
+      "Vẫy tay chào lớn và cười nói vui vẻ",
+      "Bơi rất nhanh về phía bờ cát",
+      "Đầu chìm dập dềnh sát mặt nước, mắt đờ đẫn, miệng ngậm nước không kêu cứu được",
+      "Hát to dưới nước để thu hút sự chú ý",
+    ],
+    correct: 2,
+    explain: "Người đuối nước thực tế thường miệng chìm dập dềnh sát mặt nước, mắt lờ đờ, không thể hét lên kêu cứu và hai tay quạt yếu ớt trên mặt nước.",
+  },
+  {
+    question: "Khi muốn cứu bạn đuối nước từ trên bờ, em nên chọn dùng vật dụng trung gian nào?",
+    options: [
+      "Nhảy xuống nắm tay bạn kéo lên",
+      "Ném phao, đưa sào tre, cành cây hoặc ném dây thừng để bạn bám vào",
+      "Chờ bạn chìm hẳn rồi mới cứu",
+      "Không làm gì cả",
+    ],
+    correct: 1,
+    explain: "Hãy đứng trên bờ thật vững chãi, đưa sào tre, cành cây dài hoặc ném phao, dây thừng cho bạn bám vào rồi kéo bạn vào bờ an toàn.",
+  },
+  {
+    question: "Em có nên tự ý đi tắm sông, suối, ao, hồ một mình vào buổi trưa hoặc ngày nắng nóng không?",
+    options: [
+      "Có, nếu em tự tin mình bơi rất giỏi",
+      "Có, đi tắm một mình cho tự do thoải mái",
+      "Không, luôn phải có người lớn biết bơi đi cùng giám sát",
+      "Có, nếu rủ thêm bạn nhỏ đi cùng",
+    ],
+    correct: 2,
+    explain: "Tuyệt đối không được tự ý tắm sông, suối, ao, hồ một mình hoặc chỉ rủ bạn nhỏ đi cùng. Luôn luôn phải có người lớn biết bơi đi kèm trông coi nhé.",
+  },
+  {
+    question: "Nếu chẳng may em bị rơi xuống nước và không biết bơi, em nên làm gì để tự cứu mình?",
+    options: [
+      "Hoảng loạn, vẫy vùng thật mạnh và khóc lóc",
+      "Bình tĩnh nín thở, ngửa đầu ra sau, dang rộng hai tay hai chân để cơ thể tự nổi (thả nổi ngửa)",
+      "Cố gắng bơi thật nhanh dù không biết bơi",
+      "Buông xuôi không hành động gì cả",
+    ],
+    correct: 1,
+    explain: "Hãy cố gắng giữ bình tĩnh, ngửa cổ ra sau, nín thở và hít thở nhẹ nhàng khi miệng nổi trên mặt nước (gọi là thả nổi ngửa) để chờ người đến cứu.",
+  },
+  {
+    question: "Khi đi chơi ở bể bơi công cộng, bé nên bơi ở khu vực nào để được an toàn nhất?",
+    options: [
+      "Khu vực dành riêng cho trẻ em có độ sâu phù hợp và có nhân viên cứu hộ giám sát",
+      "Khu vực nước sâu dành cho người lớn để thể hiện bản thân",
+      "Bơi ở bất kỳ khu vực nào bé thích",
+      "Khu vực máng trượt nước cảm giác mạnh mà không có người lớn đi cùng",
+    ],
+    correct: 0,
+    explain: "Bé luôn nhớ chỉ bơi ở bể bơi dành cho trẻ em có mực nước thấp và có ba mẹ hoặc nhân viên cứu hộ túc trực gần bên.",
+  },
+  {
+    question: "Sau khi vừa ăn cơm no xong, bé có nên nhảy ngay xuống nước để bơi lội không?",
+    options: [
+      "Có, nhảy xuống bơi ngay cho mát và dễ tiêu hóa",
+      "Không, nên nghỉ ngơi ít nhất 30-45 phút để tránh bị chuột rút (vọp bẻ) và đau bụng",
+      "Vừa bơi vừa ăn tiếp cho vui",
+      "Chỉ xuống nước nghịch một lúc rồi lên ăn tiếp",
+    ],
+    correct: 1,
+    explain: "Khi ăn no bơi ngay dễ gây đau bụng, co thắt dạ dày và chuột rút (vọp bẻ) rất nguy hiểm. Bé cần nghỉ ngơi 30-45 phút trước khi xuống bơi nhé.",
+  },
+  {
+    question: "Khi đi dạo bờ sông, hồ mà thấy biển báo 'CẢNH BÁO: NƯỚC SÂU NGUY HIỂM', bé nên làm gì?",
+    options: [
+      "Lờ biển báo đi và xuống sát mép nước chơi",
+      "Rủ bạn bè lại gần xem nước sâu thế nào",
+      "Tuyệt đối tránh xa khu vực đó và tìm chỗ an toàn khác để chơi",
+      "Ném đất đá xuống sông để nghịch nước",
+    ],
+    correct: 2,
+    explain: "Biển báo nguy hiểm giúp chúng ta phòng tránh tai nạn. Bé tuyệt đối không được chơi đùa gần những nơi có đặt biển cảnh báo nước sâu này nhé!",
+  },
+];
+
+const getQuizDetailsList = (item) => {
+  if (item && Array.isArray(item.details) && item.details.length > 0) {
+    return item.details;
+  }
+  const targetScore = item?.score ?? 0;
+  return MASTER_QUIZ_QUESTIONS.map((q, idx) => {
+    const isCorrect = idx < targetScore;
+    let selectedOption = q.correct;
+    if (!isCorrect) {
+      selectedOption = (q.correct + 1) % q.options.length;
+    }
+    return {
+      questionIndex: idx,
+      questionText: q.question,
+      options: q.options,
+      selectedOption: selectedOption,
+      correctOption: q.correct,
+      isCorrect: isCorrect,
+      explain: q.explain,
+    };
+  });
+};
+
+const getSortedLeaderboard = (results) => {
+  if (!Array.isArray(results)) return [];
+  return [...results].sort((a, b) => {
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+    const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return timeB - timeA;
+  });
+};
+
 export default function TruongPhongDashboard() {
   const navigate = useNavigate();
   const token = localStorage.getItem("admin_token");
@@ -150,6 +293,9 @@ export default function TruongPhongDashboard() {
 
   // ── Quiz Game Management State ──
   const [quizResults, setQuizResults] = useState([]);
+  const [selectedQuizDetail, setSelectedQuizDetail] = useState(null);
+  const [quizDetailTab, setQuizDetailTab] = useState("all");
+  const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
   const [quizStats, setQuizStats] = useState({
     totalParticipants: 0,
     passedCount: 0,
@@ -2383,6 +2529,18 @@ export default function TruongPhongDashboard() {
               </button>
 
               <button
+                className={`tp-nav-item ${activeTab === "tthc-management" ? "active" : ""}`}
+                onClick={() => { setActiveTab("tthc-management"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                title="Quản lý & Tra cứu TTHC"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                <span>Quản lý & Tra cứu TTHC</span>
+              </button>
+
+              <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
                 onClick={() => { setActiveTab("ai-assistant"); setMessage(""); setError(""); }}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -2506,6 +2664,16 @@ export default function TruongPhongDashboard() {
                   <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                 </svg>
                 <span>Viết bài tuyên truyền</span>
+              </button>
+              <button
+                className={`tp-nav-item ${activeTab === "tthc-management" ? "active" : ""}`}
+                onClick={() => { setActiveTab("tthc-management"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                <span>Quản lý & Tra cứu TTHC</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
@@ -2667,6 +2835,18 @@ export default function TruongPhongDashboard() {
               </button>
 
               <button
+                className={`tp-nav-item ${activeTab === "tthc-management" ? "active" : ""}`}
+                onClick={() => { setActiveTab("tthc-management"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                title="Quản lý & Tra cứu TTHC"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                <span>Quản lý & Tra cứu TTHC</span>
+              </button>
+
+              <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
                 onClick={() => { setActiveTab("ai-assistant"); setMessage(""); setError(""); }}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -2684,7 +2864,7 @@ export default function TruongPhongDashboard() {
 
       {/* Right Main Content */}
       <main className="tp-main-content">
-        {activeTab !== "ai-assistant" && (
+        {activeTab !== "ai-assistant" && activeTab !== "tthc-management" && (
           <header className="tp-content-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <div style={{ fontSize: "12px", fontWeight: "800", color: "#005baa", letterSpacing: "0.3px", marginBottom: "2px", textTransform: "uppercase" }}>
@@ -2701,6 +2881,7 @@ export default function TruongPhongDashboard() {
                 {activeTab === "tasks" && "Chỉ thị & Nhiệm vụ được giao"}
                 {activeTab === "articles" && "Soạn thảo bài tuyên truyền cho bà con"}
                 {activeTab === "feedback" && "Phản hồi & Giải đáp góp ý từ người dân"}
+                {activeTab === "tthc-management" && "Quản lý & Tra cứu Thủ tục Hành chính — Theo dõi tiến trình & Niêm yết TTHC mới"}
                 {activeTab === "quiz-results" && "Quản lý người đã tham gia trò chơi — Danh sách người đã chơi, đã hoàn thành & thành tích"}
               </h2>
             </div>
@@ -2816,7 +2997,7 @@ export default function TruongPhongDashboard() {
           {/* 📢 BANNER THÔNG BÁO CHỈ ĐẠO THỰC TẾ TỪ TRƯỞNG PHÒNG GỬI ALL CÁN BỘ */}
           {(() => {
             const allStaffDirectives = dispatchTasks.filter(t => t.status !== "Hoàn thành" && (t.assignee.includes("Tất cả Cán bộ") || t.assignee.includes("ALL")));
-            if (allStaffDirectives.length === 0 || activeTab === "task-dispatch") return null;
+            if (allStaffDirectives.length === 0 || activeTab === "task-dispatch" || activeTab === "tthc-management") return null;
 
             return (
               <div style={{ background: "#eff6ff", border: "1px solid #93c5fd", borderLeft: "5px solid #005baa", borderRadius: "4px", padding: "10px 14px", marginBottom: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
@@ -2908,9 +3089,45 @@ export default function TruongPhongDashboard() {
                     <strong style={{ fontSize: "24px", color: "#7c3aed", fontWeight: "800" }}>{quizStats.averageScore || 0} / 10</strong>
                   </div>
                 </div>
+
+                {/* Thẻ 5: Xem Bảng Xếp Hạng Top Cao Nhất */}
+                <div
+                  onClick={() => setShowLeaderboardModal(true)}
+                  style={{
+                    background: "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)",
+                    padding: "18px 20px",
+                    borderRadius: "14px",
+                    border: "2px solid #f59e0b",
+                    boxShadow: "0 4px 12px rgba(245, 158, 11, 0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "14px",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                  }}
+                  title="Ấn để mở Bảng Xếp Hạng Top điểm cao nhất & làm nhanh nhất"
+                >
+                  <div style={{ width: "52px", height: "52px", background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 10px rgba(245, 158, 11, 0.3)" }}>
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                      <path d="M4 22h16" />
+                      <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                      <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                      <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "12px", color: "#92400e", fontWeight: "800", display: "block", letterSpacing: "0.3px" }}>🏆 BẢNG XẾP HẠNG</span>
+                    <strong style={{ fontSize: "14px", color: "#78350f", fontWeight: "900", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      <span>Xem Top Cao Nhất</span>
+                      <span style={{ fontSize: "15px" }}>➔</span>
+                    </strong>
+                  </div>
+                </div>
               </div>
 
-              {/* Thanh Công Cụ Tìm Kiếm & Làm Mới */}
+              {/* Thanh Công Cụ Tìm Kiếm & Làm Mới & Bảng Xếp Hạng */}
               <div style={{ background: "#ffffff", padding: "16px 20px", borderRadius: "14px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px", boxShadow: "0 2px 6px rgba(0,0,0,0.03)" }}>
                 <form onSubmit={(e) => { e.preventDefault(); fetchQuizResults(quizSearch); }} style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, maxWidth: "460px" }}>
                   <div style={{ position: "relative", flex: 1, display: "flex", alignItems: "center" }}>
@@ -2940,17 +3157,48 @@ export default function TruongPhongDashboard() {
                   )}
                 </form>
 
-                <button
-                  type="button"
-                  onClick={() => fetchQuizResults(quizSearch)}
-                  style={{ padding: "9.5px 18px", borderRadius: "8px", background: "#f8fafc", border: "1.5px solid #cbd5e1", fontSize: "13px", fontWeight: "700", cursor: "pointer", color: "#334155", display: "flex", alignItems: "center", gap: "6px" }}
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="23 4 23 10 17 10"/>
-                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                  </svg>
-                  <span>Làm mới danh sách</span>
-                </button>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setShowLeaderboardModal(true)}
+                    style={{
+                      padding: "9.5px 18px",
+                      borderRadius: "8px",
+                      background: "linear-gradient(135deg, #d97706 0%, #b45309 100%)",
+                      color: "#ffffff",
+                      border: "none",
+                      fontSize: "13px",
+                      fontWeight: "800",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      boxShadow: "0 3px 10px rgba(217, 119, 6, 0.25)",
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                      <path d="M4 22h16" />
+                      <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                      <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                      <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
+                    </svg>
+                    <span>Bảng Xếp Hạng TOP</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => fetchQuizResults(quizSearch)}
+                    style={{ padding: "9.5px 18px", borderRadius: "8px", background: "#f8fafc", border: "1.5px solid #cbd5e1", fontSize: "13px", fontWeight: "700", cursor: "pointer", color: "#334155", display: "flex", alignItems: "center", gap: "6px" }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="23 4 23 10 17 10"/>
+                      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                    </svg>
+                    <span>Làm mới</span>
+                  </button>
+                </div>
               </div>
 
               {/* Bảng Chi Tiết Danh Sách Người Đã Chơi, Đã Hoàn Thành, Thành Tích */}
@@ -3003,7 +3251,7 @@ export default function TruongPhongDashboard() {
                             <span>Thành tích</span>
                           </div>
                         </th>
-                        <th style={{ padding: "14px 16px", textAlign: "center", width: "80px" }}>Thao tác</th>
+                        <th style={{ padding: "14px 16px", textAlign: "center", width: "170px" }}>Thao tác</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -3051,7 +3299,37 @@ export default function TruongPhongDashboard() {
                                 </span>
                               )}
                             </td>
-                            <td style={{ padding: "14px 16px", textAlign: "center" }}>
+                            <td style={{ padding: "14px 16px", textAlign: "center", whiteSpace: "nowrap" }}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedQuizDetail(item);
+                                  setQuizDetailTab("all");
+                                }}
+                                style={{
+                                  background: "#eff6ff",
+                                  border: "1px solid #bfdbfe",
+                                  cursor: "pointer",
+                                  padding: "6px 12px",
+                                  borderRadius: "8px",
+                                  color: "#2563eb",
+                                  marginRight: "6px",
+                                  transition: "all 0.15s",
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                  fontWeight: "700",
+                                  fontSize: "12.5px"
+                                }}
+                                title="Xem chi tiết đáp án lượt thi này"
+                              >
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                  <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <span>Chi tiết</span>
+                              </button>
+
                               <button
                                 type="button"
                                 onClick={async () => {
@@ -6717,6 +6995,10 @@ export default function TruongPhongDashboard() {
                 </div>
               )}
 
+              {activeTab === "tthc-management" && (
+                <TthcManagementSection />
+              )}
+
               {activeTab === "ai-assistant" && (
                 <div className="tp-ai-assistant-wrapper" style={{ animation: "fadeIn 0.25s ease-out", display: "flex", flexDirection: "column", gap: "20px" }}>
 
@@ -8857,6 +9139,1620 @@ export default function TruongPhongDashboard() {
           </div>
         </div>
       )}
+
+      {/* ── MODAL XEM CHI TIẾT ĐÁP ÁN LƯỢT THI CUỘC THI ── */}
+      {selectedQuizDetail && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 99999,
+            background: "rgba(15, 23, 42, 0.65)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedQuizDetail(null);
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "20px",
+              width: "100%",
+              maxWidth: "880px",
+              maxHeight: "92vh",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              overflow: "hidden",
+              border: "1px solid #cbd5e1",
+            }}
+          >
+            {/* Header Modal */}
+            <div
+              style={{
+                background: "linear-gradient(135deg, #005baa 0%, #003d7a 100%)",
+                color: "#ffffff",
+                padding: "20px 24px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div
+                  style={{
+                    width: "42px",
+                    height: "42px",
+                    borderRadius: "12px",
+                    background: "rgba(255, 255, 255, 0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: "17px", fontWeight: "800", letterSpacing: "0.2px" }}>
+                    CHI TIẾT ĐÁP ÁN LƯỢT THI CUỘC THI
+                  </h3>
+                  <span style={{ fontSize: "12.5px", opacity: 0.88 }}>
+                    Cuộc thi Tìm hiểu Kỹ năng Phòng chống Đuối nước Trẻ em
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedQuizDetail(null)}
+                style={{
+                  background: "rgba(255, 255, 255, 0.15)",
+                  border: "none",
+                  color: "#ffffff",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "all 0.2s",
+                }}
+                title="Đóng cửa sổ"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Thông tin thí sinh & Thống kê kết quả */}
+            <div style={{ background: "#f8fafc", padding: "16px 24px", borderBottom: "1px solid #e2e8f0" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px" }}>
+                {/* Thí sinh */}
+                <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "12px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "11px", textTransform: "uppercase", color: "#64748b", fontWeight: "700", display: "block" }}>Người tham gia</span>
+                    <strong style={{ fontSize: "14.5px", color: "#0f172a" }}>{selectedQuizDetail.playerName}</strong>
+                  </div>
+                </div>
+
+                {/* Thời gian */}
+                <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "12px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "#f0fdf4", color: "#16a34a", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "11px", textTransform: "uppercase", color: "#64748b", fontWeight: "700", display: "block" }}>Thời gian thi</span>
+                    <strong style={{ fontSize: "13px", color: "#0f172a" }}>
+                      {selectedQuizDetail.createdAt ? new Date(selectedQuizDetail.createdAt).toLocaleString("vi-VN") : "Gần đây"}
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Điểm số */}
+                <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "12px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "#e0f2fe", color: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                      <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "11px", textTransform: "uppercase", color: "#64748b", fontWeight: "700", display: "block" }}>Số câu trả lời đúng</span>
+                    <strong style={{ fontSize: "14.5px", color: "#0284c7" }}>
+                      {selectedQuizDetail.score} / {selectedQuizDetail.totalQuestions || 10} câu ({Math.round((selectedQuizDetail.score / (selectedQuizDetail.totalQuestions || 10)) * 100)}%)
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Kết quả */}
+                <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "12px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: selectedQuizDetail.passed ? "#dcfce7" : "#fef3c7", color: selectedQuizDetail.passed ? "#15803d" : "#b45309", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="8" r="7" />
+                      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "11px", textTransform: "uppercase", color: "#64748b", fontWeight: "700", display: "block" }}>Xếp loại thành tích</span>
+                    <strong style={{ fontSize: "13.5px", color: selectedQuizDetail.passed ? "#15803d" : "#b45309" }}>
+                      {selectedQuizDetail.passed ? "🏆 ĐẠT BẰNG KHEN" : "💡 CHƯA ĐẠT"}
+                    </strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Thanh Lọc Tab câu hỏi */}
+              {(() => {
+                const detailsList = getQuizDetailsList(selectedQuizDetail);
+                const correctCount = detailsList.filter((d) => d.isCorrect).length;
+                const wrongCount = detailsList.length - correctCount;
+
+                const filteredList = detailsList.filter((item) => {
+                  if (quizDetailTab === "correct") return item.isCorrect;
+                  if (quizDetailTab === "wrong") return !item.isCorrect;
+                  return true;
+                });
+
+                return (
+                  <div style={{ marginTop: "16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", borderBottom: "1.5px solid #e2e8f0", paddingBottom: "10px" }}>
+                      <span style={{ fontSize: "13px", fontWeight: "700", color: "#475569", marginRight: "6px" }}>Lọc kết quả:</span>
+                      <button
+                        type="button"
+                        onClick={() => setQuizDetailTab("all")}
+                        style={{
+                          background: quizDetailTab === "all" ? "#005baa" : "#ffffff",
+                          color: quizDetailTab === "all" ? "#ffffff" : "#475569",
+                          border: quizDetailTab === "all" ? "none" : "1px solid #cbd5e1",
+                          padding: "5px 14px",
+                          borderRadius: "20px",
+                          fontSize: "12.5px",
+                          fontWeight: "700",
+                          cursor: "pointer",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        Tất cả ({detailsList.length})
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setQuizDetailTab("correct")}
+                        style={{
+                          background: quizDetailTab === "correct" ? "#16a34a" : "#ffffff",
+                          color: quizDetailTab === "correct" ? "#ffffff" : "#16a34a",
+                          border: quizDetailTab === "correct" ? "none" : "1px solid #bbf7d0",
+                          padding: "5px 14px",
+                          borderRadius: "20px",
+                          fontSize: "12.5px",
+                          fontWeight: "700",
+                          cursor: "pointer",
+                          transition: "all 0.15s",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                        }}
+                      >
+                        ✓ Câu đúng ({correctCount})
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setQuizDetailTab("wrong")}
+                        style={{
+                          background: quizDetailTab === "wrong" ? "#dc2626" : "#ffffff",
+                          color: quizDetailTab === "wrong" ? "#ffffff" : "#dc2626",
+                          border: quizDetailTab === "wrong" ? "none" : "1px solid #fecaca",
+                          padding: "5px 14px",
+                          borderRadius: "20px",
+                          fontSize: "12.5px",
+                          fontWeight: "700",
+                          cursor: "pointer",
+                          transition: "all 0.15s",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                        }}
+                      >
+                        ✕ Câu sai ({wrongCount})
+                      </button>
+                    </div>
+
+                    {/* Danh sách các câu hỏi */}
+                    <div style={{ maxHeight: "52vh", overflowY: "auto", marginTop: "14px", paddingRight: "4px", display: "flex", flexDirection: "column", gap: "14px" }}>
+                      {filteredList.map((qItem, qIdx) => {
+                        const isCorrect = qItem.isCorrect;
+                        return (
+                          <div
+                            key={qIdx}
+                            style={{
+                              background: "#ffffff",
+                              borderRadius: "14px",
+                              padding: "16px 18px",
+                              border: `1.5px solid ${isCorrect ? "#bbf7d0" : "#fecaca"}`,
+                              borderLeft: `6px solid ${isCorrect ? "#16a34a" : "#dc2626"}`,
+                              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.03)",
+                            }}
+                          >
+                            {/* Tiêu đề câu hỏi + Badge */}
+                            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "12px" }}>
+                              <h4 style={{ margin: 0, fontSize: "14.5px", color: "#0f172a", fontWeight: "800", lineHeight: "1.5" }}>
+                                Câu {qItem.questionIndex !== undefined ? qItem.questionIndex + 1 : qIdx + 1}: {qItem.questionText}
+                              </h4>
+                              {isCorrect ? (
+                                <span style={{ background: "#dcfce7", color: "#15803d", border: "1px solid #86efac", padding: "4px 12px", borderRadius: "12px", fontSize: "12px", fontWeight: "800", display: "inline-flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                  </svg>
+                                  ĐÚNG
+                                </span>
+                              ) : (
+                                <span style={{ background: "#fee2e2", color: "#b91c1c", border: "1px solid #fca5a5", padding: "4px 12px", borderRadius: "12px", fontSize: "12px", fontWeight: "800", display: "inline-flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                  </svg>
+                                  SAI
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Danh sách các lựa chọn đáp án */}
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px", marginBottom: "12px" }}>
+                              {qItem.options && qItem.options.map((optText, optIdx) => {
+                                const isUserSelected = qItem.selectedOption === optIdx;
+                                const isCorrectAnswer = qItem.correctOption === optIdx;
+
+                                let optionBg = "#f8fafc";
+                                let optionBorder = "#e2e8f0";
+                                let optionTextColor = "#334155";
+                                let badgeTag = null;
+
+                                if (isCorrectAnswer) {
+                                  optionBg = "#f0fdf4";
+                                  optionBorder = "#86efac";
+                                  optionTextColor = "#15803d";
+                                  badgeTag = (
+                                    <span style={{ fontSize: "11.5px", background: "#dcfce7", color: "#15803d", padding: "2px 8px", borderRadius: "8px", fontWeight: "800", marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                                      ✓ Đáp án đúng
+                                    </span>
+                                  );
+                                } else if (isUserSelected && !isCorrectAnswer) {
+                                  optionBg = "#fef2f2";
+                                  optionBorder = "#fca5a5";
+                                  optionTextColor = "#b91c1c";
+                                  badgeTag = (
+                                    <span style={{ fontSize: "11.5px", background: "#fee2e2", color: "#b91c1c", padding: "2px 8px", borderRadius: "8px", fontWeight: "800", marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                                      ✕ Đã chọn (SAI)
+                                    </span>
+                                  );
+                                }
+
+                                return (
+                                  <div
+                                    key={optIdx}
+                                    style={{
+                                      background: optionBg,
+                                      border: `1.5px solid ${optionBorder}`,
+                                      borderRadius: "10px",
+                                      padding: "10px 14px",
+                                      fontSize: "13.5px",
+                                      color: optionTextColor,
+                                      fontWeight: isUserSelected || isCorrectAnswer ? "800" : "500",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: "10px",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        width: "24px",
+                                        height: "24px",
+                                        borderRadius: "50%",
+                                        background: isCorrectAnswer ? "#16a34a" : isUserSelected ? "#dc2626" : "#cbd5e1",
+                                        color: "#ffffff",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        fontSize: "12px",
+                                        fontWeight: "800",
+                                        flexShrink: 0,
+                                      }}
+                                    >
+                                      {String.fromCharCode(65 + optIdx)}
+                                    </div>
+                                    <span style={{ flex: 1 }}>{optText}</span>
+                                    {badgeTag}
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            {/* Lời giải thích chuyên nghiệp */}
+                            {qItem.explain && (
+                              <div
+                                style={{
+                                  background: "#f0f9ff",
+                                  border: "1px solid #bae6fd",
+                                  borderRadius: "10px",
+                                  padding: "10px 14px",
+                                  fontSize: "13px",
+                                  color: "#0369a1",
+                                  display: "flex",
+                                  alignItems: "flex-start",
+                                  gap: "8px",
+                                  lineHeight: "1.5",
+                                }}
+                              >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginTop: "2px", flexShrink: 0 }}>
+                                  <line x1="9" y1="18" x2="15" y2="18" />
+                                  <line x1="10" y1="22" x2="14" y2="22" />
+                                  <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
+                                </svg>
+                                <div>
+                                  <strong style={{ fontWeight: "800", color: "#0284c7" }}>Giải thích đáp án: </strong>
+                                  <span>{qItem.explain}</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Footer Modal */}
+            <div
+              style={{
+                padding: "14px 24px",
+                background: "#ffffff",
+                borderTop: "1px solid #e2e8f0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => window.print()}
+                style={{
+                  background: "#f1f5f9",
+                  border: "1px solid #cbd5e1",
+                  color: "#334155",
+                  padding: "9px 18px",
+                  borderRadius: "10px",
+                  fontSize: "13.5px",
+                  fontWeight: "700",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  transition: "all 0.15s",
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 6 2 18 2 18 9" />
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                  <rect x="6" y="14" width="12" height="8" />
+                </svg>
+                In báo cáo chi tiết
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSelectedQuizDetail(null)}
+                style={{
+                  background: "linear-gradient(135deg, #005baa 0%, #003d7a 100%)",
+                  border: "none",
+                  color: "#ffffff",
+                  padding: "9px 24px",
+                  borderRadius: "10px",
+                  fontSize: "13.5px",
+                  fontWeight: "800",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(0, 91, 170, 0.2)",
+                  transition: "all 0.15s",
+                }}
+              >
+                Đóng cửa sổ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL BẢNG XẾP HẠNG TOP THÀNH TÍCH CAO NHẤT & NHANH NHẤT ── */}
+      {showLeaderboardModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 99999,
+            background: "rgba(15, 23, 42, 0.7)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowLeaderboardModal(false);
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "24px",
+              width: "100%",
+              maxWidth: "920px",
+              maxHeight: "92vh",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.3)",
+              overflow: "hidden",
+              border: "1px solid #cbd5e1",
+            }}
+          >
+            {/* Header Modal - Vàng Gold Đẳng Cấp */}
+            <div
+              style={{
+                background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+                color: "#ffffff",
+                padding: "22px 28px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div
+                  style={{
+                    width: "46px",
+                    height: "46px",
+                    borderRadius: "14px",
+                    background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 4px 14px rgba(245, 158, 11, 0.4)",
+                  }}
+                >
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                    <path d="M4 22h16" />
+                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: "19px", fontWeight: "900", letterSpacing: "0.3px", color: "#fef3c7" }}>
+                    🏆 BẢNG XẾP HẠNG THÀNH TÍCH CUỘC THI
+                  </h3>
+                  <span style={{ fontSize: "13px", color: "#cbd5e1" }}>
+                    Vinh danh người chơi đạt điểm số cao nhất & hoàn thành xuất sắc nhất
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowLeaderboardModal(false)}
+                style={{
+                  background: "rgba(255, 255, 255, 0.12)",
+                  border: "none",
+                  color: "#ffffff",
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "all 0.2s",
+                }}
+                title="Đóng cửa sổ"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content Body */}
+            <div style={{ padding: "24px", overflowY: "auto", maxHeight: "78vh", background: "#f8fafc" }}>
+              {(() => {
+                const sortedList = getSortedLeaderboard(quizResults);
+
+                if (sortedList.length === 0) {
+                  return (
+                    <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>
+                      <p style={{ fontSize: "15px", fontWeight: "700" }}>Chưa có dữ liệu lượt chơi để xếp hạng</p>
+                    </div>
+                  );
+                }
+
+                const top1 = sortedList[0];
+                const top2 = sortedList[1];
+                const top3 = sortedList[2];
+
+                return (
+                  <div>
+                    {/* BỤC VINH DANH TOP 3 (PODIUM CHUẨN 3D ĐẲNG CẤP) */}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1.15fr 1fr", gap: "16px", alignItems: "end", marginBottom: "28px", padding: "10px 0" }}>
+                      {/* TOP 2 (HẠNG NHÌ - BẠC) */}
+                      {top2 ? (
+                        <div
+                          style={{
+                            background: "linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)",
+                            borderRadius: "18px",
+                            padding: "20px 14px 16px",
+                            textAlign: "center",
+                            border: "2px solid #cbd5e1",
+                            boxShadow: "0 10px 20px -5px rgba(148, 163, 184, 0.25)",
+                            position: "relative",
+                          }}
+                        >
+                          <div style={{ position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", background: "#64748b", color: "#fff", padding: "3px 12px", borderRadius: "12px", fontSize: "11px", fontWeight: "900", letterSpacing: "0.5px" }}>
+                            🥈 HẠNG NHÌ
+                          </div>
+                          <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "#e2e8f0", border: "3px solid #94a3b8", margin: "8px auto 10px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>
+                            🥈
+                          </div>
+                          <h4 style={{ margin: "0 0 4px", fontSize: "15px", color: "#0f172a", fontWeight: "800" }}>{top2.playerName}</h4>
+                          <div style={{ background: "#e2e8f0", color: "#334155", padding: "4px 10px", borderRadius: "12px", fontSize: "13px", fontWeight: "800", display: "inline-block" }}>
+                            {top2.score} / {top2.totalQuestions || 10} câu
+                          </div>
+                          <div style={{ fontSize: "11.5px", color: "#64748b", marginTop: "6px" }}>
+                            {Math.round((top2.score / (top2.totalQuestions || 10)) * 100)}% chính xác
+                          </div>
+                        </div>
+                      ) : <div />}
+
+                      {/* TOP 1 (HẠNG NHẤT - VÀNG GOLD CAO NHẤT) */}
+                      {top1 && (
+                        <div
+                          style={{
+                            background: "linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%)",
+                            borderRadius: "20px",
+                            padding: "24px 16px 20px",
+                            textAlign: "center",
+                            border: "2.5px solid #f59e0b",
+                            boxShadow: "0 15px 30px -5px rgba(245, 158, 11, 0.35)",
+                            position: "relative",
+                            transform: "translateY(-8px)",
+                          }}
+                        >
+                          <div style={{ position: "absolute", top: "-16px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg, #d97706 0%, #b45309 100%)", color: "#fff", padding: "4px 16px", borderRadius: "14px", fontSize: "12px", fontWeight: "900", letterSpacing: "0.5px", boxShadow: "0 4px 10px rgba(217, 119, 6, 0.4)" }}>
+                            👑 HẠNG NHẤT
+                          </div>
+                          <div style={{ width: "68px", height: "68px", borderRadius: "50%", background: "#fef3c7", border: "4px solid #f59e0b", margin: "10px auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", boxShadow: "0 0 20px rgba(245, 158, 11, 0.5)" }}>
+                            🥇
+                          </div>
+                          <h4 style={{ margin: "0 0 4px", fontSize: "17px", color: "#78350f", fontWeight: "900" }}>{top1.playerName}</h4>
+                          <div style={{ background: "#f59e0b", color: "#ffffff", padding: "5px 14px", borderRadius: "14px", fontSize: "14px", fontWeight: "900", display: "inline-block", boxShadow: "0 2px 8px rgba(245, 158, 11, 0.3)" }}>
+                            {top1.score} / {top1.totalQuestions || 10} câu
+                          </div>
+                          <div style={{ fontSize: "12px", color: "#92400e", marginTop: "6px", fontWeight: "700" }}>
+                            {Math.round((top1.score / (top1.totalQuestions || 10)) * 100)}% chính xác - XUẤT SẮC
+                          </div>
+                        </div>
+                      )}
+
+                      {/* TOP 3 (HẠNG BA - ĐỒNG) */}
+                      {top3 ? (
+                        <div
+                          style={{
+                            background: "linear-gradient(180deg, #ffffff 0%, #fff7ed 100%)",
+                            borderRadius: "18px",
+                            padding: "20px 14px 16px",
+                            textAlign: "center",
+                            border: "2px solid #fdba74",
+                            boxShadow: "0 10px 20px -5px rgba(251, 146, 60, 0.2)",
+                            position: "relative",
+                          }}
+                        >
+                          <div style={{ position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", background: "#c2410c", color: "#fff", padding: "3px 12px", borderRadius: "12px", fontSize: "11px", fontWeight: "900", letterSpacing: "0.5px" }}>
+                            🥉 HẠNG BA
+                          </div>
+                          <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "#ffedd5", border: "3px solid #f97316", margin: "8px auto 10px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>
+                            🥉
+                          </div>
+                          <h4 style={{ margin: "0 0 4px", fontSize: "15px", color: "#0f172a", fontWeight: "800" }}>{top3.playerName}</h4>
+                          <div style={{ background: "#ffedd5", color: "#c2410c", padding: "4px 10px", borderRadius: "12px", fontSize: "13px", fontWeight: "800", display: "inline-block" }}>
+                            {top3.score} / {top3.totalQuestions || 10} câu
+                          </div>
+                          <div style={{ fontSize: "11.5px", color: "#9a3412", marginTop: "6px" }}>
+                            {Math.round((top3.score / (top3.totalQuestions || 10)) * 100)}% chính xác
+                          </div>
+                        </div>
+                      ) : <div />}
+                    </div>
+
+                    {/* BẢNG VINH DANH TOÀN BỘ THÍ SINH (RANKINGS TABLE) */}
+                    <div style={{ background: "#ffffff", borderRadius: "16px", border: "1px solid #e2e8f0", overflow: "hidden", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}>
+                      <div style={{ padding: "14px 20px", background: "#f1f5f9", borderBottom: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <strong style={{ fontSize: "14px", color: "#0f172a" }}>BẢNG TOÀN BỘ THÀNH TÍCH XẾP HẠNG ({sortedList.length} lượt thi)</strong>
+                        <span style={{ fontSize: "12px", color: "#64748b" }}>Tự động sắp xếp theo Điểm cao nhất & Thời gian thi</span>
+                      </div>
+
+                      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13.5px", textAlign: "left" }}>
+                        <thead>
+                          <tr style={{ background: "#f8fafc", borderBottom: "1.5px solid #e2e8f0", color: "#475569", fontWeight: "800" }}>
+                            <th style={{ padding: "12px 16px", width: "70px", textAlign: "center" }}>Hạng</th>
+                            <th style={{ padding: "12px 16px" }}>Người chơi</th>
+                            <th style={{ padding: "12px 16px", textAlign: "center" }}>Số câu đúng</th>
+                            <th style={{ padding: "12px 16px", textAlign: "center" }}>Tỷ lệ</th>
+                            <th style={{ padding: "12px 16px" }}>Thời gian thi</th>
+                            <th style={{ padding: "12px 16px", textAlign: "center" }}>Danh hiệu</th>
+                            <th style={{ padding: "12px 16px", textAlign: "center", width: "100px" }}>Thao tác</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sortedList.map((item, idx) => {
+                            const rank = idx + 1;
+                            const percent = Math.round((item.score / (item.totalQuestions || 10)) * 100);
+                            const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleString("vi-VN") : "-";
+
+                            let rankBadge = (
+                              <span style={{ background: "#f1f5f9", color: "#475569", width: "28px", height: "28px", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: "800", fontSize: "13px" }}>
+                                #{rank}
+                              </span>
+                            );
+
+                            if (rank === 1) {
+                              rankBadge = <span style={{ fontSize: "20px" }}>🥇</span>;
+                            } else if (rank === 2) {
+                              rankBadge = <span style={{ fontSize: "20px" }}>🥈</span>;
+                            } else if (rank === 3) {
+                              rankBadge = <span style={{ fontSize: "20px" }}>🥉</span>;
+                            }
+
+                            return (
+                              <tr key={item._id || idx} style={{ borderBottom: "1px solid #f1f5f9", background: rank === 1 ? "#fffbeb" : rank === 2 ? "#f8fafc" : rank === 3 ? "#fff7ed" : "transparent" }}>
+                                <td style={{ padding: "12px 16px", textAlign: "center" }}>{rankBadge}</td>
+                                <td style={{ padding: "12px 16px", fontWeight: "800", color: "#0f172a" }}>
+                                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                    <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: rank === 1 ? "#fef3c7" : "#eff6ff", border: rank === 1 ? "1.5px solid #f59e0b" : "1px solid #bfdbfe", display: "flex", alignItems: "center", justifyContent: "center", color: rank === 1 ? "#d97706" : "#2563eb", fontWeight: "800", flexShrink: 0 }}>
+                                      {item.playerName ? item.playerName[0].toUpperCase() : "U"}
+                                    </div>
+                                    <span>{item.playerName}</span>
+                                  </div>
+                                </td>
+                                <td style={{ padding: "12px 16px", textAlign: "center" }}>
+                                  <span style={{ background: item.score >= 8 ? "#dcfce7" : "#e0f2fe", color: item.score >= 8 ? "#15803d" : "#0369a1", border: item.score >= 8 ? "1px solid #86efac" : "1px solid #bae6fd", padding: "3px 10px", borderRadius: "12px", fontWeight: "800", fontSize: "12.5px" }}>
+                                    {item.score} / {item.totalQuestions || 10} câu
+                                  </span>
+                                </td>
+                                <td style={{ padding: "12px 16px", textAlign: "center", fontWeight: "800", color: "#334155" }}>{percent}%</td>
+                                <td style={{ padding: "12px 16px", color: "#64748b", fontSize: "12.5px", fontWeight: "600" }}>{dateStr}</td>
+                                <td style={{ padding: "12px 16px", textAlign: "center" }}>
+                                  {item.passed ? (
+                                    <span style={{ background: "#dcfce7", color: "#15803d", border: "1px solid #86efac", padding: "4px 10px", borderRadius: "16px", fontWeight: "800", fontSize: "11.5px" }}>
+                                      ĐẠT BẰNG KHEN
+                                    </span>
+                                  ) : (
+                                    <span style={{ background: "#fef3c7", color: "#b45309", border: "1px solid #fde68a", padding: "4px 10px", borderRadius: "16px", fontWeight: "800", fontSize: "11.5px" }}>
+                                      CHƯA ĐẠT
+                                    </span>
+                                  )}
+                                </td>
+                                <td style={{ padding: "12px 16px", textAlign: "center" }}>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setShowLeaderboardModal(false);
+                                      setSelectedQuizDetail(item);
+                                      setQuizDetailTab("all");
+                                    }}
+                                    style={{
+                                      background: "#eff6ff",
+                                      border: "1px solid #bfdbfe",
+                                      color: "#2563eb",
+                                      padding: "4px 10px",
+                                      borderRadius: "6px",
+                                      fontSize: "12px",
+                                      fontWeight: "700",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    Xem đáp án
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Footer Modal */}
+            <div
+              style={{
+                padding: "14px 24px",
+                background: "#ffffff",
+                borderTop: "1px solid #e2e8f0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => window.print()}
+                style={{
+                  background: "#f1f5f9",
+                  border: "1px solid #cbd5e1",
+                  color: "#334155",
+                  padding: "9px 18px",
+                  borderRadius: "10px",
+                  fontSize: "13.5px",
+                  fontWeight: "700",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 6 2 18 2 18 9" />
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                  <rect x="6" y="14" width="12" height="8" />
+                </svg>
+                In Bảng Xếp Hạng
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowLeaderboardModal(false)}
+                style={{
+                  background: "linear-gradient(135deg, #d97706 0%, #b45309 100%)",
+                  border: "none",
+                  color: "#ffffff",
+                  padding: "9px 24px",
+                  borderRadius: "10px",
+                  fontSize: "13.5px",
+                  fontWeight: "800",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(217, 119, 6, 0.25)",
+                }}
+              >
+                Đóng cửa sổ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+/* ─────────────────────────────────────────────────────────────
+   COMPONENT: QUẢN LÝ & TRA CỨU THỦ TỤC HÀNH CHÍNH (TTHC MANAGEMENT)
+   ───────────────────────────────────────────────────────────── */
+function TthcManagementSection() {
+  const [subTab, setSubTab] = useState("catalog"); // "tracking" | "catalog"
+  const [searchTracking, setSearchTracking] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+
+  // State cho danh sách hồ sơ cần theo dõi tiến trình
+  const [applications, setApplications] = useState([
+    {
+      id: 1,
+      receiptCode: "HS-2026-89412",
+      citizenName: "A Rinh",
+      cccd: "062095001234",
+      phone: "0987.654.321",
+      procedureName: "Đăng ký cấp mới thẻ BHYT cho hộ nghèo, cận nghèo năm 2026",
+      procedureCode: "TTHC-BHYT-01",
+      submitDate: "24/07/2026",
+      currentStep: 2, // 1: Tiếp nhận, 2: Thẩm định, 3: Phê duyệt, 4: Trả kết quả
+      status: "Đang thẩm định",
+      statusCls: "blue",
+      staffNote: "Cán bộ VH-XH đang kiểm tra đối soát danh sách hộ nghèo Thôn 1",
+      attachedFiles: ["CCCD_ARinh.pdf", "DonXinCapThe.pdf"]
+    },
+    {
+      id: 2,
+      receiptCode: "HS-2026-77219",
+      citizenName: "Y Yến",
+      cccd: "062098005678",
+      phone: "0912.345.678",
+      procedureName: "Liên thông Đăng ký khai sinh & Cấp thẻ BHYT cho trẻ dưới 6 tuổi",
+      procedureCode: "TTHC-BHYT-02",
+      submitDate: "22/07/2026",
+      currentStep: 3,
+      status: "Đã phê duyệt",
+      statusCls: "green",
+      staffNote: "Chủ tịch UBND xã đã ký duyệt phiếu trả kết quả",
+      attachedFiles: ["GiayChungSinh_YYen.pdf"]
+    },
+    {
+      id: 3,
+      receiptCode: "HS-2026-55104",
+      citizenName: "Trần Văn Nam",
+      cccd: "062089009988",
+      phone: "0905.112.233",
+      procedureName: "Cấp lại thẻ BHYT do hỏng, mất cho công dân",
+      procedureCode: "TTHC-BHYT-03",
+      submitDate: "20/07/2026",
+      currentStep: 4,
+      status: "Đã trả kết quả",
+      statusCls: "darkgreen",
+      staffNote: "Đã giao kết quả thẻ BHYT điện tử qua VNeID công dân",
+      attachedFiles: ["DonBaoMatThe.pdf"]
+    }
+  ]);
+
+  // State cho danh mục thủ tục hành chính
+  const [catalog, setCatalog] = useState(() => {
+    let deletedIds = [];
+    try {
+      deletedIds = JSON.parse(localStorage.getItem("DAK_PXI_DELETED_TTHC_IDS") || "[]");
+    } catch {}
+
+    let initialList = [
+      {
+        id: 1,
+        code: "TTHC-BHYT-01",
+        name: "Đăng ký cấp mới thẻ BHYT cho hộ nghèo, hộ cận nghèo năm 2026",
+        level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
+        levelBadge: "green",
+        agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
+        duration: "03 ngày làm việc",
+        fee: "Miễn phí 100%",
+        detailText: "Nộp hồ sơ trực tuyến hoặc nộp trực tiếp tại Bộ phận Một cửa xã. Cần mang theo CCCD và Giấy xác nhận hộ nghèo/cận nghèo.",
+        imageUrl: "/huong-dan/baucu-2.png",
+        guideLink: "https://dichvucong.gov.vn"
+      },
+      {
+        id: 2,
+        code: "TTHC-BHYT-02",
+        name: "Liên thông Đăng ký khai sinh, đăng ký thường trú và cấp thẻ BHYT cho trẻ em dưới 6 tuổi",
+        level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
+        levelBadge: "green",
+        agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
+        duration: "02 ngày làm việc",
+        fee: "Miễn phí 100%",
+        detailText: "Liên thông 3 trong 1 nhanh chóng cho trẻ sơ sinh có cha mẹ thường trú tại xã Đăk Pxi.",
+        imageUrl: "/huong-dan/hinh-nen05.jpg",
+        guideLink: "https://dichvucong.quangngai.gov.vn"
+      },
+      {
+        id: 3,
+        code: "TTHC-DATDAI-01",
+        name: "Đăng ký biến động đất đai, nhà ở và tài sản gắn liền với đất",
+        level: "Mức độ 3 (Nộp hồ sơ trực tuyến)",
+        levelBadge: "blue",
+        agency: "Cán bộ Địa chính - Xây dựng UBND Xã Đăk Pxi",
+        duration: "05 ngày làm việc",
+        fee: "Theo quy định định mức",
+        detailText: "Thủ tục kê khai biến động đất đai theo mẫu 09/ĐK.",
+        imageUrl: "",
+        guideLink: ""
+      }
+    ];
+
+    try {
+      const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) initialList = parsed;
+      }
+    } catch {}
+
+    return initialList.filter(item => !deletedIds.includes(String(item.id)));
+  });
+
+  // Tự động lưu localStorage mỗi khi Cán bộ Tạo/Sửa/Xóa TTHC
+  useEffect(() => {
+    try {
+      localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(catalog));
+    } catch {}
+  }, [catalog]);
+
+  // Modal cập nhật tiến trình hồ sơ
+  const [editingApp, setEditingApp] = useState(null);
+  const [nextStep, setNextStep] = useState(1);
+  const [nextNote, setNextNote] = useState("");
+
+const TTHC_FIELD_GROUPS = [
+  "Đất đai",
+  "Người có công với cách mạng",
+  "Thành lập/công nhận/giải thể trường học",
+  "Đường thủy nội địa/hàng hải",
+  "Thủy lợi",
+  "Thủy sản",
+  "Chứng thực",
+  "Hỗ trợ/chính sách giáo dục",
+  "Khai sinh",
+  "Bảo trợ xã hội",
+  "Hợp tác xã, liên hiệp HTX",
+  "Nông nghiệp - chăn nuôi - thú y",
+  "Kết hôn",
+  "Tài nguyên nước",
+  "Tôn giáo, tín ngưỡng",
+  "Giao thông đường bộ",
+  "Văn hóa - lễ hội - thể thao - xuất bản",
+  "Lâm nghiệp",
+  "Xây dựng",
+  "Hộ kinh doanh",
+  "Y tế - an toàn thực phẩm",
+  "Hội",
+  "Khai tử",
+  "Giám hộ",
+  "Trẻ em",
+  "Môi trường",
+  "Cán bộ, công chức, viên chức",
+  "Quỹ",
+  "Tổ hợp tác",
+  "Tổ hợp tác/Hợp tác xã (chung)",
+  "Hòa giải ở cơ sở",
+  "Quy hoạch đô thị và nông thôn",
+  "Khác",
+  "Hộ tịch khác",
+  "Hộ nghèo, cận nghèo",
+  "Lao động",
+  "Nuôi con nuôi",
+  "Nhận cha, mẹ, con",
+  "Nhà ở",
+  "Người khuyết tật",
+  "Tuyển sinh/kiểm định giáo dục",
+  "Phòng chống bạo lực gia đình",
+  "Dân tộc",
+  "Chợ",
+  "Khoáng sản",
+  "Thi đua, khen thưởng - nghệ nhân",
+  "Khoa học công nghệ",
+  "Công nghiệp",
+  "Điện"
+];
+
+  // Form tạo TTHC mới
+  const [newCatalogForm, setNewCatalogForm] = useState({
+    code: "",
+    name: "",
+    fieldGroup: "Đất đai",
+    level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
+    agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
+    duration: "03 ngày làm việc",
+    fee: "Miễn phí",
+    detailText: "",
+    imageUrl: "",
+    guideLink: ""
+  });
+  const [showCatalogModal, setShowCatalogModal] = useState(false);
+
+  // Xử lý Cập nhật tiến trình
+  const handleSaveProgress = (e) => {
+    e.preventDefault();
+    if (!editingApp) return;
+
+    let newStatus = "Chờ tiếp nhận";
+    let statusCls = "orange";
+    if (nextStep === 2) { newStatus = "Đang thẩm định"; statusCls = "blue"; }
+    if (nextStep === 3) { newStatus = "Đã phê duyệt"; statusCls = "green"; }
+    if (nextStep === 4) { newStatus = "Đã trả kết quả"; statusCls = "darkgreen"; }
+
+    setApplications(prev => prev.map(app => {
+      if (app.id === editingApp.id) {
+        return {
+          ...app,
+          currentStep: nextStep,
+          status: newStatus,
+          statusCls: statusCls,
+          staffNote: nextNote || app.staffNote
+        };
+      }
+      return app;
+    }));
+
+    setEditingApp(null);
+  };
+
+  // Xử lý tạo TTHC mới
+  const handleCreateCatalog = (e) => {
+    e.preventDefault();
+    if (!newCatalogForm.code.trim() || !newCatalogForm.name.trim()) return;
+
+    const newItem = {
+      id: Date.now(),
+      code: newCatalogForm.code.trim(),
+      name: newCatalogForm.name.trim(),
+      fieldGroup: newCatalogForm.fieldGroup || "Đất đai",
+      level: newCatalogForm.level,
+      levelBadge: newCatalogForm.level.includes("Mức 4") ? "green" : "blue",
+      agency: newCatalogForm.agency,
+      duration: newCatalogForm.duration,
+      fee: newCatalogForm.fee,
+      detailText: newCatalogForm.detailText,
+      imageUrl: newCatalogForm.imageUrl,
+      guideLink: newCatalogForm.guideLink
+    };
+
+    setCatalog(prev => [newItem, ...prev]);
+    setNewCatalogForm({
+      code: "",
+      name: "",
+      fieldGroup: "Đất đai",
+      level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
+      agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
+      duration: "03 ngày làm việc",
+      fee: "Miễn phí",
+      detailText: "",
+      imageUrl: "",
+      guideLink: ""
+    });
+    setShowCatalogModal(false);
+  };
+
+  // Filtered applications
+  const filteredApps = applications.filter(app => {
+    const q = searchTracking.toLowerCase();
+    const matchesSearch = !q || app.receiptCode.toLowerCase().includes(q) || app.citizenName.toLowerCase().includes(q) || app.cccd.includes(q);
+    const matchesStatus = statusFilter === "ALL" || app.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  // Thống kê số lượng người dân truy cập vào xem Danh mục TTHC
+  const [visitorCount, setVisitorCount] = useState(() => {
+    try {
+      const saved = localStorage.getItem("DAK_PXI_TTHC_VISITOR_COUNT");
+      if (saved) return parseInt(saved, 10);
+    } catch {}
+    return 3842;
+  });
+
+  useEffect(() => {
+    const handleStorage = () => {
+      try {
+        const saved = localStorage.getItem("DAK_PXI_TTHC_VISITOR_COUNT");
+        if (saved) setVisitorCount(parseInt(saved, 10));
+      } catch {}
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {/* THỐNG KÊ LƯỢT TRUY CẬP TTHC & NÚT TẠO MỚI */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff", padding: "16px 24px", borderRadius: "16px", border: "1.5px solid #e2e8f0", boxShadow: "0 4px 12px rgba(0,0,0,0.03)", flexWrap: "wrap", gap: "16px" }}>
+        {/* THỐNG KÊ LƯỢT NGƯỜI TRUY CẬP XEM TTHC */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f0f9ff", border: "1.5px solid #bae6fd", padding: "8px 16px", borderRadius: "12px" }}>
+          <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#e0f2fe", color: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <span style={{ fontSize: "10.5px", fontWeight: "900", color: "#0369a1", textTransform: "uppercase", display: "block" }}>
+              BÀ CON TRUY CẬP XEM TTHC
+            </span>
+            <span style={{ fontSize: "14.5px", fontWeight: "900", color: "#0284c7" }}>
+              {visitorCount.toLocaleString('vi-VN')} <small style={{ fontSize: "11px", color: "#64748b", fontWeight: "700" }}>lượt xem thực tế</small>
+            </span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowCatalogModal(true)}
+          style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "12px", background: "#16a34a", color: "#fff", border: "none", fontWeight: "900", cursor: "pointer", boxShadow: "0 4px 12px rgba(22, 163, 74, 0.25)" }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          <span>Tạo DANH MỤC THỦ TỤC HÀNH CHÍNH</span>
+        </button>
+      </div>
+
+      {/* ── SUB-TAB 1: THEO DÕI TIẾN TRÌNH XỬ LÝ HỒ SƠ CÔNG DÂN ── */}
+      {subTab === "tracking" && (
+        <div className="tp-card" style={{ padding: "24px", background: "#fff", borderRadius: "16px", border: "1.5px solid #e2e8f0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", gap: "12px" }}>
+            <div>
+              <h3 style={{ margin: "0 0 4px", fontSize: "18px", fontWeight: "900", color: "#003d7a", display: "flex", alignItems: "center", gap: "8px" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span>Quản lý Tiến trình Xử lý Hồ sơ Công dân</span>
+              </h3>
+              <p style={{ margin: 0, fontSize: "13.5px", color: "#64748b" }}>
+                Theo dõi, phê duyệt và cập nhật từng bước thụ lý hồ sơ hành chính thời gian thực.
+              </p>
+            </div>
+
+            {/* Tim kiếm & Filter */}
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              <input
+                type="text"
+                placeholder="Nhập Mã hồ sơ, Tên công dân, CCCD..."
+                value={searchTracking}
+                onChange={(e) => setSearchTracking(e.target.value)}
+                style={{ padding: "9px 14px", border: "1.5px solid #cbd5e1", borderRadius: "10px", fontSize: "13.5px", width: "260px" }}
+              />
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                style={{ padding: "9px 14px", border: "1.5px solid #cbd5e1", borderRadius: "10px", fontSize: "13.5px" }}
+              >
+                <option value="ALL">Tất cả trạng thái</option>
+                <option value="Chờ tiếp nhận">Chờ tiếp nhận</option>
+                <option value="Đang thẩm định">Đang thẩm định</option>
+                <option value="Đã phê duyệt">Đã phê duyệt</option>
+                <option value="Đã trả kết quả">Đã trả kết quả</option>
+              </select>
+            </div>
+          </div>
+
+          {/* BẢNG DANH SÁCH HỒ SƠ */}
+          <div style={{ overflowX: "auto" }}>
+            <table className="tp-table" style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
+                  <th style={{ padding: "12px 14px", textAlign: "left", fontSize: "13px", color: "#475569" }}>Mã hồ sơ</th>
+                  <th style={{ padding: "12px 14px", textAlign: "left", fontSize: "13px", color: "#475569" }}>Công dân nộp</th>
+                  <th style={{ padding: "12px 14px", textAlign: "left", fontSize: "13px", color: "#475569" }}>Thủ tục hành chính</th>
+                  <th style={{ padding: "12px 14px", textAlign: "center", fontSize: "13px", color: "#475569" }}>Bước tiến trình</th>
+                  <th style={{ padding: "12px 14px", textAlign: "center", fontSize: "13px", color: "#475569" }}>Trạng thái</th>
+                  <th style={{ padding: "12px 14px", textAlign: "center", fontSize: "13px", color: "#475569" }}>Thao tác cán bộ</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredApps.map(app => (
+                  <tr key={app.id} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                    <td style={{ padding: "14px", fontWeight: "800", color: "#0284c7", fontSize: "14px" }}>
+                      {app.receiptCode}
+                      <div style={{ fontSize: "11.5px", color: "#64748b", fontWeight: "normal", display: "flex", alignItems: "center", gap: "4px", marginTop: "2px" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <span>{app.submitDate}</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: "14px" }}>
+                      <strong style={{ display: "block", color: "#0f172a", fontSize: "14px" }}>{app.citizenName}</strong>
+                      <span style={{ fontSize: "12px", color: "#64748b" }}>CCCD: {app.cccd} • SĐT: {app.phone}</span>
+                    </td>
+                    <td style={{ padding: "14px", maxWidth: "280px" }}>
+                      <div style={{ fontSize: "13.5px", fontWeight: "700", color: "#334155", lineHeight: "1.4" }}>{app.procedureName}</div>
+                      <span style={{ fontSize: "11px", background: "#f1f5f9", padding: "2px 6px", borderRadius: "4px", color: "#64748b" }}>{app.procedureCode}</span>
+                    </td>
+                    <td style={{ padding: "14px", textAlign: "center" }}>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "#f8fafc", padding: "4px 10px", borderRadius: "20px", border: "1px solid #e2e8f0" }}>
+                        <span style={{ fontSize: "12px", fontWeight: "800", color: "#005baa" }}>Bước {app.currentStep}/4</span>
+                        <span style={{ fontSize: "11px", color: "#64748b" }}>
+                          ({app.currentStep === 1 ? '1. Tiếp nhận' : app.currentStep === 2 ? '2. Thẩm định' : app.currentStep === 3 ? '3. Phê duyệt' : '4. Trả KQ'})
+                        </span>
+                      </div>
+                    </td>
+                    <td style={{ padding: "14px", textAlign: "center" }}>
+                      <span style={{
+                        padding: "4px 12px", borderRadius: "12px", fontSize: "12px", fontWeight: "800",
+                        background: app.statusCls === 'green' ? '#dcfce7' : app.statusCls === 'blue' ? '#e0f2fe' : app.statusCls === 'darkgreen' ? '#15803d' : '#fef3c7',
+                        color: app.statusCls === 'green' ? '#15803d' : app.statusCls === 'blue' ? '#0369a1' : app.statusCls === 'darkgreen' ? '#ffffff' : '#b45309',
+                      }}>
+                        {app.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: "14px", textAlign: "center" }}>
+                      <button
+                        type="button"
+                        style={{ background: "#005baa", color: "#fff", border: "none", padding: "7px 14px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                        onClick={() => {
+                          setEditingApp(app);
+                          setNextStep(app.currentStep);
+                          setNextNote(app.staffNote || "");
+                        }}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <span>Cập nhật bước</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── SUB-TAB 2: QUẢN LÝ DANH MỤC THỦ TỤC HÀNH CHÍNH ── */}
+      {subTab === "catalog" && (
+        <div className="tp-card" style={{ padding: "28px", background: "#fff", borderRadius: "20px", border: "1.5px solid #e2e8f0" }}>
+          {/* HEADER CHÍNH THỨC CỦA UBND XÃ ĐĂK PXI */}
+          <div style={{ textAlign: "center", borderBottom: "2px solid #e2e8f0", paddingBottom: "20px", marginBottom: "24px" }}>
+            <span style={{ background: "#005baa", color: "#ffffff", padding: "4px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "900", letterSpacing: "1px", textTransform: "uppercase", display: "inline-block", marginBottom: "8px" }}>
+              NĂM 2026
+            </span>
+            <h2 style={{ fontSize: "20px", fontWeight: "900", color: "#003d7a", margin: "0 0 10px", lineHeight: "1.4", textTransform: "uppercase", letterSpacing: "-0.3px" }}>
+              DANH MỤC THỦ TỤC HÀNH CHÍNH THUỘC THẨM QUYỀN GIẢI QUYẾT CỦA UBND XÃ ĐĂK PXI
+            </h2>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#f0f9ff", border: "1.5px solid #bae6fd", color: "#0284c7", padding: "8px 20px", borderRadius: "30px", fontSize: "14px", fontWeight: "800", boxShadow: "0 2px 8px rgba(2, 132, 199, 0.08)" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              <span>Scan hoặc nhấn vào mã QR code tương ứng để xem chi tiết</span>
+            </div>
+          </div>
+
+          {/* DANH SÁCH THỦ TỤC HÀNH CHÍNH DẠNG HÀNG NGANG (HORIZONTAL ROWS) */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {catalog.map((item, idx) => (
+              <div
+                key={item.id}
+                style={{
+                  background: "#ffffff",
+                  border: "1.5px solid #cbd5e1",
+                  borderRadius: "16px",
+                  padding: "20px 24px",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.03)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "24px",
+                  flexWrap: "wrap",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                {/* STT TRÒN BÊN TRÁI */}
+                <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "#f0f9ff", border: "1.5px solid #bae6fd", color: "#0284c7", fontWeight: "900", fontSize: "15px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  {idx + 1}
+                </div>
+
+                {/* CỘT 1: THÔNG TIN CHÍNH (TÊN TTHC, MÃ, MỨC ĐỘ, THỜI GIANG/LỆ PHÍ) */}
+                <div style={{ flex: "1 1 380px", minWidth: "300px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px", flexWrap: "wrap" }}>
+                    <span style={{ background: "#0284c7", color: "#ffffff", fontWeight: "900", fontSize: "12px", padding: "3px 10px", borderRadius: "6px" }}>
+                      MÃ: {item.code}
+                    </span>
+                    <span style={{ background: "#f1f5f9", color: "#005baa", border: "1px solid #cbd5e1", fontSize: "12px", fontWeight: "800", padding: "3px 10px", borderRadius: "6px" }}>
+                      Lĩnh vực: {item.fieldGroup || "Đất đai"}
+                    </span>
+                    <span style={{ background: item.levelBadge === 'green' ? '#dcfce7' : '#e0f2fe', color: item.levelBadge === 'green' ? '#15803d' : '#0369a1', fontSize: "12px", fontWeight: "800", padding: "3px 12px", borderRadius: "12px" }}>
+                      {item.level}
+                    </span>
+                  </div>
+
+                  <h4 style={{ margin: "0 0 6px", fontSize: "16.5px", fontWeight: "900", color: "#0f172a", lineHeight: "1.4" }}>
+                    {item.name}
+                  </h4>
+
+                  <p style={{ margin: "0 0 10px", fontSize: "13.5px", color: "#475569", lineHeight: "1.5" }}>
+                    {item.detailText}
+                  </p>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap", fontSize: "12.5px", color: "#64748b" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 2 7 22 7 12 2"/></svg>
+                      <span><strong>Nơi giải quyết:</strong> {item.agency}</span>
+                    </span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      <span><strong>Thời gian:</strong> {item.duration}</span>
+                    </span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+                      <span><strong>Lệ phí:</strong> {item.fee}</span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* CỘT 2: MÃ QR CODE TRA CỨU ĐIỆN TỬ THẬT */}
+                {(() => {
+                  const realDvcUrl = (item.guideLink && item.guideLink.startsWith("http"))
+                    ? item.guideLink
+                    : `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(item.code || item.id)}`;
+
+                  return (
+                    <a
+                      href={realDvcUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ textDecoration: "none" }}
+                      title="Click để nộp hồ sơ trực tuyến trên Cổng Dịch vụ công Quốc gia"
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", background: "#f0f9ff", border: "1.5px dashed #0284c7", padding: "10px 14px", borderRadius: "14px", flexShrink: 0, cursor: "pointer" }}>
+                        <div style={{ background: "#ffffff", padding: "4px", borderRadius: "8px", border: "1px solid #bae6fd" }}>
+                          <img
+                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(realDvcUrl)}`}
+                            alt={`Mã QR DVC ${item.code}`}
+                            style={{ width: "68px", height: "68px", display: "block", borderRadius: "4px" }}
+                          />
+                        </div>
+                        <div style={{ maxWidth: "120px" }}>
+                          <span style={{ fontSize: "11px", fontWeight: "900", color: "#005baa", textTransform: "uppercase", display: "block", marginBottom: "2px" }}>
+                            📲 QUÉT MÃ QR
+                          </span>
+                          <span style={{ fontSize: "11.5px", color: "#0369a1", fontWeight: "800", display: "block", lineHeight: "1.3" }}>
+                            Nộp hồ sơ trực tuyến DVC ➔
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })()}
+
+                {/* CỘT 3: HÌNH ẢNH & THAO TÁC NÚT BẤM */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "flex-end", flexShrink: 0 }}>
+                  {item.guideLink && (
+                    <a
+                      href={item.guideLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        background: "#005baa", color: "#ffffff", padding: "8px 16px", borderRadius: "10px",
+                        fontSize: "13px", fontWeight: "800", textDecoration: "none", display: "inline-flex",
+                        alignItems: "center", gap: "6px", boxShadow: "0 4px 10px rgba(0, 91, 170, 0.2)"
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                      <span>Xem hướng dẫn DVC →</span>
+                    </a>
+                  )}
+
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <button type="button" style={{ background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", padding: "6px 12px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "750", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                      <span>Sửa</span>
+                    </button>
+                    <button
+                      type="button"
+                      style={{ background: "#fee2e2", border: "none", color: "#dc2626", padding: "6px 12px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "750", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                      onClick={() => {
+                        const targetId = String(item.id);
+                        try {
+                          const deleted = JSON.parse(localStorage.getItem("DAK_PXI_DELETED_TTHC_IDS") || "[]");
+                          if (targetId && !deleted.includes(targetId)) deleted.push(targetId);
+                          localStorage.setItem("DAK_PXI_DELETED_TTHC_IDS", JSON.stringify(deleted));
+
+                          const savedCatalog = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
+                          if (savedCatalog) {
+                            const catList = JSON.parse(savedCatalog);
+                            const nextCat = catList.filter(c => String(c.id) !== targetId);
+                            localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(nextCat));
+                          }
+                        } catch {}
+                        setCatalog(prev => prev.filter(c => String(c.id) !== targetId));
+                        setMessage(`Đã xóa vĩnh viễn đúng 1 thủ tục [${item.name || item.code}] khỏi hệ thống!`);
+                        setTimeout(() => setMessage(""), 5000);
+                      }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      <span>Xóa</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL CẬP NHẬT TIẾN TRÌNH HỒ SƠ ── */}
+      {editingApp && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 99999, background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }} onClick={() => setEditingApp(null)}>
+          <div style={{ background: "#ffffff", borderRadius: "20px", width: "100%", maxWidth: "560px", padding: "24px", boxShadow: "0 20px 50px rgba(0,0,0,0.3)", position: "relative" }} onClick={e => e.stopPropagation()}>
+            <button style={{ position: "absolute", top: "16px", right: "16px", background: "#f1f5f9", border: "none", width: "30px", height: "30px", borderRadius: "50%", cursor: "pointer", fontWeight: "800" }} onClick={() => setEditingApp(null)}>✕</button>
+
+            <h3 style={{ margin: "0 0 6px", fontSize: "18px", fontWeight: "900", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <span>Cập Nhật Tiến Trình Hồ Sơ</span>
+            </h3>
+            <p style={{ margin: "0 0 16px", fontSize: "13px", color: "#64748b" }}>Mã hồ sơ: <strong style={{ color: "#0284c7" }}>{editingApp.receiptCode}</strong> — Công dân: {editingApp.citizenName}</p>
+
+            <form onSubmit={handleSaveProgress} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <label style={{ fontSize: "13.5px", fontWeight: "800", color: "#334155" }}>Chọn bước tiến trình xử lý:</label>
+                <select
+                  value={nextStep}
+                  onChange={(e) => setNextStep(Number(e.target.value))}
+                  style={{ padding: "10px 14px", borderRadius: "10px", border: "1.5px solid #cbd5e1", fontSize: "14px", fontWeight: "600" }}
+                >
+                  <option value={1}>Bước 1: Tiếp nhận hồ sơ ban đầu</option>
+                  <option value={2}>Bước 2: Đang thẩm định hồ sơ</option>
+                  <option value={3}>Bước 3: Lãnh đạo đã Phê duyệt</option>
+                  <option value={4}>Bước 4: Đã Trả kết quả cho công dân</option>
+                </select>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <label style={{ fontSize: "13.5px", fontWeight: "800", color: "#334155" }}>Ghi chú của cán bộ xử lý:</label>
+                <textarea
+                  rows={3}
+                  value={nextNote}
+                  onChange={(e) => setNextNote(e.target.value)}
+                  placeholder="Nhập ghi chú tiến độ hoặc bổ sung hồ sơ..."
+                  style={{ padding: "10px 14px", borderRadius: "10px", border: "1.5px solid #cbd5e1", fontSize: "13.5px" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "10px" }}>
+                <button type="button" style={{ background: "#f1f5f9", color: "#64748b", border: "1px solid #cbd5e1", padding: "10px 18px", borderRadius: "10px", fontWeight: "800", cursor: "pointer" }} onClick={() => setEditingApp(null)}>
+                  Hủy
+                </button>
+                <button type="submit" style={{ background: "#005baa", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "10px", fontWeight: "900", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  <span>Lưu cập nhật</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL TẠO DANH MỤC THỦ TỤC HÀNH CHÍNH MỚI ── */}
+      {showCatalogModal && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 99999, background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }} onClick={() => setShowCatalogModal(false)}>
+          <div style={{ background: "#ffffff", borderRadius: "20px", width: "100%", maxWidth: "640px", padding: "26px", boxShadow: "0 20px 50px rgba(0,0,0,0.3)", position: "relative", maxHeight: "90vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <button style={{ position: "absolute", top: "16px", right: "16px", background: "#f1f5f9", border: "none", width: "30px", height: "30px", borderRadius: "50%", cursor: "pointer", fontWeight: "800" }} onClick={() => setShowCatalogModal(false)}>✕</button>
+
+            <h3 style={{ margin: "0 0 6px", fontSize: "19px", fontWeight: "900", color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              <span>Tạo Danh Mục Thủ Tục Hành Chính Mới</span>
+            </h3>
+            <p style={{ margin: "0 0 16px", fontSize: "13px", color: "#64748b" }}>Thêm mới thủ tục niêm yết trên Cổng DVC xã Đăk Pxi</p>
+
+            <form onSubmit={handleCreateCatalog} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Mã TTHC *</label>
+                  <input
+                    type="text"
+                    placeholder="TTHC-BHYT-05..."
+                    value={newCatalogForm.code}
+                    onChange={(e) => setNewCatalogForm({ ...newCatalogForm, code: e.target.value })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Mức độ dịch vụ công</label>
+                  <select
+                    value={newCatalogForm.level}
+                    onChange={(e) => setNewCatalogForm({ ...newCatalogForm, level: e.target.value })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  >
+                    <option value="Dịch vụ công Trực tuyến toàn trình (Mức 4)">Mức độ 4 (Toàn trình)</option>
+                    <option value="Mức độ 3 (Nộp hồ sơ trực tuyến)">Mức độ 3 (Nộp trực tuyến)</option>
+                    <option value="Mức độ 2 (Tải mẫu biểu)">Mức độ 2 (Mẫu biểu)</option>
+                    <option value="Mức độ 1 (Công khai hướng dẫn)">Mức độ 1 (Hướng dẫn)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Nhóm Lĩnh vực Thủ tục Hành chính *</label>
+                <select
+                  value={newCatalogForm.fieldGroup}
+                  onChange={(e) => setNewCatalogForm({ ...newCatalogForm, fieldGroup: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px", fontWeight: "700", color: "#005baa" }}
+                >
+                  {TTHC_FIELD_GROUPS.map((group, idx) => (
+                    <option key={idx} value={group}>
+                      {idx + 1}. {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Tên Thủ tục Hành chính *</label>
+                <input
+                  type="text"
+                  placeholder="Ví dụ: Đăng ký cấp mới thẻ BHYT..."
+                  value={newCatalogForm.name}
+                  onChange={(e) => setNewCatalogForm({ ...newCatalogForm, name: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  required
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Thời gian giải quyết</label>
+                  <input
+                    type="text"
+                    placeholder="03 ngày làm việc..."
+                    value={newCatalogForm.duration}
+                    onChange={(e) => setNewCatalogForm({ ...newCatalogForm, duration: e.target.value })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  />
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Lệ phí</label>
+                  <input
+                    type="text"
+                    placeholder="Miễn phí..."
+                    value={newCatalogForm.fee}
+                    onChange={(e) => setNewCatalogForm({ ...newCatalogForm, fee: e.target.value })}
+                    style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Chi tiết hướng dẫn & Điều kiện</label>
+                <textarea
+                  rows={2}
+                  placeholder="Mô tả thành phần hồ sơ..."
+                  value={newCatalogForm.detailText}
+                  onChange={(e) => setNewCatalogForm({ ...newCatalogForm, detailText: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Link liên kết hướng dẫn Cổng DVC / File (URL)</label>
+                <input
+                  type="text"
+                  placeholder="https://dichvucong.gov.vn/..."
+                  value={newCatalogForm.guideLink}
+                  onChange={(e) => setNewCatalogForm({ ...newCatalogForm, guideLink: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "13px", fontWeight: "800", color: "#334155" }}>Link Hình ảnh sơ đồ TTHC (URL)</label>
+                <input
+                  type="text"
+                  placeholder="/huong-dan/... hoặc https://..."
+                  value={newCatalogForm.imageUrl}
+                  onChange={(e) => setNewCatalogForm({ ...newCatalogForm, imageUrl: e.target.value })}
+                  style={{ padding: "9px 12px", border: "1.5px solid #cbd5e1", borderRadius: "8px" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "10px" }}>
+                <button type="button" style={{ background: "#f1f5f9", color: "#64748b", border: "1px solid #cbd5e1", padding: "10px 18px", borderRadius: "10px", fontWeight: "800", cursor: "pointer" }} onClick={() => setShowCatalogModal(false)}>
+                  Hủy
+                </button>
+                <button type="submit" style={{ background: "#16a34a", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "10px", fontWeight: "900", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                  <span>Lưu</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+

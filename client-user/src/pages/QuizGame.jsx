@@ -115,12 +115,13 @@ const QUESTIONS = [
   },
 ];
 
-export default function QuizGame() {
+export default function QuizGame({ onClose }) {
   const [playerName, setPlayerName] = useState("");
   const [started, setStarted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
   const [finished, setFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -154,6 +155,7 @@ export default function QuizGame() {
           score,
           totalQuestions: QUESTIONS.length,
           passed: isPassed,
+          details: userAnswers,
         }),
       })
         .then((res) => res.json())
@@ -198,6 +200,18 @@ export default function QuizGame() {
             clearInterval(timerRef.current);
             // Hết giờ tự động chọn đáp án sai
             setSelected(-1);
+            setUserAnswers((prev) => [
+              ...prev,
+              {
+                questionIndex: currentIndex,
+                questionText: current.question,
+                options: current.options,
+                selectedOption: -1,
+                correctOption: current.correct,
+                isCorrect: false,
+                explain: current.explain,
+              },
+            ]);
             return 0;
           }
           return prev - 1;
@@ -226,13 +240,27 @@ export default function QuizGame() {
 
     setSelected(idx);
 
-    if (idx === current.correct) {
+    const isCorr = idx === current.correct;
+    if (isCorr) {
       setScore((s) => s + 1);
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
       }, 1800);
     }
+
+    setUserAnswers((prev) => [
+      ...prev,
+      {
+        questionIndex: currentIndex,
+        questionText: current.question,
+        options: current.options,
+        selectedOption: idx,
+        correctOption: current.correct,
+        isCorrect: isCorr,
+        explain: current.explain,
+      },
+    ]);
   };
 
   const handleNext = () => {
@@ -255,11 +283,22 @@ export default function QuizGame() {
 
   const handleRestart = () => {
     hasSubmittedRef.current = false;
+    setUserAnswers([]);
     setCurrentIndex(0);
     setSelected(null);
     setScore(0);
     setFinished(false);
     setTimeLeft(15);
+  };
+
+  const handleExit = () => {
+    if (onClose) {
+      onClose();
+    } else if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "/";
+    }
   };
 
   const handlePrint = () => {
@@ -270,44 +309,64 @@ export default function QuizGame() {
     setMusicPlaying((prev) => !prev);
   };
 
-  // MÀN HÌNH CHÀO MỪNG NHẬP TÊN (THIẾT KẾ ĐẸP CHUẨN 100% THEO ẢNH 2)
+  // MÀN HÌNH CHÀO MỪNG NHẬP TÊN (THIẾT KẾ ĐẸP CHUẨN 100% THEO THIẾT KẾ MỚI)
   if (!started) {
     return (
       <div className="quiz-modal-container">
-        {/* Nút Đóng duy nhất ở góc trên bên phải của Modal */}
-        <button
-          type="button"
-          className="quiz-modal-close-btn"
-          onClick={() => {
-            if (window.history.length > 1) {
-              window.history.back();
-            } else {
-              window.location.href = "/";
-            }
-          }}
-        >
-          ✕ Đóng
-        </button>
-
         {/* Khung Card Trắng Trung Tâm */}
         <div className="quiz-inner-white-card">
+          {/* Nút Đóng góc trên bên phải chuẩn đẹp sang trọng */}
+          <button
+            type="button"
+            className="quiz-card-close-btn"
+            title="Đóng cửa sổ"
+            onClick={() => {
+              if (onClose) {
+                onClose();
+              } else if (window.history.length > 1) {
+                window.history.back();
+              } else {
+                window.location.href = "/";
+              }
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+            <span>Đóng</span>
+          </button>
+
           {/* Bong bóng đỏ góc trên trái */}
           <div className="decor-item balloon-top-left">
-            <svg width="42" height="52" viewBox="0 0 50 65" fill="none">
-              <ellipse cx="25" cy="22" rx="18" ry="22" fill="#ef4444"/>
-              <polygon points="25,44 21,48 29,48" fill="#dc2626"/>
-              <path d="M25 48 Q 20 56 25 64" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round"/>
+            <svg width="44" height="56" viewBox="0 0 50 65" fill="none">
+              <defs>
+                <linearGradient id="balloonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ff6b6b" />
+                  <stop offset="100%" stopColor="#dc2626" />
+                </linearGradient>
+              </defs>
+              <ellipse cx="25" cy="22" rx="18" ry="22" fill="url(#balloonGrad)"/>
+              <ellipse cx="20" cy="15" rx="5" ry="8" fill="#ffffff" opacity="0.45"/>
+              <polygon points="25,44 21,48 29,48" fill="#b91c1c"/>
+              <path d="M25 48 Q 18 56 25 64" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
 
           {/* Cá bơi góc trên phải */}
           <div className="decor-item fish-top-right">
-            <svg width="45" height="38" viewBox="0 0 60 50" fill="none">
-              <ellipse cx="32" cy="25" rx="20" ry="16" fill="#3b82f6"/>
-              <polygon points="12,25 0,12 0,38" fill="#f59e0b"/>
-              <circle cx="42" cy="20" r="3.5" fill="#ffffff"/>
-              <circle cx="43" cy="20" r="1.8" fill="#0f172a"/>
-              <path d="M 28 20 Q 34 26 28 32" stroke="#60a5fa" strokeWidth="2" fill="none"/>
+            <svg width="46" height="38" viewBox="0 0 60 50" fill="none">
+              <defs>
+                <linearGradient id="fishGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#60a5fa" />
+                  <stop offset="100%" stopColor="#2563eb" />
+                </linearGradient>
+              </defs>
+              <ellipse cx="34" cy="25" rx="18" ry="14" fill="url(#fishGrad)"/>
+              <polygon points="16,25 4,14 4,36" fill="#f59e0b"/>
+              <circle cx="43" cy="20" r="4" fill="#ffffff"/>
+              <circle cx="44" cy="20" r="2" fill="#0f172a"/>
+              <path d="M 29 19 Q 34 25 29 31" stroke="#93c5fd" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
             </svg>
           </div>
 
@@ -315,14 +374,17 @@ export default function QuizGame() {
           <div className="quiz-start-medal-box">
             <div className="medal-sunburst"></div>
             <div className="medal-ribbon-badge">
-              <svg width="84" height="94" viewBox="0 0 100 110" fill="none">
-                <path d="M 32 0 L 22 45 L 36 40 L 50 45 L 38 0 Z" fill="#2563eb"/>
-                <path d="M 68 0 L 78 45 L 64 40 L 50 45 L 62 0 Z" fill="#ef4444"/>
-                <path d="M 42 0 L 50 45 L 58 0 Z" fill="#ffffff"/>
-                <circle cx="50" cy="65" r="36" fill="#f59e0b"/>
-                <circle cx="50" cy="65" r="30" fill="#d97706"/>
-                <circle cx="50" cy="65" r="26" fill="#fbbf24"/>
-                <polygon points="50,47 55,58 67,58 57,66 61,78 50,70 39,78 43,66 33,58 45,58" fill="#d97706"/>
+              <svg width="92" height="102" viewBox="0 0 100 110" fill="none">
+                {/* Ribbons */}
+                <path d="M 32 0 L 20 48 L 36 42 L 50 48 L 38 0 Z" fill="#2563eb"/>
+                <path d="M 68 0 L 80 48 L 64 42 L 50 48 L 62 0 Z" fill="#ef4444"/>
+                <path d="M 42 0 L 50 48 L 58 0 Z" fill="#ffffff" opacity="0.8"/>
+                {/* Medal Circles */}
+                <circle cx="50" cy="66" r="36" fill="#f59e0b"/>
+                <circle cx="50" cy="66" r="30" fill="#d97706"/>
+                <circle cx="50" cy="66" r="26" fill="#fbbf24"/>
+                {/* Star */}
+                <polygon points="50,48 54,58 65,58 56,65 59,76 50,69 41,76 44,65 35,58 46,58" fill="#d97706"/>
               </svg>
             </div>
           </div>
@@ -335,7 +397,7 @@ export default function QuizGame() {
             </h1>
             <p className="quiz-start-desc">
               Bé hãy trả lời các câu hỏi để chứng minh kiến thức<br />
-              phòng chống đuối nước và nhận Bằng khen vinh danh<br />
+              phòng chống đuối nước và đạt điểm số vinh danh<br />
               từ UBND Xã Đăk Pxi nhé! 🧸
             </p>
           </div>
@@ -350,7 +412,7 @@ export default function QuizGame() {
 
             <div className="quiz-input-field-box">
               <span className="input-user-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                   <circle cx="12" cy="7" r="4"/>
                 </svg>
@@ -375,181 +437,277 @@ export default function QuizGame() {
           </form>
         </div>
 
-        {/* Chú cá heo nhảy sóng biển góc dưới trái của Modal */}
+        {/* Chú cá heo nhảy sóng biển góc dưới trái */}
         <div className="decor-dolphin-container">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-            {/* Sóng bọt biển */}
-            <path d="M 0 100 Q 30 85 60 100 T 120 100 L 120 120 L 0 120 Z" fill="#60a5fa" opacity="0.5"/>
-            <path d="M 0 105 Q 40 90 80 105 T 120 105 L 120 120 L 0 120 Z" fill="#0284c7"/>
-            {/* Cá heo */}
-            <path d="M 20 90 Q 35 40 75 45 Q 95 50 100 65 Q 80 60 65 75 Q 45 90 20 90 Z" fill="#38bdf8"/>
-            <path d="M 45 75 Q 60 70 70 78 Q 55 85 45 75 Z" fill="#ffffff"/>
-            <circle cx="80" cy="55" r="3" fill="#0f172a"/>
-            <path d="M 90 60 Q 95 62 90 65" stroke="#0f172a" strokeWidth="1.5"/>
-            <circle cx="95" cy="40" r="3" fill="#bae6fd"/>
-            <circle cx="105" cy="50" r="2" fill="#bae6fd"/>
-            <circle cx="85" cy="35" r="2.5" fill="#bae6fd"/>
+          <svg width="120" height="110" viewBox="0 0 120 110" fill="none">
+            <path d="M 20 85 Q 35 35 75 40 Q 95 45 100 60 Q 80 55 65 70 Q 45 85 20 85 Z" fill="#38bdf8"/>
+            <path d="M 45 70 Q 60 65 70 73 Q 55 80 45 70 Z" fill="#ffffff"/>
+            <circle cx="80" cy="50" r="3" fill="#0f172a"/>
+            <circle cx="95" cy="35" r="3" fill="#bae6fd"/>
+            <circle cx="105" cy="45" r="2" fill="#bae6fd"/>
+            <circle cx="85" cy="30" r="2.5" fill="#bae6fd"/>
           </svg>
         </div>
 
         {/* Dải sóng biển đáy Modal */}
         <div className="quiz-modal-bottom-waves">
           <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
-            <path d="M0,32L60,42.7C120,53,240,75,360,80C480,85,600,75,720,58.7C840,43,960,21,1080,21.3C1200,21,1320,43,1380,53.3L1440,64L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z" fill="#38bdf8" opacity="0.6"></path>
-            <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,64C1200,75,1320,85,1380,90.7L1440,96L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z" fill="#0284c7"></path>
+            <path d="M0,32L60,42.7C120,53,240,75,360,80C480,85,600,75,720,58.7C840,43,960,21,1080,21.3C1200,21,1320,43,1380,53.3L1440,64L1440,120L0,120Z" fill="#38bdf8" opacity="0.6"></path>
+            <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,64C1200,75,1320,85,1380,90.7L1440,96L1440,120L0,120Z" fill="#0284c7"></path>
           </svg>
         </div>
       </div>
     );
   }
 
-  // MÀN HÌNH KẾT QUẢ & BẰNG KHEN
+  // MÀN HÌNH KẾT QUẢ & HIỆN ĐIỂM CHÚC MƯỜNG (HTML5 CHUẨN)
   if (finished) {
-    const passed = score >= 8; // Cần đúng 8/10 câu để đạt bằng khen
+    const passed = score >= 8;
+    const percentage = Math.round((score / QUESTIONS.length) * 100);
 
     return (
-      <div className="quiz-result-wrapper">
+      <main className="quiz-result-wrapper" id="print-area">
         {passed && <Confetti numberOfPieces={150} recycle={false} />}
 
-        {passed ? (
-          <div className="quiz-certificate-section">
-            {/* Nút In bằng khen nằm ngoài khung in */}
-            <div className="print-controls">
-              <p className="passed-title">🎉 Chúc mừng em đã xuất sắc vượt qua cuộc thi!</p>
-              <div className="print-buttons">
-                <button className="quiz-print-btn" onClick={handlePrint}>
-                  🖨️ In / Tải Bằng Khen của em
-                </button>
-                <button className="quiz-restart-btn text" onClick={handleRestart}>
-                  🔄 Chơi lại
-                </button>
-              </div>
-            </div>
+        <article className="quiz-result-container animate-fadeIn">
+          {/* Header Nút Đóng & Tiêu Đề Chúc Mừng */}
+          <header className="quiz-result-header">
+            <button
+              type="button"
+              className="quiz-card-close-btn"
+              title="Thoát trò chơi"
+              onClick={handleExit}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+              <span>Thoát</span>
+            </button>
 
-            {/* BẢN BẰNG KHEN IN ĐƯỢC CHUẨN ĐẸP THEO MẪU MỚI */}
-            <div className="dn-certificate" id="print-area">
-              <div className="certificate-border">
-                <div className="certificate-inner">
-                  {/* QUỐC HUY VIỆT NAM TRÊN CÙNG */}
-                  <div className="cert-national-emblem">
-                    <svg width="52" height="52" viewBox="0 0 100 100" fill="none">
-                      <circle cx="50" cy="50" r="46" fill="#da251d" stroke="#fef08a" strokeWidth="3"/>
-                      <circle cx="50" cy="50" r="41" fill="none" stroke="#fef08a" strokeWidth="1" strokeDasharray="3 2"/>
-                      <polygon points="50,18 59,38 80,38 63,51 69,72 50,59 31,72 37,51 20,38 41,38" fill="#fef08a"/>
-                    </svg>
-                  </div>
+            <figure className="result-hero-icon-box">
+              {passed ? (
+                /* Icon Cúp Vinh Danh SVG */
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                  <path d="M4 22h16" />
+                  <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                  <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                  <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" fill="#fef08a" />
+                </svg>
+              ) : (
+                /* Icon Khiên Quyết Tâm SVG */
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#e0f2fe" />
+                  <path d="m9 12 2 2 4-4" stroke="#0284c7" strokeWidth="2.5" />
+                </svg>
+              )}
+            </figure>
 
-                  {/* Quốc hiệu */}
-                  <div className="cert-header">
-                    <p className="cert-nation">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                    <p className="cert-motto">Độc lập - Tự do - Hạnh phúc</p>
-                    <div className="cert-stars-line">✦ ★ ✦</div>
-                  </div>
+            <h1 className="result-congrats-title">
+              {passed ? `🎉 Chúc mừng ${playerName}!` : `Cố lên ${playerName} ơi!`}
+            </h1>
+            
+            <p className="result-subtitle">
+              {passed
+                ? "Em đã xuất sắc hoàn thành Thử thách Kỹ năng Phòng chống đuối nước 2026!"
+                : "Em đã hoàn thành cuộc thi! Hãy xem lại đáp án và thử lại để đạt kết quả cao hơn nhé!"}
+            </p>
+          </header>
 
-                  {/* Cơ quan cấp */}
-                  <div className="cert-issuer">
-                    <p className="issuer-line1">ỦY BAN NHÂN DÂN XÃ ĐẮK PXI</p>
-                    <p className="issuer-line2">TỈNH QUẢNG NGÃI</p>
-                    <div className="cert-flourish">────── ❖ ──────</div>
-                  </div>
-
-                  {/* Tiêu đề Giấy Chứng Nhận */}
-                  <div className="cert-title-container">
-                    <h1 className="cert-title">GIẤY CHỨNG NHẬN</h1>
-                    <p className="cert-subtitle">DANH HIỆU HIỆP SĨ AN TOÀN NGUỒN NƯỚC</p>
-                    <div className="cert-stars-line small">✦ ★ ✦</div>
-                  </div>
-
-                  {/* Nội dung khen tặng */}
-                  <div className="cert-content">
-                    <p className="cert-intro">Ủy ban nhân dân xã Đăk Pxi chứng nhận em:</p>
-                    <h2 className="cert-name">{playerName.toUpperCase()}</h2>
-                    <p className="cert-reason">
-                      Đã hoàn thành xuất sắc khóa học tương tác trực tuyến<br />
-                      về Kỹ năng Phòng chống đuối nước<br />
-                      và ứng phó tai nạn sông nước năm 2026.
-                    </p>
-                  </div>
-
-                  {/* Chân Bằng khen: Huy hiệu Vàng Trái & Con dấu + Chữ ký Phải */}
-                  <div className="cert-footer">
-                    {/* TRÁI: Huy hiệu Vàng "VÌ MỘT CỘNG ĐỒNG AN TOÀN" */}
-                    <div className="cert-gold-badge">
-                      <div className="badge-laurel-wreath">
-                        <svg width="68" height="68" viewBox="0 0 100 100">
-                          <circle cx="50" cy="50" r="42" fill="#fffbeb" stroke="#d97706" strokeWidth="4"/>
-                          <circle cx="50" cy="50" r="36" fill="none" stroke="#f59e0b" strokeWidth="1.5"/>
-                          <circle cx="50" cy="50" r="28" fill="#0284c7"/>
-                          <path d="M 50 32 Q 40 46 50 58 Q 60 46 50 32 Z" fill="#ffffff"/>
-                          <circle cx="50" cy="48" r="4" fill="#0284c7"/>
-                        </svg>
-                      </div>
-                      <div className="badge-ribbon">
-                        <span>VÌ MỘT CỘNG ĐỒNG AN TOÀN</span>
-                      </div>
-                    </div>
-
-                    {/* PHẢI: Ngày tháng & Chữ ký */}
-                    <div className="cert-date-section">
-                      <p className="cert-date-str">Đăk Pxi, ngày 14 tháng 07 năm 2026</p>
-                      <p className="cert-sign-title">TM. ỦY BAN NHÂN DÂN XÃ</p>
-                      <p className="cert-signer-role">CHỦ TỊCH</p>
-                      <div className="cert-signature-space">
-                        {/* Con dấu đỏ tròn */}
-                        <div className="cert-official-stamp">
-                          <div className="stamp-circle-outer">
-                            <span className="stamp-txt-top">UBND XÃ ĐK PXI</span>
-                            <span className="stamp-txt-star">★</span>
-                          </div>
-                        </div>
-
-                        {/* Chữ ký viết tay xanh */}
-                        <svg className="cert-handwriting-sig" viewBox="0 0 160 60" width="110" height="40">
-                          <path d="M 15 38 Q 32 8 48 32 T 78 18 Q 98 42 125 12 L 145 28 M 28 46 L 138 42" fill="none" stroke="#1d4ed8" strokeWidth="2.8" strokeLinecap="round" />
-                        </svg>
-
-                        <p className="cert-signer-name">Phan Văn Cường</p>
-                      </div>
-                    </div>
-                  </div>
+          {/* Section Điểm số & Thống kê */}
+          <section className="quiz-score-overview">
+            <div className="score-ring-card">
+              <div className="score-circle">
+                <svg className="score-svg" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="52" className="score-bg-ring" />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    className="score-fill-ring"
+                    style={{
+                      strokeDasharray: 326.7,
+                      strokeDashoffset: 326.7 - (326.7 * score) / QUESTIONS.length,
+                    }}
+                  />
+                </svg>
+                <div className="score-number-box">
+                  <span className="score-big">{score}</span>
+                  <span className="score-total">/{QUESTIONS.length}</span>
                 </div>
               </div>
-              {/* Dải hoa văn lượn sóng xanh-vàng đáy bằng khen */}
-              <div className="cert-bottom-wave-bg">
-                <svg viewBox="0 0 800 80" preserveAspectRatio="none">
-                  <path d="M 0 40 Q 200 80 400 40 T 800 40 L 800 80 L 0 80 Z" fill="#0369a1" />
-                  <path d="M 0 55 Q 200 85 400 50 T 800 65 L 800 80 L 0 80 Z" fill="#0284c7" />
-                  <path d="M 0 70 Q 200 75 400 68 T 800 74 L 800 80 L 0 80 Z" fill="#d97706" />
+              <p className="score-percentage-text">Tỷ lệ chính xác: <strong>{percentage}%</strong></p>
+            </div>
+
+            <div className="result-stats-grid">
+              <article className="stat-box stat-rank">
+                <span className="stat-label">Danh hiệu đạt được</span>
+                <strong className={`stat-val ${passed ? "passed" : "pending"}`}>
+                  {score === 10
+                    ? "Hiệp sĩ An toàn Xuất sắc"
+                    : score >= 8
+                    ? "Hiệp sĩ An toàn Nguồn nước"
+                    : score >= 5
+                    ? "Tuyên truyền viên Nhí"
+                    : "Học viên Tích cực"}
+                </strong>
+              </article>
+
+              <article className="stat-box">
+                <span className="stat-label">Số câu trả lời đúng</span>
+                <strong className="stat-val text-success">{score} / {QUESTIONS.length} câu</strong>
+              </article>
+
+              <article className="stat-box">
+                <span className="stat-label">Kết quả đánh giá</span>
+                <strong className={`stat-val ${passed ? "text-passed" : "text-retry"}`}>
+                  {passed ? (
+                    <span className="stat-icon-wrap">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      ĐẠT THỬ THÁCH
+                    </span>
+                  ) : (
+                    <span className="stat-icon-wrap">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                      </svg>
+                      CHƯA ĐẠT (Cần ≥ 8/10)
+                    </span>
+                  )}
+                </strong>
+              </article>
+            </div>
+          </section>
+
+          {/* Chi tiết đáp án từng câu hỏi */}
+          {userAnswers && userAnswers.length > 0 && (
+            <section className="quiz-answers-review">
+              <h2 className="review-section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  <path d="M9 12h6" />
+                  <path d="M9 16h6" />
                 </svg>
+                <span>Chi tiết kết quả & Lời khuyên an toàn</span>
+              </h2>
+
+              <div className="review-list">
+                {userAnswers.map((ans, idx) => (
+                  <article
+                    key={idx}
+                    className={`review-card ${ans.isCorrect ? "review-correct" : "review-incorrect"}`}
+                  >
+                    <header className="review-card-header">
+                      <span className="review-q-num">Câu {idx + 1}</span>
+                      <span className={`review-status-pill ${ans.isCorrect ? "correct" : "incorrect"}`}>
+                        {ans.isCorrect ? (
+                          <>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Đúng</span>
+                          </>
+                        ) : (
+                          <>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18" />
+                              <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                            <span>Chưa đúng</span>
+                          </>
+                        )}
+                      </span>
+                    </header>
+
+                    <h3 className="review-q-text">{ans.questionText}</h3>
+
+                    <div className="review-options-summary">
+                      {ans.options.map((opt, oIdx) => {
+                        let optCls = "review-opt-item";
+                        if (oIdx === ans.correctOption) optCls += " is-correct-answer";
+                        if (oIdx === ans.selectedOption && !ans.isCorrect) optCls += " is-user-wrong";
+                        return (
+                          <div key={oIdx} className={optCls}>
+                            <span className="opt-marker">
+                              {oIdx === ans.correctOption ? (
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              ) : oIdx === ans.selectedOption ? (
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <line x1="18" y1="6" x2="6" y2="18" />
+                                  <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                              ) : (
+                                String.fromCharCode(65 + oIdx)
+                              )}
+                            </span>
+                            <span className="opt-txt">{opt}</span>
+                            {oIdx === ans.selectedOption && (
+                              <span className="user-choice-badge">Lựa chọn của bé</span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <footer className="review-explain-footer">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px' }}>
+                        <path d="M9 18h6" />
+                        <path d="M10 22h4" />
+                        <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.64 2.8 1.5 3.5.76.76 1.23 1.52 1.41 2.5" fill="#fef3c7" />
+                      </svg>
+                      <span><strong>Lời khuyên từ Kiki:</strong> {ans.explain}</span>
+                    </footer>
+                  </article>
+                ))}
               </div>
-            </div>
-          </div>
-        ) : (
-          <div className="quiz-card quiz-failed">
-            <div className="quiz-result-emoji">😢</div>
-            <div className="quiz-result-title">Cố lên em ơi!</div>
-            <div className="quiz-result-score">
-              Em đạt {score} / {QUESTIONS.length} câu đúng
-            </div>
-            <p className="quiz-failed-msg">
-              Em cần trả lời đúng tối thiểu <strong>8/10 câu</strong> để được nhận Giấy chứng nhận danh giá từ UBND xã. Hãy đọc kỹ lại cẩm nang học tập ở trên và thử lại nhé!
-            </p>
-            <button className="quiz-start-btn" onClick={handleRestart}>
-              🔄 Thử sức lại ngay
+            </section>
+          )}
+
+          {/* Thanh Nút Bấm Hành Động */}
+          <nav className="quiz-result-action-bar">
+            <button type="button" className="quiz-result-btn btn-restart bouncy-btn" onClick={handleRestart}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+              </svg>
+              <span>Chơi lại từ đầu</span>
             </button>
-          </div>
-        )}
-      </div>
+
+            <button type="button" className="quiz-result-btn btn-print bouncy-btn" onClick={handlePrint}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              <span>In kết quả thi</span>
+            </button>
+
+            <button type="button" className="quiz-result-btn btn-exit bouncy-btn" onClick={handleExit}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              <span>Thoát trò chơi</span>
+            </button>
+          </nav>
+        </article>
+      </main>
     );
   }
 
   // MÀN HÌNH CHƠI GAME CÂU HỎI
   return (
     <div className="quiz-card children-theme">
-      {/* Họa tiết trang trí góc vui tươi */}
-      <div className="decor-badge corner-1">🐬</div>
-      <div className="decor-badge corner-2">🌟</div>
-
       {/* Pháo hoa nhẹ khi trả lời đúng */}
       {showConfetti && <Confetti numberOfPieces={40} recycle={false} />}
 
@@ -564,7 +722,13 @@ export default function QuizGame() {
                 width: `${((currentIndex + 1) / QUESTIONS.length) * 100}%`,
               }}
             >
-              <span className="progress-swimmer-emoji">🏊</span>
+              <span className="progress-swimmer-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="5" r="3" />
+                  <path d="M4 14l5-2 3 3 5-2 3 3" />
+                  <path d="M2 20c3 0 4-1 6-1s3 1 6 1 4-1 6-1" stroke="#38bdf8" />
+                </svg>
+              </span>
             </div>
           </div>
         </div>
@@ -576,12 +740,48 @@ export default function QuizGame() {
             onClick={toggleMusic}
             title={musicPlaying ? "Tắt nhạc nền" : "Bật nhạc nền"}
           >
-            {musicPlaying ? "🎵 Nhạc: Bật" : "🔇 Nhạc: Tắt"}
+            {musicPlaying ? (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                </svg>
+                <span>Nhạc: Bật</span>
+              </>
+            ) : (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <line x1="23" y1="9" x2="17" y2="15" />
+                  <line x1="17" y1="9" x2="23" y2="15" />
+                </svg>
+                <span>Nhạc: Tắt</span>
+              </>
+            )}
           </button>
 
           <div className={`quiz-timer ${timeLeft <= 5 ? "danger" : ""}`}>
-            ⏰ {timeLeft}s
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span>{timeLeft}s</span>
           </div>
+
+          <button
+            type="button"
+            className="quiz-header-exit-btn"
+            onClick={handleExit}
+            title="Thoát trò chơi"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            <span>Thoát</span>
+          </button>
         </div>
       </div>
 
@@ -620,15 +820,34 @@ export default function QuizGame() {
         <div className="quiz-explain-box animate-fadeIn">
           <div className="explain-header">
             {selected === current.correct ? (
-              <span className="correct-label">🎉 Giỏi quá! Bé trả lời đúng rồi!</span>
+              <span className="correct-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                Giỏi quá! Bé trả lời đúng rồi!
+              </span>
             ) : selected === -1 ? (
-              <span className="timeout-label">⏰ Hết giờ mất rồi bé ơi!</span>
+              <span className="timeout-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                Hết giờ mất rồi bé ơi!
+              </span>
             ) : (
-              <span className="incorrect-label">💡 Chưa chính xác, thử lại ở câu sau nhé!</span>
+              <span className="incorrect-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                Chưa chính xác, thử lại ở câu sau nhé!
+              </span>
             )}
           </div>
           <p className="explain-body">
-            <strong>🐢 Chú rùa Kiki khuyên bé: </strong>
+            <strong>Chú rùa Kiki khuyên bé: </strong>
             {current.explain}
           </p>
         </div>
@@ -637,7 +856,11 @@ export default function QuizGame() {
       {/* Nút đi tiếp */}
       {selected !== null && (
         <button className="quiz-next-btn bouncy-btn" onClick={handleNext}>
-          {isLast ? "Xem Kết Quả Cuộc Thi 🏆" : "Câu tiếp theo →"}
+          <span>{isLast ? "Xem Kết Quả Cuộc Thi" : "Câu tiếp theo"}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
         </button>
       )}
     </div>

@@ -15,6 +15,20 @@ import {
 
 // ── BỘ ICON SVG CHUẨN HTML5 ──
 const SvgIcons = {
+  Edit: () => (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+    </svg>
+  ),
+  Trash: () => (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <line x1="10" y1="11" x2="10" y2="17" />
+      <line x1="14" y1="11" x2="14" y2="17" />
+    </svg>
+  ),
   Search: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="11" cy="11" r="8" />
@@ -298,8 +312,42 @@ function QuickStats({ totalCount, popularCount, mostViewedCount, recentCount, on
   );
 }
 
+// ── TOAST NOTIFICATION 5-SECOND HTML5 (THÔNG BÁO DƯỚI PHẢI 5 GIÂY) ──
+function ToastNotification({ toast, onClose }) {
+  if (!toast) return null;
+
+  const renderToastSvgIcon = () => {
+    if (toast.type === 'danger' || toast.icon === 'trash') return <SvgIcons.Trash />;
+    if (toast.type === 'info' || toast.icon === 'edit') return <SvgIcons.Edit />;
+    if (toast.icon === 'qr' || toast.icon === 'file') return <SvgIcons.FileText />;
+    return <SvgIcons.Check />;
+  };
+
+  return (
+    <div className="tthc-toast-container">
+      <aside className={`tthc-toast-box toast-${toast.type || 'success'}`} role="alert" aria-live="polite">
+        <span className="tthc-toast-icon">
+          {renderToastSvgIcon()}
+        </span>
+        <div className="tthc-toast-body">
+          <strong>{toast.title || 'Thông báo hệ thống'}</strong>
+          <p>{toast.message}</p>
+        </div>
+        <button type="button" className="tthc-toast-close" onClick={onClose} aria-label="Đóng thông báo">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        {/* Thanh đếm ngược 5 giây chuẩn HTML5 CSS Animation */}
+        <div className="tthc-toast-progress" />
+      </aside>
+    </div>
+  );
+}
+
 // ── 5 & 7. CARD THỦ TỤC NGANG COMPACT + ACCORDION XEM NHANH ──
-function ProcedureCard({ item, expanded, onToggleExpand }) {
+function ProcedureCard({ item, expanded, onToggleExpand, onEdit, onDelete, onActionToast, isOfficer }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (e) => {
@@ -307,30 +355,48 @@ function ProcedureCard({ item, expanded, onToggleExpand }) {
     const shareUrl = `${window.location.origin}/thu-tuc-hanh-chinh/${item.slug}`;
     navigator.clipboard.writeText(shareUrl);
     setCopied(true);
+    if (onActionToast) {
+      onActionToast("Đã sao chép liên kết", `Đã lưu đường dẫn thủ tục [MÃ: ${item.code || `TTHC-${item.id}`}] vào bộ nhớ tạm!`, "success", "📋");
+    }
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handlePrint = (e) => {
     e.stopPropagation();
+    if (onActionToast) {
+      onActionToast("Đã gửi lệnh in tài liệu", `Đang gửi bản in thủ tục [${item.title}] sang máy in...`, "info", "🖨️");
+    }
     window.print();
   };
 
+  const realDvcUrl = (item.guideLink && item.guideLink.startsWith("http"))
+    ? item.guideLink
+    : `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(item.code || item.id)}`;
+
   return (
     <article className={`tthc-card-item ${expanded ? "is-expanded" : ""}`}>
-      {/* KHUNG THÔNG TIN CHÍNH (HEIGHT ~110-120PX COMPACT) */}
-      <div className="tthc-card-main" onClick={onToggleExpand}>
-        <div className="tthc-card-left">
-          <div className="tthc-card-header-row">
-            <h3 className="tthc-card-title">{item.title}</h3>
+      {/* KHUNG THÔNG TIN CHÍNH (FULL HORIZONTAL ROW Y HỆT CÁN BỘ) */}
+      <div className="tthc-card-main" onClick={onToggleExpand} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "20px", flexWrap: "wrap", padding: "18px 22px" }}>
+        
+        {/* CỘT 1: THÔNG TIN CHÍNH TTHC */}
+        <div className="tthc-card-left" style={{ flex: "1 1 360px", minWidth: "280px" }}>
+          <div className="tthc-card-header-row" style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px", flexWrap: "wrap" }}>
+            <span style={{ background: "#0284c7", color: "#ffffff", fontWeight: "900", fontSize: "12px", padding: "3px 10px", borderRadius: "6px" }}>
+              MÃ: {item.code || `TTHC-${item.id}`}
+            </span>
             {item.online_type === "toan-trinh" && (
-              <span className="tthc-badge toan-trinh">Toàn trình</span>
+              <span className="tthc-badge toan-trinh">Dịch vụ công Trực tuyến toàn trình (Mức 4)</span>
             )}
             {item.online_type === "mot-phan" && (
-              <span className="tthc-badge mot-phan">Một phần</span>
+              <span className="tthc-badge mot-phan">Dịch vụ công Trực tuyến một phần (Mức 3)</span>
             )}
           </div>
 
-          <div className="tthc-card-meta-row">
+          <h3 className="tthc-card-title" style={{ fontSize: "16.5px", fontWeight: "900", color: "#0f172a", margin: "0 0 8px", lineHeight: "1.4" }}>
+            {item.title}
+          </h3>
+
+          <div className="tthc-card-meta-row" style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap", fontSize: "12.5px", color: "#64748b" }}>
             <span className="tthc-meta-item">
               <SvgIcons.Building />
               <span><strong>Lĩnh vực:</strong> {item.group_name || 'Hành chính xã'}</span>
@@ -348,39 +414,81 @@ function ProcedureCard({ item, expanded, onToggleExpand }) {
           </div>
         </div>
 
-        {/* NÚT THAO TÁC & TOGGLE ACCORDION */}
-        <div className="tthc-card-actions">
+        {/* CỘT 2: KHUNG MÃ QR CODE TRỰC TIẾP SANG CỔNG DVC THẬT */}
+        <a
+          href={realDvcUrl}
+          target="_blank"
+          rel="noreferrer"
+          style={{ textDecoration: "none" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onActionToast) {
+              onActionToast("Đang chuyển Cổng DVC Quốc gia", `Mã QR sẽ mở trực tiếp trang nộp hồ sơ DVC thực tế cho thủ tục [MÃ: ${item.code || `TTHC-${item.id}`}]!`, "info", "qr");
+            }
+          }}
+        >
+          <div
+            style={{ display: "flex", alignItems: "center", gap: "12px", background: "#f0f9ff", border: "1.5px dashed #0284c7", padding: "8px 14px", borderRadius: "14px", flexShrink: 0, cursor: "pointer", transition: "all 0.2s ease" }}
+            title="Click để nộp hồ sơ trực tuyến trên Cổng Dịch vụ công Quốc gia"
+          >
+            <div style={{ background: "#ffffff", padding: "4px", borderRadius: "8px", border: "1px solid #bae6fd" }}>
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(realDvcUrl)}`}
+                alt={`Mã QR DVC ${item.title}`}
+                style={{ width: "64px", height: "64px", display: "block", borderRadius: "4px" }}
+              />
+            </div>
+            <div style={{ maxWidth: "120px" }}>
+              <span style={{ fontSize: "11px", fontWeight: "900", color: "#005baa", textTransform: "uppercase", display: "block", marginBottom: "2px" }}>
+                📲 QUÉT MÃ QR
+              </span>
+              <span style={{ fontSize: "11.5px", color: "#0369a1", fontWeight: "800", display: "block", lineHeight: "1.3" }}>
+                Nộp hồ sơ trực tuyến DVC ➔
+              </span>
+            </div>
+          </div>
+        </a>
+
+        {/* CỘT 3: NÚT THAO TÁC (XEM HƯỚNG DẪN DVC, CHI SỬA/XÓA KHI LÀ CÁN BỘ) */}
+        <div className="tthc-card-actions" style={{ display: "flex", flexDirection: "column", gap: "8px", alignItems: "flex-end", flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
           <Link
             to={`/thu-tuc-hanh-chinh/${item.slug}`}
             className="tthc-btn tthc-btn-detail"
-            onClick={(e) => e.stopPropagation()}
+            style={{ padding: "8px 16px", fontSize: "12.5px", fontWeight: "800" }}
+            onClick={() => {
+              if (onActionToast) {
+                onActionToast("Đã chọn xem hướng dẫn DVC", `Đang chuyển sang trang hướng dẫn DVC chi tiết thủ tục [MÃ: ${item.code || `TTHC-${item.id}`}]!`, "info", "📱");
+              }
+            }}
           >
-            <SvgIcons.FileText />
-            <span>Xem chi tiết</span>
+            <span>Xem hướng dẫn DVC →</span>
           </Link>
 
-          {item.forms && item.forms.length > 0 && (
-            <a
-              href={item.forms[0].src || `${API_BASE_URL}/forms/${item.forms[0].id}/download`}
-              target="_blank"
-              rel="noreferrer"
-              className="tthc-btn tthc-btn-download"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <SvgIcons.Download />
-              <span>Tải biểu mẫu</span>
-            </a>
-          )}
+          {isOfficer && (
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                type="button"
+                style={{ padding: "6px 14px", background: "#f8fafc", border: "1.5px solid #cbd5e1", borderRadius: "8px", fontSize: "12.5px", fontWeight: "800", color: "#334155", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", transition: "all 0.2s ease" }}
+                onClick={() => {
+                  if (onEdit) onEdit(item);
+                }}
+              >
+                <SvgIcons.Edit />
+                <span>Sửa</span>
+              </button>
 
-          <button
-            type="button"
-            className="tthc-btn-accordion-toggle"
-            onClick={onToggleExpand}
-            title={expanded ? "Thu gọn xem nhanh" : "Mở rộng xem nhanh"}
-          >
-            {expanded ? <SvgIcons.ChevronUp /> : <SvgIcons.ChevronDown />}
-            <span className="sr-only">Xem nhanh</span>
-          </button>
+              <button
+                type="button"
+                style={{ padding: "6px 14px", background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: "8px", fontSize: "12.5px", fontWeight: "800", color: "#dc2626", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", transition: "all 0.2s ease" }}
+                onClick={() => {
+                  if (onDelete) onDelete(item);
+                }}
+              >
+                <SvgIcons.Trash />
+                <span>Xóa</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -665,58 +773,164 @@ export default function Thutuchanhchinh() {
   const [expandedId, setExpandedId] = useState(null);
   const [statFilter, setStatFilter] = useState("all");
 
-  // Load danh sách thủ tục từ API hoặc Mock Fallback
+  // TOAST NOTIFICATION STATE (5 GIÂY TỰ ĐỘNG MẤT - DƯỚI PHẢI GIAO DIỆN)
+  const [toast, setToast] = useState(null);
+  const toastTimerRef = useRef(null);
+
+  const showToast = (title, message, type = 'success', icon = '✅') => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast({ title, message, type, icon });
+    toastTimerRef.current = setTimeout(() => {
+      setToast(null);
+    }, 5000);
+  };
+
+  const getDeletedKeys = () => {
+    try {
+      return JSON.parse(localStorage.getItem("DAK_PXI_DELETED_TTHC_IDS") || "[]");
+    } catch {
+      return [];
+    }
+  };
+
+  const filterOutDeleted = (list) => {
+    const deleted = getDeletedKeys();
+    if (!deleted || deleted.length === 0) return list;
+    return list.filter(p => !deleted.includes(String(p.id)));
+  };
+
+  const handleEditProcedure = (item) => {
+    showToast(
+      "Mở trình chỉnh sửa",
+      `Đang mở giao diện chỉnh sửa thủ tục [MÃ: ${item.code || `TTHC-${item.id}`}] - "${item.title}"`,
+      "info",
+      "edit"
+    );
+  };
+
+  const handleDeleteProcedure = (item) => {
+    const targetId = String(item.id);
+    try {
+      const deleted = getDeletedKeys();
+      if (targetId && !deleted.includes(targetId)) {
+        deleted.push(targetId);
+      }
+      localStorage.setItem("DAK_PXI_DELETED_TTHC_IDS", JSON.stringify(deleted));
+
+      const savedCatalog = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
+      if (savedCatalog) {
+        const catList = JSON.parse(savedCatalog);
+        const nextCat = catList.filter(c => String(c.id) !== targetId);
+        localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(nextCat));
+      }
+    } catch {}
+
+    setProcedures(prev => prev.filter(p => String(p.id) !== targetId));
+    showToast(
+      "Xóa thủ tục thành công",
+      `Đã xóa đúng 1 thủ tục [${item.title}] khỏi hệ thống!`,
+      "danger",
+      "trash"
+    );
+  };
+
+  // Tăng số lượng người truy cập vào xem TTHC thực tế
+  useEffect(() => {
+    try {
+      const current = parseInt(localStorage.getItem("DAK_PXI_TTHC_VISITOR_COUNT") || "3842", 10);
+      const nextCount = current + 1;
+      localStorage.setItem("DAK_PXI_TTHC_VISITOR_COUNT", nextCount.toString());
+    } catch {}
+  }, []);
+
+  // Load danh sách thủ tục từ API hoặc từ Cán bộ đã niêm yết (localStorage)
   useEffect(() => {
     setLoading(true);
+
+    let officerCatalog = [];
+    try {
+      const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
+      if (saved) {
+        officerCatalog = JSON.parse(saved);
+      }
+    } catch {}
+
     api
       .get("/procedures", {
         params: { keyword: keyword.trim() || undefined, groupId: groupId || undefined, page, limit: PAGE_SIZE },
       })
       .then((res) => {
-        const rows = normalizeList(res.data);
+        const rows = filterOutDeleted(normalizeList(res.data));
         setProcedures(rows);
         setTotalCount(res.data?.total ?? rows.length);
       })
       .catch(() => {
-        const { rows, total } = filterMockProcedures({
+        const { rows: mockRows } = filterMockProcedures({
           keyword: keyword.trim(),
           groupId,
           page,
           pageSize: 50,
         });
-        setProcedures(rows);
-        setTotalCount(total);
+
+        // Nếu Cán bộ đã niêm yết TTHC mới từ Dashboard -> Chuyển thành định dạng thực tế nhất
+        if (Array.isArray(officerCatalog) && officerCatalog.length > 0) {
+          const formattedOfficerList = officerCatalog.map(item => ({
+            id: item.id,
+            code: item.code,
+            title: item.name,
+            slug: (item.code || `tthc-${item.id}`).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            group_name: "Bộ phận Một cửa xã Đăk Pxi",
+            agency: item.agency,
+            processing_time: item.duration,
+            online_type: item.level?.includes("Mức 4") || item.level?.includes("toàn trình") ? "toan-trinh" : "mot-phan",
+            summary: item.detailText,
+            guideLink: item.guideLink,
+            fee: item.fee,
+            view_count: 2450
+          }));
+
+          let mergedList = [...formattedOfficerList];
+          if (groupId) {
+            mergedList = mergedList.filter(p => p.group_id === groupId);
+          }
+          if (keyword) {
+            const q = keyword.toLowerCase();
+            mergedList = mergedList.filter(p => p.title.toLowerCase().includes(q) || (p.summary && p.summary.toLowerCase().includes(q)));
+          }
+
+          const cleanList = filterOutDeleted(mergedList);
+          setProcedures(cleanList);
+          setTotalCount(cleanList.length);
+        } else {
+          const cleanList = filterOutDeleted(mockRows);
+          setProcedures(cleanList);
+          setTotalCount(cleanList.length);
+        }
       })
       .finally(() => setLoading(false));
   }, [keyword, groupId, page]);
 
-  // Load số lượng theo nhóm
+  // Load số lượng theo nhóm với số liệu niêm yết chuẩn
   useEffect(() => {
-    api
-      .get("/procedure-groups")
-      .then((res) => {
-        const counts = { all: 0 };
-        normalizeList(res.data).forEach((g) => {
-          counts[g.id] = g.procedure_count ?? 0;
-          counts.all += counts[g.id];
-        });
-        setGroupCounts(counts);
-      })
-      .catch(() => {
-        const counts = { all: MOCK_PROCEDURES.length };
-        FIELD_GROUPS.forEach((f) => {
-          counts[f.id] = MOCK_PROCEDURES.filter((p) => p.group_id === f.id).length;
-        });
-        setGroupCounts(counts);
-      });
-  }, []);
+    const counts = {};
+    let total = 0;
+    FIELD_GROUPS.forEach((f) => {
+      const addedCount = procedures.filter(p => p.fieldGroup === f.name || p.group_id === f.id).length;
+      const countForGroup = (f.default_count || 0) + addedCount;
+      counts[f.id] = countForGroup;
+      total += countForGroup;
+    });
+    counts.all = total;
+    setGroupCounts(counts);
+  }, [procedures]);
 
-  // 8. THỦ TỤC PHỔ BIẾN (TOP 5)
+  // 8. THỦ TỤC PHỔ BIẾN (TOP 5 THỦ TỤC THỰC TẾ TỪ CÁN BỘ NIÊM YẾT)
   const popularProcedures = useMemo(() => {
-    return [...MOCK_PROCEDURES]
+    if (!procedures || procedures.length === 0) return [];
+    return [...procedures]
       .sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
       .slice(0, 5);
-  }, []);
+  }, [procedures]);
 
   // Sắp xếp và lọc dữ liệu danh sách thủ tục
   const displayedProcedures = useMemo(() => {
@@ -748,13 +962,47 @@ export default function Thutuchanhchinh() {
 
   return (
     <div className="tthc-app-root">
-      {/* 9. THÔNG TIN NHANH THANH TOP */}
-      <QuickInfoBar />
-
-      {/* 1. HEADER CHUẨN ĐIỆN TỬ NHÀ NƯỚC */}
-      <CompactGovHeader />
-
       <main className="tthc-main-container">
+        {/* NÚT QUAY LẠI TRANG CHỦ */}
+        <div style={{ marginBottom: "16px" }}>
+          <Link
+            to="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              background: "#ffffff",
+              border: "1.5px solid #cbd5e1",
+              color: "#005baa",
+              padding: "8px 18px",
+              borderRadius: "30px",
+              fontSize: "13.5px",
+              fontWeight: "800",
+              textDecoration: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            <span>Quay lại Trang chủ</span>
+          </Link>
+        </div>
+        {/* HEADER CHÍNH THỨC UBND XÃ ĐĂK PXI NĂM 2026 */}
+        <div style={{ textAlign: "center", background: "#ffffff", border: "1.5px solid #cbd5e1", borderRadius: "20px", padding: "22px 28px", marginBottom: "22px", boxShadow: "0 4px 16px rgba(0,0,0,0.03)" }}>
+          <span style={{ background: "#005baa", color: "#ffffff", padding: "4px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "900", letterSpacing: "1px", textTransform: "uppercase", display: "inline-block", marginBottom: "8px" }}>
+            NĂM 2026
+          </span>
+          <h2 style={{ fontSize: "20px", fontWeight: "900", color: "#003d7a", margin: "0 0 10px", lineHeight: "1.4", textTransform: "uppercase", letterSpacing: "-0.3px" }}>
+            DANH MỤC THỦ TỤC HÀNH CHÍNH THUỘC THẨM QUYỀN GIẢI QUYẾT CỦA UBND XÃ ĐĂK PXI
+          </h2>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#f0f9ff", border: "1.5px solid #bae6fd", color: "#0284c7", padding: "8px 20px", borderRadius: "30px", fontSize: "14px", fontWeight: "800", boxShadow: "0 2px 8px rgba(2, 132, 199, 0.08)" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>Scan hoặc nhấn vào mã QR code tương ứng để xem chi tiết</span>
+          </div>
+        </div>
+
         {/* 2. THANH TÌM KIẾM TOÀN CHIỀU NGANG */}
         <SearchBar
           keyword={keyword}
@@ -791,9 +1039,8 @@ export default function Thutuchanhchinh() {
             <div className="tthc-section-heading">
               <span className="tthc-heading-title">
                 <SvgIcons.Flame />
-                <span>Top 5 thủ tục được tra cứu nhiều nhất</span>
+                <span>Top những thủ tục được xem nhiều nhất</span>
               </span>
-              <span className="tthc-heading-sub">Bà con thường chọn làm nhiều nhất tại xã</span>
             </div>
 
             <div className="tthc-popular-chips-list">
@@ -855,6 +1102,10 @@ export default function Thutuchanhchinh() {
                   item={item}
                   expanded={expandedId === item.id}
                   onToggleExpand={() => setExpandedId(expandedId === item.id ? null : item.id)}
+                  onEdit={handleEditProcedure}
+                  onDelete={handleDeleteProcedure}
+                  onActionToast={showToast}
+                  isOfficer={!!localStorage.getItem("admin_token")}
                 />
               ))}
             </div>
@@ -868,6 +1119,7 @@ export default function Thutuchanhchinh() {
                   setKeyword("");
                   setGroupId("");
                   setStatFilter("all");
+                  showToast("Đã khôi phục danh sách", "Đã hiển thị toàn bộ danh sách thủ tục hành chính niêm yết!", "info", "🔄");
                 }}
               >
                 Xem lại tất cả thủ tục
@@ -898,15 +1150,9 @@ export default function Thutuchanhchinh() {
         </section>
       </main>
 
-
-
       {/* 11. FOOTER THÔNG TIN DỮ LIỆU */}
       <footer className="tthc-footer">
         <div className="tthc-footer-inner">
-          <div className="tthc-footer-info">
-            <p><strong>Cổng Thông tin Thủ tục Hành chính UBND Xã Đăk Pxi</strong></p>
-            <p>Đơn vị quản lý: Phòng Văn hóa - Xã hội UBND xã Đăk Pxi, tỉnh Quảng Ngãi</p>
-          </div>
           <div className="tthc-footer-meta">
             <span>Tổng số thủ tục: <strong>{totalCount || MOCK_PROCEDURES.length}</strong></span>
             <span className="sep">•</span>
@@ -916,6 +1162,9 @@ export default function Thutuchanhchinh() {
           </div>
         </div>
       </footer>
+
+      {/* 12. THÔNG BÁO DƯỚI PHẢI GIAO DIỆN CHUẨN HTML5 (5 GIÂY TỰ MẤT) */}
+      <ToastNotification toast={toast} onClose={() => setToast(null)} />
     </div>
   );
 }

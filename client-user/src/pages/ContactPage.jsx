@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import "./ContactPage.css";
 import ContactCard from "../components/ContactCard";
 import GoogleMap from "../components/GoogleMap";
-import FeedbackForm from "../components/FeedbackForm";
 
 const SvgPhoneCall = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -23,7 +22,7 @@ export default function ContactPage() {
             <div className="contact-brand-text">
               <span className="sub-title">CỔNG THÔNG TIN ĐIỆN TỬ UBND XÃ ĐĂK PXI</span>
               <h1>Liên hệ & Hỗ trợ Nhân dân</h1>
-              <p>Thông tin liên hệ chính thức, địa chỉ trụ sở và kênh tiếp nhận góp ý của nhân dân xã Đăk Pxi.</p>
+              <p>Thông tin liên hệ chính thức và địa chỉ trụ sở làm việc UBND xã Đăk Pxi.</p>
             </div>
           </div>
         </div>
@@ -45,20 +44,11 @@ export default function ContactPage() {
           <ContactCard />
           <GoogleMap />
         </div>
-
-        {/* FORM GÓP Ý Ở CUỐI TRANG */}
-        <div className="contact-feedback-section">
-          <FeedbackForm />
-        </div>
       </main>
 
       {/* ── FOOTER ĐỒNG BỘ ── */}
       <footer className="contact-footer">
         <div className="contact-footer-inner">
-          <div className="footer-left">
-            <p><strong>© Phòng Văn hóa - Xã hội UBND xã Đăk Pxi</strong></p>
-            <p>Đơn vị quản lý website: UBND xã Đăk Pxi, tỉnh Quảng Ngãi</p>
-          </div>
           <div className="footer-right">
             <span>Phiên bản hệ thống: <strong>v2.4.0 (HTML5 Standard)</strong></span>
           </div>

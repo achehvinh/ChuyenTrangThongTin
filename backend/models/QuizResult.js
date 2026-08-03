@@ -20,6 +20,17 @@ const quizResultSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    details: [
+      {
+        questionIndex: Number,
+        questionText: String,
+        options: [String],
+        selectedOption: Number,
+        correctOption: Number,
+        isCorrect: Boolean,
+        explain: String,
+      },
+    ],
   },
   {
     timestamps: true,

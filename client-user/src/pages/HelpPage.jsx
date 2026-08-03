@@ -209,10 +209,6 @@ export default function HelpPage() {
       {/* ── FOOTER ĐỒNG BỘ ── */}
       <footer className="help-footer">
         <div className="help-footer-inner">
-          <div className="footer-left">
-            <p><strong>© Phòng Văn hóa - Xã hội UBND xã Đăk Pxi</strong></p>
-            <p>Đơn vị quản lý website: UBND xã Đăk Pxi, tỉnh Quảng Ngãi</p>
-          </div>
           <div className="footer-right">
             <span>Phiên bản hệ thống: <strong>v2.4.0 (HTML5 Standard)</strong></span>
           </div>

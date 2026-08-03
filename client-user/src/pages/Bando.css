@@ -65,7 +65,7 @@
 /* ── Layout 2 cột ── */
 .bando-layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 20px;
   align-items: start;
 }
@@ -74,10 +74,11 @@
 .bando-sidebar {
   background: #fff;
   border: 0.5px solid #e2e8f0;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 .bando-sidebar-header {
@@ -86,36 +87,85 @@
   justify-content: space-between;
   padding: 16px 18px;
   border-bottom: 0.5px solid #f1f5f9;
+  background: #ffffff;
 }
 
 .bando-sidebar-header h2 {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   color: #0f172a;
-  margin: 0;
+  margin: 0 0 2px;
 }
 
-.bando-sidebar-header span {
+.bando-count-badge {
   font-size: 11px;
-  color: #94a3b8;
-  font-weight: 500;
+  color: #0284c7;
+  font-weight: 700;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
-.bando-location-list { display: flex; flex-direction: column; }
+.bando-search-box {
+  padding: 10px 14px;
+  border-bottom: 0.5px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+.bando-search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0f172a;
+  outline: none;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.bando-search-input:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.bando-location-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 440px;
+  overflow-y: auto;
+}
+
+.bando-location-list::-webkit-scrollbar {
+  width: 5px;
+}
+.bando-location-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
 
 .bando-location-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 18px;
+  padding: 13px 16px;
   border-bottom: 0.5px solid #f1f5f9;
   text-decoration: none;
-  transition: background .15s;
+  transition: all 0.2s ease;
   cursor: pointer;
+  border-left: 4px solid transparent;
 }
 
-.bando-location-item:hover { background: #f8fafc; }
-.bando-location-item:last-child { border-bottom: none; }
+.bando-location-item:hover {
+  background: #f1f5f9;
+}
+
+.bando-location-item.active {
+  background: #f0f9ff;
+  border-left-color: #0284c7;
+}
 
 .bando-loc-icon {
   width: 38px;
@@ -128,19 +178,26 @@
   flex-shrink: 0;
 }
 
-.bando-loc-body { flex: 1; min-width: 0; }
+.bando-loc-body {
+  flex: 1;
+  min-width: 0;
+}
 
 .bando-loc-body h3 {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 13.5px;
+  font-weight: 750;
   color: #0f172a;
-  margin: 0 0 2px;
+  margin: 0 0 3px;
   line-height: 1.3;
+}
+
+.bando-location-item.active .bando-loc-body h3 {
+  color: #0284c7;
 }
 
 .bando-loc-body p {
   font-size: 11px;
-  color: #94a3b8;
+  color: #64748b;
   margin: 0;
   line-height: 1.4;
 }
@@ -156,26 +213,80 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 14px;
-  padding: 12px;
+  margin: 12px 14px 14px;
+  padding: 11px;
   background: #005bac;
   color: #fff;
   border-radius: 10px;
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
-  transition: background .2s;
+  transition: background 0.2s;
 }
 
-.bando-open-btn:hover { background: #004a8f; }
+.bando-open-btn:hover {
+  background: #004a8f;
+}
 
-/* ── Map ── */
-.bando-map-wrap {
+/* ── Container Map & Topbar ── */
+.bando-map-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bando-map-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: #ffffff;
   border-radius: 14px;
+  border: 0.5px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.map-active-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: #334155;
+}
+
+.map-active-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.map-active-name {
+  font-weight: 800;
+  color: #0284c7;
+}
+
+.map-direct-btn {
+  background: #0284c7;
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.map-direct-btn:hover {
+  background: #0369a1;
+}
+
+.bando-map-wrap {
+  border-radius: 16px;
   overflow: hidden;
   border: 0.5px solid #e2e8f0;
-  height: 520px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+  height: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .bando-map-iframe {

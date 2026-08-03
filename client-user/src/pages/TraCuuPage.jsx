@@ -379,19 +379,23 @@ export default function TraCuuPage() {
         </nav>
 
         {/* ── 1. TOP HEADER & INLINE PREPARATION STEP BAR ── */}
-        <header className="clean-top-header">
-          <div className="clean-header-main">
-            <div className="clean-title-group">
-              <h1 className="clean-title">
-                Tra cứu thẻ BHYT & BHXH tại nhà
+        <header className="clean-top-header" style={{ flexDirection: "column", gap: "16px", textAlign: "center" }}>
+          <div className="clean-header-main" style={{ flexDirection: "column", alignItems: "center", textTransform: "none" }}>
+            <div className="clean-title-group" style={{ textAlign: "center" }}>
+              <span style={{ background: "#005baa", color: "#ffffff", padding: "4px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "900", letterSpacing: "1px", textTransform: "uppercase", display: "inline-block", marginBottom: "8px" }}>
+                NĂM 2026
+              </span>
+              <h1 className="clean-title" style={{ fontSize: "22px", fontWeight: "900", color: "#003d7a", margin: "0 0 10px", lineHeight: "1.35", textTransform: "uppercase", letterSpacing: "-0.3px" }}>
+                DANH MỤC THỦ TỤC HÀNH CHÍNH THUỘC THẨM QUYỀN GIẢI QUYẾT CỦA UBND XÃ ĐĂK PXI
               </h1>
-              <div className="clean-subtitle">
-                Không cần lên xã
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#f0f9ff", border: "1.5px solid #bae6fd", color: "#0284c7", padding: "8px 20px", borderRadius: "30px", fontSize: "14px", fontWeight: "800", boxShadow: "0 2px 8px rgba(2, 132, 199, 0.08)", marginBottom: "12px" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>Scan hoặc nhấn vào mã QR code tương ứng để xem chi tiết</span>
               </div>
             </div>
 
             {/* PHƯƠNG THỨC TRA CỨU SEGMENT TABS */}
-            <div className="clean-mode-tabs">
+            <div className="clean-mode-tabs" style={{ marginTop: "6px" }}>
               <button
                 type="button"
                 className={`clean-mode-btn ${tab === 'app' ? 'active' : ''}`}

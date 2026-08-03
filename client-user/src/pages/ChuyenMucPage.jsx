@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FEATURES } from '../data';
 import './ChuyenMucPage.css';
 
@@ -175,15 +175,15 @@ export default function ChuyenMucPage() {
 
   return (
     <div className="news-portal-page">
-      
+
       {/* ── 2. PAGE CONTAINER & MAIN HEADER ── */}
       <div className="news-main-container">
-        
+
         {/* ── KHU VỰC CHUYÊN MỤC DÀNH CHO BÀ CON (LƯỚI 8 THẺ TRỌNG TÂM) ── */}
         <section className="cm-features-hero-section" style={{ marginBottom: '36px' }}>
           <header className="cm-section-header" style={{ textAlign: 'center', marginBottom: '24px' }}>
             <h1 className="news-main-title" style={{ fontSize: '28px', fontWeight: '900', color: '#16a34a', margin: '0 0 8px 0', textTransform: 'uppercase' }}>
-              TẤT CẢ BÀI VIẾT
+              CHUYÊN MỤC DÀNH CHO BÀ CON
             </h1>
             <p className="news-main-subtitle" style={{ fontSize: '15px', color: '#475569', margin: 0 }}>
               Cập nhật thông tin tuyên truyền, hướng dẫn pháp luật, kỹ năng và chính sách

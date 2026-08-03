@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import QuizGame from "./QuizGame";
+import { useEffect, useRef, useState } from "react";
 import "./DuoiNuocPage.css";
+import QuizGame from "./QuizGame";
 
 // ── BỘ ICON VÀ MINH HỌA SVG VECTOR CHUẨN 100% THEO THIẾT KẾ MỚI ──
 const SvgIcons = {
@@ -275,12 +275,108 @@ const VIDEOS_DATA = [
   { id: 3, title: "Sơ cứu người bị đuối nước", src: "/video/duoi_nuoc1.mp4", poster: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" }
 ];
 
+// ── ICON MINH HỌA SVG VECTOR CHUẨN HTML5 CHO TỪNG MỤC KIẾN THỨC ──
+const KIcons = {
+  Swimmer: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="28" fill="#dbeafe"/><circle cx="38" cy="18" r="5" fill="#0284c7"/><path d="M12 34Q20 28 30 34Q40 40 48 34" stroke="#0284c7" strokeWidth="3" fill="none" strokeLinecap="round"/><path d="M22 26L36 22L32 28" stroke="#0284c7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>),
+  LifeVest: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#fef3c7"/><path d="M16 12Q30 8 44 12L48 46L36 48L30 28L24 48L12 46Z" fill="#f97316" stroke="#ea580c" strokeWidth="1.5"/><rect x="20" y="24" width="20" height="4" fill="#fff" rx="2"/><rect x="20" y="34" width="20" height="4" fill="#fff" rx="2"/></svg>),
+  NoSwim: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#fff" stroke="#dc2626" strokeWidth="3.5"/><path d="M15 38Q25 32 35 38T50 38" stroke="#0284c7" strokeWidth="2.5" fill="none"/><circle cx="30" cy="20" r="4.5" fill="#0284c7"/><line x1="13" y1="47" x2="47" y2="13" stroke="#dc2626" strokeWidth="3.5"/></svg>),
+  Fence: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#dcfce7"/><rect x="12" y="16" width="5" height="30" rx="1" fill="#16a34a"/><rect x="27" y="16" width="5" height="30" rx="1" fill="#16a34a"/><rect x="42" y="16" width="5" height="30" rx="1" fill="#16a34a"/><rect x="12" y="22" width="35" height="4" rx="1" fill="#22c55e"/><rect x="12" y="34" width="35" height="4" rx="1" fill="#22c55e"/></svg>),
+  Warning: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><path d="M30 8L54 50H6Z" fill="#fbbf24" stroke="#f59e0b" strokeWidth="2" strokeLinejoin="round"/><text x="30" y="42" textAnchor="middle" fontSize="22" fontWeight="900" fill="#7c2d12">!</text></svg>),
+  River: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#dbeafe"/><path d="M10 26Q20 20 30 26Q40 32 50 26" stroke="#0284c7" strokeWidth="2.5" fill="none" strokeLinecap="round"/><path d="M10 36Q20 30 30 36Q40 42 50 36" stroke="#0369a1" strokeWidth="2.5" fill="none" strokeLinecap="round"/></svg>),
+  Hole: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#fef9c3"/><ellipse cx="30" cy="36" rx="18" ry="10" fill="#78350f" opacity="0.3"/><path d="M18 28V38Q30 48 42 38V28Q30 18 18 28Z" fill="#92400e" opacity="0.5"/></svg>),
+  Well: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#e0e7ff"/><circle cx="30" cy="32" r="12" fill="#e2e8f0" stroke="#64748b" strokeWidth="2"/><circle cx="30" cy="32" r="5" fill="#0284c7"/><rect x="28" y="12" width="4" height="12" fill="#64748b" rx="1"/><rect x="20" y="10" width="20" height="4" rx="2" fill="#475569"/></svg>),
+  Pool: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#dbeafe"/><rect x="12" y="20" width="36" height="24" rx="4" fill="#bae6fd" stroke="#0284c7" strokeWidth="2"/><path d="M12 30Q20 26 28 30Q36 34 44 30" stroke="#0284c7" strokeWidth="2" fill="none"/></svg>),
+  Flood: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#dbeafe"/><path d="M8 32Q16 26 24 32Q32 38 40 32Q48 26 52 30" stroke="#0284c7" strokeWidth="3" fill="none" strokeLinecap="round"/><path d="M8 42Q16 36 24 42Q32 48 40 42Q48 36 52 40" stroke="#0369a1" strokeWidth="3" fill="none" strokeLinecap="round"/></svg>),
+  Shout: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="28" fill="#fef3c7"/><circle cx="30" cy="20" r="7" fill="#fed7aa"/><path d="M20 32Q30 26 40 32V48H20Z" fill="#f97316"/><path d="M42 18L50 14M42 22L52 22M42 26L50 30" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round"/></svg>),
+  NoDive: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="28" fill="#fee2e2"/><circle cx="30" cy="18" r="5" fill="#dc2626"/><path d="M24 28L30 36L36 28" stroke="#dc2626" strokeWidth="3" fill="none" strokeLinecap="round"/><line x1="12" y1="48" x2="48" y2="12" stroke="#dc2626" strokeWidth="3"/></svg>),
+  Rope: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="28" fill="#dcfce7"/><circle cx="22" cy="18" r="5" fill="#fed7aa"/><path d="M16 28Q22 24 28 28V44H16Z" fill="#16a34a"/><path d="M28 30Q36 24 48 28" stroke="#92400e" strokeWidth="3" strokeLinecap="round" fill="none"/><circle cx="48" cy="28" r="6" fill="#f97316" stroke="#ea580c" strokeWidth="1.5"/></svg>),
+  Pull: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#ede9fe"/><circle cx="20" cy="20" r="5" fill="#fed7aa"/><path d="M14 30Q20 26 26 30V44H14Z" fill="#7c3aed"/><path d="M26 32L38 28" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round"/><circle cx="42" cy="34" r="5" fill="#fed7aa"/></svg>),
+  Phone114: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="28" fill="#fee2e2"/><circle cx="30" cy="30" r="18" fill="#ef4444"/><path d="M22 22Q24 32 34 34L38 30L33 26L31 28Q28 26 26 23L28 21Z" fill="#fff"/></svg>),
+  CPR1: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#dbeafe"/><path d="M14 32H46" stroke="#0284c7" strokeWidth="2"/><circle cx="30" cy="24" r="6" fill="#fed7aa"/><path d="M22 32Q30 28 38 32V46H22Z" fill="#0284c7"/></svg>),
+  CPR2: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#dcfce7"/><circle cx="30" cy="20" r="5" fill="#fed7aa"/><path d="M24 28Q30 24 36 28V34H24Z" fill="#16a34a"/><path d="M28 36L30 44L32 36" stroke="#16a34a" strokeWidth="2.5" fill="none"/></svg>),
+  CPR3: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#fef3c7"/><path d="M20 30L28 24L28 28L40 28L40 32L28 32L28 36Z" fill="#f59e0b"/><circle cx="16" cy="30" r="4" fill="#f59e0b"/></svg>),
+  CPR4: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#fee2e2"/><path d="M20 20L30 12L40 20Z" fill="#ef4444"/><rect x="22" y="20" width="16" height="18" fill="#fca5a5"/><rect x="28" y="24" width="4" height="6" fill="#ef4444"/></svg>),
+  Blanket: () => (<svg width="48" height="48" viewBox="0 0 60 60" fill="none"><rect x="6" y="6" width="48" height="48" rx="10" fill="#ede9fe"/><circle cx="30" cy="22" r="6" fill="#fed7aa"/><path d="M16 30Q30 24 44 30V48H16Z" fill="#7c3aed" opacity="0.7"/><path d="M18 32Q30 26 42 32V46H18Z" fill="#8b5cf6" opacity="0.5"/></svg>),
+};
+
+const KNOWLEDGE_DETAILS = [
+  {
+    id: 1, badge: "🎯",
+    title: "Vì sao trẻ em và người dân dễ bị đuối nước?",
+    summary: "Nhận biết các nguyên nhân cốt lõi gây tai nạn đuối nước thương tâm để phòng tránh hiệu quả.",
+    content: [
+      { text: "Không biết bơi hoặc chưa được trang bị kỹ năng an toàn trong môi trường nước.", Icon: KIcons.Swimmer },
+      { text: "Thiếu sự giám sát trực tiếp của cha mẹ, người lớn khi chơi gần ao, hồ, sông, suối, kênh rạch.", Icon: KIcons.NoDive },
+      { text: "Tự ý tắm sông suối một mình hoặc đi tắm vào buổi trưa, thời điểm nắng nóng dễ bị co thắt cơ (chuột rút).", Icon: KIcons.NoSwim },
+      { text: "Do hoảng loạn khi ngã xuống nước, hít phải nước vào phổi gây ngạt thở và chìm nhanh chóng.", Icon: KIcons.River },
+      { text: "Chủ quan tại các công trình xây dựng có hố sâu tích nước hoặc khu vực cảnh báo nguy hiểm không có rào chắn.", Icon: KIcons.Warning }
+    ]
+  },
+  {
+    id: 2, badge: "⚠️",
+    title: "Những nơi tiềm ẩn nguy cơ đuối nước nguy hiểm",
+    summary: "Các địa điểm cần đặc biệt chú ý và phòng ngừa tai nạn bất ngờ.",
+    content: [
+      { text: "Ao, hồ, sông, suối, kênh rạch có mực nước sâu, dòng chảy xiết hoặc lòng sông sạt lở.", Icon: KIcons.River },
+      { text: "Các hố công trình xây dựng, hố móng đào dở đọng nước mưa không có biển cảnh báo và nắp đậy.", Icon: KIcons.Hole },
+      { text: "Giếng nước, bể nước ngầm, lu/chậu chứa nước sinh hoạt gia đình không có nắp đậy an toàn.", Icon: KIcons.Well },
+      { text: "Bể bơi công cộng không có nhân viên cứu hộ túc trực hoặc khu vực nước sâu dành cho người lớn.", Icon: KIcons.Pool },
+      { text: "Các vùng lũ lụt, suối chảy xiết vào mùa mưa bão.", Icon: KIcons.Flood }
+    ]
+  },
+  {
+    id: 3, badge: "🛡️",
+    title: "Biện pháp phòng tránh đuối nước hiệu quả",
+    summary: "Các nguyên tắc vàng để bảo vệ an toàn bản thân và trẻ em.",
+    content: [
+      { text: "Cho trẻ em học bơi an toàn và rèn luyện kỹ năng thả nổi ngửa từ sớm.", Icon: KIcons.Swimmer },
+      { text: "Luôn mặc áo phao bảo hộ đúng quy cách khi tham gia giao thông đường thủy hoặc chơi đùa gần sông nước.", Icon: KIcons.LifeVest },
+      { text: "Tuyệt đối không đi tắm sông, suối, ao, hồ một mình hoặc chỉ rủ các bạn nhỏ đi cùng.", Icon: KIcons.NoSwim },
+      { text: "Làm rào chắn an toàn xung quanh ao hồ gia đình; đậy nắp kín tất cả lu, bể chứa nước.", Icon: KIcons.Fence },
+      { text: "Chấp hành nghiêm các biển cảnh báo nguy hiểm, biển cấm tắm tại địa phương.", Icon: KIcons.Warning }
+    ]
+  },
+  {
+    id: 4, badge: "🔑",
+    title: "Kỹ năng xử lý khi gặp người bị đuối nước",
+    summary: "Quy tắc cứu hộ an toàn từ trên bờ - Bảo vệ tính mạng cho cả người cứu và nạn nhân.",
+    content: [
+      { text: "Bước 1: Hô to thật lớn để gọi người lớn xung quanh đến cứu giúp ngay lập tức.", Icon: KIcons.Shout },
+      { text: "Bước 2: Tuyệt đối KHÔNG tự ý nhảy xuống nước cứu người nếu em chưa có kỹ năng bơi cứu hộ chuyên nghiệp.", Icon: KIcons.NoDive },
+      { text: "Bước 3: Đứng chắc chắn trên bờ, tìm vật dụng trung gian như sào tre, cành cây dài, dây thừng hoặc ném phao nổi cho nạn nhân bám vào.", Icon: KIcons.Rope },
+      { text: "Bước 4: Kéo nạn nhân vào bờ một cách cẩn trọng và giữ an toàn cho bản thân.", Icon: KIcons.Pull },
+      { text: "Bước 5: Gọi ngay số điện thoại khẩn cấp 114 (Cứu hộ) hoặc 115 (Cấp cứu y tế).", Icon: KIcons.Phone114 }
+    ]
+  },
+  {
+    id: 5, badge: "⚙️",
+    title: "Hướng dẫn kỹ thuật sơ cứu ban đầu (CPR)",
+    summary: "Các bước sơ cứu sống còn khi đưa nạn nhân đuối nước lên bờ.",
+    content: [
+      { text: "Đặt nạn nhân nằm ngửa trên mặt phẳng cứng, thoáng mát.", Icon: KIcons.CPR1 },
+      { text: "Khai thông đường thở: Kiểm tra và móc sạch dị vật, đờm dãi, đất cát trong miệng nạn nhân.", Icon: KIcons.CPR2 },
+      { text: "Nếu nạn nhân ngừng thở: Thực hiện ngay 2 lần hà hơi thổi ngạt và 30 lần ép tim ngoài lồng ngực (tần số 100-120 lần/phút).", Icon: KIcons.CPR3 },
+      { text: "Tiếp tục kiên trì thực hiện CPR cho đến khi nạn nhân tự thở lại được hoặc y tế cấp cứu 115 tới nơi.", Icon: KIcons.CPR4 },
+      { text: "Lau khô người, ủ ấm cho nạn nhân và đưa ngay đến cơ sở y tế gần nhất.", Icon: KIcons.Blanket }
+    ]
+  }
+];
+
 export default function DuoiNuocPage() {
   const [openFaq, setOpenFaq] = useState(null);
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [activeVideo, setActiveVideo] = useState(null);
   const [speaking, setSpeaking] = useState(false);
   const [bannerImgError, setBannerImgError] = useState(false);
+  const [activeKnowledge, setActiveKnowledge] = useState(null);
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiMessages, setAiMessages] = useState([
+    {
+      sender: "bot",
+      text: "Xin chào! Tôi là Trợ lý AI Tuyên truyền Phòng chống Đuối nước. Bạn cần tư vấn về kỹ năng sơ cứu, quy tắc an toàn hay tình huống khẩn cấp nào?"
+    }
+  ]);
 
   const audioRef = useRef(null);
 
@@ -298,7 +394,7 @@ export default function DuoiNuocPage() {
   };
 
   useEffect(() => {
-    const audio = new Audio('/video/duoi_nuoc.mp3');
+    const audio = new Audio('/video/duoi-nuoc01.mp3');
     audioRef.current = audio;
 
     const handleEnded = () => setSpeaking(false);
@@ -354,15 +450,40 @@ export default function DuoiNuocPage() {
     setOpenFaq(openFaq === idx ? null : idx);
   };
 
+  const handleSendAiMessage = (queryText) => {
+    const text = (queryText || aiQuery).trim();
+    if (!text) return;
+
+    const userMsg = { sender: "user", text };
+    setAiMessages((prev) => [...prev, userMsg]);
+    setAiQuery("");
+
+    setTimeout(() => {
+      let reply = "Cảm ơn câu hỏi của bạn. Để đảm bảo an toàn đuối nước, bạn hãy ghi nhớ: Luôn có người lớn đi cùng, mặc áo phao đúng quy cách, ném phao/sào khi gặp nạn và gọi 114/115 ngay khi cần thiết.";
+      const lower = text.toLowerCase();
+      if (lower.includes("sơ cứu") || lower.includes("cpr") || lower.includes("ép tim")) {
+        reply = "Kỹ thuật sơ cứu CPR khi nạn nhân ngừng thở: 1. Đặt nạn nhân nằm ngửa trên mặt phẳng cứng. 2. Làm sạch đờm dãi trong miệng. 3. Thực hiện 2 lần hà hơi thổi ngạt phối hợp 30 lần ép tim lồng ngực. Kiên trì thực hiện đến khi y tế 115 tới.";
+      } else if (lower.includes("chuột rút") || lower.includes("vọp bẻ")) {
+        reply = "Khi bị chuột rút dưới nước: Hãy giữ bình tĩnh, nín thở ngửa đầu ra sau thả nổi ngửa, gọi to người cứu hộ. Không hoảng loạn vẫy vùng sẽ làm nhanh đuối sức.";
+      } else if (lower.includes("số điện thoại") || lower.includes("114") || lower.includes("115")) {
+        reply = "Số điện thoại khẩn cấp: 114 (Cứu nạn cứu hộ đường thủy/phòng cháy), 115 (Cấp cứu Y tế). Hãy gọi ngay khi phát hiện sự cố.";
+      } else if (lower.includes("áo phao") || lower.includes("đi bơi")) {
+        reply = "Khi đi bơi/đi thuyền: Luôn chọn áo phao có kích cỡ vừa vặn với cơ thể, cài chặt tất cả các khóa an toàn trước khi xuống nước.";
+      }
+
+      setAiMessages((prev) => [...prev, { sender: "bot", text: reply }]);
+    }, 500);
+  };
+
   return (
     <div className="dn-page-v2">
 
       {/* ════════════ 1. HERO BANNER CHUẨN THIẾT KẾ MỚI ════════════ */}
       <section className={`new-hero-banner ${!bannerImgError ? 'has-custom-cover' : ''}`}>
         {!bannerImgError ? (
-          <img 
-            src="/huong-dan/anh-biaduoinuoc.jpg" 
-            alt="Ảnh bìa Cẩm nang phòng chống đuối nước" 
+          <img
+            src="/huong-dan/anh-biaduoinuoc.jpg"
+            alt="Ảnh bìa Cẩm nang phòng chống đuối nước"
             className="hero-banner-cover-img"
             onError={() => setBannerImgError(true)}
           />
@@ -371,7 +492,7 @@ export default function DuoiNuocPage() {
         )}
 
         <div className="new-hero-inner">
-          
+
           {/* Trái: Tiêu đề + Dòng phụ + 2 Nút Action */}
           <div className="hero-left-content">
             <span className="hero-sub-header">CẨM NANG</span>
@@ -422,29 +543,29 @@ export default function DuoiNuocPage() {
             </div>
             <div className="card-text-body">
               <h3>DÀNH CHO TRẺ EM</h3>
-              <p>Học qua tranh ảnh và tình huống</p>
+              <p>Thi trắc nghiệm tình huống vui</p>
             </div>
             <span className="card-arrow-circle"><SvgIcons.ArrowCircleRight /></span>
           </article>
 
-          <article className="feature-card green" onClick={() => setShowQuizModal(true)}>
+          <article className="feature-card green" onClick={() => setActiveKnowledge(KNOWLEDGE_DETAILS[2])}>
             <div className="card-icon-avatar">
               <SvgIcons.AdultAvatar />
             </div>
             <div className="card-text-body">
               <h3>DÀNH CHO NGƯỜI LỚN</h3>
-              <p>Kiến thức cần biết để bảo vệ gia đình</p>
+              <p>Kiến thức bảo vệ gia đình</p>
             </div>
             <span className="card-arrow-circle"><SvgIcons.ArrowCircleRight /></span>
           </article>
 
-          <article className="feature-card orange" onClick={() => setShowQuizModal(true)}>
+          <article className="feature-card orange" onClick={() => setActiveKnowledge(KNOWLEDGE_DETAILS[4])}>
             <div className="card-icon-avatar">
               <SvgIcons.LifebuoyIcon />
             </div>
             <div className="card-text-body">
               <h3>KỸ NĂNG SƠ CỨU</h3>
-              <p>Hướng dẫn sơ cứu và xử lý khi có sự cố</p>
+              <p>Hướng dẫn sơ cứu CPR ban đầu</p>
             </div>
             <span className="card-arrow-circle"><SvgIcons.ArrowCircleRight /></span>
           </article>
@@ -455,7 +576,7 @@ export default function DuoiNuocPage() {
             </div>
             <div className="card-text-body">
               <h3>SỐ ĐIỆN THOẠI KHẨN CẤP</h3>
-              <p>Gọi ngay khi cần hỗ trợ</p>
+              <p>Gọi ngay 114 / 115 khi cần</p>
             </div>
             <span className="card-arrow-circle"><SvgIcons.ArrowCircleRight /></span>
           </article>
@@ -515,35 +636,17 @@ export default function DuoiNuocPage() {
             </h3>
 
             <ul className="knowledge-bullet-list">
-              <li onClick={() => setShowQuizModal(true)}>
-                <span className="k-badge">🎯</span>
-                <span className="k-txt">Vì sao dễ bị đuối nước?</span>
-                <span className="k-arr">→</span>
-              </li>
-              <li onClick={() => setShowQuizModal(true)}>
-                <span className="k-badge">🎯</span>
-                <span className="k-txt">Những nơi tiềm ẩn nguy hiểm</span>
-                <span className="k-arr">→</span>
-              </li>
-              <li onClick={() => setShowQuizModal(true)}>
-                <span className="k-badge">🎯</span>
-                <span className="k-txt">Cách phòng tránh đuối nước</span>
-                <span className="k-arr">→</span>
-              </li>
-              <li onClick={() => setShowQuizModal(true)}>
-                <span className="k-badge">🔑</span>
-                <span className="k-txt">Khi gặp người bị đuối nước</span>
-                <span className="k-arr">→</span>
-              </li>
-              <li onClick={() => setShowQuizModal(true)}>
-                <span className="k-badge">⚙️</span>
-                <span className="k-txt">Hướng dẫn sơ cứu ban đầu</span>
-                <span className="k-arr">→</span>
-              </li>
+              {KNOWLEDGE_DETAILS.map((k, i) => (
+                <li key={k.id} onClick={() => setActiveKnowledge(k)}>
+                  <span className="k-badge">{k.badge}</span>
+                  <span className="k-txt">{k.title}</span>
+                  <span className="k-arr">→</span>
+                </li>
+              ))}
             </ul>
 
             <div className="box-center-foot">
-              <button type="button" className="pill-blue-btn" onClick={() => setShowQuizModal(true)}>
+              <button type="button" className="pill-blue-btn" onClick={() => setActiveKnowledge(KNOWLEDGE_DETAILS[0])}>
                 XEM THÊM KIẾN THỨC
               </button>
             </div>
@@ -630,7 +733,7 @@ export default function DuoiNuocPage() {
                   <li><span className="check">✓</span> Các tình huống nguy hiểm</li>
                 </ul>
 
-                <button type="button" className="pill-purple-btn" onClick={() => alert("Trợ lý AI sẵn sàng hỗ trợ giải đáp câu hỏi của bạn!")}>
+                <button type="button" className="pill-purple-btn" onClick={() => setShowAiModal(true)}>
                   💬 HỎI NGAY
                 </button>
               </div>
@@ -662,8 +765,100 @@ export default function DuoiNuocPage() {
       {showQuizModal && (
         <div className="dn-modal-overlay" onClick={() => setShowQuizModal(false)}>
           <div className="dn-modal-quiz-card" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="dn-modal-close-btn" onClick={() => setShowQuizModal(false)}>✕ Đóng</button>
-            <QuizGame />
+            <QuizGame onClose={() => setShowQuizModal(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* TRANG CHI TIẾT KIẾN THỨC PHÒNG CHỐNG ĐUỐI NƯỚC — FULL SCREEN */}
+      {activeKnowledge && (
+        <div className="dn-modal-overlay" style={{ padding: 0 }} onClick={() => setActiveKnowledge(null)}>
+          <div className="dn-modal-knowledge-card" onClick={(e) => e.stopPropagation()}>
+
+            <div className="k-modal-header">
+              <span className="k-modal-badge">{activeKnowledge.badge}</span>
+              <div style={{ flex: 1 }}>
+                <h3 className="k-modal-title">{activeKnowledge.title}</h3>
+                <p className="k-modal-summary">{activeKnowledge.summary}</p>
+              </div>
+              <button type="button" className="k-modal-close-circle" onClick={() => setActiveKnowledge(null)}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+
+            <div className="k-modal-body">
+              <h4 className="k-modal-section-h4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#0284c7"><path d="M4 4h16v16H4z" opacity="0.15"/><path d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm1 4v2h10V6H7zm0 4v2h10v-2H7zm0 4v2h7v-2H7z" fill="#0284c7"/></svg>
+                <span>Nội dung hướng dẫn chi tiết:</span>
+              </h4>
+              <ul className="k-modal-content-list">
+                {activeKnowledge.content.map((item, idx) => {
+                  const ItemIcon = item.Icon;
+                  return (
+                    <li key={idx} className={idx % 2 === 1 ? 'k-row-alt' : ''}>
+                      <span className="k-check-circle">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3 3 7-7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </span>
+                      <span className="k-item-text">{item.text}</span>
+                      <span className="k-item-icon">{ItemIcon && <ItemIcon />}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div className="k-modal-footer">
+              <button type="button" className="k-modal-quiz-btn" onClick={() => { setActiveKnowledge(null); setShowQuizModal(true); }}>
+                🎮 Thi trắc nghiệm tình huống →
+              </button>
+              <button type="button" className="k-modal-close-foot-btn" onClick={() => setActiveKnowledge(null)}>
+                ← Quay lại
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL TRỢ LÝ AI TUYÊN TRUYỀN HỎI ĐÁP INTERACTIVE */}
+      {showAiModal && (
+        <div className="dn-modal-overlay" onClick={() => setShowAiModal(false)}>
+          <div className="dn-modal-ai-card" onClick={(e) => e.stopPropagation()}>
+            <div className="ai-modal-header">
+              <div className="ai-header-title">
+                <SvgIcons.AiRobotCute3D />
+                <div>
+                  <h3>TRỢ LÝ AI TUYÊN TRUYỀN</h3>
+                  <span>Tư vấn kỹ năng phòng chống đuối nước 24/7</span>
+                </div>
+              </div>
+              <button type="button" className="dn-modal-close-btn" onClick={() => setShowAiModal(false)}>✕</button>
+            </div>
+
+            <div className="ai-modal-chat-body">
+              {aiMessages.map((msg, idx) => (
+                <div key={idx} className={`ai-chat-bubble ${msg.sender}`}>
+                  {msg.sender === "bot" && <span className="bot-avatar-icon">🤖</span>}
+                  <div className="bubble-text">{msg.text}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="ai-quick-prompts">
+              <span className="quick-label">Gợi ý hỏi nhanh:</span>
+              <button type="button" onClick={() => handleSendAiMessage("Kỹ thuật sơ cứu CPR khi ngừng thở?")}>Sơ cứu CPR</button>
+              <button type="button" onClick={() => handleSendAiMessage("Làm gì khi bị chuột rút dưới nước?")}>Xử lý chuột rút</button>
+              <button type="button" onClick={() => handleSendAiMessage("Số điện thoại cứu hộ khẩn cấp?")}>Gọi cứu hộ 114</button>
+            </div>
+
+            <form className="ai-modal-input-row" onSubmit={(e) => { e.preventDefault(); handleSendAiMessage(); }}>
+              <input
+                type="text"
+                placeholder="Nhập thắc mắc của bạn về phòng chống đuối nước..."
+                value={aiQuery}
+                onChange={(e) => setAiQuery(e.target.value)}
+              />
+              <button type="submit" className="ai-send-btn">Gửi câu hỏi</button>
+            </form>
           </div>
         </div>
       )}

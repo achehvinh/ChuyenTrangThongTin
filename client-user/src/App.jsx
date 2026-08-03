@@ -1,53 +1,51 @@
-import './App.css';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import './App.css';
 import { getApiUrl } from './utils/apiConfig';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { Link } from "react-router-dom";
 
-import Navbar from './components/Navbar';
-import FeedbackPopup from './components/FeedbackPopup';
 import AlertBanner from './components/AlertBanner';
-import TTSButton from './components/TTSButton';
 import DragDrop from './components/DragDrop';
+import Navbar from './components/Navbar';
+import TTSButton from './components/TTSButton';
 import { FontSizeProvider } from './FontSizeContext';
 
-import HomePage from './pages/HomePage';
-import TraCuuPage from './pages/TraCuuPage';
-import HuongDanBHXHPage from './pages/HuongDanBHXHPage';
-import HuongDanVNeIDPage from './pages/HuongDanVNeIDPage';
-import ThuVienAnh from './pages/Thuvienanh.jsx';
-import { ThongTinPage, ThongBaoPage, LienHePage } from './pages/InfoPages';
+import FloatingChatBot from './components/FloatingChatBot';
+import AllFeaturesPage from './pages/AllFeaturesPage';
+import ChuyenDoiSoPage from './pages/ChuyenDoiSoPage';
+import ChuyenMucPage from './pages/ChuyenMucPage';
+import ChuyenTrangThongTin from './pages/ChuyenTrangThongTin';
 import CoCauToChucPage from './pages/CoCauToChucPage';
 import DangNhap from './pages/DangNhap';
-import AllFeaturesPage from './pages/AllFeaturesPage';
+import HomePage from './pages/HomePage';
+import HuongDanBHXHPage from './pages/HuongDanBHXHPage';
+import HuongDanVNeIDPage from './pages/HuongDanVNeIDPage';
+import { LienHePage, ThongBaoPage, ThongTinPage } from './pages/InfoPages';
 import LichHopPage from './pages/LichHopPage';
-import ChuyenDoiSoPage from './pages/ChuyenDoiSoPage';
 import Thutuchanhchinh from './pages/Thutuchanhchinh';
-import ChuyenTrangThongTin from './pages/ChuyenTrangThongTin';
-import ChuyenMucPage from './pages/ChuyenMucPage';
-import FloatingChatBot from './components/FloatingChatBot';
+import ThuVienAnh from './pages/Thuvienanh.jsx';
+import TraCuuPage from './pages/TraCuuPage';
 // Dòng 20 — đổi thành
-import { LanguageProvider } from './LanguageContext';
-import DuoiNuocPage from './pages/DuoiNuocPage';
-import QuizGame from './pages/QuizGame';
-import Bando from './pages/Bando';
-import Gianongsan from './pages/Gianongsan';
-import ThuTucChiTiet from "./pages/ThuTucChiTiet";
-import BaiVietDetailPage from './pages/BaiVietDetailPage';
 import ChatWindow from './components/ai/ChatWindow';
-import ThienTaiPage from './pages/ThienTaiPage';
-import ChayRungPage from './pages/ChayRungPage';
-import Baucu from './pages/Baucu';
-import TeNanXaHoiPage from './pages/TeNanXaHoiPage';
-import PhapLuatPage from './pages/PhapLuatPage';
-import VideoPage from './pages/VideoPage';
-import TruongPhongDashboard from './pages/TruongPhongDashboard';
-import CuocHopTrucTuyen from './pages/CuocHopTrucTuyen';
+import { LanguageProvider } from './LanguageContext';
 import AnToanGiaoThongPage from './pages/AnToanGiaoThongPage';
-import PhongChongLuaDaoPage from './pages/PhongChongLuaDaoPage';
-import HelpPage from './pages/HelpPage';
+import BaiVietDetailPage from './pages/BaiVietDetailPage';
+import Bando from './pages/Bando';
+import Baucu from './pages/Baucu';
+import ChayRungPage from './pages/ChayRungPage';
 import ContactPage from './pages/ContactPage';
+import CuocHopTrucTuyen from './pages/CuocHopTrucTuyen';
+import DuoiNuocPage from './pages/DuoiNuocPage';
+import Gianongsan from './pages/Gianongsan';
+import HelpPage from './pages/HelpPage';
+import PhapLuatPage from './pages/PhapLuatPage';
+import PhongChongLuaDaoPage from './pages/PhongChongLuaDaoPage';
+import QuizGame from './pages/QuizGame';
+import TeNanXaHoiPage from './pages/TeNanXaHoiPage';
+import ThienTaiPage from './pages/ThienTaiPage';
+import ThuTucChiTiet from "./pages/ThuTucChiTiet";
+import TruongPhongDashboard from './pages/TruongPhongDashboard';
+import VideoPage from './pages/VideoPage';
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -67,15 +65,15 @@ function Breadcrumbs() {
   breadcrumbsList.push({ label: "Trang chủ", isHome: true, path: "/" });
 
   if (segments[0] === "chuyen-muc") {
-    breadcrumbsList.push({ label: "Tất cả bài viết", path: "/chuyen-muc" });
+    breadcrumbsList.push({ label: "Chuyên mục", path: "/chuyen-muc" });
   } else if (segments[0] === "thu-tuc-hanh-chinh") {
     breadcrumbsList.push({ label: "Dịch vụ công trực tuyến", path: "/thu-tuc-hanh-chinh" });
     if (segments[1]) {
       breadcrumbsList.push({ label: "Chi tiết thủ tục", path: `/thu-tuc-hanh-chinh/${segments[1]}` });
     }
   } else if (["bau-cu", "duoi-nuoc", "chay-rung", "thien-tai", "te-nan", "an-toan-giao-thong", "phong-chong-lua-dao"].includes(segments[0])) {
-    breadcrumbsList.push({ label: "Tất cả bài viết", path: "/chuyen-muc" });
-    
+    breadcrumbsList.push({ label: "Chuyên mục", path: "/chuyen-muc" });
+
     // Label cho từng chuyên mục
     const labels = {
       "bau-cu": "Tuyên truyền Bầu cử",
@@ -202,6 +200,8 @@ function AppLayout() {
           <Route path="/dang-nhap" element={<DangNhap />} />
           <Route path="/thong-bao" element={<ThongBaoPage />} />
           <Route path="/thong-tin" element={<ThongTinPage />} />
+          <Route path="/tong-quan" element={<ThongTinPage />} />
+          <Route path="/tong-quan-xa-dak-pxi" element={<ThongTinPage />} />
           <Route path="/tra-cuu" element={<TraCuuPage />} />
           <Route path="/co-cau-to-chuc" element={<CoCauToChucPage />} />
           <Route path="/huong-dan-bhxh" element={<HuongDanBHXHPage />} />

@@ -325,7 +325,7 @@ export default function HomePage() {
                   <span className="qa-tile-label">Thông báo</span>
                 </button>
 
-                {/* TILE 5: HỎI ĐÁP - GÓP Ý */}
+                {/* TILE 5: LIÊN HỆ & HỖ TRỢ */}
                 <button
                   type="button"
                   className="qa-tile qa-tile--purple"
@@ -334,7 +334,7 @@ export default function HomePage() {
                   <div className="qa-tile-icon-box purple">
                     <MessageSquare size={22} color="#8e24aa" />
                   </div>
-                  <span className="qa-tile-label">Hỏi đáp – Góp ý</span>
+                  <span className="qa-tile-label">Liên hệ & Hỗ trợ</span>
                 </button>
 
                 {/* TILE 6: TẤT CẢ CHUYÊN MỤC */}
