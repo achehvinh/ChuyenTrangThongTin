@@ -183,7 +183,7 @@ export default function ChuyenMucPage() {
         <section className="cm-features-hero-section" style={{ marginBottom: '36px' }}>
           <header className="cm-section-header" style={{ textAlign: 'center', marginBottom: '24px' }}>
             <h1 className="news-main-title" style={{ fontSize: '28px', fontWeight: '900', color: '#16a34a', margin: '0 0 8px 0', textTransform: 'uppercase' }}>
-              CHUYÊN MỤC DÀNH CHO BÀ CON
+              TẤT CẢ BÀI VIẾT
             </h1>
             <p className="news-main-subtitle" style={{ fontSize: '15px', color: '#475569', margin: 0 }}>
               Cập nhật thông tin tuyên truyền, hướng dẫn pháp luật, kỹ năng và chính sách

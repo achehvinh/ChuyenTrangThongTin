@@ -66,14 +66,14 @@ function Breadcrumbs() {
   breadcrumbsList.push({ label: "Trang chủ", isHome: true, path: "/" });
 
   if (segments[0] === "chuyen-muc") {
-    breadcrumbsList.push({ label: "Chuyên mục cho bà con", path: "/chuyen-muc" });
+    breadcrumbsList.push({ label: "Tất cả bài viết", path: "/chuyen-muc" });
   } else if (segments[0] === "thu-tuc-hanh-chinh") {
     breadcrumbsList.push({ label: "Dịch vụ công trực tuyến", path: "/thu-tuc-hanh-chinh" });
     if (segments[1]) {
       breadcrumbsList.push({ label: "Chi tiết thủ tục", path: `/thu-tuc-hanh-chinh/${segments[1]}` });
     }
   } else if (["bau-cu", "duoi-nuoc", "chay-rung", "thien-tai", "te-nan", "an-toan-giao-thong", "phong-chong-lua-dao"].includes(segments[0])) {
-    breadcrumbsList.push({ label: "Chuyên mục cho bà con", path: "/chuyen-muc" });
+    breadcrumbsList.push({ label: "Tất cả bài viết", path: "/chuyen-muc" });
     
     // Label cho từng chuyên mục
     const labels = {
@@ -87,7 +87,7 @@ function Breadcrumbs() {
     };
     breadcrumbsList.push({ label: labels[segments[0]] || segments[0], path: path });
   } else if (segments[0] === "tin-tuc") {
-    breadcrumbsList.push({ label: "Chuyên trang tin tức", path: "/tin-tuc" });
+    breadcrumbsList.push({ label: "Tất cả bài viết", path: "/tin-tuc" });
     if (segments[1]) {
       breadcrumbsList.push({ label: "Chi tiết bài viết", path: `/tin-tuc/${segments[1]}` });
     }

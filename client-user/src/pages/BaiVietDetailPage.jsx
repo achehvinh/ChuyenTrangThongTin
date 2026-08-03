@@ -174,7 +174,7 @@ export default function BaiVietDetailPage() {
           <li className="bc-sep" aria-hidden="true">›</li>
           <li><Link to="/">Trang chủ</Link></li>
           <li className="bc-sep" aria-hidden="true">›</li>
-          <li><Link to="/chuyen-muc">Chuyên trang tin tức</Link></li>
+          <li><Link to="/tin-tuc">Tất cả bài viết</Link></li>
           {bv && (
             <>
               <li className="bc-sep" aria-hidden="true">›</li>
@@ -497,7 +497,7 @@ export default function BaiVietDetailPage() {
                   </div>
                 </div>
                 <Link
-                  to="/chuyen-muc"
+                  to="/tin-tuc"
                   style={{
                     background: '#ffffff',
                     color: '#16a34a',
@@ -523,7 +523,7 @@ export default function BaiVietDetailPage() {
               <section className="sidebar-related-card">
                 <header className="related-card-header">
                   <h3 className="related-title">BÀI VIẾT LIÊN QUAN</h3>
-                  <Link to="/chuyen-muc" className="related-view-all-link">
+                  <Link to="/tin-tuc" className="related-view-all-link">
                     <span>Xem tất cả</span>
                     <span>→</span>
                   </Link>

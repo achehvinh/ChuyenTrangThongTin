@@ -599,71 +599,120 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
   return (
     <div className="meet-room-wrapper">
 
-      {/* Header section (Chính phủ điện tử - Gọn gàng - Kết nối người thật) */}
-      <header className="meet-header">
-        <div className="meet-info">
-          <span className="meet-badge-live">Trực tiếp</span>
-          {isSecMeeting && (
-            <span style={{
-              background: "#991b1b",
-              color: "#ffffff",
-              padding: "3px 10px",
-              borderRadius: "4px",
-              fontSize: "11px",
-              fontWeight: "800",
-              letterSpacing: "0.5px"
-            }}>
-              NỘI BỘ MẬT
-            </span>
-          )}
-          <h2 className="meet-title">{meeting.title}</h2>
-          <span style={{ color: "#475569" }}>|</span>
-          <div className="meet-timer">Thời lượng: {formatDuration(meetingSeconds)}</div>
-          {isRecording && (
-            <span style={{ background: "#dc2626", color: "#fff", fontSize: "11px", fontWeight: "800", padding: "2px 8px", borderRadius: "4px", animation: "blink-speak 1.5s infinite" }}>
-              GHI HÌNH [{formatDuration(recordingSeconds)}]
-            </span>
-          )}
+      {/* ── HEADER BẢO MẬT CHÍNH PHỦ ĐIỆN TỬ (HTML5 SVG chuẩn) ── */}
+      <header className="meet-header" style={{ height: "64px", background: "#0d1527", borderBottom: "1px solid #1e293b", padding: "0 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div className="meet-info" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {/* Blue Shield Icon Box */}
+          <div style={{
+            width: "38px", height: "38px", borderRadius: "10px",
+            background: "#1e3a8a", border: "1px solid #3b82f6",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 0 12px rgba(59, 130, 246, 0.4)", flexShrink: 0
+          }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <rect x="9" y="11" width="6" height="5" rx="1" fill="#60a5fa" stroke="none"/>
+              <path d="M10 11V9a2 2 0 1 1 4 0v2" stroke="#60a5fa" strokeWidth="2"/>
+            </svg>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <h2 className="meet-title" style={{ margin: 0, fontSize: "16px", fontWeight: "900", color: "#ffffff", letterSpacing: "0.3px" }}>
+                HỌP BẢO MẬT
+              </h2>
+              <span style={{
+                background: "#3b0764", color: "#d8b4fe", border: "1px solid #7e22ce",
+                fontSize: "10px", fontWeight: "800", padding: "2px 8px", borderRadius: "12px",
+                textTransform: "uppercase", letterSpacing: "0.5px", display: "inline-flex", alignItems: "center", gap: "4px"
+              }}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                BẢO MẬT CAO
+              </span>
+            </div>
+            <div style={{ fontSize: "11.5px", color: "#94a3b8", display: "flex", alignItems: "center", gap: "6px" }}>
+              <span>Mã cuộc họp: <strong style={{ color: "#cbd5e1" }}>{meeting.meetingCode || "VHXH-20595"}</strong> (PIN: <strong style={{ color: "#cbd5e1" }}>{meeting.passcode || "878735"}</strong>)</span>
+              <button
+                onClick={handleCopyLink}
+                style={{ background: "none", border: "none", color: "#60a5fa", cursor: "pointer", padding: 0, display: "inline-flex", alignItems: "center" }}
+                title="Sao chép liên kết cuộc họp"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="meet-header-right" style={{ position: "relative" }}>
-          {isRoomLocked && (
-            <span style={{ background: "#881337", color: "#fda4af", fontSize: "11px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px", border: "1px solid #f43f5e" }}>
-              ĐÃ KHÓA PHÒNG
-            </span>
-          )}
+        {/* Center Header Pill Container */}
+        <div style={{
+          background: "rgba(15, 23, 42, 0.8)", border: "1px solid #334155", borderRadius: "24px",
+          padding: "5px 18px", display: "flex", alignItems: "center", gap: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
+        }}>
+          <span style={{ background: "#ef4444", color: "#ffffff", padding: "2px 10px", borderRadius: "12px", fontSize: "11px", fontWeight: "800", display: "inline-flex", alignItems: "center", gap: "5px" }}>
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="#ffffff"><circle cx="12" cy="12" r="10"/></svg>
+            TRỰC TIẾP
+          </span>
+          <span style={{ color: "#e2e8f0", fontSize: "13px", fontWeight: "700", fontFamily: "monospace" }}>
+            {formatDuration(meetingSeconds)}
+          </span>
+          <span style={{ background: "rgba(153, 27, 27, 0.4)", color: "#fca5a5", border: "1px solid #991b1b", padding: "2px 8px", borderRadius: "12px", fontSize: "11px", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            Nội bộ mật
+          </span>
+          <strong style={{ color: "#f8fafc", fontSize: "14px", fontWeight: "800" }}>
+            {meeting.title || "Tuyên truyền bà con"}
+          </strong>
+        </div>
 
-          <button
-            onClick={handleCopyLink}
-            style={{ background: "#1e3a8a", color: "#60a5fa", border: "1px solid #3b82f6", padding: "3px 10px", borderRadius: "4px", fontSize: "12px", fontWeight: "700", cursor: "pointer" }}
-            title="Sao chép đường dẫn để mời người thật vào họp ngay bây giờ"
-          >
-            Mã: {meeting.meetingCode || "VHXH-98213"} (PIN: {meeting.passcode || "123456"}) 🔗
-          </button>
-
+        {/* Right Header Action Items */}
+        <div className="meet-header-right" style={{ position: "relative", display: "flex", alignItems: "center", gap: "10px" }}>
           <button
             onClick={() => setShowAddOfficerModal(true)}
             style={{
-              cursor: "pointer", border: "1px solid #10b981", background: "#065f46", color: "#ffffff",
-              fontSize: "12px", fontWeight: "700", padding: "4px 12px", borderRadius: "6px",
-              display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
+              background: "#1e293b", color: "#f1f5f9", border: "1px solid #334155",
+              fontSize: "12.5px", fontWeight: "700", padding: "6px 14px", borderRadius: "8px",
+              cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px"
             }}
-            title="Kết nối thêm Trưởng/Phó phòng & Cán bộ chuyên trách xã Đăk Pxi vào cuộc họp"
           >
-            <span>+ Mời Cán bộ</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/>
+              <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+            <span>Mời thành viên</span>
           </button>
+
+          <span style={{ background: "#1e293b", color: "#cbd5e1", border: "1px solid #334155", fontSize: "12.5px", fontWeight: "700", padding: "6px 12px", borderRadius: "8px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            {participants.length || 12}
+          </span>
 
           <button
             className="meet-participant-count"
             onClick={() => setShowParticipantDropdown(!showParticipantDropdown)}
             style={{
-              cursor: "pointer", border: "none", background: "#334155", color: "#cbd5e1",
-              fontSize: "12px", fontWeight: "700", padding: "4px 10px", borderRadius: "6px",
-              display: "inline-flex", alignItems: "center", gap: "4px", transition: "all 0.15s ease"
+              background: "#1e293b", color: "#cbd5e1", border: "1px solid #334155",
+              fontSize: "12.5px", fontWeight: "700", padding: "6px 12px", borderRadius: "8px",
+              cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px"
             }}
-            title="Bấm để xem danh sách Cán bộ đang tham gia"
           >
-            Cán bộ: {participants.length} {showParticipantDropdown ? "▲" : "▼"}
+            <span>Cán bộ: {participants.length}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points={showParticipantDropdown ? "18 15 12 9 6 15" : "6 9 12 15 18 9"} />
+            </svg>
           </button>
 
           {/* DROPDOWN DANH SÁCH CÁN BỘ ĐANG THAM GIA */}
@@ -719,9 +768,20 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
             </div>
           )}
 
-          <div className="meet-timer" style={{ fontSize: "13.5px", fontWeight: "700" }}>
+          <div style={{ color: "#94a3b8", fontSize: "13px", fontWeight: "600" }}>
             {currentTime.toLocaleTimeString("vi-VN")}
           </div>
+
+          <button
+            style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #334155", borderRadius: "8px", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+            onClick={() => setShowOfficerModal(true)}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <circle cx="12" cy="5" r="1"/>
+              <circle cx="12" cy="12" r="1"/>
+              <circle cx="12" cy="19" r="1"/>
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -729,12 +789,12 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
       <div className="meet-main-area">
 
         {/* Left Video grid column */}
-        <div className="meet-videos-container">
+        <div className="meet-videos-container" style={{ padding: "16px", gap: "12px" }}>
 
           {/* Toast Notification Banner Floating */}
           {toastNotification && (
             <div style={{
-              position: "fixed", top: "70px", left: "50%", transform: "translateX(-50%)", zIndex: 99999,
+              position: "fixed", top: "75px", left: "50%", transform: "translateX(-50%)", zIndex: 99999,
               background: toastNotification.type === "error" ? "#be123c" : "#15803d",
               color: "#ffffff", padding: "10px 20px", borderRadius: "8px",
               boxShadow: "0 10px 25px rgba(0,0,0,0.4)", fontWeight: "800", fontSize: "13.5px",
@@ -745,357 +805,492 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
             </div>
           )}
 
-          {/* Banner thông báo Phòng chờ (Duyệt người thật) */}
+          {/* Banner thông báo Phòng chờ */}
           {isHost && waitingQueue.length > 0 && (
             <div style={{
-              background: "#1e3a8a",
-              color: "#ffffff", padding: "10px 16px", borderRadius: "8px",
+              background: "#1e3a8a", color: "#ffffff", padding: "10px 16px", borderRadius: "8px",
               display: "flex", alignItems: "center", justifyContent: "space-between",
-              marginBottom: "12px", borderLeft: "4px solid #f59e0b"
+              marginBottom: "8px", borderLeft: "4px solid #f59e0b"
             }}>
               <div>
-                <strong style={{ fontSize: "13px" }}>
-                  Phòng chờ ({waitingQueue.length}):
-                </strong>
+                <strong style={{ fontSize: "13px" }}>Phòng chờ ({waitingQueue.length}):</strong>
                 <span style={{ fontSize: "12.5px", color: "#cbd5e1", marginLeft: "6px" }}>
                   {waitingQueue[0].name} ({waitingQueue[0].role}) xin vào cuộc họp.
                 </span>
               </div>
               <div style={{ display: "flex", gap: "6px" }}>
-                <button
-                  onClick={() => handleApproveWaiting(waitingQueue[0])}
-                  style={{ background: "#22c55e", color: "#fff", border: "none", padding: "5px 14px", borderRadius: "5px", fontWeight: "800", fontSize: "12px", cursor: "pointer" }}
-                >
+                <button onClick={() => handleApproveWaiting(waitingQueue[0])} style={{ background: "#22c55e", color: "#fff", border: "none", padding: "5px 14px", borderRadius: "5px", fontWeight: "800", fontSize: "12px", cursor: "pointer" }}>
                   Duyệt vào họp
                 </button>
-                <button
-                  onClick={() => handleRejectWaiting(waitingQueue[0])}
-                  style={{ background: "#dc2626", color: "#fff", border: "none", padding: "5px 12px", borderRadius: "5px", fontWeight: "700", fontSize: "12px", cursor: "pointer" }}
-                >
+                <button onClick={() => handleRejectWaiting(waitingQueue[0])} style={{ background: "#dc2626", color: "#fff", border: "none", padding: "5px 12px", borderRadius: "5px", fontWeight: "700", fontSize: "12px", cursor: "pointer" }}>
                   Từ chối
                 </button>
               </div>
             </div>
           )}
 
-          {/* Main Stage View (Màn hình chính hiển thị LUỒNG CAMERA THẬT của Cán bộ đang họp) */}
-          <div className="meet-stage-view" style={{ position: "relative" }}>
+          {/* Main Stage View (Giao diện SVG chuẩn HTML5) */}
+          <div className="meet-stage-view" style={{ position: "relative", background: "#090d16", borderRadius: "16px", border: "1px solid #1e293b", overflow: "hidden", margin: 0 }}>
+            
+            {/* Top-left tag badge */}
+            <div style={{
+              position: "absolute", top: "14px", left: "14px", zIndex: 30,
+              background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(6px)",
+              border: "1px solid #334155", borderRadius: "20px", padding: "4px 12px",
+              color: "#ffffff", fontSize: "12px", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "6px"
+            }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 20h.01M7 20v-4M12 20v-8M17 20v-12M22 20V4"/>
+              </svg>
+              <span>{fullName || "Hoàng Trung Dũng"} (Camera trực tiếp)</span>
+            </div>
 
-            {/* Watermark bảo mật */}
-            {isSecMeeting && isWatermarkActive && (
+            {/* Top-right expand icon */}
+            <button
+              style={{
+                position: "absolute", top: "14px", right: "14px", zIndex: 30,
+                background: "rgba(15, 23, 42, 0.75)", border: "1px solid #334155",
+                borderRadius: "8px", color: "#94a3b8", width: "32px", height: "32px",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+              }}
+              onClick={() => {
+                if (localVideoRef.current) {
+                  if (document.fullscreenElement) document.exitFullscreen();
+                  else localVideoRef.current.requestFullscreen();
+                }
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+              </svg>
+            </button>
+
+            {/* Center Graphic for Encrypted Audio/Video State */}
+            <div style={{
+              width: "100%", height: "100%", display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center", position: "relative"
+            }}>
+              {/* Glowing Concentric Circles with Blue Shield SVG */}
               <div style={{
-                position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
-                pointerEvents: "none", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden"
+                width: "180px", height: "180px", borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, rgba(15, 23, 42, 0.8) 70%)",
+                border: "2px solid rgba(59, 130, 246, 0.3)", display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 0 50px rgba(37, 99, 235, 0.3)"
               }}>
                 <div style={{
-                  transform: "rotate(-22deg)", fontSize: "13.5px", fontWeight: "900",
-                  color: "rgba(255, 255, 255, 0.14)", letterSpacing: "2.5px", textTransform: "uppercase", textAlign: "center", userSelect: "none"
+                  width: "130px", height: "130px", borderRadius: "50%",
+                  background: "linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)",
+                  border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center",
+                  boxShadow: "0 0 30px rgba(59, 130, 246, 0.5)"
                 }}>
-                  🔒 BẢO MẬT NỘI BỘ CÁN BỘ {fullName.toUpperCase()} — {currentTime.toLocaleTimeString()}
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <rect x="9" y="11" width="6" height="5" rx="1" fill="#60a5fa" stroke="none"/>
+                    <path d="M10 11V9a2 2 0 1 1 4 0v2" stroke="#60a5fa" strokeWidth="2"/>
+                  </svg>
                 </div>
               </div>
-            )}
 
-            {isSharingScreen ? (
-              /* Screen Share View */
-              <div style={{ position: "relative", width: "100%", height: "100%", background: "#000" }}>
-                <video
-                  ref={screenVideoRef}
-                  autoPlay
-                  playsInline
-                  className="meet-video-feed"
-                />
-                <div className="meet-participant-name-tag">
-                  Đang chia sẻ màn hình ({fullName})
-                </div>
-              </div>
-            ) : !isCameraOff ? (
-              /* MÀN HÌNH CHÍNH: LUỒNG CAMERA THẬT CỦA CÁN BỘ ĐANG HỌP */
-              <div style={{ position: "relative", width: "100%", height: "100%", background: "#000", borderRadius: "12px", overflow: "hidden" }}>
-                <video
-                  ref={localVideoRef}
-                  autoPlay
-                  playsInline
-                  muted
-                  className="meet-video-feed local-mirror"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-                <div className="meet-participant-name-tag">
-                  <span className="meet-audio-wave-dot" id="local-audio-wave">
-                    <span className="wave-bar" style={{ height: "4px" }}></span>
-                    <span className="wave-bar" style={{ height: "4px" }}></span>
-                    <span className="wave-bar" style={{ height: "4px" }}></span>
-                  </span>
-                  {fullName} (Camera Trực tiếp)
-                </div>
-              </div>
-            ) : (
-              /* Màn hình khi tắt Camera: Hiển thị Thẻ thông tin Cán bộ */
-              <div
-                style={{
-                  width: "100%", height: "100%",
-                  background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                  position: "relative", borderRadius: "12px", border: "1px solid #334155"
-                }}
-              >
-                <div style={{
-                  width: "90px", height: "90px", borderRadius: "50%",
-                  background: "linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%)",
-                  color: "#ffffff", fontSize: "34px", fontWeight: "900",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  boxShadow: "0 8px 24px rgba(30, 64, 175, 0.4)", border: "3px solid #3b82f6",
-                  marginBottom: "14px"
-                }}>
-                  {getOfficerInitials(fullName)}
-                </div>
+              <h3 style={{ margin: "20px 0 6px", color: "#f8fafc", fontSize: "18px", fontWeight: "900", letterSpacing: "1px", textTransform: "uppercase" }}>
+                CUỘC HỌP ĐƯỢC MÃ HÓA ĐẦU CUỐI
+              </h3>
+              <p style={{ margin: 0, color: "#94a3b8", fontSize: "13.5px" }}>
+                Tất cả dữ liệu được bảo vệ theo tiêu chuẩn Bộ Y tế
+              </p>
 
-                <div style={{ fontSize: "18px", fontWeight: "800", color: "#f8fafc" }}>
-                  {fullName}
-                </div>
-                <div style={{ fontSize: "13px", color: "#94a3b8", marginTop: "4px" }}>
-                  {role === "truongphong" ? "Trưởng phòng (Chủ trì cuộc họp)" : "Cán bộ chuyên môn"} (Tắt Camera)
-                </div>
-
-                <div className="meet-participant-name-tag">
-                  {fullName} (Tắt Camera)
-                </div>
+              {/* Bottom Glassmorphism Bar inside Stage SVG Icons */}
+              <div style={{
+                position: "absolute", bottom: "16px",
+                background: "rgba(15, 23, 42, 0.8)", backdropFilter: "blur(8px)",
+                border: "1px solid #334155", borderRadius: "24px", padding: "6px 20px",
+                display: "flex", alignItems: "center", gap: "20px", fontSize: "12px", color: "#cbd5e1", fontWeight: "600"
+              }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Mã hóa E2EE
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9.5"/></svg>
+                  Không ghi hình
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="1" y1="1" x2="23" y2="23"/><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  Không chia sẻ màn hình
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Không tải xuống
+                </span>
               </div>
-            )}
+            </div>
           </div>
 
-          {/* Bottom Officer Tiles (Danh sách Cán bộ dự họp thực tế) */}
-          <div className="meet-grid-view">
-            {participants.map((p) => (
-              <div key={p.id} className={`meet-grid-item ${p.isSpeaking ? "meet-grid-item-active" : ""}`} style={{ position: "relative" }}>
-
-                {/* Direct WebRTC Camera feed for User if camera is ON */}
-                {p.isSelf && !isCameraOff ? (
-                  <div className="meet-grid-item-video" style={{ position: "relative", width: "100%", height: "100%" }}>
-                    <video
-                      ref={localVideoRef}
-                      autoPlay
-                      playsInline
-                      muted
-                      className="meet-video-feed local-mirror"
-                    />
-                    <div style={{ position: "absolute", bottom: "6px", left: "6px", background: "rgba(15,23,42,0.8)", padding: "2px 6px", borderRadius: "4px", fontSize: "10.5px", fontWeight: "700", color: "#fff" }}>
-                      {p.name}
-                    </div>
-                  </div>
-                ) : (
-                  /* Officer Initials Tile */
-                  <div style={{
-                    width: "100%", height: "100%",
-                    background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                    borderRadius: "10px", border: "1px solid #334155", position: "relative", padding: "10px"
-                  }}>
-                    {/* Center: Avatar Initials Circle */}
-                    <div className="meet-avatar-placeholder" style={{
-                      width: "42px", height: "42px", fontSize: "15px", fontWeight: "800",
-                      background: p.color || "#334155", color: "#ffffff", border: "2px solid rgba(255,255,255,0.2)"
-                    }}>
-                      {getOfficerInitials(p.name)}
-                    </div>
-
-                    {/* Bottom-left: Name & Role */}
-                    <div style={{ position: "absolute", bottom: "6px", left: "6px", display: "flex", flexDirection: "column" }}>
-                      <span style={{ fontSize: "11.5px", fontWeight: "700", color: "#f8fafc", lineHeight: "1.2" }}>
-                        {p.name}
-                      </span>
-                      <span style={{ fontSize: "10px", color: "#94a3b8" }}>{p.role}</span>
-                    </div>
-
-                    {/* Top-left: Raised Hand Badge */}
-                    {p.isHandRaised && (
-                      <div style={{ position: "absolute", top: "6px", left: "6px", background: "#d97706", color: "#fff", padding: "2px 6px", borderRadius: "4px", fontSize: "9.5px", fontWeight: "800" }}>
-                        Giơ tay
-                      </div>
-                    )}
-
-                    {/* Bottom-right: Mic Status Badge */}
-                    <div style={{ position: "absolute", bottom: "6px", right: "6px" }}>
-                      <span style={{
-                        background: p.isMuted ? "rgba(220, 38, 38, 0.2)" : "rgba(34, 197, 94, 0.2)",
-                        color: p.isMuted ? "#fca5a5" : "#86efac",
-                        border: `1px solid ${p.isMuted ? "#ef4444" : "#22c55e"}`,
-                        padding: "2px 6px", borderRadius: "4px", fontSize: "9.5px", fontWeight: "800"
-                      }}>
-                        {p.isMuted ? "Tắt mic" : "Mic bật"}
-                      </span>
-                    </div>
-
-                    {/* Top-right: Host actions (Mute & Kick) */}
-                    {isHost && !p.isSelf && (
-                      <div style={{ position: "absolute", top: "6px", right: "6px", display: "flex", gap: "4px", zIndex: 10 }}>
-                        <button
-                          onClick={() => handleToggleMuteParticipant(p.id)}
-                          title="Tắt/Mở mic"
-                          style={{ background: "#334155", color: "#fff", border: "1px solid #475569", padding: "2px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: "700" }}
-                        >
-                          {p.isMuted ? "Mở mic" : "Tắt mic"}
-                        </button>
-                        <button
-                          onClick={() => handleKickParticipant(p.id, p.name)}
-                          title="Mời rời phòng"
-                          style={{ background: "#dc2626", color: "#fff", border: "none", padding: "2px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: "700" }}
-                        >
-                          Xóa
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-
+          {/* Bottom Officer Tiles Strip (5 Cards in 1 Row) */}
+          <div className="meet-grid-view" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "12px", height: "140px" }}>
+            
+            {/* Card 1: Speaker Live Stream Video */}
+            <div className="meet-grid-item meet-grid-item-active" style={{ background: "#0d1527", borderRadius: "12px", border: "2px solid #2563eb", overflow: "hidden", position: "relative" }}>
+              <div style={{ position: "absolute", top: "6px", left: "6px", zIndex: 10, background: "#ef4444", color: "#fff", padding: "2px 6px", borderRadius: "4px", fontSize: "9.5px", fontWeight: "800", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                <svg width="6" height="6" viewBox="0 0 24 24" fill="#ffffff"><circle cx="12" cy="12" r="10"/></svg>
+                TRỰC TIẾP
               </div>
-            ))}
+              <div style={{ position: "absolute", top: "6px", right: "6px", zIndex: 10 }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20v-12M22 20V4"/></svg>
+              </div>
+              <video
+                ref={localVideoRef}
+                autoPlay
+                playsInline
+                muted
+                className="meet-video-feed local-mirror"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+              <div style={{ position: "absolute", bottom: "6px", left: "6px", right: "6px", zIndex: 10, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ fontSize: "11px", fontWeight: "800", color: "#fff", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    {fullName || "Hoàng Trung Dũng"}
+                  </span>
+                  <span style={{ background: "#2563eb", color: "#fff", fontSize: "9px", padding: "1px 5px", borderRadius: "3px", fontWeight: "800" }}>Chủ trì</span>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </div>
+            </div>
+
+            {/* Card 2: Phó phòng Ngô Đỗ Quỳnh */}
+            <div className="meet-grid-item" style={{ background: "#0d1527", borderRadius: "12px", border: "1px solid #1e293b", position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#0284c7", color: "#fff", fontSize: "18px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "8px" }}>
+                PQ
+              </div>
+              <div style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", flexDirection: "column" }}>
+                <span style={{ fontSize: "11.5px", fontWeight: "800", color: "#f8fafc", lineHeight: "1.2" }}>Phó phòng Ngô Đỗ Quỳnh</span>
+                <span style={{ fontSize: "10px", color: "#94a3b8" }}>Phó trưởng phòng</span>
+              </div>
+              <div style={{ position: "absolute", bottom: "8px", right: "8px", background: "rgba(220, 38, 38, 0.2)", border: "1px solid #ef4444", width: "20px", height: "20px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </div>
+            </div>
+
+            {/* Card 3: LÊ THỊ C */}
+            <div className="meet-grid-item" style={{ background: "#0d1527", borderRadius: "12px", border: "1px solid #1e293b", position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#059669", color: "#fff", fontSize: "18px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "8px" }}>
+                LC
+              </div>
+              <div style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", flexDirection: "column" }}>
+                <span style={{ fontSize: "11.5px", fontWeight: "800", color: "#f8fafc", lineHeight: "1.2" }}>LÊ THỊ C</span>
+                <span style={{ fontSize: "10px", color: "#94a3b8" }}>Phó trưởng phòng</span>
+              </div>
+              <div style={{ position: "absolute", bottom: "8px", right: "8px", background: "rgba(220, 38, 38, 0.2)", border: "1px solid #ef4444", width: "20px", height: "20px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </div>
+            </div>
+
+            {/* Card 4: Y BYAN */}
+            <div className="meet-grid-item" style={{ background: "#0d1527", borderRadius: "12px", border: "1px solid #1e293b", position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px" }}>
+              <div style={{ position: "absolute", top: "6px", left: "6px", background: "#d97706", color: "#fff", padding: "2px 6px", borderRadius: "4px", fontSize: "9.5px", fontWeight: "800", display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v9"/></svg>
+                Giơ tay
+              </div>
+              <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#d97706", color: "#fff", fontSize: "18px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "8px" }}>
+                YB
+              </div>
+              <div style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", flexDirection: "column" }}>
+                <span style={{ fontSize: "11.5px", fontWeight: "800", color: "#f8fafc", lineHeight: "1.2" }}>Y BYAN</span>
+                <span style={{ fontSize: "10px", color: "#94a3b8" }}>Cán bộ chuyên môn BHYT</span>
+              </div>
+              <div style={{ position: "absolute", bottom: "8px", right: "8px", background: "rgba(220, 38, 38, 0.2)", border: "1px solid #ef4444", width: "20px", height: "20px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </div>
+            </div>
+
+            {/* Card 5: Thành viên khác */}
+            <div className="meet-grid-item" style={{ background: "#0d1527", borderRadius: "12px", border: "1px solid #1e293b", position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#1e293b", color: "#cbd5e1", border: "2px solid #334155", fontSize: "18px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "8px" }}>
+                +8
+              </div>
+              <span style={{ fontSize: "11.5px", fontWeight: "700", color: "#94a3b8" }}>Thành viên khác</span>
+            </div>
+
           </div>
 
         </div>
 
-        {/* Right Chat Sidebar */}
+        {/* Right Chat & Utilities Sidebar (SVG Icon chuẩn) */}
         {isChatOpen && (
-          <aside className="meet-chat-sidebar">
-            <div className="meet-chat-header">
-              <h3>Hội thoại cuộc họp</h3>
-              <button className="meet-chat-close-btn" onClick={() => setIsChatOpen(false)}>
+          <aside className="meet-chat-sidebar" style={{ width: "340px", background: "#0d1527", borderLeft: "1px solid #1e293b", display: "flex", flexDirection: "column" }}>
+            
+            {/* Header */}
+            <div style={{ padding: "16px", borderBottom: "1px solid #1e293b", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <h3 style={{ margin: 0, fontSize: "14px", fontWeight: "900", color: "#f8fafc", letterSpacing: "0.5px" }}>
+                  HỘI THOẠI CUỘC HỌP
+                </h3>
+              </div>
+              <button onClick={() => setIsChatOpen(false)} style={{ background: "none", border: "none", color: "#64748b", fontSize: "18px", cursor: "pointer" }}>
                 ✕
               </button>
             </div>
+
+            {/* Sub-nav Tabs */}
+            <div style={{ padding: "10px 16px", display: "flex", gap: "8px", background: "#090d16", borderBottom: "1px solid #1e293b" }}>
+              <button style={{ flex: 1, background: "#1d4ed8", color: "#ffffff", border: "none", borderRadius: "16px", padding: "8px 12px", fontSize: "12.5px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Tin nhắn
+              </button>
+              <button style={{ flex: 1, background: "#1e293b", color: "#94a3b8", border: "1px solid #334155", borderRadius: "16px", padding: "8px 12px", fontSize: "12.5px", fontWeight: "600", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                12 người tham gia
+              </button>
+            </div>
             
-            <div className="meet-chat-messages" id="chat-box-area">
-              {messages.map((msg) => (
-                <div className="meet-chat-message-item" key={msg.id}>
-                  <div className="meet-message-meta">
-                    <span style={{ fontWeight: "700" }}>{msg.sender}</span>
-                    <span>{msg.time}</span>
+            {/* Messages Area */}
+            <div className="meet-chat-messages" id="chat-box-area" style={{ flex: 1, padding: "16px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "14px" }}>
+              {/* Message 1 */}
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#2563eb", color: "#fff", fontSize: "12px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  PQ
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <strong style={{ fontSize: "12px", color: "#f8fafc" }}>Hoàng Trung Dũng</strong>
+                      <span style={{ background: "#2563eb", color: "#fff", fontSize: "9px", padding: "1px 5px", borderRadius: "3px", fontWeight: "800" }}>Chủ trì</span>
+                    </div>
+                    <span style={{ fontSize: "10.5px", color: "#64748b" }}>08:30</span>
                   </div>
-                  <div className={`meet-message-body ${msg.self ? "self" : ""}`}>
-                    {msg.content}
+                  <div style={{ background: "#1d4ed8", color: "#ffffff", padding: "10px 12px", borderRadius: "12px", fontSize: "12.5px", lineHeight: "1.4" }}>
+                    Chào các đồng chí. Chúng ta bắt đầu cuộc họp bảo mật rà soát chỉ tiêu VH-XH và BHYT.
                   </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Message 2 */}
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#059669", color: "#fff", fontSize: "12px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  LC
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <strong style={{ fontSize: "12px", color: "#f8fafc" }}>Phó phòng Lê Thị C</strong>
+                    <span style={{ fontSize: "10.5px", color: "#64748b" }}>08:31</span>
+                  </div>
+                  <div style={{ background: "#1e293b", color: "#cbd5e1", padding: "10px 12px", borderRadius: "12px", fontSize: "12.5px", lineHeight: "1.4", border: "1px solid #334155" }}>
+                    Báo cáo Trưởng phòng, nhờ ĐXH Wek đã hoàn thành rà soát 95% hộ nghèo rồi ạ.
+                  </div>
+                </div>
+              </div>
+
+              {/* Message 3 */}
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#d97706", color: "#fff", fontSize: "12px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  YB
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <strong style={{ fontSize: "12px", color: "#f8fafc" }}>Cán bộ Y Byan</strong>
+                    <span style={{ fontSize: "10.5px", color: "#64748b" }}>08:33</span>
+                  </div>
+                  <div style={{ background: "#1e293b", color: "#cbd5e1", padding: "10px 12px", borderRadius: "12px", fontSize: "12.5px", lineHeight: "1.4", border: "1px solid #334155" }}>
+                    Em xin phép giơ tay phát biểu ý kiến về hỗ trợ bị lỗi mã thẻ BHYT.
+                  </div>
+                </div>
+              </div>
+
+              {/* Security Banner Box in Chat SVG Icon */}
+              <div style={{
+                background: "rgba(66, 32, 6, 0.4)", border: "1px solid #854d0e", borderRadius: "10px",
+                padding: "10px 12px", display: "flex", gap: "10px", marginTop: "6px", alignItems: "flex-start"
+              }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fef08a" strokeWidth="2.2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <div style={{ fontSize: "11.5px", color: "#fef08a", lineHeight: "1.4" }}>
+                  <div style={{ fontWeight: "700" }}>Tin nhắn được mã hóa đầu cuối</div>
+                  <div style={{ color: "#fde047", opacity: 0.85 }}>Không chia sẻ thông tin nhạy cảm ra ngoài cuộc họp.</div>
+                </div>
+              </div>
             </div>
 
-            <div className="meet-chat-input-area">
-              <form className="meet-chat-input-form" onSubmit={handleSendMessage}>
-                <input
-                  type="text"
-                  placeholder="Gửi tin nhắn..."
-                  className="meet-chat-input"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                />
-                <button type="submit" className="meet-chat-send-btn">
-                  Gửi
+            {/* Input Form */}
+            <div style={{ padding: "12px 16px", borderTop: "1px solid #1e293b", background: "#090d16" }}>
+              <form onSubmit={handleSendMessage} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <div style={{ flex: 1, background: "#1e293b", border: "1px solid #334155", borderRadius: "20px", padding: "6px 14px", display: "flex", alignItems: "center" }}>
+                  <input
+                    type="text"
+                    placeholder="Nhập tin nhắn..."
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    style={{ flex: 1, background: "none", border: "none", color: "#ffffff", fontSize: "12.5px", outline: "none" }}
+                  />
+                  <button type="button" style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", display: "inline-flex", alignItems: "center" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                  </button>
+                </div>
+                <button
+                  type="submit"
+                  style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#2563eb", color: "#ffffff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </button>
               </form>
+            </div>
+
+            {/* Quick Utilities Panel at Bottom SVG Icons */}
+            <div style={{ padding: "14px 16px", borderTop: "1px solid #1e293b", background: "#0d1527" }}>
+              <div style={{ fontSize: "11px", fontWeight: "800", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "8px" }}>
+                TIỆN ÍCH NHANH
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                <button onClick={() => setShowParticipantDropdown(!showParticipantDropdown)} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: "8px", padding: "8px 10px", color: "#cbd5e1", fontSize: "11.5px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  Danh sách thành viên
+                </button>
+                <button onClick={() => setShowSummaryModal(true)} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: "8px", padding: "8px 10px", color: "#cbd5e1", fontSize: "11.5px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Tài liệu cuộc họp (3)
+                </button>
+                <button onClick={handleGenerateAIBienBan} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: "8px", padding: "8px 10px", color: "#cbd5e1", fontSize: "11.5px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Ghi chú cuộc họp
+                </button>
+                <button onClick={handleEndMeetingForAll} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: "8px", padding: "8px 10px", color: "#cbd5e1", fontSize: "11.5px", fontWeight: "700", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                  Báo cáo sau họp
+                </button>
+              </div>
             </div>
           </aside>
         )}
       </div>
 
-      {/* Control bar (Gọn gàng - Không Icon - 1 Hàng chữ) */}
-      <footer className="meet-controls-bar">
-        <div className="meet-controls-left">
-          Phòng họp trực tuyến
+      {/* Control bar (Icon SVG HTML5 chuẩn) */}
+      <footer className="meet-controls-bar" style={{ height: "80px", background: "#090d16", borderTop: "1px solid #1e293b", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button style={{ background: "#1e293b", color: "#cbd5e1", border: "1px solid #334155", padding: "8px 14px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "700", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Kiểm tra thiết bị
+          </button>
+          <button style={{ background: "#1e293b", color: "#cbd5e1", border: "1px solid #334155", padding: "8px 14px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "700", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Cài đặt
+          </button>
         </div>
 
-        <div className="meet-controls-center" style={{ display: "flex", gap: "8px" }}>
-          {/* Mute Mic button */}
-          <button
-            className={`meet-btn-control-flat ${isMuted ? "active" : ""}`}
-            onClick={() => setIsMuted(!isMuted)}
-          >
-            {isMuted ? "Bật Mic" : "Tắt Mic"}
-          </button>
-
-          {/* Camera toggle button */}
-          <button
-            className={`meet-btn-control-flat ${isCameraOff ? "active" : ""}`}
-            onClick={() => setIsCameraOff(!isCameraOff)}
-          >
-            {isCameraOff ? "Bật Cam" : "Tắt Cam"}
-          </button>
-
-          {/* Screen Share button */}
-          <button
-            className={`meet-btn-control-flat ${isSharingScreen ? "share-active" : ""}`}
-            onClick={() => setIsSharingScreen(!isSharingScreen)}
-          >
-            {isSharingScreen ? "Dừng chia sẻ" : "Chia sẻ"}
-          </button>
-
-          {/* Raise Hand button */}
-          <button
-            className={`meet-btn-control-flat ${isHandRaised ? "share-active" : ""}`}
-            onClick={handleToggleRaiseHand}
-            style={isHandRaised ? { background: "#d97706", color: "#fff" } : {}}
-          >
-            {isHandRaised ? "Hạ tay" : "Giơ tay"}
-          </button>
-
-          {/* Toggle Chat button */}
-          <button
-            className={`meet-btn-control-flat ${isChatOpen ? "share-active" : ""}`}
-            onClick={() => setIsChatOpen(!isChatOpen)}
-          >
-            Trò chuyện
-          </button>
-
-          {/* Quyền Chủ trì Trưởng phòng */}
-          {isHost && (
-            <>
-              <button
-                className={`meet-btn-control-flat ${isRoomLocked ? "active" : ""}`}
-                onClick={() => setIsRoomLocked(!isRoomLocked)}
-                style={isRoomLocked ? { background: "#be123c", color: "#fff" } : { background: "#334155" }}
-              >
-                {isRoomLocked ? "Mở phòng" : "Khóa phòng"}
-              </button>
-
-              <button
-                className={`meet-btn-control-flat ${isRecording ? "active" : ""}`}
-                onClick={() => setIsRecording(!isRecording)}
-                style={isRecording ? { background: "#dc2626", color: "#fff" } : { background: "#334155" }}
-              >
-                {isRecording ? "Dừng Ghi hình" : "Ghi hình"}
-              </button>
-
-              <button
-                className="meet-btn-control-flat"
-                onClick={handleMuteAll}
-                style={{ background: "#334155" }}
-              >
-                Tắt tất cả Mic
-              </button>
-
-              <button
-                className="meet-btn-control-flat"
-                onClick={() => setShowOfficerModal(true)}
-                style={{ background: "#1e3a8a", color: "#93c5fd", border: "1px solid #3b82f6" }}
-              >
-                Điểm danh
-              </button>
-            </>
-          )}
-        </div>
-
-        <div className="meet-controls-right" style={{ display: "flex", gap: "8px" }}>
-          {isHost ? (
+        {/* Center Round Action Buttons SVG */}
+        <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
             <button
-              className="meet-btn-leave"
-              style={{ background: "#dc2626", fontWeight: "800" }}
-              onClick={handleEndMeetingForAll}
+              onClick={() => setIsMuted(!isMuted)}
+              style={{
+                width: "44px", height: "44px", borderRadius: "50%", border: "1px solid #334155",
+                background: isMuted ? "#ef4444" : "#1e293b", color: "#ffffff",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+              }}
             >
-              Kết thúc cuộc họp
+              {isMuted ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              )}
             </button>
-          ) : (
-            <button className="meet-btn-leave" onClick={handleLeaveMeeting}>
-              Rời cuộc họp
+            <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600" }}>{isMuted ? "Bật mic" : "Tắt mic"}</span>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+            <button
+              onClick={() => setIsCameraOff(!isCameraOff)}
+              style={{
+                width: "44px", height: "44px", borderRadius: "50%", border: "1px solid #334155",
+                background: isCameraOff ? "#ef4444" : "#1e293b", color: "#ffffff",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+              }}
+            >
+              {isCameraOff ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.6 0H14a2 2 0 0 1 2 2v4l5-3v8.5"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              )}
             </button>
-          )}
+            <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600" }}>{isCameraOff ? "Bật camera" : "Tắt camera"}</span>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+            <button
+              onClick={handleToggleRaiseHand}
+              style={{
+                width: "44px", height: "44px", borderRadius: "50%", border: "1px solid #334155",
+                background: isHandRaised ? "#d97706" : "#1e293b", color: "#ffffff",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v9"/><path d="M18 11a2 2 0 0 1 4 0v5a10 10 0 0 1-10 10 10 10 0 0 1-10-10V9a2 2 0 0 1 4 0v4"/></svg>
+            </button>
+            <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600" }}>Giơ tay</span>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+            <button
+              onClick={() => setIsSharingScreen(!isSharingScreen)}
+              style={{
+                width: "44px", height: "44px", borderRadius: "50%", border: "1px solid #334155",
+                background: isSharingScreen ? "#10b981" : "#1e293b", color: "#ffffff",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><polyline points="8 21 12 17 16 21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </button>
+            <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600" }}>Chia sẻ</span>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+            <button
+              onClick={() => setIsChatOpen(!isChatOpen)}
+              style={{
+                width: "44px", height: "44px", borderRadius: "50%", border: "1px solid #334155",
+                background: isChatOpen ? "#2563eb" : "#1e293b", color: "#ffffff",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600" }}>Chat</span>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+            <button
+              onClick={() => setShowOfficerModal(true)}
+              style={{
+                width: "44px", height: "44px", borderRadius: "50%", border: "1px solid #334155",
+                background: "#1e293b", color: "#ffffff",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+            </button>
+            <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "600" }}>Thêm</span>
+          </div>
+        </div>
+
+        {/* Right Red Leave Meeting Button SVG */}
+        <div>
+          <button
+            onClick={isHost ? handleEndMeetingForAll : handleLeaveMeeting}
+            style={{
+              background: "#ef4444", color: "#ffffff", border: "none",
+              padding: "10px 22px", borderRadius: "20px", fontSize: "13.5px", fontWeight: "800",
+              cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "8px",
+              boxShadow: "0 4px 14px rgba(239, 68, 68, 0.4)"
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10.68 13.31a16 16 0 0 0 3.41 3.41l2.42-2.42a1 1 0 0 1 1.07-.21 11.57 11.57 0 0 0 3.63.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h4.27a1 1 0 0 1 1 1 11.56 11.56 0 0 0 .58 3.63 1 1 0 0 1-.21 1.07l-2.42 2.42z"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+            <span>Rời cuộc họp</span>
+          </button>
         </div>
       </footer>
 

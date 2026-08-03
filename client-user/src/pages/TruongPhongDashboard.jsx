@@ -1277,6 +1277,7 @@ export default function TruongPhongDashboard() {
     danh_muc: "su-kien",
     trang_thai: "da-dang",
     chu_chay: "",
+    tac_gia: fullName || "Hoàng Trung Dũng",
   });
   const [coverImage, setCoverImage] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
@@ -1813,13 +1814,16 @@ export default function TruongPhongDashboard() {
 
     try {
       setLoading(true);
+      const authorVal = articleForm.tac_gia || fullName || "Hoàng Trung Dũng";
       const fd = new FormData();
       fd.append("tieu_de", articleForm.tieu_de);
       fd.append("mo_ta", articleForm.mo_ta);
       fd.append("noi_dung", articleForm.noi_dung);
       fd.append("danh_muc", articleForm.danh_muc);
       fd.append("trang_thai", articleForm.trang_thai);
-      fd.append("nguoi_dang", fullName);
+      fd.append("nguoi_dang", authorVal);
+      fd.append("tac_gia", authorVal);
+      fd.append("author", authorVal);
       fd.append("chu_chay", articleForm.chu_chay);
 
       if (coverImage) {
@@ -1855,7 +1859,7 @@ export default function TruongPhongDashboard() {
         });
         setMessage("Đăng bài viết tuyên truyền thành công!");
       }
-      setArticleForm({ tieu_de: "", mo_ta: "", noi_dung: "", danh_muc: "su-kien", trang_thai: "da-dang", chu_chay: "" });
+      setArticleForm({ tieu_de: "", mo_ta: "", noi_dung: "", danh_muc: "su-kien", trang_thai: "da-dang", chu_chay: "", tac_gia: fullName || "Hoàng Trung Dũng" });
 
       // Reset upload files
       setCoverImage(null);
@@ -1884,6 +1888,7 @@ export default function TruongPhongDashboard() {
       danh_muc: item.danh_muc || "su-kien",
       trang_thai: item.trang_thai || "da-dang",
       chu_chay: item.chu_chay || "",
+      tac_gia: item.tac_gia || item.nguoi_dang || item.author || fullName || "Hoàng Trung Dũng",
     });
     setCoverPreview(item.anh_dai_dien || "");
     setSecondaryPreviews(item.anh_phu || []);
@@ -5487,8 +5492,8 @@ export default function TruongPhongDashboard() {
                     </div>
 
                     <form onSubmit={handleArticleSubmit}>
-                      {/* Hàng 1: Tiêu đề + Chọn Chuyên mục */}
-                      <div className="tp-form-grid-2">
+                      {/* Hàng 1: Tiêu đề + Chọn Chuyên mục + Cán bộ đăng bài */}
+                      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "16px", marginBottom: "16px" }}>
                         <div className="tp-form-group">
                           <label>Tiêu đề bài viết tuyên truyền <span style={{ color: "#dc2626" }}>*</span></label>
                           <input
@@ -5497,6 +5502,16 @@ export default function TruongPhongDashboard() {
                             value={articleForm.tieu_de}
                             onChange={(e) => setArticleForm({ ...articleForm, tieu_de: e.target.value })}
                             required
+                          />
+                        </div>
+
+                        <div className="tp-form-group">
+                          <label>Cán bộ đăng bài (Tác giả)</label>
+                          <input
+                            type="text"
+                            placeholder="Tên cán bộ đăng bài"
+                            value={articleForm.tac_gia || ""}
+                            onChange={(e) => setArticleForm({ ...articleForm, tac_gia: e.target.value })}
                           />
                         </div>
 
@@ -5715,7 +5730,7 @@ export default function TruongPhongDashboard() {
                             </tr>
                           ) : (
                             articles.map((art) => {
-                              const authorName = art.tac_gia || art.author || art.created_by || art.user?.fullName || "Nguyễn Thái Huy (Trưởng phòng)";
+                              const authorName = art.tac_gia || art.nguoi_dang || art.author || art.created_by || art.user?.fullName || fullName || "Hoàng Trung Dũng";
                               const dateObj = new Date(art.createdAt || Date.now());
                               const timeStr = dateObj.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
                               const dateStr = dateObj.toLocaleDateString("vi-VN");
@@ -7028,106 +7043,283 @@ export default function TruongPhongDashboard() {
         </div>
       </main>
 
-      {/* ── MODAL XÁC THỰC MÃ OTP SMS BẢO MẬT 2FA ── */}
+      {/* ── MODAL XÁC THỰC MÃ OTP SMS BẢO MẬT 2FA (HTML5 SEMANTIC MODERN) ── */}
       {secModalMeeting && (
-        <div style={{
-          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-          background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
-          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999
-        }}>
-          <div style={{
-            background: "#ffffff", borderRadius: "20px", padding: "28px 32px", width: "100%", maxWidth: "480px",
-            boxShadow: "0 25px 50px rgba(0,0,0,0.35)", border: "2px solid #3b82f6"
-          }}>
-            <div style={{ textAlign: "center", marginBottom: "16px" }}>
-              <div style={{ fontSize: "42px", marginBottom: "6px" }}>📱</div>
-              <h3 style={{ margin: "0 0 4px", color: "#1e3a8a", fontSize: "19px", fontWeight: "900" }}>
-                XÁC THỰC OTP 2FA THAM GIA CUỘC HỌP
-              </h3>
-              <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "12px", fontWeight: "800", padding: "4px 14px", borderRadius: "20px", border: "1px solid #93c5fd" }}>
-                🛡️ BẢO BẬT BẢN GIAO ĐIỆN TỬ BHYT
+        <dialog
+          className="otp-modal-backdrop"
+          open
+          style={{
+            position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+            width: "100vw", height: "100vh", maxWidth: "100vw", maxHeight: "100vh",
+            margin: 0, padding: 0, border: "none",
+            background: "rgba(15, 23, 42, 0.65)", backdropFilter: "blur(8px)",
+            display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999
+          }}
+        >
+          <section
+            className="otp-modal-card"
+            style={{
+              background: "#ffffff", borderRadius: "24px", padding: "32px 28px",
+              width: "100%", maxWidth: "460px",
+              boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 1px rgba(0, 0, 0, 0.1)",
+              border: "1px solid #e2e8f0",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+            }}
+          >
+            {/* ── 1. HEADER SECTION HTML5 ── */}
+            <header style={{ textAlign: "center", marginBottom: "20px" }}>
+              <div style={{
+                width: "56px", height: "56px",
+                background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+                borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center",
+                margin: "0 auto 16px", boxShadow: "0 10px 20px -5px rgba(37, 99, 235, 0.4)"
+              }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <rect x="9" y="11" width="6" height="5" rx="1" fill="#ffffff" stroke="none"/>
+                  <path d="M10 11V9a2 2 0 1 1 4 0v2" stroke="#ffffff" strokeWidth="2"/>
+                </svg>
+              </div>
+
+              <h2 style={{ margin: "0 0 6px", color: "#0f172a", fontSize: "21px", fontWeight: "800", letterSpacing: "-0.3px" }}>
+                Xác thực OTP 2FA tham gia cuộc họp
+              </h2>
+              <p style={{ margin: "0 0 14px", color: "#64748b", fontSize: "13px", lineHeight: "1.4" }}>
+                Vui lòng xác thực để tiếp tục tham gia cuộc họp an toàn và bảo mật.
+              </p>
+
+              <span style={{
+                background: "#eff6ff", color: "#2563eb", fontSize: "12px", fontWeight: "700",
+                padding: "6px 16px", borderRadius: "20px", border: "1px solid #bfdbfe",
+                display: "inline-flex", alignItems: "center", gap: "6px"
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                BẢO BẬT BẢN GIAO ĐIỆN TỬ BHYT
               </span>
-            </div>
+            </header>
 
-            <div style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "10px", border: "1px solid #e2e8f0", marginBottom: "16px", fontSize: "13px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                <span style={{ color: "#64748b" }}>Cán bộ xác thực:</span>
-                <strong style={{ color: "#1e293b" }}>{fullName || "Trưởng phòng Nguyễn Thái Huy"}</strong>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                <span style={{ color: "#64748b" }}>Số điện thoại SMS:</span>
-                <strong style={{ color: "#0369a1" }}>0984.***.888</strong>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span style={{ color: "#64748b" }}>Cuộc họp tham gia:</span>
-                <strong style={{ color: "#1e3a8a" }}>{secModalMeeting.title}</strong>
-              </div>
-            </div>
+            {/* ── 2. THÔNG TIN XÁC THỰC CARD ── */}
+            <article style={{
+              background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "16px",
+              padding: "16px 18px", marginBottom: "16px"
+            }}>
+              <h3 style={{ margin: "0 0 14px", color: "#0f172a", fontSize: "14px", fontWeight: "800", textAlign: "left" }}>
+                Thông tin xác thực
+              </h3>
 
-            {/* Notice banner */}
-            <div style={{ background: "#f0fdf4", color: "#166534", padding: "10px 14px", borderRadius: "8px", fontSize: "12.5px", marginBottom: "16px", border: "1px solid #bbf7d0", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }}>
-              <span>📲</span>
-              <span>Đã gửi mã SMS OTP 6 chữ số tới điện thoại. Mã thử nghiệm: <strong style={{ letterSpacing: "2px", color: "#15803d", fontSize: "14px" }}>{generatedOtp}</strong></span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {/* Row 1: Cán bộ xác thực */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                      </svg>
+                    </div>
+                    <span style={{ color: "#475569", fontSize: "13px", fontWeight: "500" }}>Cán bộ xác thực</span>
+                  </div>
+                  <strong style={{ color: "#0f172a", fontSize: "13.5px", fontWeight: "700" }}>
+                    {fullName || "Hoàng Trung Dũng"}
+                  </strong>
+                </div>
+
+                {/* Row 2: Số điện thoại SMS */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                      </svg>
+                    </div>
+                    <span style={{ color: "#475569", fontSize: "13px", fontWeight: "500" }}>Số điện thoại SMS</span>
+                  </div>
+                  <strong style={{ color: "#1e40af", fontSize: "13.5px", fontWeight: "700" }}>0984.***.888</strong>
+                </div>
+
+                {/* Row 3: Cuộc họp tham gia */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                    </div>
+                    <span style={{ color: "#475569", fontSize: "13px", fontWeight: "500" }}>Cuộc họp tham gia</span>
+                  </div>
+                  <strong style={{ color: "#1e40af", fontSize: "13.5px", fontWeight: "700" }}>
+                    {secModalMeeting.title || "Tuyên truyền bà con"}
+                  </strong>
+                </div>
+              </div>
+            </article>
+
+            {/* ── 3. NOTICE ALERT BANNER HTML5 ── */}
+            <div style={{
+              background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "14px",
+              padding: "12px 14px", marginBottom: "18px", display: "flex", alignItems: "center", gap: "12px"
+            }}>
+              <div style={{
+                width: "28px", height: "28px", borderRadius: "50%", background: "#22c55e",
+                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+              }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <div style={{ fontSize: "12.5px", lineHeight: "1.4", color: "#166534" }}>
+                <div>Đã gửi mã SMS OTP 6 chữ số tới số điện thoại của bạn.</div>
+                <div>Mã thử nghiệm: <strong style={{ color: "#15803d", fontSize: "13.5px", fontWeight: "800", letterSpacing: "1px" }}>{generatedOtp}</strong></div>
+              </div>
             </div>
 
             {secError && (
-              <div style={{ background: "#fef2f2", color: "#dc2626", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", border: "1px solid #fca5a5", fontWeight: "600" }}>
+              <div style={{ background: "#fef2f2", color: "#dc2626", padding: "10px 14px", borderRadius: "10px", fontSize: "13px", marginBottom: "16px", border: "1px solid #fca5a5", fontWeight: "600" }}>
                 {secError}
               </div>
             )}
 
+            {/* ── 4. FORM FIELD HTML5 ── */}
             <form onSubmit={handleVerifySecPin}>
-              <div style={{ marginBottom: "20px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                  <label style={{ fontSize: "13px", fontWeight: "700", color: "#1e293b" }}>
-                    🔑 Nhập Mã OTP SMS 6 chữ số
-                  </label>
+              <fieldset style={{ border: "none", padding: 0, margin: "0 0 20px 0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                      </svg>
+                    </div>
+                    <label style={{ fontSize: "14px", fontWeight: "800", color: "#0f172a" }}>
+                      Nhập mã OTP
+                    </label>
+                  </div>
                   <button
                     type="button"
                     onClick={handleSendOtpSMS}
-                    style={{ background: "none", border: "none", color: "#2563eb", fontSize: "12px", fontWeight: "700", cursor: "pointer", textDecoration: "underline" }}
+                    style={{
+                      background: "none", border: "none", color: "#2563eb", fontSize: "13px", fontWeight: "700",
+                      cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "5px"
+                    }}
                   >
-                    📲 Gửi lại mã OTP
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    Gửi lại mã OTP
                   </button>
                 </div>
+                
+                <p style={{ margin: "0 0 14px 36px", fontSize: "12.5px", color: "#64748b" }}>
+                  Nhập 6 chữ số OTP vừa gửi tới số điện thoại của bạn
+                </p>
 
-                <input
-                  type="text"
-                  maxLength="6"
-                  placeholder="Nhập 6 số OTP (Ví dụ: 892104)..."
-                  value={secOtpInput || secPinInput}
-                  onChange={(e) => {
-                    setSecOtpInput(e.target.value);
-                    setSecPinInput(e.target.value);
+                {/* 6 Digit Input Boxes UI */}
+                <div
+                  style={{ position: "relative", cursor: "text" }}
+                  onClick={() => {
+                    const inputEl = document.getElementById("otp-real-input");
+                    if (inputEl) inputEl.focus();
                   }}
-                  style={{
-                    width: "100%", padding: "12px 16px", borderRadius: "10px", border: "2px solid #3b82f6",
-                    fontSize: "20px", textAlign: "center", letterSpacing: "6px", fontWeight: "900", color: "#1e3a8a",
-                    boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)"
-                  }}
-                  autoFocus
-                  required
-                />
-              </div>
+                >
+                  <input
+                    id="otp-real-input"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength="6"
+                    value={secOtpInput || secPinInput || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                      setSecOtpInput(val);
+                      setSecPinInput(val);
+                    }}
+                    style={{
+                      position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
+                      opacity: 0, zIndex: 10, cursor: "pointer"
+                    }}
+                    autoFocus
+                    required
+                  />
 
-              <div style={{ display: "flex", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "8px" }}>
+                    {[0, 1, 2, 3, 4, 5].map((idx) => {
+                      const currentVal = (secOtpInput || secPinInput || "");
+                      const char = currentVal[idx];
+                      const isCurrentFocus = currentVal.length === idx || (currentVal.length === 6 && idx === 5);
+                      
+                      return (
+                        <div
+                          key={idx}
+                          style={{
+                            height: "52px", borderRadius: "10px",
+                            background: "#ffffff",
+                            border: isCurrentFocus ? "2px solid #2563eb" : "1px solid #cbd5e1",
+                            boxShadow: isCurrentFocus ? "0 0 0 3px rgba(37, 99, 235, 0.15)" : "none",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: "20px", fontWeight: "700", color: "#1e3a8a",
+                            transition: "all 0.15s ease"
+                          }}
+                        >
+                          {char ? char : (isCurrentFocus ? <span style={{ color: "#2563eb" }}>|</span> : <span style={{ color: "#cbd5e1", fontWeight: "400" }}>—</span>)}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "12px", fontSize: "11.5px", color: "#64748b" }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                  <span>Mã OTP có hiệu lực trong <strong style={{ color: "#475569" }}>2 phút</strong>. Vui lòng không chia sẻ mã cho người khác.</span>
+                </div>
+              </fieldset>
+
+              {/* ── 5. ACTION BUTTONS HTML5 ── */}
+              <div style={{ display: "flex", gap: "12px" }}>
                 <button
                   type="button"
                   onClick={() => setSecModalMeeting(null)}
-                  style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #cbd5e1", background: "#f8fafc", color: "#475569", fontWeight: "700", cursor: "pointer" }}
+                  style={{
+                    flex: 1, padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0",
+                    background: "#ffffff", color: "#1e293b", fontWeight: "700", fontSize: "14px",
+                    cursor: "pointer"
+                  }}
                 >
                   Hủy bỏ
                 </button>
                 <button
                   type="submit"
-                  style={{ flex: 1.5, padding: "12px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)", color: "#ffffff", fontWeight: "800", boxShadow: "0 4px 14px rgba(37,99,235,0.35)", cursor: "pointer" }}
+                  style={{
+                    flex: 1.3, padding: "12px", borderRadius: "12px", border: "none",
+                    background: "#1d4ed8", color: "#ffffff", fontWeight: "700", fontSize: "14px",
+                    boxShadow: "0 8px 16px -4px rgba(29, 78, 216, 0.35)", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "8px"
+                  }}
                 >
-                  🔓 Xác nhận OTP & Vào họp
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  Xác nhận OTP & Vào họp
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+
+            {/* ── 6. FOOTER BANNER HTML5 ── */}
+            <footer style={{ marginTop: "20px", textAlign: "center", fontSize: "12px", color: "#64748b", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <span>Hệ thống bảo mật theo tiêu chuẩn <strong style={{ color: "#1d4ed8" }}>Bộ Y tế</strong></span>
+            </footer>
+          </section>
+        </dialog>
       )}
 
       {/* MODAL XEM LỊCH SỬ HỌP VÀ BIÊN BẢN KẾT LUẬN LƯU VĨNH VIỄN */}

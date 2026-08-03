@@ -246,7 +246,7 @@ export default function ChuyenTrangThongTin() {
       <div className="news-main-container">
         
         <header className="news-header-section">
-          <h1 className="news-main-title">Tin tức</h1>
+          <h1 className="news-main-title">Tất cả bài viết</h1>
           <p className="news-main-subtitle">Cập nhật thông tin mới nhất từ UBND xã Đăk Pxi</p>
 
           {/* SUB-FILTER PILLS BAR */}
