@@ -1455,10 +1455,17 @@ export default function TruongPhongDashboard() {
       const res = await axios.get(`${BASE_URL}/api/v1/auth/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const filtered = res.data.filter((u) => u.role === "canbo" || u.role === "phophong");
+      const filtered = (res.data || []).filter((u) => u.role === "canbo" || u.role === "phophong");
       setSubordinates(filtered);
+      localStorage.setItem("vhxh_subordinates_cache", JSON.stringify(filtered));
     } catch (err) {
-      console.error(err);
+      console.error("Lỗi tải cán bộ trực thuộc:", err);
+      const saved = localStorage.getItem("vhxh_subordinates_cache");
+      if (saved) {
+        try {
+          setSubordinates(JSON.parse(saved));
+        } catch (e) {}
+      }
     }
   };
 

@@ -25,6 +25,21 @@ const adminSchema = new mongoose.Schema(
       default: "",
     },
 
+    chucVu: {
+      type: String,
+      default: "Chuyên viên chính",
+    },
+
+    phongBan: {
+      type: String,
+      default: "Phòng Văn hóa - Xã hội",
+    },
+
+    phanQuyen: {
+      type: String,
+      default: "Biên tập & Tuyên truyền",
+    },
+
     createdBy: {
       type: String,
       default: "",

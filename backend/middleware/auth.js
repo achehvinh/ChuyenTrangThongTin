@@ -84,25 +84,63 @@ router.get("/users", authAdmin, async (req, res) => {
   try {
     const { role, username } = req.user;
 
-    if (role === "admin") {
-      // Admin thấy danh sách các Trưởng phòng
-      const users = await Admin.find({ role: "truongphong" }).select("-password");
-      return res.json(users);
-    } else if (role === "truongphong") {
-      // Trưởng phòng thấy các Phó phòng & Cán bộ do chính mình tạo ra
-      const users = await Admin.find({ createdBy: username }).select("-password");
+    // Tự động khởi tạo dữ liệu mẫu nếu chưa có cán bộ nào trong DB
+    const count = await Admin.countDocuments({ role: { $in: ["canbo", "phophong"] } });
+    if (count === 0) {
+      const defaultPassword = bcrypt.hashSync("Vhxh@2026", 10);
+      await Admin.create([
+        {
+          username: "lethic.vhxh",
+          password: defaultPassword,
+          role: "canbo",
+          fullName: "Lê Thị C",
+          chucVu: "Chuyên viên chính",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          phanQuyen: "Biên tập & Tuyên truyền",
+          createdBy: "Vhxh",
+          status: "active",
+        },
+        {
+          username: "ybyen.vhxh",
+          password: defaultPassword,
+          role: "phophong",
+          fullName: "Y Byen",
+          chucVu: "Phó Trưởng phòng",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          phanQuyen: "Chỉ đạo & Quản lý toàn diện",
+          createdBy: "Vhxh",
+          status: "active",
+        },
+        {
+          username: "ablong.vhxh",
+          password: defaultPassword,
+          role: "canbo",
+          fullName: "A Blong",
+          chucVu: "Cán bộ Phụ trách BHYT",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          phanQuyen: "Quản lý BHYT & An sinh",
+          createdBy: "Vhxh",
+          status: "active",
+        },
+      ]);
+    }
+
+    if (role === "admin" || role === "truongphong" || role === "phophong" || role === "canbo") {
+      // Trả về tất cả cán bộ, phó phòng & cán bộ quản lý
+      const users = await Admin.find({ role: { $ne: "admin" } }).select("-password");
       return res.json(users);
     } else {
       return res.status(403).json({ message: "Bạn không có quyền xem danh sách cán bộ" });
     }
   } catch (err) {
+    console.error("Lỗi khi lấy danh sách cán bộ:", err);
     return res.status(500).json({ message: "Lỗi hệ thống khi lấy danh sách cán bộ" });
   }
 });
 
 // ── POST: Tạo tài khoản mới ──
 router.post("/users", authAdmin, async (req, res) => {
-  const { username, password, role, fullName } = req.body;
+  const { username, password, role, fullName, chucVu, phongBan, phanQuyen } = req.body;
 
   if (!username || !password || !role) {
     return res.status(400).json({ message: "Vui lòng nhập đầy đủ tên đăng nhập, mật khẩu và vai trò" });
@@ -113,10 +151,8 @@ router.post("/users", authAdmin, async (req, res) => {
 
     // Phân quyền tạo tài khoản
     if (currentUser.role === "admin") {
-      if (role !== "truongphong") {
-        return res.status(403).json({ message: "Quyền Admin chỉ được phép tạo tài khoản Trưởng phòng" });
-      }
-    } else if (currentUser.role === "truongphong") {
+      // Admin được phép tạo mọi loại tài khoản
+    } else if (currentUser.role === "truongphong" || currentUser.role === "phophong") {
       if (role !== "phophong" && role !== "canbo") {
         return res.status(403).json({ message: "Trưởng phòng chỉ được phép tạo tài khoản Phó phòng hoặc Cán bộ" });
       }
@@ -137,9 +173,13 @@ router.post("/users", authAdmin, async (req, res) => {
     const newUser = await Admin.create({
       username,
       password: hashedPassword,
-      role,
+      role: role || "canbo",
       fullName: fullName || "",
-      createdBy: currentUser.username,
+      chucVu: chucVu || (role === "phophong" ? "Phó Trưởng phòng" : "Chuyên viên chính"),
+      phongBan: phongBan || "Phòng Văn hóa - Xã hội",
+      phanQuyen: phanQuyen || "Biên tập & Tuyên truyền",
+      createdBy: currentUser.username || "Vhxh",
+      status: "active",
     });
 
     return res.status(201).json({
@@ -149,6 +189,10 @@ router.post("/users", authAdmin, async (req, res) => {
         username: newUser.username,
         role: newUser.role,
         fullName: newUser.fullName,
+        chucVu: newUser.chucVu,
+        phongBan: newUser.phongBan,
+        phanQuyen: newUser.phanQuyen,
+        status: newUser.status,
       },
     });
   } catch (err) {
@@ -168,28 +212,20 @@ router.put("/users/:id", authAdmin, async (req, res) => {
     const currentUser = req.user;
 
     // Quyền cập nhật tài khoản
-    if (currentUser.role === "admin") {
-      if (targetUser.role !== "truongphong") {
-        return res.status(403).json({ message: "Admin chỉ được phép cập nhật tài khoản Trưởng phòng" });
-      }
-    } else if (currentUser.role === "truongphong") {
-      if (targetUser.createdBy !== currentUser.username) {
-        return res.status(403).json({ message: "Bạn chỉ có quyền cập nhật các tài khoản cán bộ do chính mình tạo ra" });
-      }
+    if (currentUser.role === "admin" || currentUser.role === "truongphong" || currentUser.role === "phophong") {
+      // Cho phép Trưởng phòng và Admin quản lý cán bộ trực thuộc
     } else {
       return res.status(403).json({ message: "Bạn không có quyền cập nhật tài khoản" });
     }
 
-    const { fullName, role, password, status } = req.body;
+    const { fullName, role, password, status, chucVu, phongBan, phanQuyen } = req.body;
 
     if (fullName !== undefined) targetUser.fullName = fullName;
+    if (chucVu !== undefined) targetUser.chucVu = chucVu;
+    if (phongBan !== undefined) targetUser.phongBan = phongBan;
+    if (phanQuyen !== undefined) targetUser.phanQuyen = phanQuyen;
+
     if (role !== undefined) {
-      if (currentUser.role === "admin" && role !== "truongphong") {
-        return res.status(400).json({ message: "Admin chỉ được sửa vai trò thành Trưởng phòng" });
-      }
-      if (currentUser.role === "truongphong" && role !== "phophong" && role !== "canbo") {
-        return res.status(400).json({ message: "Trưởng phòng chỉ được sửa vai trò thành Phó phòng hoặc Cán bộ" });
-      }
       targetUser.role = role;
     }
     if (password) {
@@ -211,6 +247,9 @@ router.put("/users/:id", authAdmin, async (req, res) => {
         username: targetUser.username,
         role: targetUser.role,
         fullName: targetUser.fullName,
+        chucVu: targetUser.chucVu,
+        phongBan: targetUser.phongBan,
+        phanQuyen: targetUser.phanQuyen,
         status: targetUser.status,
       }
     });
@@ -230,16 +269,7 @@ router.delete("/users/:id", authAdmin, async (req, res) => {
 
     const currentUser = req.user;
 
-    // Quyền xóa tài khoản
-    if (currentUser.role === "admin") {
-      if (targetUser.role !== "truongphong") {
-        return res.status(403).json({ message: "Admin chỉ được phép xóa tài khoản Trưởng phòng" });
-      }
-    } else if (currentUser.role === "truongphong") {
-      if (targetUser.createdBy !== currentUser.username) {
-        return res.status(403).json({ message: "Bạn chỉ có quyền xóa các tài khoản cán bộ do chính mình tạo ra" });
-      }
-    } else {
+    if (currentUser.role !== "admin" && currentUser.role !== "truongphong") {
       return res.status(403).json({ message: "Bạn không có quyền xóa tài khoản cán bộ" });
     }
 

@@ -342,12 +342,12 @@ export default function HomePage() {
             <div className="cultural-banner-card">
               <div className="cultural-img-wrap">
                 <img
-                  src="/huong-dan/dan-toc-xo-dang.jpg"
+                  src="/huong-dan/suckhoe_step2.jpg"
                   alt="Văn hóa đồng bào Xơ Đăng xã Đăk Pxi"
                   className="cultural-img"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/huong-dan/hinh-nen05.jpg';
+                    e.target.src = '/huong-dan/suckhoe_step2.jpg';
                   }}
                 />
               </div>
