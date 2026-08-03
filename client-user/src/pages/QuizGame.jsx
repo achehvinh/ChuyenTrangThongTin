@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
+import { API_URL } from "../utils/apiConfig";
 import "./QuizGame.css";
 
 const QUESTIONS = [
@@ -135,9 +136,37 @@ export default function QuizGame() {
   // Quản lý thời gian đếm ngược
   const [timeLeft, setTimeLeft] = useState(15);
   const timerRef = useRef(null);
+  const hasSubmittedRef = useRef(false);
 
   const current = QUESTIONS[currentIndex];
   const isLast = currentIndex === QUESTIONS.length - 1;
+
+  // Tự động lưu kết quả cuộc thi vào cơ sở dữ liệu thật khi hoàn thành
+  useEffect(() => {
+    if (finished && !hasSubmittedRef.current && playerName.trim()) {
+      hasSubmittedRef.current = true;
+      const isPassed = score >= 8;
+      fetch(`${API_URL}/quiz/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          playerName: playerName.trim(),
+          score,
+          totalQuestions: QUESTIONS.length,
+          passed: isPassed,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log("✅ Đã lưu kết quả thi thành công:", data.data);
+          }
+        })
+        .catch((err) => {
+          console.error("❌ Lỗi khi lưu kết quả thi:", err);
+        });
+    }
+  }, [finished, playerName, score]);
 
   // Điều khiển nhạc nền BGM
   useEffect(() => {
@@ -225,6 +254,7 @@ export default function QuizGame() {
   };
 
   const handleRestart = () => {
+    hasSubmittedRef.current = false;
     setCurrentIndex(0);
     setSelected(null);
     setScore(0);
@@ -240,39 +270,135 @@ export default function QuizGame() {
     setMusicPlaying((prev) => !prev);
   };
 
-  // MÀN HÌNH CHÀO MỪNG NHẬP TÊN
+  // MÀN HÌNH CHÀO MỪNG NHẬP TÊN (THIẾT KẾ ĐẸP CHUẨN 100% THEO ẢNH 2)
   if (!started) {
     return (
-      <div className="quiz-start-container children-theme">
-        {/* Bong bóng và họa tiết trang trí vui nhộn */}
-        <div className="decor-bubble bubble-1">🎈</div>
-        <div className="decor-bubble bubble-2">🐬</div>
-        <div className="decor-bubble bubble-3">🐠</div>
-        <div className="decor-bubble bubble-4">🌟</div>
-        <div className="decor-bubble bubble-5">🧸</div>
+      <div className="quiz-modal-container">
+        {/* Nút Đóng duy nhất ở góc trên bên phải của Modal */}
+        <button
+          type="button"
+          className="quiz-modal-close-btn"
+          onClick={() => {
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              window.location.href = "/";
+            }
+          }}
+        >
+          ✕ Đóng
+        </button>
 
-        <div className="quiz-start-header">
-          <span className="quiz-badge-icon-bouncy">🎖️</span>
-          <h2>Thử Thách Hiệp Sĩ An Toàn Nguồn Nước</h2>
-          <p>Bé hãy trả lời các câu hỏi để chứng minh kiến thức phòng chống đuối nước và nhận Bằng khen vinh danh từ UBND Xã Đăk Pxi nhé!</p>
+        {/* Khung Card Trắng Trung Tâm */}
+        <div className="quiz-inner-white-card">
+          {/* Bong bóng đỏ góc trên trái */}
+          <div className="decor-item balloon-top-left">
+            <svg width="42" height="52" viewBox="0 0 50 65" fill="none">
+              <ellipse cx="25" cy="22" rx="18" ry="22" fill="#ef4444"/>
+              <polygon points="25,44 21,48 29,48" fill="#dc2626"/>
+              <path d="M25 48 Q 20 56 25 64" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round"/>
+            </svg>
+          </div>
+
+          {/* Cá bơi góc trên phải */}
+          <div className="decor-item fish-top-right">
+            <svg width="45" height="38" viewBox="0 0 60 50" fill="none">
+              <ellipse cx="32" cy="25" rx="20" ry="16" fill="#3b82f6"/>
+              <polygon points="12,25 0,12 0,38" fill="#f59e0b"/>
+              <circle cx="42" cy="20" r="3.5" fill="#ffffff"/>
+              <circle cx="43" cy="20" r="1.8" fill="#0f172a"/>
+              <path d="M 28 20 Q 34 26 28 32" stroke="#60a5fa" strokeWidth="2" fill="none"/>
+            </svg>
+          </div>
+
+          {/* Huy hiệu Vàng Trung tâm */}
+          <div className="quiz-start-medal-box">
+            <div className="medal-sunburst"></div>
+            <div className="medal-ribbon-badge">
+              <svg width="84" height="94" viewBox="0 0 100 110" fill="none">
+                <path d="M 32 0 L 22 45 L 36 40 L 50 45 L 38 0 Z" fill="#2563eb"/>
+                <path d="M 68 0 L 78 45 L 64 40 L 50 45 L 62 0 Z" fill="#ef4444"/>
+                <path d="M 42 0 L 50 45 L 58 0 Z" fill="#ffffff"/>
+                <circle cx="50" cy="65" r="36" fill="#f59e0b"/>
+                <circle cx="50" cy="65" r="30" fill="#d97706"/>
+                <circle cx="50" cy="65" r="26" fill="#fbbf24"/>
+                <polygon points="50,47 55,58 67,58 57,66 61,78 50,70 39,78 43,66 33,58 45,58" fill="#d97706"/>
+              </svg>
+            </div>
+          </div>
+
+          {/* Tiêu đề & Mô tả */}
+          <div className="quiz-start-title-section">
+            <h1 className="quiz-start-main-title">
+              Thử Thách Hiệp Sĩ<br />
+              An Toàn Nguồn Nước
+            </h1>
+            <p className="quiz-start-desc">
+              Bé hãy trả lời các câu hỏi để chứng minh kiến thức<br />
+              phòng chống đuối nước và nhận Bằng khen vinh danh<br />
+              từ UBND Xã Đăk Pxi nhé! 🧸
+            </p>
+          </div>
+
+          {/* Form nhập tên & Nút Thử thách */}
+          <form onSubmit={handleStartGame} className="quiz-start-new-form">
+            <div className="quiz-label-pill-badge">
+              <span className="star-sparkle left">✨</span>
+              <span>Nhập họ và tên của bé:</span>
+              <span className="star-sparkle right">✨</span>
+            </div>
+
+            <div className="quiz-input-field-box">
+              <span className="input-user-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input
+                id="student-name"
+                type="text"
+                placeholder="Ví dụ: Nguyễn Văn A"
+                value={playerName}
+                onChange={(e) => setPlayerName(e.target.value)}
+                maxLength={35}
+                required
+                autoComplete="off"
+              />
+              <span className="input-star-decor">⭐</span>
+            </div>
+
+            <button type="submit" className="quiz-start-submit-btn bouncy-btn">
+              <span>Bắt đầu Thử thách</span>
+              <span className="rocket-emoji">🚀</span>
+            </button>
+          </form>
         </div>
 
-        <form onSubmit={handleStartGame} className="quiz-start-form">
-          <label htmlFor="student-name">Nhập họ và tên của bé:</label>
-          <input
-            id="student-name"
-            type="text"
-            placeholder="Ví dụ: Nguyễn Văn A"
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
-            maxLength={30}
-            required
-            autoComplete="off"
-          />
-          <button type="submit" className="quiz-start-btn bouncy-btn">
-            Bắt đầu Thử thách 🚀
-          </button>
-        </form>
+        {/* Chú cá heo nhảy sóng biển góc dưới trái của Modal */}
+        <div className="decor-dolphin-container">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+            {/* Sóng bọt biển */}
+            <path d="M 0 100 Q 30 85 60 100 T 120 100 L 120 120 L 0 120 Z" fill="#60a5fa" opacity="0.5"/>
+            <path d="M 0 105 Q 40 90 80 105 T 120 105 L 120 120 L 0 120 Z" fill="#0284c7"/>
+            {/* Cá heo */}
+            <path d="M 20 90 Q 35 40 75 45 Q 95 50 100 65 Q 80 60 65 75 Q 45 90 20 90 Z" fill="#38bdf8"/>
+            <path d="M 45 75 Q 60 70 70 78 Q 55 85 45 75 Z" fill="#ffffff"/>
+            <circle cx="80" cy="55" r="3" fill="#0f172a"/>
+            <path d="M 90 60 Q 95 62 90 65" stroke="#0f172a" strokeWidth="1.5"/>
+            <circle cx="95" cy="40" r="3" fill="#bae6fd"/>
+            <circle cx="105" cy="50" r="2" fill="#bae6fd"/>
+            <circle cx="85" cy="35" r="2.5" fill="#bae6fd"/>
+          </svg>
+        </div>
+
+        {/* Dải sóng biển đáy Modal */}
+        <div className="quiz-modal-bottom-waves">
+          <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
+            <path d="M0,32L60,42.7C120,53,240,75,360,80C480,85,600,75,720,58.7C840,43,960,21,1080,21.3C1200,21,1320,43,1380,53.3L1440,64L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z" fill="#38bdf8" opacity="0.6"></path>
+            <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,64C1200,75,1320,85,1380,90.7L1440,96L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z" fill="#0284c7"></path>
+          </svg>
+        </div>
       </div>
     );
   }
@@ -300,27 +426,38 @@ export default function QuizGame() {
               </div>
             </div>
 
-            {/* BẢN BẰNG KHEN IN ĐƯỢC CHUẨN ĐẸP */}
+            {/* BẢN BẰNG KHEN IN ĐƯỢC CHUẨN ĐẸP THEO MẪU MỚI */}
             <div className="dn-certificate" id="print-area">
               <div className="certificate-border">
                 <div className="certificate-inner">
+                  {/* QUỐC HUY VIỆT NAM TRÊN CÙNG */}
+                  <div className="cert-national-emblem">
+                    <svg width="52" height="52" viewBox="0 0 100 100" fill="none">
+                      <circle cx="50" cy="50" r="46" fill="#da251d" stroke="#fef08a" strokeWidth="3"/>
+                      <circle cx="50" cy="50" r="41" fill="none" stroke="#fef08a" strokeWidth="1" strokeDasharray="3 2"/>
+                      <polygon points="50,18 59,38 80,38 63,51 69,72 50,59 31,72 37,51 20,38 41,38" fill="#fef08a"/>
+                    </svg>
+                  </div>
+
                   {/* Quốc hiệu */}
                   <div className="cert-header">
                     <p className="cert-nation">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
                     <p className="cert-motto">Độc lập - Tự do - Hạnh phúc</p>
-                    <div className="cert-divider">🌟</div>
+                    <div className="cert-stars-line">✦ ★ ✦</div>
                   </div>
 
                   {/* Cơ quan cấp */}
                   <div className="cert-issuer">
-                    <p>ỦY BAN NHÂN DÂN XÃ ĐĂK PXI</p>
-                    <p>TỈNH QUẢNG NGÃI</p>
+                    <p className="issuer-line1">ỦY BAN NHÂN DÂN XÃ ĐẮK PXI</p>
+                    <p className="issuer-line2">TỈNH QUẢNG NGÃI</p>
+                    <div className="cert-flourish">────── ❖ ──────</div>
                   </div>
 
                   {/* Tiêu đề Giấy Chứng Nhận */}
                   <div className="cert-title-container">
                     <h1 className="cert-title">GIẤY CHỨNG NHẬN</h1>
                     <p className="cert-subtitle">DANH HIỆU HIỆP SĨ AN TOÀN NGUỒN NƯỚC</p>
+                    <div className="cert-stars-line small">✦ ★ ✦</div>
                   </div>
 
                   {/* Nội dung khen tặng */}
@@ -328,26 +465,62 @@ export default function QuizGame() {
                     <p className="cert-intro">Ủy ban nhân dân xã Đăk Pxi chứng nhận em:</p>
                     <h2 className="cert-name">{playerName.toUpperCase()}</h2>
                     <p className="cert-reason">
-                      Đã hoàn thành xuất sắc khóa học tương tác trực tuyến về Kỹ năng Phòng chống đuối nước và ứng phó tai nạn sông nước năm 2026.
+                      Đã hoàn thành xuất sắc khóa học tương tác trực tuyến<br />
+                      về Kỹ năng Phòng chống đuối nước<br />
+                      và ứng phó tai nạn sông nước năm 2026.
                     </p>
                   </div>
 
-                  {/* Con dấu và Chữ ký */}
+                  {/* Chân Bằng khen: Huy hiệu Vàng Trái & Con dấu + Chữ ký Phải */}
                   <div className="cert-footer">
-                    <div className="cert-date">
-                      <p>Đăk Pxi, ngày 14 tháng 07 năm 2026</p>
+                    {/* TRÁI: Huy hiệu Vàng "VÌ MỘT CỘNG ĐỒNG AN TOÀN" */}
+                    <div className="cert-gold-badge">
+                      <div className="badge-laurel-wreath">
+                        <svg width="68" height="68" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="42" fill="#fffbeb" stroke="#d97706" strokeWidth="4"/>
+                          <circle cx="50" cy="50" r="36" fill="none" stroke="#f59e0b" strokeWidth="1.5"/>
+                          <circle cx="50" cy="50" r="28" fill="#0284c7"/>
+                          <path d="M 50 32 Q 40 46 50 58 Q 60 46 50 32 Z" fill="#ffffff"/>
+                          <circle cx="50" cy="48" r="4" fill="#0284c7"/>
+                        </svg>
+                      </div>
+                      <div className="badge-ribbon">
+                        <span>VÌ MỘT CỘNG ĐỒNG AN TOÀN</span>
+                      </div>
+                    </div>
+
+                    {/* PHẢI: Ngày tháng & Chữ ký */}
+                    <div className="cert-date-section">
+                      <p className="cert-date-str">Đăk Pxi, ngày 14 tháng 07 năm 2026</p>
                       <p className="cert-sign-title">TM. ỦY BAN NHÂN DÂN XÃ</p>
                       <p className="cert-signer-role">CHỦ TỊCH</p>
                       <div className="cert-signature-space">
-                        {/* Con dấu đỏ giả lập bằng CSS */}
-                        <div className="cert-stamp">
-                          <span className="stamp-inner">UBND XÃ ĐĂK PXI</span>
+                        {/* Con dấu đỏ tròn */}
+                        <div className="cert-official-stamp">
+                          <div className="stamp-circle-outer">
+                            <span className="stamp-txt-top">UBND XÃ ĐK PXI</span>
+                            <span className="stamp-txt-star">★</span>
+                          </div>
                         </div>
+
+                        {/* Chữ ký viết tay xanh */}
+                        <svg className="cert-handwriting-sig" viewBox="0 0 160 60" width="110" height="40">
+                          <path d="M 15 38 Q 32 8 48 32 T 78 18 Q 98 42 125 12 L 145 28 M 28 46 L 138 42" fill="none" stroke="#1d4ed8" strokeWidth="2.8" strokeLinecap="round" />
+                        </svg>
+
                         <p className="cert-signer-name">Phan Văn Cường</p>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              {/* Dải hoa văn lượn sóng xanh-vàng đáy bằng khen */}
+              <div className="cert-bottom-wave-bg">
+                <svg viewBox="0 0 800 80" preserveAspectRatio="none">
+                  <path d="M 0 40 Q 200 80 400 40 T 800 40 L 800 80 L 0 80 Z" fill="#0369a1" />
+                  <path d="M 0 55 Q 200 85 400 50 T 800 65 L 800 80 L 0 80 Z" fill="#0284c7" />
+                  <path d="M 0 70 Q 200 75 400 68 T 800 74 L 800 80 L 0 80 Z" fill="#d97706" />
+                </svg>
               </div>
             </div>
           </div>
@@ -397,15 +570,15 @@ export default function QuizGame() {
         </div>
 
         <div className="quiz-header-actions">
-          <button 
-            type="button" 
+          <button
+            type="button"
             className={`music-toggle-btn ${musicPlaying ? 'active' : ''}`}
             onClick={toggleMusic}
             title={musicPlaying ? "Tắt nhạc nền" : "Bật nhạc nền"}
           >
             {musicPlaying ? "🎵 Nhạc: Bật" : "🔇 Nhạc: Tắt"}
           </button>
-          
+
           <div className={`quiz-timer ${timeLeft <= 5 ? "danger" : ""}`}>
             ⏰ {timeLeft}s
           </div>

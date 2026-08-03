@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './BaiVietDetailPage.css';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
+const API = import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/api/v1` : 'http://localhost:5000/api/v1');
 
 const DM_COLOR = {
   'phong-chong-lua-dao': '#c62828',
@@ -43,43 +43,6 @@ const DM_LABEL = {
   'khac': 'Khác',
 };
 
-const FALLBACK_ARTICLES = [
-  {
-    _id: 'mock-1',
-    danh_muc: 'the-thao',
-    tieu_de: 'UBND XÃ ĐĂK PXI HƯỚNG DẪN THỰC HIỆN CHỈ TIÊU "GIA ĐÌNH THỂ THAO" GIAI ĐOẠN 2026 – 2030 (ẢNH TƯ LIỆU)',
-    mo_ta: 'UBND xã Đăk Pxi thông báo và hướng dẫn đến toàn thể bà con Nhân dân trên địa bàn xã các tiêu chí và giải pháp thực hiện như sau: 1. Thế nào là "Gia đình thể thao"? Gia đình thể thao là hộ gia đình có từ 50% trở lên số thành viên trong gia đình tham gia tập luyện thể dục, thể thao thường xuyên. Tiêu chuẩn tập luyện: Tối thiểu 03 lần/tuần, mỗi lần từ 30 phút trở lên. 2. Mục tiêu của xã Đăk Pxi Khuyến khích "Mỗi người dân lựa chọn ít nhất một môn thể thao phù hợp để tập luyện thường xuyên". Chung tay cùng toàn tỉnh phấn đấu đưa tỷ lệ gia đình thể thao đạt 29% tổng số hộ gia đình vào năm 2030. 3. Các nhiệm vụ và giải pháp trọng tâm',
-    noi_dung: 'Đẩy mạnh tuyên truyền: Lồng ghép phong trào rèn luyện thân thể với các phong trào "Toàn dân đoàn kết xây dựng đời sống văn hóa", "Gia đình văn hóa". Phát triển mô hình tập luyện: Khuyến khích thành lập các nhóm, câu lạc bộ (CLB) thể thao thôn với các môn thể thao phù hợp như: đi bộ, cầu lông, bóng chuyền, dân vũ, bóng đá, trò chơi dân gian, thể thao dân tộc... Phấn đấu mỗi thôn duy trì các hình thức tập luyện hiệu quả. Tăng cường cơ sở vật chất: Khai thác tối đa Nhà rông văn hóa các thôn, sân thể thao, trường học trên địa bàn làm nơi tập luyện cho bà con. UBND xã Đăk Pxi đề nghị các ban ngành, đoàn thể xã, Ban nhân dân các thôn và toàn thể Nhân dân tích cực hưởng ứng, hưởng ứng rèn luyện thân thể theo gương Bác Hồ vĩ đại, nâng cao sức khỏe cá nhân và gia đình!',
-    anh_dai_dien: '/huong-dan/atgt-1.png',
-    anh_phu: ['/huong-dan/atgt-1.png', '/huong-dan/baucu-2.png', '/huong-dan/hinh-nen05.jpg'],
-    nguoi_dang: 'Hoàng Trung Dũng',
-    createdAt: '2026-07-20T08:00:00.000Z',
-    luot_xem: 33,
-  },
-  {
-    _id: 'mock-2',
-    danh_muc: 'bau-cu',
-    tieu_de: 'Xã Đăk Pxi tổ chức thành công bầu cử Trưởng thôn nhiệm kỳ 2025 – 2030',
-    mo_ta: 'Ngày 19/7/2026, các thôn trên địa bàn xã Đăk Pxi đã đồng loạt tổ chức bầu cử Trưởng thôn nhiệm kỳ 2025 - 2030 theo đúng kế hoạch của UBND xã.',
-    noi_dung: 'Công tác chuẩn bị bầu cử được triển khai nghiêm túc, dân chủ, đúng pháp luật. Tỷ lệ cử tri đại diện hộ gia đình đi bầu đạt trên 98%.',
-    anh_dai_dien: '/huong-dan/baucu-2.png',
-    nguoi_dang: 'UBND xã Đăk Pxi',
-    createdAt: '2026-07-20T08:00:00.000Z',
-    luot_xem: 7,
-  },
-  {
-    _id: 'mock-3',
-    danh_muc: 'the-thao',
-    tieu_de: 'BẾ MẠC GIẢI BÓNG CHUYỀN "BÔNG LÚA VÀNG" XÃ ĐĂK PXI',
-    mo_ta: 'Giải đấu quy tụ hơn 100 vận động viên đến từ 8 thôn trên địa bàn xã Đăk Pxi tranh tài sôi nổi.',
-    noi_dung: 'Trận chung kết diễn ra vô cùng kịch tính với sự cổ vũ nhiệt tình của hàng trăm bà con nhân dân.',
-    anh_dai_dien: '/huong-dan/atgt-1.png',
-    nguoi_dang: 'Ban Tổ Chức',
-    createdAt: '2026-07-10T08:00:00.000Z',
-    luot_xem: 15,
-  }
-];
-
 function fmtDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
@@ -113,30 +76,34 @@ export default function BaiVietDetailPage() {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [showFullQuote, setShowFullQuote] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     setBv(null);
+    setSelectedPhoto(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     axios.get(`${API}/bai-viet/${id}`)
       .then(r => {
-        const data = r.data.data;
-        setBv(data);
-        return axios.get(`${API}/bai-viet`, {
-          params: { danh_muc: data.danh_muc, limit: 6, page: 1 },
-        });
+        const data = r.data.data || r.data;
+        if (data && (data._id || data.tieu_de)) {
+          setBv(data);
+          axios.get(`${API}/bai-viet`, {
+            params: { danh_muc: data.danh_muc, limit: 6, page: 1 },
+          })
+          .then(res => {
+            const list = res.data.data || res.data || [];
+            setRelated(list.filter(b => b._id !== id).slice(0, 4));
+          })
+          .catch(() => {});
+        } else {
+          setBv(null);
+        }
       })
-      .then(r => {
-        setRelated((r.data.data || []).filter(b => b._id !== id).slice(0, 4));
-      })
-      .catch(() => {
-        const found = FALLBACK_ARTICLES.find(m => m._id === id || String(m._id).includes(id) || (id && id.includes(m.danh_muc))) || {
-          ...FALLBACK_ARTICLES[0],
-          _id: id,
-        };
-        setBv(found);
-        setRelated(FALLBACK_ARTICLES.filter(m => m._id !== found._id));
+      .catch((err) => {
+        console.error("Lỗi tải bài viết:", err);
+        setBv(null);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -322,28 +289,67 @@ export default function BaiVietDetailPage() {
                 </div>
               </div>
 
+              {/* KHUNG PHÁT VIDEO NẾU BÀI VIẾT CÓ VIDEO */}
+              {bv.video && bv.video.trim() !== '' && (
+                <div className="bvd-video-player-container">
+                  <div className="bvd-video-header">
+                    <span className="bvd-video-badge">🎥 VIDEO TUYÊN TRUYỀN HƯỚNG DẪN</span>
+                  </div>
+                  <div className="bvd-video-viewport">
+                    <video
+                      key={bv.video}
+                      src={bv.video}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      poster={bv.anh_dai_dien || ''}
+                      className="bvd-video-element"
+                    >
+                      Trình duyệt của bạn không hỗ trợ phát video.
+                    </video>
+                  </div>
+                </div>
+              )}
+
               {/* BỐ CỤC NỘI DUNG VĂN BẢN VÀ HÌNH ẢNH (SECTION HTML5) */}
-              <section className="bvd-article-body-grid">
+              <section className={bv.video ? "bvd-article-body-grid bvd-has-video" : "bvd-article-body-grid"}>
                 
                 {/* CỘT HÌNH ẢNH BÊN TRÁI + GALLERY THUMBNAILS (FIGURE HTML5) */}
                 <figure className="bvd-media-left-col">
                   <div className="main-photo-frame">
                     <img
-                      src={bv.anh_dai_dien || '/huong-dan/atgt-1.png'}
+                      src={selectedPhoto || bv.anh_dai_dien || '/huong-dan/hinhnen1.jpg'}
                       alt={bv.tieu_de}
                       className="main-photo-img"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/huong-dan/hinhnen1.jpg';
+                      }}
                     />
                   </div>
 
                   {/* THUMBNAILS GALLERY */}
-                  <figcaption className="photo-thumbs-grid">
-                    <img src={bv.anh_dai_dien || '/huong-dan/atgt-1.png'} alt="Ảnh tư liệu 1" className="thumb-item active" />
-                    <img src="/huong-dan/baucu-2.png" alt="Ảnh tư liệu 2" className="thumb-item" />
-                    <img src="/huong-dan/hinh-nen05.jpg" alt="Ảnh tư liệu 3" className="thumb-item" />
-                    <div className="thumb-item more-overlay">
-                      <span>+12 ảnh</span>
-                    </div>
-                  </figcaption>
+                  {((bv.anh_phu && bv.anh_phu.length > 0) || bv.anh_dai_dien) && (
+                    <figcaption className="photo-thumbs-grid">
+                      {bv.anh_dai_dien && (
+                        <img
+                          src={bv.anh_dai_dien}
+                          alt="Ảnh đại diện"
+                          className={`thumb-item ${(selectedPhoto || bv.anh_dai_dien) === bv.anh_dai_dien ? 'active' : ''}`}
+                          onClick={() => setSelectedPhoto(bv.anh_dai_dien)}
+                        />
+                      )}
+                      {(bv.anh_phu || []).map((imgUrl, idx) => (
+                        <img
+                          key={idx}
+                          src={imgUrl}
+                          alt={`Ảnh tư liệu ${idx + 1}`}
+                          className={`thumb-item ${selectedPhoto === imgUrl ? 'active' : ''}`}
+                          onClick={() => setSelectedPhoto(imgUrl)}
+                        />
+                      ))}
+                    </figcaption>
+                  )}
                 </figure>
 
                 {/* CỘT NỘI DUNG VĂN BẢN VỚI CHỮ ĐẦU DÒNG IN LỚN (DROP CAP) */}
@@ -530,24 +536,36 @@ export default function BaiVietDetailPage() {
                 </header>
 
                 <div className="related-items-list">
-                  {(related.length > 0 ? related : FALLBACK_ARTICLES).slice(0, 1).map(r => (
-                    <article
-                      key={r._id || r.id}
-                      className="related-item-row"
-                      onClick={() => navigate(`/tin-tuc/${r._id || r.id}`)}
-                    >
-                      <img src={r.anh_dai_dien || r.image} alt={r.tieu_de || r.title} className="related-thumb-img" />
-                      <div className="related-item-info">
-                        <span className="related-category-badge" style={{ backgroundColor: color }}>
-                          {DM_LABEL[r.danh_muc] || 'Thể thao'}
-                        </span>
-                        <h4 className="related-item-title">
-                          {r.tieu_de || r.title}
-                        </h4>
-                        <time dateTime={r.createdAt || r.date} className="related-item-date">{fmtDateShort(r.createdAt || r.date)}</time>
-                      </div>
-                    </article>
-                  ))}
+                  {related.length === 0 ? (
+                    <p style={{ fontSize: '12.5px', color: '#64748b', margin: 0, padding: '10px 0' }}>Chưa có bài viết liên quan khác.</p>
+                  ) : (
+                    related.slice(0, 3).map(r => (
+                      <article
+                        key={r._id || r.id}
+                        className="related-item-row"
+                        onClick={() => navigate(`/tin-tuc/${r._id || r.id}`)}
+                      >
+                        <img
+                          src={r.anh_dai_dien || '/huong-dan/hinhnen1.jpg'}
+                          alt={r.tieu_de || r.title}
+                          className="related-thumb-img"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = '/huong-dan/hinhnen1.jpg';
+                          }}
+                        />
+                        <div className="related-item-info">
+                          <span className="related-category-badge" style={{ backgroundColor: color }}>
+                            {DM_LABEL[r.danh_muc] || r.danh_muc || 'Tin tức'}
+                          </span>
+                          <h4 className="related-item-title">
+                            {r.tieu_de || r.title}
+                          </h4>
+                          <time dateTime={r.createdAt || r.date} className="related-item-date">{fmtDateShort(r.createdAt || r.date)}</time>
+                        </div>
+                      </article>
+                    ))
+                  )}
                 </div>
 
                 {/* CAROUSEL DOTS */}

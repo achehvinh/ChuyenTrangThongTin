@@ -56,7 +56,7 @@ const FloatingChatBot = () => {
 
       <button className="chatbot-trigger" onClick={() => { setIsOpen(!isOpen); if (!isOpen) setShowBubble(false); }} title="Mở Trợ lý AI giải đáp">
         <span className="chatbot-pulse-ring"></span>
-        <svg width="56" height="56" viewBox="0 0 100 100" fill="none">
+        <svg width="72" height="72" viewBox="0 0 100 100" fill="none" style={{ width: '88%', height: '88%' }}>
           <circle cx="50" cy="50" r="46" fill="#f3e8ff" />
           <circle cx="50" cy="50" r="38" fill="#e9d5ff" opacity="0.6" />
           <rect x="36" y="62" width="28" height="24" rx="10" fill="#ffffff" stroke="#c084fc" strokeWidth="2.5" />

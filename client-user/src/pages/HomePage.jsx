@@ -105,6 +105,7 @@ export default function HomePage() {
       id: art._id || art.id || `hero-${idx}`,
       tieu_de: art.tieu_de || art.title,
       anh_dai_dien: getImageUrl(art.anh_dai_dien || art.image || art.thumbnail),
+      video: art.video || '',
       tag: art.danh_muc ? String(art.danh_muc).toUpperCase() : 'TIÊU ĐIỂM',
       link: `/tin-tuc/${art._id || art.id}`
     }))
@@ -152,17 +153,30 @@ export default function HomePage() {
           <div className="hero-featured-col">
             <div className="hero-card-frame">
 
-              {/* IMAGE PREVIEW */}
+              {/* IMAGE / VIDEO PREVIEW */}
               <div className="hero-img-wrapper">
-                <img
-                  src={currentHero.anh_dai_dien}
-                  alt={currentHero.tieu_de}
-                  className="hero-main-img"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/huong-dan/hinhnen1.jpg';
-                  }}
-                />
+                {currentHero.video ? (
+                  <video
+                    key={currentHero.id + '-video'}
+                    src={currentHero.video}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster={currentHero.anh_dai_dien && currentHero.anh_dai_dien !== '/huong-dan/hinhnen1.jpg' ? currentHero.anh_dai_dien : ''}
+                    className="hero-main-img"
+                    style={{ objectFit: 'cover', width: '100%', height: '100%', background: '#000' }}
+                  />
+                ) : (
+                  <img
+                    src={currentHero.anh_dai_dien}
+                    alt={currentHero.tieu_de}
+                    className="hero-main-img"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/huong-dan/hinhnen1.jpg';
+                    }}
+                  />
+                )}
               </div>
 
               {/* OVERLAY CAPTION CARD */}

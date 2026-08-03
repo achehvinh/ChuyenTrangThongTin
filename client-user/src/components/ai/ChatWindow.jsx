@@ -182,6 +182,36 @@ function findSuggestions(text) {
   ).slice(0, 3);
 }
 
+function formatMessageText(rawText) {
+  if (!rawText) return null;
+  const clean = rawText
+    .replace(/\*\*/g, '')
+    .replace(/\*/g, '')
+    .replace(/`/g, '');
+
+  const lines = clean.split('\n');
+
+  return lines.map((line, idx) => {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      return <div key={idx} className="cw-line-spacer" />;
+    }
+
+    const isHeader = idx === 0 && (trimmed.includes('THÔNG BÁO') || trimmed.includes('HƯỚNG DẪN'));
+    const isNumbered = /^\s*\d+\.\s*/.test(line);
+    const isBullet = /^\s*[•\-📌📋🛡️💸🔐📞🏥🆔📑💍🚦🛵🌧️🗳️🚨🚸]\s*/.test(line);
+
+    return (
+      <div
+        key={idx}
+        className={`cw-text-line ${isHeader ? 'cw-line-header' : ''} ${isNumbered ? 'cw-line-numbered' : ''} ${isBullet ? 'cw-line-bullet' : ''}`}
+      >
+        {line}
+      </div>
+    );
+  });
+}
+
 export default function ChatWindow() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -495,7 +525,7 @@ export default function ChatWindow() {
             <div className="cw-msg-content">
               <div className="cw-bubble-wrapper">
                 <div className={`cw-bubble cw-bubble--${m.sender}`}>
-                  {m.text}
+                  {formatMessageText(m.text)}
                 </div>
                 {m.sender === 'ai' && (
                   <button

@@ -19,18 +19,6 @@ const BaiVietSchema = new mongoose.Schema({
 
   danh_muc: {
     type: String,
-    enum: [
-      // ── Danh mục chung ──
-      'su-kien', 'the-thao', 'le-hoi', 'bau-cu', 'khac',
-      // ── Danh mục An toàn Giao thông ──
-      'atgt-tin-tuc',        // Tin tức ATGT
-      'atgt-phap-luat',      // Kiến thức pháp luật giao thông
-      'atgt-hoc-sinh',       // Học sinh với ATGT
-      'atgt-duong-nong-thon',// Đường nông thôn
-      'atgt-mua-mua',        // ATGT mùa mưa
-      'atgt-van-hoa',        // Văn hóa giao thông
-      'atgt-van-ban',        // Văn bản chỉ đạo ATGT
-    ],
     default: 'su-kien',
   },
   trang_thai: {

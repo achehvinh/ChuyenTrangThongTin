@@ -16,6 +16,7 @@ import KnowledgeManager from "./pages/KnowledgeManager";
 import QuanLyCanBo from "./pages/QuanLyCanBo";
 import QuanLyNguoiDung from "./pages/QuanLyNguoiDung";
 import QuanLyATGT from "./pages/QuanLyATGT";
+import QuanLyQuiz from "./pages/QuanLyQuiz";
 
 function Layout() {
   const location = useLocation();
@@ -42,6 +43,7 @@ function Layout() {
           <Route path="/quan-ly-can-bo" element={<ProtectedRoute><QuanLyCanBo /></ProtectedRoute>} />
           <Route path="/quan-ly-nguoi-dung" element={<ProtectedRoute><QuanLyNguoiDung /></ProtectedRoute>} />
           <Route path="/quan-ly-atgt" element={<ProtectedRoute><QuanLyATGT /></ProtectedRoute>} />
+          <Route path="/quan-ly-quiz" element={<ProtectedRoute><QuanLyQuiz /></ProtectedRoute>} />
           <Route path="/admin/knowledge" element={<ProtectedRoute><KnowledgeManager /></ProtectedRoute>} />
           <Route path="/user/*" element={<ProtectedRoute><UserApp basename="/user" /></ProtectedRoute>} />
           <Route path="/KnowledgeManager" element={<KnowledgeManager />} />

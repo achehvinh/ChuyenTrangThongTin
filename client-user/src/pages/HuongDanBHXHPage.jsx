@@ -22,9 +22,9 @@ const HUONG_DAN_APP = [
         title: 'Bước 1: Tải ứng dụng VssID',
         desc: 'Mở cửa hàng Google Play (Android) hoặc App Store (iPhone), tìm "VssID" và cài đặt.',
         img: '/huong-dan/vssid_step1.jpg',
-        audioSrc: '/huong-dan/vssid_step1.mp3',
+        audioSrc: '/huong-dan/vssidweb_step1.mp3',
         placeholderName: 'vssid_step1.jpg',
-        audioFile: 'vssid_step1.mp3'
+        audioFile: 'vssidweb_step1.mp3'
       },
       {
         num: 2,
@@ -322,7 +322,9 @@ export default function HuongDanBHXHPage() {
     stopStepAudio();
     setPlayingStepAudio(step.num);
 
-    const audio = new Audio(step.audioSrc);
+    // Sử dụng chung 1 file âm thanh mới /huong-dan/vssidweb_step1.mp3 cho cả 3 bước
+    const sharedAudioSrc = '/huong-dan/vssidweb_step1.mp3';
+    const audio = new Audio(sharedAudioSrc);
     stepAudioRef.current = audio;
     audio.play()
       .then(() => {
@@ -367,8 +369,8 @@ export default function HuongDanBHXHPage() {
         <nav className="tracuu-back-nav" aria-label="Điều hướng quay lại">
           <Link to="/" className="back-home-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12"/>
-              <polyline points="12 19 5 12 12 5"/>
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
             </svg>
             <span>Quay lại Trang chủ</span>
           </Link>
@@ -394,8 +396,8 @@ export default function HuongDanBHXHPage() {
                 onClick={() => handleTabChange('app')}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
-                  <line x1="12" y1="18" x2="12.01" y2="18"/>
+                  <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+                  <line x1="12" y1="18" x2="12.01" y2="18" />
                 </svg>
                 <span>Cách 1: Qua App di động</span>
               </button>
@@ -405,9 +407,9 @@ export default function HuongDanBHXHPage() {
                 onClick={() => handleTabChange('web')}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="2" y1="12" x2="22" y2="12"/>
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"/>
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
                 </svg>
                 <span>Cách 2: Qua Website</span>
               </button>
@@ -419,11 +421,11 @@ export default function HuongDanBHXHPage() {
             <div className="prep-chips">
               <div className="chip-step-item">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="chip-svg">
-                  <rect x="3" y="4" width="18" height="16" rx="3"/>
-                  <circle cx="9" cy="10" r="2"/>
-                  <line x1="14" y1="9" x2="17" y2="9"/>
-                  <line x1="14" y1="13" x2="17" y2="13"/>
-                  <path d="M6 16c0-1.5 1.5-2 3-2s3 .5 3 2"/>
+                  <rect x="3" y="4" width="18" height="16" rx="3" />
+                  <circle cx="9" cy="10" r="2" />
+                  <line x1="14" y1="9" x2="17" y2="9" />
+                  <line x1="14" y1="13" x2="17" y2="13" />
+                  <path d="M6 16c0-1.5 1.5-2 3-2s3 .5 3 2" />
                 </svg>
                 <span className="chip-text">Thẻ CCCD 12 số</span>
               </div>
@@ -437,9 +439,9 @@ export default function HuongDanBHXHPage() {
 
               <div className="chip-step-item">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="chip-svg">
-                  <line x1="18" y1="20" x2="18" y2="10"/>
-                  <line x1="12" y1="20" x2="12" y2="4"/>
-                  <line x1="6" y1="20" x2="6" y2="14"/>
+                  <line x1="18" y1="20" x2="18" y2="10" />
+                  <line x1="12" y1="20" x2="12" y2="4" />
+                  <line x1="6" y1="20" x2="6" y2="14" />
                 </svg>
                 <span className="chip-text">Kết nối Internet</span>
               </div>
@@ -447,7 +449,7 @@ export default function HuongDanBHXHPage() {
 
               <div className="chip-step-item chip-done">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="chip-svg">
-                  <polyline points="20 6 9 17 4 12"/>
+                  <polyline points="20 6 9 17 4 12" />
                 </svg>
                 <span className="chip-text">Tra cứu thành công</span>
               </div>
@@ -456,8 +458,8 @@ export default function HuongDanBHXHPage() {
             {speaking && (
               <span className="clean-tts-badge">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
                 </svg>
                 <span>Đang phát thanh...</span>
               </span>
@@ -467,16 +469,16 @@ export default function HuongDanBHXHPage() {
 
         {/* ── 2. 3-COLUMN MAIN DASHBOARD LAYOUT ── */}
         <div className="tracuu-3col-layout">
-          
+
           {/* CỘT TRÁI: ỨNG DỤNG HỖ TRỢ */}
           <aside className="col-left-sidebar">
             <div className="sidebar-section-card">
               <div className="sidebar-card-header">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="3" width="7" height="7"/>
-                  <rect x="14" y="3" width="7" height="7"/>
-                  <rect x="14" y="14" width="7" height="7"/>
-                  <rect x="3" y="14" width="7" height="7"/>
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
                 </svg>
                 <span>ỨNG DỤNG HỖ TRỢ</span>
               </div>
@@ -541,7 +543,7 @@ export default function HuongDanBHXHPage() {
 
           {/* CỘT GIỮA: NỘI DUNG CHÍNH (APP BANNER + PROGRESS WIZARD + STEP SPLIT + 4 FEATURE CARDS) */}
           <main className="col-center-main">
-            
+
             {/* APP BANNER STRIP CARD */}
             <section className="app-top-banner-card" style={{ background: currentApp.color }}>
               <div className="app-banner-left">
@@ -561,9 +563,9 @@ export default function HuongDanBHXHPage() {
                 className="app-action-download-btn"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 <span>Tải VssID ngay</span>
                 <span className="btn-chevron">›</span>
@@ -616,7 +618,7 @@ export default function HuongDanBHXHPage() {
 
                 return (
                   <article className="step-split-card" key={step.num}>
-                    
+
                     {/* BÊN TRÁI: THÔNG TIN BƯỚC + CHECKLIST */}
                     <div className="step-left-info">
                       <h3 className="step-split-title">{step.title}</h3>
@@ -628,30 +630,13 @@ export default function HuongDanBHXHPage() {
                         onClick={() => playStepAudio(step)}
                       >
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
                         </svg>
                         <span>{isPlayingThis ? '⏹ Dừng nghe đọc' : 'Nghe hướng dẫn bước ' + step.num}</span>
                       </button>
 
-                      {/* HƯỚNG DẪN CHI TIẾT CÁC BƯỚC THỰC HIỆN */}
-                      <div className="steps-checklist-box">
-                        <div className="checklist-heading">Các bước thực hiện</div>
-                        <div className="checklist-items">
-                          <div className={`checklist-row ${step.num === 1 ? 'active' : ''}`}>
-                            <span className="chk-num">1</span>
-                            <span className="chk-text">Tìm và tải ứng dụng VssID từ cửa hàng App Store hoặc Google Play (hoặc quét mã QR ở bên).</span>
-                          </div>
-                          <div className={`checklist-row ${step.num === 2 ? 'active' : ''}`}>
-                            <span className="chk-num">2</span>
-                            <span className="chk-text">Cài đặt ứng dụng trên điện thoại.</span>
-                          </div>
-                          <div className={`checklist-row ${step.num === 3 ? 'active' : ''}`}>
-                            <span className="chk-num">3</span>
-                            <span className="chk-text">Mở ứng dụng và sẵn sàng cho bước tiếp theo.</span>
-                          </div>
-                        </div>
-                      </div>
+
 
                       {/* Nút Hoàn thành bước */}
                       <button
@@ -687,12 +672,12 @@ export default function HuongDanBHXHPage() {
 
             {/* 4 FEATURE CARDS GRID (TIỆN LỢI, NHANH CHÓNG, CHÍNH XÁC, MIỄN PHÍ) */}
             <div className="four-features-grid">
-              
+
               <div className="feature-card-item">
                 <div className="feature-icon-box green">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
-                    <line x1="12" y1="18" x2="12.01" y2="18"/>
+                    <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+                    <line x1="12" y1="18" x2="12.01" y2="18" />
                   </svg>
                 </div>
                 <div className="feature-card-texts">
@@ -704,7 +689,7 @@ export default function HuongDanBHXHPage() {
               <div className="feature-card-item">
                 <div className="feature-icon-box blue">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                   </svg>
                 </div>
                 <div className="feature-card-texts">
@@ -716,7 +701,7 @@ export default function HuongDanBHXHPage() {
               <div className="feature-card-item">
                 <div className="feature-icon-box purple">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                   </svg>
                 </div>
                 <div className="feature-card-texts">
@@ -728,8 +713,8 @@ export default function HuongDanBHXHPage() {
               <div className="feature-card-item">
                 <div className="feature-icon-box amber">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                    <line x1="7" y1="7" x2="7.01" y2="7" />
                   </svg>
                 </div>
                 <div className="feature-card-texts">
@@ -744,17 +729,17 @@ export default function HuongDanBHXHPage() {
 
           {/* CỘT PHẢI: TIỆN ÍCH NHANH & HỖ TRỢ */}
           <aside className="col-right-sidebar">
-            
+
             {/* CARD TIỆN ÍCH NHANH */}
             <div className="right-widget-card">
               <h3 className="widget-card-title">TIỆN ÍCH NHANH</h3>
-              
+
               <div className="quick-links-list">
                 <a href="#tracuu-bhyt" className="quick-link-item" onClick={(e) => { e.preventDefault(); handleTabChange('app'); }}>
                   <div className="link-item-left">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/>
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
                     </svg>
                     <span>Tra cứu thẻ BHYT</span>
                   </div>
@@ -764,8 +749,8 @@ export default function HuongDanBHXHPage() {
                 <a href="#tracuu-bhxh" className="quick-link-item" onClick={(e) => { e.preventDefault(); handleTabChange('web'); }}>
                   <div className="link-item-left">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
                     </svg>
                     <span>Tra cứu quá trình tham gia BHXH</span>
                   </div>
@@ -775,9 +760,9 @@ export default function HuongDanBHXHPage() {
                 <a href="/huong-dan" className="quick-link-item">
                   <div className="link-item-left">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <line x1="12" y1="8" x2="12" y2="12"/>
-                      <line x1="12" y1="16" x2="12.01" y2="16"/>
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
                     </svg>
                     <span>Hướng dẫn sử dụng</span>
                   </div>
@@ -787,9 +772,9 @@ export default function HuongDanBHXHPage() {
                 <a href="/tro-giup" className="quick-link-item">
                   <div className="link-item-left">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                      <line x1="12" y1="17" x2="12.01" y2="17"/>
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
                     </svg>
                     <span>Câu hỏi thường gặp</span>
                   </div>
@@ -803,11 +788,11 @@ export default function HuongDanBHXHPage() {
               <h3 className="widget-card-title">HỖ TRỢ</h3>
 
               <div className="support-methods-list">
-                
+
                 <a href="tel:19009068" className="support-method-item">
                   <div className="support-icon-circle blue">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                     </svg>
                   </div>
                   <div className="support-method-texts">
@@ -819,7 +804,7 @@ export default function HuongDanBHXHPage() {
                 <div className="support-method-item" style={{ cursor: 'pointer' }}>
                   <div className="support-icon-circle blue">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
                   </div>
                   <div className="support-method-texts">
@@ -831,8 +816,8 @@ export default function HuongDanBHXHPage() {
                 <a href="/lien-he" className="support-method-item">
                   <div className="support-icon-circle blue">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                      <polyline points="22,6 12,13 2,6"/>
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
                     </svg>
                   </div>
                   <div className="support-method-texts">
@@ -849,7 +834,7 @@ export default function HuongDanBHXHPage() {
               <div className="security-banner-content">
                 <div className="security-icon-circle">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="20 6 9 17 4 12"/>
+                    <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
                 <div className="security-banner-texts">
@@ -884,7 +869,7 @@ export default function HuongDanBHXHPage() {
             <p>Bà con đến trực tiếp <strong>Bộ phận Một cửa — UBND xã Đăk Pxi</strong> để được cán bộ hỗ trợ miễn phí!</p>
           </div>
         </div>
-      
+
       </div>
 
       {/* Lightbox phóng to ảnh */}

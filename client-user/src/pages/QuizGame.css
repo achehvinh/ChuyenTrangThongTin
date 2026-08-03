@@ -10,79 +10,245 @@
   margin: 0 auto;
 }
 
-/* ── Màn hình chào mừng ── */
-.quiz-start-container {
-  background: white;
-  border-radius: 20px;
-  padding: 40px;
-  border: 1px solid #e0f2fe;
-  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.05);
-  max-width: 600px;
+/* ── MÀN HÌNH CHÀO MỪNG 1 CARD DUY NHẤT CÓ 1 NÚT ĐÓNG ── */
+.quiz-start-single-container {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.quiz-start-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px 28px 44px;
+  border: 2.5px solid #e0f2fe;
+  box-shadow: 0 12px 36px rgba(2, 132, 199, 0.08);
+  position: relative;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
+  z-index: 2;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.quiz-start-header h2 {
-  font-size: 22px;
-  font-weight: 800;
-  color: #0369a1;
-  margin: 16px 0 8px;
+.quiz-card-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #334155;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
 }
 
-.quiz-start-header p {
-  font-size: 14.5px;
-  color: #4b5563;
+.quiz-card-close-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+  margin: 0 auto;
+  text-align: center;
+  z-index: 2;
+}
+
+/* Họa tiết trang trí */
+.balloon-top-left {
+  position: absolute;
+  top: 24px;
+  left: 30px;
+  animation: floatSlow 3s ease-in-out infinite alternate;
+}
+
+.fish-top-right {
+  position: absolute;
+  top: 28px;
+  right: 30px;
+  animation: floatSlow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+/* Huy hiệu Vàng trung tâm */
+.quiz-start-medal-box {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.medal-sunburst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.6) 0%, rgba(254, 240, 138, 0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.medal-ribbon-badge {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 6px 12px rgba(217, 119, 6, 0.25));
+}
+
+/* Tiêu đề & Mô tả */
+.quiz-start-main-title {
+  font-size: 30px;
+  font-weight: 900;
+  color: #0284c7;
+  line-height: 1.25;
+  margin: 10px 0 14px;
+  letter-spacing: -0.3px;
+}
+
+.quiz-start-desc {
+  font-size: 15px;
+  color: #475569;
   line-height: 1.6;
-  margin-bottom: 30px;
+  max-width: 520px;
+  margin: 0 auto 28px;
+  font-weight: 600;
 }
 
-.quiz-start-form {
+/* Form nhập tên dạng Pill Badge & Input Box */
+.quiz-start-new-form {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 12px;
-  max-width: 400px;
-  margin: 0 auto;
+  align-items: center;
+  width: 100%;
 }
 
-.quiz-start-form label {
-  font-size: 15px;
-  font-weight: 700;
-  color: #0f172a;
-  text-align: left;
-}
-
-.quiz-start-form input {
-  padding: 14px 20px;
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
-  font-size: 16px;
-  font-family: inherit;
-  font-weight: 600;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.quiz-start-form input:focus {
-  border-color: #0284c7;
-}
-
-.quiz-start-btn {
+.quiz-label-pill-badge {
   background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 14px 24px;
-  font-size: 16px;
+  color: #ffffff;
+  font-size: 15px;
   font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
-  transition: all 0.2s;
+  padding: 8px 26px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+  margin-bottom: -16px;
+  position: relative;
+  z-index: 3;
 }
 
-.quiz-start-btn:hover {
+.star-sparkle {
+  font-size: 13px;
+}
+
+.quiz-input-field-box {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  margin-bottom: 24px;
+}
+
+.input-user-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.quiz-input-field-box input {
+  width: 100%;
+  padding: 14px 20px 14px 48px;
+  border: 2px solid #bae6fd;
+  border-radius: 16px;
+  font-size: 16.5px;
+  font-weight: 600;
+  color: #0f172a;
+  background: #ffffff;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.quiz-input-field-box input:focus {
+  border-color: #0284c7;
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.18);
+}
+
+.input-star-decor {
+  position: absolute;
+  right: -10px;
+  top: -12px;
+  font-size: 22px;
+  animation: bounceSlow 2s infinite;
+}
+
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(10deg); }
+}
+
+.quiz-start-submit-btn {
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  padding: 15px 44px;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 380px;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.quiz-start-submit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.3);
+  box-shadow: 0 12px 28px rgba(2, 132, 199, 0.45);
+  background: linear-gradient(180deg, #0369a1 0%, #0284c7 100%);
+}
+
+.rocket-emoji {
+  font-size: 20px;
+}
+
+.decor-dolphin-sea {
+  position: absolute;
+  bottom: -5px;
+  left: 20px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.quiz-bottom-ocean-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  line-height: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* ── Status Header ── */
@@ -328,28 +494,31 @@
   margin-bottom: 28px;
 }
 
-/* ── BẰNG KHEN / GIẤY CHỨNG NHẬN ── */
+/* ── BẰNG KHEN / GIẤY CHỨNG NHẬN (THIẾT KẾ COMPACT FIT MÀN HÌNH) ── */
 .quiz-certificate-section {
-  max-width: 820px;
+  max-width: 680px;
+  width: 100%;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .print-controls {
   text-align: center;
-  margin-bottom: 24px;
+  margin-top: 4px;
+  margin-bottom: 14px;
 }
 
 .passed-title {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 800;
   color: #15803d;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .print-buttons {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
 }
 
@@ -357,26 +526,27 @@
   background: linear-gradient(135deg, #da251d 0%, #a81710 100%);
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 14px 28px;
-  font-size: 16px;
+  border-radius: 10px;
+  padding: 8px 20px;
+  font-size: 13.5px;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(218, 37, 29, 0.25);
+  box-shadow: 0 4px 12px rgba(218, 37, 29, 0.25);
   transition: all 0.2s;
 }
 
 .quiz-print-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(218, 37, 29, 0.35);
+  box-shadow: 0 6px 16px rgba(218, 37, 29, 0.35);
 }
 
 .quiz-restart-btn.text {
   background: transparent;
   border: 1px solid #cbd5e1;
   color: #475569;
-  padding: 14px 24px;
-  border-radius: 12px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
@@ -387,152 +557,206 @@
   color: #0f172a;
 }
 
-/* Cấu trúc Bằng khen cao cấp vẽ bằng CSS */
+/* Cấu trúc Bằng khen cao cấp vẽ bằng CSS theo Mẫu Mới */
 .dn-certificate {
-  background: #fff8f0;
-  border: 2px solid #c5a059;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border: 3px solid #c5a059;
+  padding: 6px;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
 }
 
 .certificate-border {
-  border: 4px double #c5a059;
-  padding: 24px;
-  border-radius: 6px;
+  border: 2px solid #005baa;
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
 }
 
 .certificate-inner {
-  border: 1px solid rgba(197, 160, 89, 0.3);
-  padding: 24px 32px;
-  border-radius: 4px;
-  background-image: radial-gradient(rgba(197, 160, 89, 0.02) 2px, transparent 2px);
-  background-size: 24px 24px;
+  border: 1.5px solid #d97706;
+  padding: 16px 20px 24px;
+  border-radius: 6px;
+  background: #ffffff;
   text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Quốc huy trên cùng */
+.cert-national-emblem {
+  margin: 0 auto 6px;
+  display: flex;
+  justify-content: center;
 }
 
 .cert-header {
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .cert-nation {
   font-family: inherit;
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 13.5px;
+  font-weight: 900;
   color: #0f172a;
   letter-spacing: 0.04em;
-  margin: 0 0 4px;
-}
-
-.cert-motto {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #334155;
-  margin: 0 0 6px;
-}
-
-.cert-divider {
-  font-size: 12px;
-  color: #c5a059;
-}
-
-.cert-issuer {
-  font-size: 13px;
-  font-weight: 800;
-  color: #0369a1;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
-  margin-bottom: 30px;
-  border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-  display: inline-block;
-  padding-bottom: 4px;
-}
-
-.cert-title-container {
-  margin-bottom: 28px;
-}
-
-.cert-title {
-  font-size: 32px;
-  font-weight: 900;
-  color: #da251d;
-  letter-spacing: 0.08em;
-  margin: 0 0 6px;
-}
-
-.cert-subtitle {
-  font-size: 14.5px;
-  font-weight: 800;
-  color: #c5a059;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.cert-content {
-  margin-bottom: 36px;
-}
-
-.cert-intro {
-  font-size: 14.5px;
-  font-style: italic;
-  color: #475569;
-  margin: 0 0 12px;
-}
-
-.cert-name {
-  font-size: 26px;
-  font-weight: 900;
-  color: #0f172a;
-  letter-spacing: 0.02em;
-  margin: 0 0 16px;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.05);
-  font-family: inherit;
-}
-
-.cert-reason {
-  font-size: 14.5px;
-  color: #334155;
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.cert-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.cert-date {
-  text-align: center;
-  width: 320px;
-}
-
-.cert-date p:first-child {
-  font-size: 13px;
-  font-style: italic;
-  color: #475569;
-  margin-bottom: 8px;
-}
-
-.cert-sign-title {
-  font-size: 12.5px;
-  font-weight: 800;
-  color: #0f172a;
   margin: 0 0 2px;
 }
 
-.cert-signer-role {
-  font-size: 11.5px;
+.cert-motto {
+  font-size: 12px;
   font-weight: 700;
+  color: #334155;
+  margin: 0 0 4px;
+}
+
+.cert-stars-line {
+  font-size: 11px;
+  color: #d97706;
+  letter-spacing: 4px;
+}
+
+.cert-issuer {
+  margin-bottom: 10px;
+}
+
+.issuer-line1 {
+  font-size: 13px;
+  font-weight: 900;
+  color: #005baa;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.issuer-line2 {
+  font-size: 12px;
+  font-weight: 800;
+  color: #005baa;
+  text-transform: uppercase;
+  margin: 2px 0 4px;
+}
+
+.cert-flourish {
+  font-size: 10px;
+  color: #d97706;
+  letter-spacing: 2px;
+}
+
+.cert-title-container {
+  margin-bottom: 10px;
+}
+
+.cert-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #b91c1c;
+  letter-spacing: 0.08em;
+  margin: 0 0 2px;
+}
+
+.cert-subtitle {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #a16207;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.cert-content {
+  margin-bottom: 12px;
+}
+
+.cert-intro {
+  font-size: 12.5px;
+  font-style: italic;
   color: #475569;
-  margin: 0 0 12px;
+  margin: 0 0 4px;
+}
+
+.cert-name {
+  font-size: 22px;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.04em;
+  margin: 2px 0 6px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+.cert-reason {
+  font-size: 12px;
+  color: #334155;
+  line-height: 1.45;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Chân Bằng khen: Huy hiệu Vàng & Ngày tháng chữ ký */
+.cert-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 0 10px;
+}
+
+/* Huy hiệu Vàng VÌ MỘT CỘNG ĐỒNG AN TOÀN */
+.cert-gold-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.badge-laurel-wreath {
+  margin-bottom: -10px;
+  z-index: 2;
+}
+
+.badge-ribbon {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(180, 83, 9, 0.3);
+  z-index: 3;
+}
+
+/* Khung ngày tháng & Chữ ký */
+.cert-date-section {
+  text-align: center;
+  width: 240px;
+}
+
+.cert-date-str {
+  font-size: 11px;
+  font-style: italic;
+  color: #475569;
+  margin: 0 0 3px;
+}
+
+.cert-sign-title {
+  font-size: 11.5px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 1px;
+}
+
+.cert-signer-role {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #475569;
+  margin: 0 0 4px;
 }
 
 .cert-signature-space {
-  height: 100px;
+  height: 58px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -540,35 +764,60 @@
   align-items: center;
 }
 
-/* Giả lập dấu đỏ chính thức bằng CSS */
-.cert-stamp {
+/* Con dấu đỏ chính thức tròn giả lập CSS */
+.cert-official-stamp {
   position: absolute;
-  top: -8px;
-  left: 60px;
-  width: 82px;
-  height: 82px;
-  border: 3px solid rgba(218, 37, 29, 0.85);
+  top: -12px;
+  left: 20px;
+  width: 64px;
+  height: 64px;
+  border: 2px solid rgba(220, 38, 38, 0.85);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(218, 37, 29, 0.85);
-  transform: rotate(-10deg);
+  transform: rotate(-12deg);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.stamp-circle-outer {
+  width: 56px;
+  height: 56px;
+  border: 1px dashed rgba(220, 38, 38, 0.85);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stamp-txt-top {
+  font-size: 6.5px;
+  font-weight: 900;
+  color: rgba(220, 38, 38, 0.9);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.stamp-txt-star {
+  font-size: 10px;
+  color: rgba(220, 38, 38, 0.9);
+  margin-top: 1px;
+}
+
+/* Chữ ký màu xanh */
+.cert-handwriting-sig {
+  position: absolute;
+  top: -4px;
+  right: 15px;
+  z-index: 4;
   pointer-events: none;
 }
 
-.stamp-inner {
-  font-size: 8px;
-  font-weight: 900;
-  text-align: center;
-  line-height: 1.2;
-  display: block;
-  padding: 4px;
-}
-
 .cert-signer-name {
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 13.5px;
   color: #0f172a;
   margin: 0;
 }

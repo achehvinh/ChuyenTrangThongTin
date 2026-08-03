@@ -291,10 +291,23 @@ export default function ChuyenTrangThongTin() {
                       onClick={() => navigate(`/tin-tuc/${art._id || art.id}`)}
                     >
                       <div className="card-thumb-wrap">
-                        {art.anh_dai_dien ? (
+                        {art.video ? (
+                          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                            <video
+                              src={art.video}
+                              poster={art.anh_dai_dien || ''}
+                              className="card-thumb-img"
+                              muted
+                              style={{ objectFit: 'cover' }}
+                            />
+                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0,0,0,0.65)', color: '#fff', borderRadius: '50%', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold' }}>
+                              ▶
+                            </div>
+                          </div>
+                        ) : art.anh_dai_dien ? (
                           <img src={art.anh_dai_dien} alt={art.tieu_de} className="card-thumb-img" />
                         ) : (
-                          <div className="card-thumb-img-placeholder" />
+                          <img src="/huong-dan/hinhnen1.jpg" alt={art.tieu_de} className="card-thumb-img" />
                         )}
                         <span className="card-category-badge" style={{ backgroundColor: badgeColor }}>
                           {catLabel}

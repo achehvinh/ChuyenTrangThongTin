@@ -1,161 +1,169 @@
 /* --- Cấu trúc chính --- */
 .all-features-container {
-    width: 100%;
-    min-height: 100vh;
-    background-color: #fcf8f2;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fcf8f2;
 }
 
 .feature-group-single {
-    padding: 60px 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  padding: 60px 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header-content {
-    max-width: 1200px;
-    text-align: center;
-    margin-bottom: 50px;
+  max-width: 1200px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 .header-content h1 {
-    color: #3b1606;
-    font-size: 42px;
-    margin-bottom: 20px;
+  color: #3b1606;
+  font-size: 42px;
+  margin-bottom: 20px;
 }
 
 .header-content p {
-    font-size: 18px;
-    color: #5c4a3e;
-    line-height: 1.6;
+  font-size: 18px;
+  color: #5c4a3e;
+  line-height: 1.6;
 }
 
 /* --- Gallery ảnh --- */
 .gallery-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
 }
 
 .gallery-item {
-    width: 100%; 
-    height: auto; 
-    max-width: 1200px; 
-    margin: 0 auto;
-    object-fit: contain; 
-    display: block;
-    transition: transform 0.3s ease;
+  width: 100%;
+  height: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
 }
 
 .gallery-item:hover {
-    transform: scale(1.01);
+  transform: scale(1.01);
 }
 
 /* --- Phần Đề xuất chuyên mục (Mới) --- */
 .all-categories-footer {
-    margin-top: 80px;
-    padding: 40px 5%;
-    background-color: #ffffff;
-    border-top: 4px solid #005bac;
+  margin-top: 80px;
+  padding: 40px 5%;
+  background-color: #ffffff;
+  border-top: 4px solid #005bac;
 }
 
 .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footer-card {
-    background: white;
-    border-radius: 14px;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    text-align: left;
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  text-align: left;
 }
 
 .footer-card {
-    background: #ffffff;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.35s cubic-bezier(0.34, 1.35, 0.64, 1),
-                box-shadow 0.35s cubic-bezier(0.34, 1.35, 0.64, 1),
-                background 0.35s ease,
-                border-color 0.35s ease;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.34, 1.35, 0.64, 1),
+    box-shadow 0.35s cubic-bezier(0.34, 1.35, 0.64, 1),
+    background 0.35s ease,
+    border-color 0.35s ease;
 }
 
 .footer-card:hover {
-    transform: translateY(-9px) scale(1.02);
-    background: linear-gradient(145deg, #003d7a 0%, #005baa 65%, #0284c7 100%);
-    border-color: #0284c7;
-    box-shadow: 0 22px 45px -8px rgba(0, 61, 122, 0.38),
-                0 0 0 3px rgba(2, 132, 199, 0.35);
+  transform: translateY(-9px) scale(1.02);
+  background: linear-gradient(145deg, #003d7a 0%, #005baa 65%, #0284c7 100%);
+  border-color: #0284c7;
+  box-shadow: 0 22px 45px -8px rgba(0, 61, 122, 0.38),
+    0 0 0 3px rgba(2, 132, 199, 0.35);
 }
 
 .footer-card.active {
-    border-color: #005bac;
-    box-shadow: 0 0 0 3px rgba(0,91,172,0.3);
+  border-color: #005bac;
+  box-shadow: 0 0 0 3px rgba(0, 91, 172, 0.3);
 }
 
 .footer-card-image {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    transition: transform 0.45s ease, filter 0.35s ease;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  transition: transform 0.45s ease, filter 0.35s ease;
 }
 
 .footer-card:hover .footer-card-image {
-    transform: scale(1.08);
-    filter: brightness(1.05) contrast(1.05);
+  transform: scale(1.08);
+  filter: brightness(1.05) contrast(1.05);
 }
 
 .footer-card-content {
-    padding: 16px;
-    transition: all 0.35s ease;
-    background: transparent;
+  padding: 16px;
+  transition: all 0.35s ease;
+  background: transparent;
 }
 
 .footer-card-content h3 {
-    font-size: 15.5px;
-    font-weight: 800;
-    color: #003d7a;
-    margin-bottom: 8px;
-    transition: color 0.35s ease, transform 0.35s ease;
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #003d7a;
+  margin-bottom: 8px;
+  transition: color 0.35s ease, transform 0.35s ease;
 }
 
 .footer-card:hover .footer-card-content h3 {
-    color: #ffffff;
-    transform: translateX(3px);
+  color: #ffffff;
+  transform: translateX(3px);
 }
 
 .footer-card.active .footer-card-content h3 {
-    color: #005bac;
+  color: #005bac;
 }
 
 .footer-card-content p {
-    font-size: 13px;
-    color: #64748b;
-    line-height: 1.6;
-    transition: color 0.35s ease;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+  transition: color 0.35s ease;
 }
 
 .footer-card:hover .footer-card-content p {
-    color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* --- Responsive --- */
 @media (min-width: 1024px) {
-    /* Điều chỉnh lại nếu bạn muốn dùng grid cho ảnh trên desktop */
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
-    .gallery-item { height: 600px; }
+
+  /* Điều chỉnh lại nếu bạn muốn dùng grid cho ảnh trên desktop */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+
+  .gallery-item {
+    height: 600px;
+  }
 }
+
 .video-section {
   width: 100%;
   max-width: 1200px;
@@ -180,7 +188,7 @@
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .video-frame {
@@ -201,10 +209,12 @@
   .video-list {
     grid-template-columns: 1fr;
   }
+
   .video-frame {
     height: 210px;
   }
 }
+
 .speak-btn {
   display: inline-flex;
   align-items: center;
@@ -219,7 +229,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: 0.2s;
-  box-shadow: 0 4px 12px rgba(0,91,172,0.3);
+  box-shadow: 0 4px 12px rgba(0, 91, 172, 0.3);
 }
 
 .speak-btn:hover {
@@ -227,46 +237,47 @@
   transform: scale(1.05);
 }
 
-.warning-box{
-  margin-top:30px;
-  padding:20px;
-  border-radius:12px;
-  background:#fff8e1;
-  border-left:6px solid #ff9800;
+.warning-box {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff8e1;
+  border-left: 6px solid #ff9800;
 }
 
-.warning-box h3{
-  color:#e65100;
-  margin-bottom:15px;
+.warning-box h3 {
+  color: #e65100;
+  margin-bottom: 15px;
 }
 
-.warning-box ul{
-  padding-left:20px;
+.warning-box ul {
+  padding-left: 20px;
 }
 
-.warning-box li{
-  margin-bottom:10px;
-  line-height:1.6;
-}
-.quiz-btn{
-  margin-top:20px;
-  padding:14px 24px;
-  border:none;
-  border-radius:15px;
-  background:#ff9800;
-  color:white;
-  font-size:18px;
-  font-weight:600;
-  cursor:pointer;
-  transition:.3s;
+.warning-box li {
+  margin-bottom: 10px;
+  line-height: 1.6;
 }
 
-.quiz-btn:hover{
-  transform:translateY(-3px);
-  background:#e68900;
+.quiz-btn {
+  margin-top: 20px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 15px;
+  background: #ff9800;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .3s;
 }
 
-.quiz-section{
-  text-align:center;
-  margin-top:30px;
+.quiz-btn:hover {
+  transform: translateY(-3px);
+  background: #e68900;
+}
+
+.quiz-section {
+  text-align: center;
+  margin-top: 30px;
 }

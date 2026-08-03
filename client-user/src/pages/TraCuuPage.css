@@ -478,8 +478,8 @@
   border: 1px solid #dfd1bd;
   padding: 24px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 28px;
   align-items: center;
   box-shadow: 0 6px 20px rgba(92, 53, 22, 0.06);
 }
@@ -487,20 +487,20 @@
 .step-left-info {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .step-split-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   color: #3b1606;
   margin: 0;
 }
 
 .step-split-desc {
-  font-size: 14px;
+  font-size: 14.5px;
   color: #5c4a3e;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -511,9 +511,9 @@
   background: #fdf4e3;
   border: 1px solid #e2c286;
   color: #8c261e;
-  padding: 8px 16px;
+  padding: 9px 18px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   cursor: pointer;
   align-self: flex-start;
@@ -524,67 +524,19 @@
   background: #fcebd0;
 }
 
-.steps-checklist-box {
-  background: #faf4eb;
-  border: 1px solid #e5d8c5;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-.checklist-heading {
-  font-size: 13px;
-  font-weight: 800;
-  color: #3b1606;
-  margin-bottom: 12px;
-}
-
-.checklist-items {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.checklist-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 12.5px;
-  color: #4a3e35;
-  line-height: 1.4;
-}
-
-.checklist-row.active .chk-num {
-  background: #8c261e;
-  color: #ffffff;
-}
-
-.chk-num {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #d49f53;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
 .step-toggle-done-btn {
   background: #233b1e;
   color: #ffffff;
   border: none;
-  padding: 12px 20px;
+  padding: 13px 22px;
   border-radius: 12px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
   transition: background 0.2s ease;
   text-align: center;
   box-shadow: 0 4px 12px rgba(35, 59, 30, 0.2);
+  margin-top: 8px;
 }
 
 .step-toggle-done-btn:hover {
@@ -595,20 +547,23 @@
   background: #10b981;
 }
 
-/* Step Right Photo */
+/* Step Right Photo - PHÓNG TO ẢNH HƯỚNG DẪN RÕ NÉT */
 .step-right-photo {
   position: relative;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  height: 270px;
+  height: 350px;
   cursor: zoom-in;
-  border: 1px solid #e5d8c5;
+  border: 2px solid #d49f53;
+  box-shadow: 0 8px 24px rgba(92, 53, 22, 0.12);
+  background: #ffffff;
 }
 
 .photo-real-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #ffffff;
   display: block;
 }
 

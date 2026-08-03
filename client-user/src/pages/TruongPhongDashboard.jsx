@@ -149,6 +149,43 @@ export default function TruongPhongDashboard() {
   const [selectedDetailTab, setSelectedDetailTab] = useState("tuyen-truyen");
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // ── Quiz Game Management State ──
+  const [quizResults, setQuizResults] = useState([]);
+  const [quizStats, setQuizStats] = useState({
+    totalParticipants: 0,
+    passedCount: 0,
+    failedCount: 0,
+    passRate: 0,
+    averageScore: 0,
+  });
+  const [quizLoading, setQuizLoading] = useState(false);
+  const [quizSearch, setQuizSearch] = useState("");
+
+  const fetchQuizResults = async (search = "") => {
+    setQuizLoading(true);
+    try {
+      const url = search
+        ? `${BASE_URL}/api/v1/quiz/results?search=${encodeURIComponent(search)}`
+        : `${BASE_URL}/api/v1/quiz/results`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.success) {
+        setQuizResults(data.data || []);
+        if (data.stats) setQuizStats(data.stats);
+      }
+    } catch (err) {
+      console.error("Lỗi tải kết quả cuộc thi:", err);
+    } finally {
+      setQuizLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "quiz-results") {
+      fetchQuizResults(quizSearch);
+    }
+  }, [activeTab]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -2155,11 +2192,18 @@ export default function TruongPhongDashboard() {
                   <strong style={{ fontSize: "12.5px", color: "#0f172a", display: "block" }}>{fullName}</strong>
                   <span style={{ fontSize: "11px", color: "#64748b" }}>{role === "truongphong" ? "Trưởng phòng VH-XH" : "Cán bộ VH-XH"}</span>
                 </div>
-                <button type="button" onClick={() => { setShowProfileMenu(false); setShowAccountInfoModal(true); }} style={{ display: "flex", alignItems: "center", gap: "8px", width: "100%", padding: "7px 10px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "12px", fontWeight: "600", color: "#334155", cursor: "pointer" }}>
-                  <span>👤 Thông tin tài khoản</span>
+                <button type="button" onClick={() => { setShowProfileMenu(false); setShowAccountInfoModal(true); }} style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "8px 12px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "13px", fontWeight: "600", color: "#334155", cursor: "pointer", textAlign: "left" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                  <span>Thông tin tài khoản</span>
                 </button>
-                <button type="button" onClick={() => { setShowProfileMenu(false); handleLogout(); }} style={{ display: "flex", alignItems: "center", gap: "8px", width: "100%", padding: "7px 10px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "12px", fontWeight: "600", color: "#dc2626", cursor: "pointer" }}>
-                  <span>🚪 Đăng xuất</span>
+                <button type="button" onClick={() => { setShowProfileMenu(false); setShowSettingsModal(true); }} style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "8px 12px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "13px", fontWeight: "600", color: "#334155", cursor: "pointer", textAlign: "left" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+                  <span>Cài đặt</span>
+                </button>
+                <div style={{ height: "1px", background: "#e2e8f0", margin: "4px 0" }} />
+                <button type="button" onClick={() => { setShowProfileMenu(false); handleLogout(); }} style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "8px 12px", border: "none", background: "transparent", borderRadius: "6px", fontSize: "13px", fontWeight: "600", color: "#dc2626", cursor: "pointer", textAlign: "left" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                  <span>Đăng xuất</span>
                 </button>
               </div>
             )}
@@ -2606,6 +2650,20 @@ export default function TruongPhongDashboard() {
                 </svg>
                 <span>Email Đăng ký nhận tin</span>
               </button>
+
+              <button
+                className={`tp-nav-item ${activeTab === "quiz-results" ? "active" : ""}`}
+                onClick={() => { setActiveTab("quiz-results"); setMessage(""); setError(""); }}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                title="Quản lý người đã tham gia trò chơi"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg>
+                <span>Quản lý người đã tham gia trò chơi</span>
+              </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
                 onClick={() => { setActiveTab("ai-assistant"); setMessage(""); setError(""); }}
@@ -2641,6 +2699,7 @@ export default function TruongPhongDashboard() {
                 {activeTab === "tasks" && "Chỉ thị & Nhiệm vụ được giao"}
                 {activeTab === "articles" && "Soạn thảo bài tuyên truyền cho bà con"}
                 {activeTab === "feedback" && "Phản hồi & Giải đáp góp ý từ người dân"}
+                {activeTab === "quiz-results" && "Quản lý người đã tham gia trò chơi — Danh sách người đã chơi, đã hoàn thành & thành tích"}
               </h2>
             </div>
 
@@ -2784,6 +2843,248 @@ export default function TruongPhongDashboard() {
               </div>
             );
           })()}
+
+          {/* TAB QUẢN LÝ NGƯỜI ĐÃ THAM GIA TRÒ CHƠI (NGƯỜI ĐÃ CHƠI, ĐÃ HOÀN THÀNH, THÀNH TÍCH) */}
+          {activeTab === "quiz-results" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px", animation: "fadeIn 0.25s ease-out" }}>
+              {/* Thẻ Thống Kê Tổng Quan Với Icon SVG Hiện Đại */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
+                {/* Thẻ 1: Người đã chơi */}
+                <div style={{ background: "#ffffff", padding: "18px 20px", borderRadius: "14px", border: "1px solid #e2e8f0", boxShadow: "0 2px 6px rgba(0,0,0,0.03)", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "52px", height: "52px", background: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1px solid #bfdbfe" }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "12.5px", color: "#64748b", fontWeight: "700", display: "block" }}>Người đã chơi</span>
+                    <strong style={{ fontSize: "24px", color: "#0f172a", fontWeight: "800" }}>{quizStats.totalParticipants || 0}</strong>
+                  </div>
+                </div>
+
+                {/* Thẻ 2: Đã hoàn thành Đạt */}
+                <div style={{ background: "#ffffff", padding: "18px 20px", borderRadius: "14px", border: "1px solid #e2e8f0", boxShadow: "0 2px 6px rgba(0,0,0,0.03)", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "52px", height: "52px", background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1px solid #bbf7d0" }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="8" r="7"/>
+                      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "12.5px", color: "#64748b", fontWeight: "700", display: "block" }}>Đã hoàn thành Đạt</span>
+                    <strong style={{ fontSize: "24px", color: "#16a34a", fontWeight: "800" }}>{quizStats.passedCount || 0}</strong>
+                  </div>
+                </div>
+
+                {/* Thẻ 3: Tỷ lệ Đạt bằng khen */}
+                <div style={{ background: "#ffffff", padding: "18px 20px", borderRadius: "14px", border: "1px solid #e2e8f0", boxShadow: "0 2px 6px rgba(0,0,0,0.03)", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "52px", height: "52px", background: "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1px solid #fde68a" }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="20" x2="18" y2="10"/>
+                      <line x1="12" y1="20" x2="12" y2="4"/>
+                      <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "12.5px", color: "#64748b", fontWeight: "700", display: "block" }}>Tỷ lệ Đạt bằng khen</span>
+                    <strong style={{ fontSize: "24px", color: "#d97706", fontWeight: "800" }}>{quizStats.passRate || 0}%</strong>
+                  </div>
+                </div>
+
+                {/* Thẻ 4: Điểm số trung bình */}
+                <div style={{ background: "#ffffff", padding: "18px 20px", borderRadius: "14px", border: "1px solid #e2e8f0", boxShadow: "0 2px 6px rgba(0,0,0,0.03)", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "52px", height: "52px", background: "linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1px solid #ddd6fe" }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: "12.5px", color: "#64748b", fontWeight: "700", display: "block" }}>Điểm số trung bình</span>
+                    <strong style={{ fontSize: "24px", color: "#7c3aed", fontWeight: "800" }}>{quizStats.averageScore || 0} / 10</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Thanh Công Cụ Tìm Kiếm & Làm Mới */}
+              <div style={{ background: "#ffffff", padding: "16px 20px", borderRadius: "14px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px", boxShadow: "0 2px 6px rgba(0,0,0,0.03)" }}>
+                <form onSubmit={(e) => { e.preventDefault(); fetchQuizResults(quizSearch); }} style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, maxWidth: "460px" }}>
+                  <div style={{ position: "relative", flex: 1, display: "flex", alignItems: "center" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: "absolute", left: "12px" }}>
+                      <circle cx="11" cy="11" r="8"/>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Tìm người đã tham gia theo họ tên..."
+                      value={quizSearch}
+                      onChange={(e) => setQuizSearch(e.target.value)}
+                      style={{ width: "100%", padding: "9.5px 14px 9.5px 38px", borderRadius: "8px", border: "1.5px solid #cbd5e1", fontSize: "13.5px", outline: "none" }}
+                    />
+                  </div>
+                  <button type="submit" style={{ padding: "9.5px 20px", borderRadius: "8px", background: "linear-gradient(135deg, #005baa 0%, #004080 100%)", color: "#fff", border: "none", fontWeight: "800", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", boxShadow: "0 2px 6px rgba(0,91,170,0.2)" }}>
+                    <span>Tìm kiếm</span>
+                  </button>
+                  {quizSearch && (
+                    <button
+                      type="button"
+                      onClick={() => { setQuizSearch(""); fetchQuizResults(""); }}
+                      style={{ background: "none", border: "none", color: "#64748b", fontSize: "13px", cursor: "pointer", fontWeight: "700" }}
+                    >
+                      ✕ Xóa tìm
+                    </button>
+                  )}
+                </form>
+
+                <button
+                  type="button"
+                  onClick={() => fetchQuizResults(quizSearch)}
+                  style={{ padding: "9.5px 18px", borderRadius: "8px", background: "#f8fafc", border: "1.5px solid #cbd5e1", fontSize: "13px", fontWeight: "700", cursor: "pointer", color: "#334155", display: "flex", alignItems: "center", gap: "6px" }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  <span>Làm mới danh sách</span>
+                </button>
+              </div>
+
+              {/* Bảng Chi Tiết Danh Sách Người Đã Chơi, Đã Hoàn Thành, Thành Tích */}
+              <div style={{ background: "#ffffff", borderRadius: "14px", border: "1px solid #e2e8f0", overflow: "hidden", boxShadow: "0 2px 6px rgba(0,0,0,0.03)" }}>
+                {quizLoading ? (
+                  <div style={{ padding: "40px", textAlign: "center", color: "#64748b", fontWeight: "600" }}>Đang tải danh sách người đã tham gia trò chơi...</div>
+                ) : quizResults.length === 0 ? (
+                  <div style={{ padding: "48px 20px", textAlign: "center", color: "#64748b" }}>
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "10px" }}>
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    <h4 style={{ margin: "0 0 6px 0", color: "#1e293b", fontSize: "16px" }}>Chưa có lượt chơi nào được ghi nhận</h4>
+                    <p style={{ margin: 0, fontSize: "13.5px" }}>Khi người chơi tham gia cuộc thi ở trang người dùng, danh sách sẽ tự động lưu và hiển thị tại đây.</p>
+                  </div>
+                ) : (
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13.5px", textAlign: "left" }}>
+                    <thead>
+                      <tr style={{ background: "#f8fafc", borderBottom: "1.5px solid #e2e8f0", color: "#334155", fontWeight: "800" }}>
+                        <th style={{ padding: "14px 16px", width: "50px", textAlign: "center" }}>STT</th>
+                        <th style={{ padding: "14px 16px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <span>Người đã chơi</span>
+                          </div>
+                        </th>
+                        <th style={{ padding: "14px 16px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span>Thời gian tham gia</span>
+                          </div>
+                        </th>
+                        <th style={{ padding: "14px 16px", textAlign: "center" }}>
+                          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span>Đã hoàn thành</span>
+                          </div>
+                        </th>
+                        <th style={{ padding: "14px 16px", textAlign: "center" }}>
+                          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            <span>Tỷ lệ (%)</span>
+                          </div>
+                        </th>
+                        <th style={{ padding: "14px 16px", textAlign: "center" }}>
+                          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005baa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                            <span>Thành tích</span>
+                          </div>
+                        </th>
+                        <th style={{ padding: "14px 16px", textAlign: "center", width: "80px" }}>Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {quizResults.map((item, idx) => {
+                        const percent = Math.round((item.score / (item.totalQuestions || 10)) * 100);
+                        const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleString("vi-VN") : "-";
+                        return (
+                          <tr key={item._id || idx} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                            <td style={{ padding: "14px 16px", textAlign: "center", fontWeight: "700", color: "#64748b" }}>{idx + 1}</td>
+                            <td style={{ padding: "14px 16px", fontWeight: "800", color: "#0f172a" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#eff6ff", border: "1px solid #bfdbfe", display: "flex", alignItems: "center", justifyContent: "center", color: "#2563eb", flexShrink: 0 }}>
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                  </svg>
+                                </div>
+                                <span>{item.playerName}</span>
+                              </div>
+                            </td>
+                            <td style={{ padding: "14px 16px", color: "#64748b", fontWeight: "600" }}>{dateStr}</td>
+                            <td style={{ padding: "14px 16px", textAlign: "center" }}>
+                              <span style={{ background: "#e0f2fe", color: "#0369a1", border: "1px solid #bae6fd", padding: "4px 12px", borderRadius: "12px", fontWeight: "800", fontSize: "13px" }}>
+                                {item.score} / {item.totalQuestions || 10} câu
+                              </span>
+                            </td>
+                            <td style={{ padding: "14px 16px", textAlign: "center", fontWeight: "800", color: "#334155" }}>{percent}%</td>
+                            <td style={{ padding: "14px 16px", textAlign: "center" }}>
+                              {item.passed ? (
+                                <span style={{ background: "#dcfce7", color: "#15803d", border: "1px solid #86efac", padding: "5px 14px", borderRadius: "20px", fontWeight: "800", fontSize: "12px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15803d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="8" r="7"/>
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                                  </svg>
+                                  <span>ĐẠT BẰNG KHEN</span>
+                                </span>
+                              ) : (
+                                <span style={{ background: "#fef3c7", color: "#b45309", border: "1px solid #fde68a", padding: "5px 14px", borderRadius: "20px", fontWeight: "800", fontSize: "12px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="9" y1="18" x2="15" y2="18"/>
+                                    <line x1="10" y1="22" x2="14" y2="22"/>
+                                    <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+                                  </svg>
+                                  <span>CHƯA ĐẠT</span>
+                                </span>
+                              )}
+                            </td>
+                            <td style={{ padding: "14px 16px", textAlign: "center" }}>
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  if (window.confirm(`Xóa lượt thi của "${item.playerName}"?`)) {
+                                    try {
+                                      const res = await fetch(`${BASE_URL}/api/v1/quiz/results/${item._id}`, { method: "DELETE" });
+                                      const data = await res.json();
+                                      if (data.success) {
+                                        fetchQuizResults(quizSearch);
+                                      }
+                                    } catch (err) {
+                                      console.error("Lỗi xóa lượt chơi:", err);
+                                    }
+                                  }
+                                }}
+                                style={{ background: "#fef2f2", border: "1px solid #fecaca", cursor: "pointer", padding: "6px 10px", borderRadius: "8px", color: "#dc2626", transition: "all 0.15s" }}
+                                title="Xóa lượt chơi này"
+                              >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="3 6 5 6 21 6"/>
+                                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                  <line x1="10" y1="11" x2="10" y2="17"/>
+                                  <line x1="14" y1="11" x2="14" y2="17"/>
+                                </svg>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+          )}
 
           {activeTab === "dashboard" && (() => {
             // Tính toán số liệu thực tế từ database
@@ -5395,38 +5696,194 @@ export default function TruongPhongDashboard() {
 
 
               {activeTab === "updates" && (
-                <div className="tp-grid tp-updates-grid">
-                  <div className="tp-card">
-                    <h3>🔔 Hoạt động & Cập nhật hệ thống</h3>
-                    <div className="tp-activity-list">
-                      <div className="tp-activity-item">
-                        <div className="activity-dot blue"></div>
-                        <div className="activity-content">
-                          <strong>Đồng bộ cơ sở dữ liệu BHYT</strong>
-                          <p>Hệ thống hoàn tất đồng bộ danh sách thẻ BHYT toàn bộ các hộ dân xã Đăk Pxi.</p>
-                          <span>Hôm nay 08:05</span>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+
+                  {/* SECTION 1: HOẠT ĐỘNG & CẬP NHẬT HỆ THỐNG */}
+                  <div style={{
+                    background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "16px",
+                    padding: "24px", marginBottom: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)"
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+                      <div style={{
+                        width: "32px", height: "32px", borderRadius: "50%", background: "#fef3c7",
+                        display: "flex", alignItems: "center", justifyContent: "center", color: "#d97706"
+                      }}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                      </div>
+                      <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "900", color: "#0f172a" }}>
+                        Hoạt động & Cập nhật hệ thống
+                      </h3>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0", position: "relative" }}>
+                      {/* TIMELINE ITEM 1 */}
+                      <div style={{ display: "flex", alignItems: "flex-start", gap: "16px", paddingBottom: "20px", position: "relative" }}>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                          <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#0284c7", marginTop: "6px", boxShadow: "0 0 0 4px #e0f2fe" }} />
+                          <div style={{ width: "2px", height: "100%", background: "#f1f5f9", marginTop: "4px" }} />
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", width: "100%", flexWrap: "wrap" }}>
+                          <span style={{
+                            background: "#edf5ff", color: "#0284c7", fontWeight: "800", fontSize: "12px",
+                            padding: "4px 10px", borderRadius: "8px", border: "1px solid #c7d2fe"
+                          }}>
+                            08:05
+                          </span>
+                          <div style={{ flex: 1 }}>
+                            <strong style={{ fontSize: "14.5px", color: "#0f172a", display: "block", fontWeight: "800" }}>
+                              Đồng bộ cơ sở dữ liệu BHYT
+                            </strong>
+                            <p style={{ margin: "2px 0 0", fontSize: "13px", color: "#64748b" }}>
+                              Hệ thống hoàn tất đồng bộ danh sách thẻ BHYT toàn bộ các hộ dân xã Đăk Pxi.
+                            </p>
+                          </div>
                         </div>
                       </div>
-                      <div className="tp-activity-item">
-                        <div className="activity-dot green"></div>
-                        <div className="activity-content">
-                          <strong>Truy cập hệ thống</strong>
-                          <p>Trưởng phòng {fullName} đã truy cập bảng quản lý cán bộ trực thuộc.</p>
-                          <span>Vừa xong</span>
+
+                      {/* SEPARATOR LINE */}
+                      <div style={{ height: "1px", background: "#f1f5f9", margin: "4px 0 20px 26px" }} />
+
+                      {/* TIMELINE ITEM 2 */}
+                      <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
+                        <div style={{
+                          width: "28px", height: "28px", borderRadius: "50%", background: "#f0fdf4",
+                          border: "1.5px solid #bbf7d0", display: "flex", alignItems: "center",
+                          justifyContent: "center", color: "#16a34a", flexShrink: 0
+                        }}>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                          </svg>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: "10px" }}>
+                          <div>
+                            <strong style={{ fontSize: "14.5px", color: "#0f172a", display: "block", fontWeight: "800" }}>
+                              Truy cập hệ thống
+                            </strong>
+                            <p style={{ margin: "2px 0 0", fontSize: "13px", color: "#64748b" }}>
+                              Trưởng phòng Nguyễn Thái Huy đã truy cập bảng quản lý cán bộ trực thuộc.
+                            </p>
+                          </div>
+                          <span style={{
+                            background: "#ecfdf5", color: "#16a34a", fontWeight: "800", fontSize: "12px",
+                            padding: "4px 12px", borderRadius: "12px", border: "1px solid #a7f3d0"
+                          }}>
+                            Vừa xong
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="tp-card">
-                    <h3>📢 Thông báo trực tuyến đã gửi</h3>
-                    <div className="tp-notice-list">
-                      {notices.map((n) => (
-                        <div className="tp-notice-item" key={n._id}>
-                          <strong>{n.title}</strong>
-                          <p>{n.content ? n.content.substring(0, 100) : ""}...</p>
+                  {/* SECTION 2: THÔNG BÁO TRỰC TUYẾN ĐÃ GỬI */}
+                  <div style={{
+                    background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "16px",
+                    padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)"
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <div style={{
+                          width: "32px", height: "32px", borderRadius: "50%", background: "#e0f2fe",
+                          display: "flex", alignItems: "center", justifyContent: "center", color: "#0284c7"
+                        }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                            <path d="M6 12a6 6 0 0 0 6 6v-6z"/>
+                          </svg>
                         </div>
-                      ))}
+                        <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "900", color: "#0f172a" }}>
+                          Thông báo trực tuyến đã gửi
+                        </h3>
+                      </div>
+                      <a href="/thong-bao" style={{ fontSize: "13px", fontWeight: "800", color: "#0284c7", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                        <span>Xem tất cả thông báo</span>
+                        <span>›</span>
+                      </a>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                      {notices.length > 0 ? (
+                        notices.map((n, idx) => {
+                          // Soft icon background colors matching categories
+                          const iconStyles = [
+                            { bg: "#fee2e2", color: "#ef4444", icon: "document" },
+                            { bg: "#fef3c7", color: "#d97706", icon: "warning" },
+                            { bg: "#f3e8ff", color: "#9333ea", icon: "chat" },
+                            { bg: "#e0f2fe", color: "#0284c7", icon: "shield" }
+                          ];
+                          const styleItem = iconStyles[idx % iconStyles.length];
+
+                          return (
+                            <div
+                              key={n._id || idx}
+                              style={{
+                                display: "flex", alignItems: "center", justifyContent: "space-between",
+                                padding: "14px 16px", borderRadius: "12px", background: "#ffffff",
+                                border: "1px solid #f1f5f9", transition: "all 0.15s ease", gap: "16px"
+                              }}
+                            >
+                              {/* Left Icon + Text */}
+                              <div style={{ display: "flex", alignItems: "center", gap: "14px", flex: 1, minWidth: 0 }}>
+                                <div style={{
+                                  width: "42px", height: "42px", borderRadius: "12px", background: styleItem.bg,
+                                  color: styleItem.color, display: "flex", alignItems: "center", justifyContent: "center",
+                                  flexShrink: 0
+                                }}>
+                                  {styleItem.icon === "document" && (
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                                    </svg>
+                                  )}
+                                  {styleItem.icon === "warning" && (
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                  )}
+                                  {styleItem.icon === "chat" && (
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                  )}
+                                  {styleItem.icon === "shield" && (
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                  )}
+                                </div>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <strong style={{ fontSize: "14px", fontWeight: "800", color: "#0f172a", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                    {n.title}
+                                  </strong>
+                                  <p style={{ margin: "2px 0 0", fontSize: "12.5px", color: "#64748b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                    {n.content || "Trưởng phòng phát thông báo..."}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Right Date & Chevron */}
+                              <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#64748b", fontWeight: "600" }}>
+                                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                  </svg>
+                                  <div style={{ textAlign: "right", lineHeight: "1.2" }}>
+                                    <div>{n.date || "20/07/2026"}</div>
+                                    <div style={{ fontSize: "11px", color: "#94a3b8" }}>14:00</div>
+                                  </div>
+                                </div>
+                                <span style={{ fontSize: "16px", color: "#94a3b8", fontWeight: "800" }}>›</span>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "20px", color: "#94a3b8", fontSize: "13px" }}>
+                          Chưa có thông báo trực tuyến nào được phát hành.
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -5476,7 +5933,7 @@ export default function TruongPhongDashboard() {
                 <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
                   {/* KHUNG SOẠN BÀI VIẾT TUYÊN TRUYỀN FULL MÀN HÌNH */}
                   <div className="tp-card tp-form-card" style={{ width: "100%", padding: "24px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", pb: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", paddingBottom: "12px", borderBottom: "1.5px solid #e2e8f0" }}>
                       <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#003d7a", display: "flex", alignItems: "center", gap: "8px" }}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                         <span>{editingArticle ? "Sửa bài viết tuyên truyền" : "Soạn thảo bài viết tuyên truyền mới"}</span>
@@ -8200,6 +8657,203 @@ export default function TruongPhongDashboard() {
             <polyline points="18 15 12 9 6 15" />
           </svg>
         </button>
+      )}
+
+      {/* MODAL THÔNG TIN TÀI KHOẢN CÁN BỘ - GIAO DIỆN CAO CẤP RÕ NÉT HTML5 */}
+      {showAccountInfoModal && (
+        <div style={{
+          position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.65)", zIndex: 99999,
+          display: "flex", alignItems: "center", justifyContent: "center", padding: "20px",
+          backdropFilter: "blur(4px)"
+        }} onClick={() => setShowAccountInfoModal(false)}>
+          <div style={{
+            background: "#ffffff", borderRadius: "20px", width: "100%", maxWidth: "520px",
+            boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.3)", overflow: "hidden",
+            border: "1px solid #e2e8f0"
+          }} onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{
+              background: "linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%)", color: "#ffffff",
+              padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between"
+            }}>
+              <h3 style={{ margin: 0, fontSize: "17px", fontWeight: "900", color: "#ffffff", display: "flex", alignItems: "center", gap: "10px", letterSpacing: "0.2px" }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>THÔNG TIN TÀI KHOẢN CÁN BỘ</span>
+              </h3>
+              <button
+                type="button"
+                style={{
+                  background: "rgba(255, 255, 255, 0.2)", border: "none", color: "#ffffff",
+                  width: "30px", height: "30px", borderRadius: "50%", display: "flex",
+                  alignItems: "center", justifyContent: "center", cursor: "pointer",
+                  transition: "background 0.2s ease"
+                }}
+                onClick={() => setShowAccountInfoModal(false)}
+                title="Đóng cửa sổ"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Content Body */}
+            <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "18px" }}>
+              {/* Profile Card Header */}
+              <div style={{ display: "flex", alignItems: "center", gap: "16px", paddingBottom: "18px", borderBottom: "1.5px solid #f1f5f9" }}>
+                <div style={{
+                  width: "60px", height: "60px", borderRadius: "50%",
+                  background: "linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)",
+                  border: "2.5px solid #0284c7", display: "flex", alignItems: "center",
+                  justifyContent: "center", color: "#0284c7", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.15)", flexShrink: 0
+                }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#0f172a" }}>{fullName || "Cán bộ VH-XH"}</h4>
+                  <span style={{ fontSize: "13px", color: "#0284c7", fontWeight: "800", display: "inline-block", marginTop: "2px" }}>
+                    {role === "truongphong" || role === "admin" ? "Trưởng phòng VH-XH" : "Cán bộ Chuyên viên"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Grid 4 Items */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <div style={{ background: "#f8fafc", padding: "12px 14px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                  <span style={{ color: "#64748b", fontSize: "11px", fontWeight: "700", display: "block", textTransform: "uppercase", letterSpacing: "0.5px" }}>ĐƠN VỊ CÔNG TÁC</span>
+                  <strong style={{ color: "#0f172a", fontSize: "13.5px", fontWeight: "800", display: "block", marginTop: "3px" }}>UBND Xã Đăk Pxi</strong>
+                </div>
+
+                <div style={{ background: "#f8fafc", padding: "12px 14px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                  <span style={{ color: "#64748b", fontSize: "11px", fontWeight: "700", display: "block", textTransform: "uppercase", letterSpacing: "0.5px" }}>PHÒNG BAN</span>
+                  <strong style={{ color: "#0f172a", fontSize: "13.5px", fontWeight: "800", display: "block", marginTop: "3px" }}>Phòng Văn hóa - Xã hội</strong>
+                </div>
+
+                <div style={{ background: "#f8fafc", padding: "12px 14px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                  <span style={{ color: "#64748b", fontSize: "11px", fontWeight: "700", display: "block", textTransform: "uppercase", letterSpacing: "0.5px" }}>TÊN ĐĂNG NHẬP</span>
+                  <strong style={{ color: "#0f172a", fontSize: "13.5px", fontWeight: "800", display: "block", marginTop: "3px" }}>{localStorage.getItem("admin_username") || "canbo_vhxh"}</strong>
+                </div>
+
+                <div style={{ background: "#f8fafc", padding: "12px 14px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                  <span style={{ color: "#64748b", fontSize: "11px", fontWeight: "700", display: "block", textTransform: "uppercase", letterSpacing: "0.5px" }}>TRẠNG THÁI</span>
+                  <strong style={{ color: "#16a34a", fontSize: "13.5px", fontWeight: "800", display: "flex", alignItems: "center", gap: "6px", marginTop: "3px" }}>
+                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#16a34a", display: "inline-block" }}></span>
+                    Đang hoạt động
+                  </strong>
+                </div>
+              </div>
+
+              {/* Close Action Button */}
+              <button
+                type="button"
+                onClick={() => setShowAccountInfoModal(false)}
+                style={{
+                  background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)", color: "#ffffff",
+                  border: "none", padding: "12px 20px", borderRadius: "12px", fontSize: "14px",
+                  fontWeight: "900", cursor: "pointer", marginTop: "6px", boxShadow: "0 4px 14px rgba(2, 132, 199, 0.25)",
+                  transition: "all 0.2s ease", textAlign: "center"
+                }}
+              >
+                Đóng cửa sổ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL CÀI ĐẶT HỆ THỐNG - GIAO DIỆN CAO CẤP RÕ NÉT HTML5 */}
+      {showSettingsModal && (
+        <div style={{
+          position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.65)", zIndex: 99999,
+          display: "flex", alignItems: "center", justifyContent: "center", padding: "20px",
+          backdropFilter: "blur(4px)"
+        }} onClick={() => setShowSettingsModal(false)}>
+          <div style={{
+            background: "#ffffff", borderRadius: "20px", width: "100%", maxWidth: "500px",
+            boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.3)", overflow: "hidden",
+            border: "1px solid #e2e8f0"
+          }} onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{
+              background: "linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%)", color: "#ffffff",
+              padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between"
+            }}>
+              <h3 style={{ margin: 0, fontSize: "17px", fontWeight: "900", color: "#ffffff", display: "flex", alignItems: "center", gap: "10px", letterSpacing: "0.2px" }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span>CÀI ĐẶT GIAO DIỆN & TÙY CHỌN</span>
+              </h3>
+              <button
+                type="button"
+                style={{
+                  background: "rgba(255, 255, 255, 0.2)", border: "none", color: "#ffffff",
+                  width: "30px", height: "30px", borderRadius: "50%", display: "flex",
+                  alignItems: "center", justifyContent: "center", cursor: "pointer",
+                  transition: "background 0.2s ease"
+                }}
+                onClick={() => setShowSettingsModal(false)}
+                title="Đóng cửa sổ"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Content Body */}
+            <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px", background: "#f8fafc", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                <div>
+                  <strong style={{ fontSize: "14px", color: "#0f172a", display: "block", fontWeight: "800" }}>Thông báo thời gian thực</strong>
+                  <span style={{ fontSize: "12px", color: "#64748b", marginTop: "2px", display: "block" }}>Nhận cảnh báo cuộc họp và tin mới tức thì</span>
+                </div>
+                <input type="checkbox" defaultChecked style={{ width: "20px", height: "20px", cursor: "pointer", accentColor: "#0284c7" }} />
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px", background: "#f8fafc", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                <div>
+                  <strong style={{ fontSize: "14px", color: "#0f172a", display: "block", fontWeight: "800" }}>Âm thanh phát thông báo</strong>
+                  <span style={{ fontSize: "12px", color: "#64748b", marginTop: "2px", display: "block" }}>Phát âm thanh khi có lịch họp khẩn</span>
+                </div>
+                <input type="checkbox" defaultChecked style={{ width: "20px", height: "20px", cursor: "pointer", accentColor: "#0284c7" }} />
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px", background: "#f8fafc", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                <div>
+                  <strong style={{ fontSize: "14px", color: "#0f172a", display: "block", fontWeight: "800" }}>Tự động lưu dữ liệu cán bộ</strong>
+                  <span style={{ fontSize: "12px", color: "#64748b", marginTop: "2px", display: "block" }}>Sao lưu cache phòng tránh mất thông tin</span>
+                </div>
+                <input type="checkbox" defaultChecked style={{ width: "20px", height: "20px", cursor: "pointer", accentColor: "#0284c7" }} />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowSettingsModal(false);
+                  alert("✅ Đã lưu cài đặt thành công!");
+                }}
+                style={{
+                  background: "linear-gradient(135deg, #16a34a 0%, #15803d 100%)", color: "#ffffff",
+                  border: "none", padding: "12px 20px", borderRadius: "12px", fontSize: "14px",
+                  fontWeight: "900", cursor: "pointer", marginTop: "6px", boxShadow: "0 4px 14px rgba(22, 163, 74, 0.25)",
+                  transition: "all 0.2s ease", textAlign: "center"
+                }}
+              >
+                Lưu cài đặt ngay
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

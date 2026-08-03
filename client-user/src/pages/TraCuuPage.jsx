@@ -22,9 +22,9 @@ const HUONG_DAN_APP = [
         title: 'Bước 1: Tải ứng dụng VssID',
         desc: 'Mở CH Play (Android) hoặc App Store (iPhone), tìm "VssID" và cài đặt về máy.',
         img: '/huong-dan/vssid_step1.jpg',
-        audioSrc: '/huong-dan/vssid_step1.mp3',
+        audioSrc: '/huong-dan/vssidweb_step1.mp3',
         placeholderName: 'vssid_step1.jpg',
-        audioFile: 'vssid_step1.mp3'
+        audioFile: 'vssidweb_step1.mp3'
       },
       {
         num: 2,
@@ -324,7 +324,9 @@ export default function TraCuuPage() {
     stopStepAudio();
     setPlayingStepAudio(step.num);
 
-    const audio = new Audio(step.audioSrc);
+    // Sử dụng chung 1 file âm thanh mới /huong-dan/vssidweb_step1.mp3 cho cả 3 bước
+    const sharedAudioSrc = '/huong-dan/vssidweb_step1.mp3';
+    const audio = new Audio(sharedAudioSrc);
     stepAudioRef.current = audio;
     audio.play()
       .then(() => {
@@ -636,24 +638,7 @@ export default function TraCuuPage() {
                         <span>{isPlayingThis ? '⏹ Dừng nghe đọc' : 'Nghe hướng dẫn bước ' + step.num}</span>
                       </button>
 
-                      {/* HƯỚNG DẪN CHI TIẾT CÁC BƯỚC THỰC HIỆN */}
-                      <div className="steps-checklist-box">
-                        <div className="checklist-heading">Các bước thực hiện</div>
-                        <div className="checklist-items">
-                          <div className={`checklist-row ${step.num === 1 ? 'active' : ''}`}>
-                            <span className="chk-num">1</span>
-                            <span className="chk-text">Tìm và tải ứng dụng VssID từ cửa hàng App Store hoặc Google Play (hoặc quét mã QR ở bên).</span>
-                          </div>
-                          <div className={`checklist-row ${step.num === 2 ? 'active' : ''}`}>
-                            <span className="chk-num">2</span>
-                            <span className="chk-text">Cài đặt ứng dụng trên điện thoại.</span>
-                          </div>
-                          <div className={`checklist-row ${step.num === 3 ? 'active' : ''}`}>
-                            <span className="chk-num">3</span>
-                            <span className="chk-text">Mở ứng dụng và sẵn sàng cho bước tiếp theo.</span>
-                          </div>
-                        </div>
-                      </div>
+
 
                       {/* Nút Hoàn thành bước */}
                       <button
