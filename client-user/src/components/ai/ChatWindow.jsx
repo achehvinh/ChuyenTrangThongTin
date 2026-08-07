@@ -1,6 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import {
+  Settings,
+  Volume2,
+  VolumeX,
+  Plus,
+  Send,
+  Mic,
+  MicOff,
+  Pin,
+  ArrowRight,
+  Bot,
+  Sparkles,
+  Pause
+} from 'lucide-react';
 import './ChatWindow.css';
 import { useLang } from '../../LanguageContext';
 
@@ -488,7 +502,7 @@ export default function ChatWindow() {
             onClick={() => setShowMenu(!showMenu)}
             title="Tùy chọn"
           >
-            ⚙️
+            <Settings size={17} />
           </button>
 
           {showMenu && (
@@ -498,7 +512,9 @@ export default function ChatWindow() {
                 onClick={() => setAutoRead(!autoRead)}
               >
                 <div className="cw-dropdown-item-left">
-                  <span className="cw-dropdown-icon">🔊</span>
+                  <span className="cw-dropdown-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <Volume2 size={16} />
+                  </span>
                   <span>Đọc tự động</span>
                 </div>
                 <input
@@ -509,7 +525,9 @@ export default function ChatWindow() {
               </div>
 
               <div className="cw-dropdown-item" onClick={handleNewChat}>
-                <span className="cw-dropdown-icon">➕</span>
+                <span className="cw-dropdown-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <Plus size={16} />
+                </span>
                 <span>Cuộc trò chuyện mới</span>
               </div>
             </div>
@@ -521,7 +539,11 @@ export default function ChatWindow() {
       <div className="cw-messages">
         {messages.map((m, i) => (
           <div key={i} className={`cw-msg-group ${m.sender}`}>
-            {m.sender === 'ai' && <div className="cw-avatar">🤖</div>}
+            {m.sender === 'ai' && (
+              <div className="cw-avatar">
+                <Bot size={18} color="#8b1515" />
+              </div>
+            )}
             <div className="cw-msg-content">
               <div className="cw-bubble-wrapper">
                 <div className={`cw-bubble cw-bubble--${m.sender}`}>
@@ -533,7 +555,7 @@ export default function ChatWindow() {
                     onClick={() => speakText(m.text, i)}
                     title={activeSpeechIndex === i ? 'Dừng đọc' : 'Đọc câu trả lời này'}
                   >
-                    {activeSpeechIndex === i ? '⏸' : '🔊'}
+                    {activeSpeechIndex === i ? <Pause size={13} /> : <Volume2 size={13} />}
                   </button>
                 )}
               </div>
@@ -541,7 +563,10 @@ export default function ChatWindow() {
               {/* Gợi ý liên quan */}
               {m.sender === 'ai' && m.suggestions?.length > 0 && (
                 <div className="cw-suggestions">
-                  <div className="cw-suggestions-label">📌 Nội dung liên quan:</div>
+                  <div className="cw-suggestions-label">
+                    <Pin size={13} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} />
+                    Nội dung liên quan:
+                  </div>
                   {m.suggestions.map((s, j) => (
                     <button
                       key={j}
@@ -550,7 +575,7 @@ export default function ChatWindow() {
                     >
                       <span className="cw-chip-label">{s.label}</span>
                       <span className="cw-chip-desc">{s.desc}</span>
-                      <span className="cw-chip-arrow">→</span>
+                      <ArrowRight size={14} className="cw-chip-arrow" />
                     </button>
                   ))}
                 </div>
@@ -561,7 +586,9 @@ export default function ChatWindow() {
 
         {loading && (
           <div className="cw-msg-group ai">
-            <div className="cw-avatar">🤖</div>
+            <div className="cw-avatar">
+              <Bot size={18} color="#8b1515" />
+            </div>
             <div className="cw-bubble cw-bubble--ai cw-typing">
               <span /><span /><span />
             </div>
@@ -575,7 +602,8 @@ export default function ChatWindow() {
       {messages.length <= 2 && (
         <div className="cw-quick">
           <div className="cw-quick-label">
-            💡 Gợi ý câu hỏi về <strong>{activeContext.title}</strong>:
+            <Sparkles size={14} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 4, color: '#d49f53' }} />
+            Gợi ý câu hỏi về <strong>{activeContext.title}</strong>:
           </div>
           <div className="cw-quick-list">
             {activeContext.quickQuestions.map((q, i) => (
@@ -600,7 +628,7 @@ export default function ChatWindow() {
             title={isListening ? 'Dừng ghi âm' : 'Nói để hỏi Trợ lý AI'}
             type="button"
           >
-            {isListening ? '🔴' : '🎤'}
+            {isListening ? <MicOff size={18} color="#dc2626" /> : <Mic size={18} color="#8b1515" />}
           </button>
           <input
             className="cw-input"
@@ -614,8 +642,9 @@ export default function ChatWindow() {
             className="cw-send-btn"
             onClick={() => sendMessage()}
             disabled={loading || !input.trim()}
+            title="Gửi câu hỏi"
           >
-            ➤
+            <Send size={15} />
           </button>
         </div>
       </div>

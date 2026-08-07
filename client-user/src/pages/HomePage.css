@@ -23,6 +23,28 @@
   gap: 20px;
 }
 
+.home-one-minute-banner {
+  background: linear-gradient(135deg, #1b4332 0%, #0f281e 100%);
+  border-radius: 20px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(15, 40, 30, 0.15);
+  border: 1.5px solid #d49f53;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-one-minute-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(15, 40, 30, 0.22);
+}
+
 /* ════════════════════════════════════════════════════════════════════════
    1. TOP SECTION: 3-COLUMN LAYOUT
    ════════════════════════════════════════════════════════════════════════ */

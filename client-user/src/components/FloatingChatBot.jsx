@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { X } from 'lucide-react';
 import ChatWindow from './ai/ChatWindow';
 import './FloatingChatBot.css';
 
@@ -34,7 +35,9 @@ const FloatingChatBot = () => {
     <div className="chatbot-wrapper">
       {isOpen && (
         <div className="chatbot-popup">
-          <button className="close-btn" onClick={() => setIsOpen(false)}>×</button>
+          <button className="close-btn" onClick={() => setIsOpen(false)} title="Đóng cửa sổ">
+            <X size={18} />
+          </button>
           <ChatWindow />
         </div>
       )}
@@ -47,8 +50,9 @@ const FloatingChatBot = () => {
               e.stopPropagation(); 
               setShowBubble(false); 
             }}
+            title="Đóng thông báo"
           >
-            ×
+            <X size={14} />
           </button>
           <span>{bubbleText}</span>
         </div>

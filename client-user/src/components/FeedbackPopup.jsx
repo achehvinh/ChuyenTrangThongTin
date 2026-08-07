@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MessageSquare, X, Send, CheckCircle2 } from 'lucide-react';
 import './FeedbackPopup.css';
 
 export default function FeedbackPopup() {
@@ -21,8 +22,8 @@ export default function FeedbackPopup() {
   return (
     <>
       {/* Nút mở popup */}
-      <button className="feedback-trigger" onClick={() => setOpen(true)}>
-        💬 
+      <button className="feedback-trigger" onClick={() => setOpen(true)} title="Góp ý ý kiến">
+        <MessageSquare size={22} />
       </button>
 
       {/* Overlay + Popup */}
@@ -30,13 +31,17 @@ export default function FeedbackPopup() {
         <div className="feedback-overlay" onClick={() => setOpen(false)}>
           <div className="feedback-popup" onClick={(e) => e.stopPropagation()}>
 
-            <button className="feedback-close" onClick={() => setOpen(false)}>✕</button>
+            <button className="feedback-close" onClick={() => setOpen(false)} title="Đóng">
+              <X size={18} />
+            </button>
 
-            <h3>📝 Góp ý kiến</h3>
+            <h3>Góp ý kiến</h3>
             <p>Ý kiến của bà con sẽ được gửi đến UBND xã Đăk Pxi</p>
 
             {sent ? (
-              <div className="feedback-success">✅ Cảm ơn bà con đã góp ý!</div>
+              <div className="feedback-success" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                <CheckCircle2 size={18} color="#16a34a" /> Cảm ơn bà con đã góp ý!
+              </div>
             ) : (
               <>
                 <textarea
@@ -50,8 +55,10 @@ export default function FeedbackPopup() {
                   className="feedback-submit"
                   onClick={handleSend}
                   disabled={!content.trim()}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
                 >
-                  Gửi góp ý ✉️
+                  <span>Gửi góp ý</span>
+                  <Send size={15} />
                 </button>
               </>
             )}

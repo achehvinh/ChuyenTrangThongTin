@@ -46,6 +46,8 @@ import ThienTaiPage from './pages/ThienTaiPage';
 import ThuTucChiTiet from "./pages/ThuTucChiTiet";
 import TruongPhongDashboard from './pages/TruongPhongDashboard';
 import VideoPage from './pages/VideoPage';
+import DakPxiTodayPage from './pages/DakPxiTodayPage';
+import OneMinutePage from './pages/OneMinutePage';
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -239,6 +241,9 @@ function AppLayout() {
           <Route path="/quan-tri" element={<TruongPhongDashboard />} />
           <Route path="/an-toan-giao-thong" element={<AnToanGiaoThongPage />} />
           <Route path="/phong-chong-lua-dao" element={<PhongChongLuaDaoPage />} />
+          <Route path="/dak-pxi-hom-nay" element={<DakPxiTodayPage />} />
+          <Route path="/1-phut-hom-nay" element={<OneMinutePage />} />
+          <Route path="/one-minute" element={<OneMinutePage />} />
           <Route path="/cuoc-hop-truc-tuyen/:id" element={<CuocHopTrucTuyen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

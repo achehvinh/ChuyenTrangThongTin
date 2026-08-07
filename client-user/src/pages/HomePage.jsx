@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './HomePage.css';
 import Footer from './Footer';
+import DakPxiToday from '../components/DakPxiToday/DakPxiToday';
 import {
   FileText, Calendar, Bell, MessageSquare, BookOpen, Monitor,
   Users, Home as HomeIcon, UserCheck, Award, Eye, ArrowRight,
-  Vote, GraduationCap, ShieldCheck, LayoutGrid, Scale
+  Vote, GraduationCap, ShieldCheck, LayoutGrid, Scale, Timer, PlayCircle
 } from 'lucide-react';
 
 const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
@@ -145,6 +146,39 @@ export default function HomePage() {
       <div className="homepage-container">
 
         {/* ════════════════════════════════════════════════════════════════
+           MODULE BẢNG THÔNG TIN: ⭐ ĐĂK PXI HÔM NAY (TRƯỚC NỘI DUNG CHÍNH)
+           ════════════════════════════════════════════════════════════════ */}
+        <DakPxiToday />
+
+        {/* ════════════════════════════════════════════════════════════════
+           QUICK BANNER: ⏱️ 1 PHÚT HÔM NAY - MỖI NGÀY MỘT KIẾN THỨC
+           ════════════════════════════════════════════════════════════════ */}
+        <div 
+          className="home-one-minute-banner"
+          onClick={() => navigate('/1-phut-hom-nay')}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{ background: '#d49f53', color: '#1b4332', width: '48px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Timer size={26} color="#1b4332" />
+            </div>
+            <div>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: '#fef08a', letterSpacing: '0.5px' }}>
+                ⏱️ CHUYÊN MỤC TRUYỀN THÔNG CỘNG ĐỒNG
+              </div>
+              <div style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', margin: '2px 0 0 0' }}>
+                1 PHÚT HÔM NAY — Mỗi ngày một kiến thức, mỗi phút một giá trị
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ background: 'rgba(255, 255, 255, 0.15)', color: '#ffffff', padding: '8px 16px', borderRadius: '20px', fontSize: '13px', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <PlayCircle size={18} color="#d49f53" /> Nghe ngay bài 60s →
+            </span>
+          </div>
+        </div>
+
+        {/* ════════════════════════════════════════════════════════════════
            TOP SECTION: 3-COLUMN LAYOUT (HERO SLIDER | TIN MỚI | TRUY CẬP NHANH)
            ════════════════════════════════════════════════════════════════ */}
         <section className="top-grid-section">
@@ -172,8 +206,9 @@ export default function HomePage() {
                     alt={currentHero.tieu_de}
                     className="hero-main-img"
                     onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/huong-dan/hinhnen1.jpg';
+                      if (e.target.src !== window.location.origin + '/huong-dan/hinhnen1.jpg') {
+                        e.target.src = '/huong-dan/hinhnen1.jpg';
+                      }
                     }}
                   />
                 )}
@@ -360,8 +395,9 @@ export default function HomePage() {
                   alt="Văn hóa đồng bào Xơ Đăng xã Đăk Pxi"
                   className="cultural-img"
                   onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/huong-dan/suckhoe_step2.jpg';
+                    if (e.target.src !== window.location.origin + '/huong-dan/suckhoe_step2.jpg') {
+                      e.target.src = '/huong-dan/suckhoe_step2.jpg';
+                    }
                   }}
                 />
               </div>
