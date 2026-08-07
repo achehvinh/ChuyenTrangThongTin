@@ -1278,6 +1278,198 @@
   text-decoration: none;
 }
 
+/* STYLING CHO 12 CƠ QUAN & ĐƠN VỊ TRỰC THUỘC */
+.official-units-section {
+  margin-top: 12px;
+  padding-top: 0;
+  border-top: none;
+}
+
+.units-title {
+  font-size: 16px;
+  font-weight: 850;
+  color: #0f172a;
+  margin: 0 0 16px;
+}
+
+.units-grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.unit-card-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  transition: all 0.2s ease;
+}
+
+.unit-card-item:hover {
+  border-color: #005baa;
+  box-shadow: 0 6px 16px rgba(0, 91, 170, 0.1);
+  transform: translateY(-1px);
+}
+
+.unit-num {
+  background: #005baa;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.unit-info strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.unit-info span {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+/* STYLING CHO CÔNG BỐ KẾT QUẢ BẦU CỬ TRƯỞNG THÔN 10/10 THÔN (BANNER ĐỎ VÀNG SANG TRỌNG) */
+.election-results-card {
+  background: #ffffff;
+  border: 2px solid #b91c1c;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 0 !important;
+  box-shadow: 0 10px 30px rgba(185, 28, 28, 0.12);
+}
+
+.election-header-banner {
+  background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+  color: #ffffff;
+  padding: 24px 20px;
+  text-align: center;
+  border-bottom: 4px solid #f59e0b;
+}
+
+.banner-sub-tag {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #fef08a;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.banner-title {
+  font-size: 21px;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 4px;
+  letter-spacing: -0.2px;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.banner-location {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fef08a;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.banner-footer-note {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(254, 240, 138, 0.4);
+  padding: 6px 18px;
+  border-radius: 30px;
+  font-size: 12.5px;
+  color: #ffffff;
+}
+
+.village-leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding: 20px;
+  background: #fffdf5;
+}
+
+.village-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1.5px solid #fca5a5;
+  border-left: 6px solid #b91c1c;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.village-card:hover {
+  border-color: #b91c1c;
+  box-shadow: 0 6px 18px rgba(185, 28, 28, 0.15);
+  transform: translateY(-1px);
+}
+
+.village-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fee2e2;
+  border: 2px solid #fca5a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-icon {
+  font-size: 20px;
+}
+
+.village-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.village-name {
+  font-size: 13px;
+  font-weight: 900;
+  color: #7f1d1d;
+  letter-spacing: 0.5px;
+}
+
+.leader-title-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #991b1b;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.leader-name {
+  font-size: 15px;
+  font-weight: 900;
+  color: #991b1b;
+  text-transform: uppercase;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .info-hero { padding: 32px 20px 24px; }
@@ -1292,4 +1484,6 @@
   .tq-grid-2col { grid-template-columns: 1fr; }
   .tq-leader-grid { grid-template-columns: 1fr; }
   .depts-grid { grid-template-columns: 1fr; }
+  .units-grid-container { grid-template-columns: 1fr; }
+  .village-leaders-grid { grid-template-columns: 1fr; }
 }

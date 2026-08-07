@@ -175,7 +175,7 @@ export default function TruongPhongDashboard() {
   // Tab State
   // For manager (truongphong): 'staff', 'schedule', 'updates'
   // For officer (canbo): 'tasks', 'citizens', 'articles', 'feedback'
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("tthc-management");
 
   // General messages
   const [loading, setLoading] = useState(false);
@@ -2363,17 +2363,7 @@ export default function TruongPhongDashboard() {
           {/* Trưởng phòng & Admin */}
           {(role === "truongphong" || role === "admin") && (
             <>
-              <button
-                className={`tp-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => { setActiveTab("dashboard"); setMessage(""); setError(""); }}
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                title="Trang tổng quan"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" />
-                </svg>
-                <span>Trang tổng quan</span>
-              </button>
+
 
               <button
                 className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
@@ -2533,12 +2523,12 @@ export default function TruongPhongDashboard() {
                 className={`tp-nav-item ${activeTab === "tthc-management" ? "active" : ""}`}
                 onClick={() => { setActiveTab("tthc-management"); setMessage(""); setError(""); }}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                title="Quản lý & Tra cứu TTHC"
+                title="Quản lý danh mục TTHC"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
                 </svg>
-                <span>Quản lý & Tra cứu TTHC</span>
+                <span>Quản lý danh mục TTHC</span>
               </button>
 
               <button
@@ -2558,16 +2548,7 @@ export default function TruongPhongDashboard() {
           {/* Phó phòng */}
           {role === "phophong" && (
             <>
-              <button
-                className={`tp-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => { setActiveTab("dashboard"); setMessage(""); setError(""); }}
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" />
-                </svg>
-                <span>Trang tổng quan</span>
-              </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
                 onClick={() => { setActiveTab("task-dispatch"); setMessage(""); setError(""); }}
@@ -2674,7 +2655,7 @@ export default function TruongPhongDashboard() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
                 </svg>
-                <span>Quản lý & Tra cứu TTHC</span>
+                <span>Quản lý danh mục TTHC</span>
               </button>
               <button
                 className={`tp-nav-item ${activeTab === "ai-assistant" ? "active" : ""}`}
@@ -2692,16 +2673,7 @@ export default function TruongPhongDashboard() {
           {/* Cán bộ */}
           {role === "canbo" && (
             <>
-              <button
-                className={`tp-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => { setActiveTab("dashboard"); setMessage(""); setError(""); }}
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" />
-                </svg>
-                <span>Trang tổng quan</span>
-              </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "task-dispatch" ? "active" : ""}`}
                 onClick={() => { setActiveTab("task-dispatch"); setMessage(""); setError(""); }}
@@ -2800,16 +2772,7 @@ export default function TruongPhongDashboard() {
                 </svg>
                 <span>Viết bài tuyên truyền</span>
               </button>
-              <button
-                className={`tp-nav-item ${activeTab === "feedback" ? "active" : ""}`}
-                onClick={() => { setActiveTab("feedback"); setMessage(""); setError(""); }}
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-                <span>Góp ý & Phản hồi</span>
-              </button>
+
               <button
                 className={`tp-nav-item ${activeTab === "subscribers" ? "active" : ""}`}
                 onClick={() => { setActiveTab("subscribers"); setMessage(""); setError(""); }}
@@ -2839,12 +2802,12 @@ export default function TruongPhongDashboard() {
                 className={`tp-nav-item ${activeTab === "tthc-management" ? "active" : ""}`}
                 onClick={() => { setActiveTab("tthc-management"); setMessage(""); setError(""); }}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                title="Quản lý & Tra cứu TTHC"
+                title="Quản lý danh mục TTHC"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
                 </svg>
-                <span>Quản lý & Tra cứu TTHC</span>
+                <span>Quản lý danh mục TTHC</span>
               </button>
 
               <button
@@ -2881,7 +2844,6 @@ export default function TruongPhongDashboard() {
                 {activeTab === "updates" && "Nhật ký Hệ thống & Thông báo UBND"}
                 {activeTab === "tasks" && "Chỉ thị & Nhiệm vụ được giao"}
                 {activeTab === "articles" && "Soạn thảo bài tuyên truyền cho bà con"}
-                {activeTab === "feedback" && "Phản hồi & Giải đáp góp ý từ người dân"}
                 {activeTab === "tthc-management" && "Quản lý & Tra cứu Thủ tục Hành chính — Theo dõi tiến trình & Niêm yết TTHC mới"}
                 {activeTab === "quiz-results" && "Quản lý người đã tham gia trò chơi — Danh sách người đã chơi, đã hoàn thành & thành tích"}
               </h2>
@@ -3367,530 +3329,6 @@ export default function TruongPhongDashboard() {
             </div>
           )}
 
-          {activeTab === "dashboard" && (() => {
-            // Tính toán số liệu thực tế từ database
-            const activeCardsCount = citizens.filter(c => c.insuranceCard && c.insuranceCard.status === 'active').length;
-            const pendingCardsCount = citizens.filter(c => !c.insuranceCard).length;
-
-            // Phân bổ thôn dân cư thực tế
-            let dakWek = 0;
-            let dakXe = 0;
-            let dakPxi = 0;
-            citizens.forEach(c => {
-              const addr = (c.address || "").toLowerCase();
-              if (addr.includes("wek")) dakWek++;
-              else if (addr.includes("xế") || addr.includes("xe")) dakXe++;
-              else dakPxi++;
-            });
-            const totalThon = dakWek + dakXe + dakPxi || 1;
-            const wekPct = parseFloat(((dakWek / totalThon) * 100).toFixed(1));
-            const xePct = parseFloat(((dakXe / totalThon) * 100).toFixed(1));
-            const pxiPct = parseFloat(((dakPxi / totalThon) * 100).toFixed(1));
-
-            // Số công dân đăng ký theo tháng (12 tháng)
-            const countsByMonth = Array(12).fill(0);
-            citizens.forEach(c => {
-              if (c.createdAt) {
-                const month = new Date(c.createdAt).getMonth();
-                countsByMonth[month]++;
-              }
-            });
-            const maxMonthCount = Math.max(...countsByMonth, 0);
-
-            // Tỷ lệ phản hồi đã giải quyết
-            const resolvedFeedbacks = feedbacks.filter(f => f.status === 'resolved').length;
-            const feedbackRate = ((resolvedFeedbacks / (feedbacks.length || 1)) * 100).toFixed(1);
-
-            return (
-              <div className="tp-dashboard-wrapper" style={{ animation: "fadeIn 0.25s ease-out", display: "flex", flexDirection: "column", gap: "15px" }}>
-
-                {/* CSS cục bộ cho Tooltip và Hover */}
-                <style>{`
-                  .tp-tooltip-container {
-                    position: relative;
-                  }
-                  .tp-tooltip-box {
-                    visibility: hidden;
-                    opacity: 0;
-                    position: absolute;
-                    bottom: 125%;
-                    left: 50%;
-                    transform: translateX(-50%) translateY(4px);
-                    background: #0f172a;
-                    color: #ffffff;
-                    padding: 6px 10px;
-                    border-radius: 6px;
-                    font-size: 11px;
-                    font-weight: 600;
-                    white-space: nowrap;
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                    pointer-events: none;
-                    transition: opacity 0.15s ease, transform 0.15s ease;
-                    z-index: 999;
-                  }
-                  .tp-tooltip-box::after {
-                    content: "";
-                    position: absolute;
-                    top: 100%;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    border-width: 5px;
-                    border-style: solid;
-                    border-color: #0f172a transparent transparent transparent;
-                  }
-                  .tp-tooltip-container:hover .tp-tooltip-box {
-                    visibility: visible;
-                    opacity: 1;
-                    transform: translateX(-50%) translateY(0);
-                  }
-                  
-                  .tp-hover-bar {
-                    transition: all 0.2s ease-in-out;
-                  }
-                  .tp-hover-bar:hover {
-                    transform: scaleY(1.15);
-                    background: #3b82f6 !important;
-                    cursor: pointer;
-                  }
-                  .tp-hover-bar-white {
-                    transition: all 0.2s ease-in-out;
-                  }
-                  .tp-hover-bar-white:hover {
-                    transform: scaleY(1.15);
-                    filter: brightness(1.2);
-                    cursor: pointer;
-                  }
-                  
-                  .tp-hover-donut {
-                    transition: all 0.2s ease-in-out;
-                    transform-origin: center;
-                  }
-                  .tp-hover-donut:hover {
-                    transform: scale(1.05);
-                    cursor: pointer;
-                  }
-                  
-                  .tp-hover-pie {
-                    transition: all 0.2s ease-in-out;
-                    transform-origin: center;
-                  }
-                  .tp-hover-pie:hover {
-                    filter: brightness(1.15);
-                    transform: scale(1.03);
-                    cursor: pointer;
-                  }
-                  
-                  .tp-hover-wave {
-                    transition: all 0.2s ease-in-out;
-                  }
-                  .tp-hover-wave:hover {
-                    filter: brightness(1.1);
-                    cursor: pointer;
-                  }
-                `}</style>
-
-                {/* Khối phía trên: Nền Xanh dương đậm (Navy) */}
-                <div style={{ background: "linear-gradient(135deg, #1a3a5c 0%, #2b5c8f 100%)", borderRadius: "8px", padding: "24px", color: "#ffffff", display: "grid", gridTemplateColumns: "1fr 1.3fr 1fr", gap: "24px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
-
-                  {/* Cột 1: 3 hàng chỉ số thực tế */}
-                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px" }}>
-                    <div className="tp-tooltip-container" style={{ cursor: "pointer" }}>
-                      <div style={{ fontSize: "24px", fontWeight: "850", lineHeight: 1 }}>{visitorStats.onlineTotal} người</div>
-                      <div style={{ fontSize: "11px", opacity: 0.85, textTransform: "uppercase", fontWeight: "700", marginTop: "4px", letterSpacing: "0.5px" }}>ĐANG TRỰC TUYẾN THỜI GIAN THỰC</div>
-                      <div className="tp-tooltip-box" style={{ bottom: "auto", top: "105%", left: "0", transform: "none" }}>Chi tiết: {visitorStats.onlineCanBo} cán bộ, {visitorStats.onlineCitizens} người dân</div>
-                    </div>
-
-                    <div className="tp-tooltip-container" style={{ cursor: "pointer" }}>
-                      <div style={{ fontSize: "24px", fontWeight: "850", lineHeight: 1 }}>{visitorStats.todayCount} lượt</div>
-                      <div style={{ fontSize: "11px", opacity: 0.85, textTransform: "uppercase", fontWeight: "700", marginTop: "4px", letterSpacing: "0.5px" }}>LƯỢT TRUY CẬP HỆ THỐNG / HÔM NAY</div>
-                      <div className="tp-tooltip-box" style={{ bottom: "auto", top: "105%", left: "0", transform: "none" }}>Lượt truy cập IP duy nhất trong ngày</div>
-                    </div>
-
-                    <div className="tp-tooltip-container" style={{ cursor: "pointer" }}>
-                      <div style={{ fontSize: "24px", fontWeight: "850", lineHeight: 1 }}>{citizens.filter(c => c.insuranceCard).length} thẻ BHYT</div>
-                      <div style={{ fontSize: "11px", opacity: 0.85, textTransform: "uppercase", fontWeight: "700", marginTop: "4px", letterSpacing: "0.5px" }}>THẺ BHYT ĐÃ CẤP TRÊN HỆ THỐNG</div>
-                      <div className="tp-tooltip-box" style={{ bottom: "auto", top: "105%", left: "0", transform: "none" }}>Hoạt động: {activeCardsCount} | Chưa cấp: {pendingCardsCount} công dân</div>
-                    </div>
-                  </div>
-
-                  {/* Cột 2: Chỉ số lớn + Biểu đồ cột màu trắng từ database */}
-                  <div style={{ borderLeft: "1px solid rgba(255,255,255,0.2)", borderRight: "1px solid rgba(255,255,255,0.2)", padding: "0 24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: "26px", fontWeight: "850", lineHeight: 1 }}>8 giờ / ngày</div>
-                      <div style={{ fontSize: "11px", opacity: 0.85, textTransform: "uppercase", fontWeight: "700", marginTop: "4px", letterSpacing: "0.5px" }}>Thời gian hoạt động hành chính</div>
-                    </div>
-
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", height: "85px", padding: "0 10px" }}>
-                      {countsByMonth.map((val, i) => {
-                        const h = maxMonthCount === 0
-                          ? [20, 25, 30, 35, 30, 25, 20, 28, 35, 42, 38, 45][i]
-                          : (val / maxMonthCount) * 65 + 15;
-                        return (
-                          <div key={i} className="tp-tooltip-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "6%" }}>
-                            <div className="tp-hover-bar-white" style={{ height: `${h}px`, background: "#ffffff", borderRadius: "1px", width: "100%" }}></div>
-                            <span style={{ fontSize: "9px", opacity: 0.8, marginTop: "4px" }}>
-                              {["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"][i]}
-                            </span>
-                            <div className="tp-tooltip-box">Đăng ký mới: {val} công dân</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Cột 3: Chỉ số hoàn thành + Donut chart khuyết */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: "24px", fontWeight: "850", lineHeight: 1 }}>{feedbackRate}%</div>
-                      <div style={{ fontSize: "11px", opacity: 0.85, textTransform: "uppercase", fontWeight: "700", marginTop: "4px", letterSpacing: "0.5px" }}>Tỷ lệ phản hồi công dân đã xử lý</div>
-                    </div>
-
-                    <div className="tp-tooltip-container tp-hover-donut" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                      <svg width="105" height="105" viewBox="0 0 120 120">
-                        <circle cx="60" cy="60" r="45" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="12" />
-                        <circle cx="60" cy="60" r="45" fill="none" stroke="#ffffff" strokeWidth="12"
-                          strokeDasharray="282.7" strokeDashoffset={282.7 - (282.7 * parseFloat(feedbackRate)) / 100}
-                          strokeLinecap="round" transform="rotate(-90 60 60)" />
-                        <text x="60" y="66" fill="#ffffff" fontSize="16" fontWeight="bold" textAnchor="middle">{feedbackRate}%</text>
-                      </svg>
-                      <div className="tp-tooltip-box">Đã giải quyết: {resolvedFeedbacks} | Đang chờ: {feedbacks.length - resolvedFeedbacks} phản hồi</div>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Khối phía dưới: Nền trắng 3 Cột */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.2fr", gap: "20px" }}>
-
-                  {/* Hộp 1: Tăng trưởng cộng dồn thực tế */}
-                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "260px" }}>
-                    <div>
-                      <div style={{ fontSize: "13px", fontWeight: "700", color: "#475569", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.5px" }}>Quy mô dân cư đăng ký tích lũy</div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                        <span style={{ background: "#1a3a5c", color: "#ffffff", padding: "6px 14px", borderRadius: "20px", fontSize: "16px", fontWeight: "800" }}>{citizens.length} người</span>
-                        <span style={{ fontSize: "10px", color: "#64748b", fontWeight: "700" }}>CƠ SỞ DỮ LIỆU THỰC TẾ</span>
-                      </div>
-                    </div>
-
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", height: "110px", padding: "10px 0" }}>
-                      {(() => {
-                        let sum = 0;
-                        const cumulative = countsByMonth.map(val => {
-                          sum += val;
-                          return sum;
-                        });
-                        const maxCumulative = Math.max(...cumulative, 0);
-                        return cumulative.map((val, i) => {
-                          const h = maxCumulative === 0
-                            ? [10, 18, 25, 38, 48, 55, 62, 75, 88, 98, 110, 120][i]
-                            : (val / maxCumulative) * 95 + 15;
-                          return (
-                            <div key={i} className="tp-tooltip-container tp-hover-bar" style={{ width: "6%", height: `${h}px`, background: "#1a3a5c", borderRadius: "1px" }}>
-                              <div className="tp-tooltip-box" style={{ bottom: "105%" }}>Tháng {i + 1}: Tích lũy {maxCumulative === 0 ? i * 2 + 1 : val} người</div>
-                            </div>
-                          );
-                        });
-                      })()}
-                    </div>
-
-                    <div style={{ fontSize: "10px", color: "#94a3b8", textAlign: "center", fontWeight: "700", textTransform: "uppercase", borderTop: "1px solid #f1f5f9", paddingTop: "8px" }}>
-                      Số lượng công dân tích lũy | 12 tháng qua
-                    </div>
-                  </div>
-
-                  {/* Hộp 2: Phân bổ BHYT theo thôn thực tế */}
-                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "260px" }}>
-                    <div style={{ fontSize: "13px", fontWeight: "700", color: "#475569", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.5px" }}>Phân bổ công dân theo địa bàn thôn</div>
-
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "130px" }}>
-                      <svg width="120" height="120" viewBox="0 0 100 100">
-                        {/* Biểu đồ tròn dùng stroke-dasharray (chu vi = 157.08) */}
-                        <circle cx="50" cy="50" r="25" fill="none" stroke="#1a3a5c" strokeWidth="50"
-                          strokeDasharray="157.08"
-                          strokeDashoffset="0" />
-                        <circle cx="50" cy="50" r="25" fill="none" stroke="#3b82f6" strokeWidth="50"
-                          strokeDasharray="157.08"
-                          strokeDashoffset={157.08 - (157.08 * wekPct) / 100} />
-                        <circle cx="50" cy="50" r="25" fill="none" stroke="#93c5fd" strokeWidth="50"
-                          strokeDasharray="157.08"
-                          strokeDashoffset={157.08 - (157.08 * (wekPct + xePct)) / 100} />
-                      </svg>
-                    </div>
-
-                    <div style={{ display: "flex", justifyContent: "center", gap: "8px", flexWrap: "wrap", fontSize: "10px", color: "#64748b", borderTop: "1px solid #f1f5f9", paddingTop: "8px" }}>
-                      <span className="tp-tooltip-container" style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#1a3a5c" }}></span>
-                        Đăk Wek ({wekPct}%)
-                        <div className="tp-tooltip-box">Địa bàn: {dakWek} công dân</div>
-                      </span>
-                      <span className="tp-tooltip-container" style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#3b82f6" }}></span>
-                        Đăk Xế Kơ Ne ({xePct}%)
-                        <div className="tp-tooltip-box">Địa bàn: {dakXe} công dân</div>
-                      </span>
-                      <span className="tp-tooltip-container" style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#93c5fd" }}></span>
-                        Đăk Pxi ({pxiPct}%)
-                        <div className="tp-tooltip-box">Địa bàn: {dakPxi} công dân</div>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Hộp 3: Chi tiết chỉ số công tác thực tế */}
-                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px", display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "15px", minHeight: "260px" }}>
-
-                    {/* Cột trái: 3 chỉ số thực tế */}
-                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                      <div>
-                        <div style={{ fontSize: "10px", fontWeight: "750", color: "#475569", textTransform: "uppercase", letterSpacing: "0.3px" }}>Tổng số công dân quản lý</div>
-                        <div className="tp-tooltip-container" style={{ display: "inline-block", marginTop: "4px" }}>
-                          <div style={{ background: "#1a3a5c", color: "#ffffff", padding: "4px 10px", borderRadius: "4px", fontSize: "14px", fontWeight: "800" }}>{citizens.length} người</div>
-                          <div className="tp-tooltip-box">Tổng số hồ sơ trong CSDL</div>
-                        </div>
-                      </div>
-
-                      <div style={{ marginTop: "12px" }}>
-                        <div style={{ fontSize: "10px", fontWeight: "750", color: "#475569", textTransform: "uppercase", letterSpacing: "0.3px" }}>Nhân sự hoạt động</div>
-                        <div className="tp-tooltip-container" style={{ display: "inline-block", marginTop: "4px" }}>
-                          <div style={{ background: "#1a3a5c", color: "#ffffff", padding: "4px 10px", borderRadius: "4px", fontSize: "14px", fontWeight: "800" }}>{subordinates.length + 1} cán bộ</div>
-                          <div className="tp-tooltip-box">1 Trưởng phòng & {subordinates.length} nhân viên</div>
-                        </div>
-                      </div>
-
-                      <div style={{ marginTop: "12px" }}>
-                        <div style={{ fontSize: "10px", fontWeight: "750", color: "#475569", textTransform: "uppercase", letterSpacing: "0.3px" }}>Lịch họp & Giao ban</div>
-                        <div className="tp-tooltip-container" style={{ display: "inline-block", marginTop: "4px" }}>
-                          <div style={{ background: "#1a3a5c", color: "#ffffff", padding: "4px 10px", borderRadius: "4px", fontSize: "14px", fontWeight: "800" }}>{meetings.length} cuộc họp</div>
-                          <div className="tp-tooltip-box">Lịch làm việc đã thiết lập</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Cột phải: Đồ thị SVG lượn sóng */}
-                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-
-                      <div className="tp-tooltip-container tp-hover-wave" style={{ height: "45px" }}>
-                        <svg width="100%" height="100%" viewBox="0 0 100 40" preserveAspectRatio="none">
-                          <path d="M 0 30 Q 15 10 30 25 T 60 15 T 90 20 T 100 15 L 100 40 L 0 40 Z" fill="rgba(26, 58, 92, 0.15)" stroke="#1a3a5c" strokeWidth="2" />
-                        </svg>
-                        <div className="tp-tooltip-box">Hiệu suất mạng: Ổn định ở mức 98.4%</div>
-                      </div>
-
-                      <div className="tp-tooltip-container tp-hover-wave" style={{ height: "45px" }}>
-                        <svg width="100%" height="100%" viewBox="0 0 100 40" preserveAspectRatio="none">
-                          <path d="M 0 25 Q 20 5 40 20 T 80 15 T 100 22 L 100 40 L 0 40 Z" fill="rgba(26, 58, 92, 0.15)" stroke="#1a3a5c" strokeWidth="2" />
-                        </svg>
-                        <div className="tp-tooltip-box">Tiến trình xử lý: Đang tăng trưởng nhẹ</div>
-                      </div>
-
-                      <div className="tp-tooltip-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", height: "45px" }}>
-                        {[20, 35, 15, 30, 45, 25, 40, 30, 20, 35].map((h, i) => (
-                          <div key={i} className="tp-hover-bar" style={{ width: "7%", height: `${h}px`, background: "#1a3a5c", borderRadius: "1px" }}></div>
-                        ))}
-                        <div className="tp-tooltip-box">Thời gian phản hồi: 250ms - 320ms</div>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-                {/* Khối thống kê chi tiết Dịch vụ & Hoạt động Công dân */}
-                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", gap: "20px" }}>
-                  <div style={{ fontSize: "14px", fontWeight: "750", color: "#1a3a5c", textTransform: "uppercase", letterSpacing: "0.5px", borderBottom: "1px solid #f1f5f9", paddingBottom: "10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>Đường theo dõi quy trình & tương tác công dân thời gian thực</span>
-                    <span style={{ fontSize: "11px", color: "#64748b", textTransform: "none", fontWeight: "600" }}>Nhấp chọn chuyên mục dưới đây để xem sơ đồ quy trình chi tiết</span>
-                  </div>
-
-                  {/* Danh sách 7 mục dịch vụ dưới dạng các Tab/Thẻ bấm chọn */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" }}>
-                    {[
-                      { id: "tuyen-truyen", label: "Tuyên truyền bài viết", count: visitorStats.totalArticles || 0, unit: "bài viết", desc: `Kênh video: ${visitorStats.totalVideos || 0} video` },
-                      { id: "ai", label: "Trợ lý ảo AI", count: visitorStats.totalAIQueries || 0, unit: "câu hỏi", desc: "Hỏi đáp tự động" },
-                      { id: "nghe-dai", label: "Nghe đài phát thanh", count: visitorStats.categoryHits?.nghe_dai || 0, unit: "lượt nghe", desc: "Đọc tin trực tuyến" },
-                      { id: "nong-san", label: "Cổng giá nông sản", count: visitorStats.categoryHits?.nong_san || 0, unit: "truy cập", desc: "Cập nhật thị trường" },
-                      { id: "tra-cuu", label: "Tra cứu thông tin", count: visitorStats.categoryHits?.tra_cuu || 0, unit: "lượt tra cứu", desc: "BHXH, VNeID..." },
-                      { id: "thu-tuc", label: "Thủ tục hành chính", count: visitorStats.categoryHits?.thu_tuc || 0, unit: "lượt nộp", desc: `Đã cấp: ${citizens.filter(c => c.insuranceCard).length} thẻ` },
-                      { id: "tro-choi", label: "Trò chơi học tập", count: visitorStats.categoryHits?.tro_choi || 0, unit: "lượt chơi", desc: "Quiz Game pháp luật" }
-                    ].map((tab) => {
-                      const isActive = selectedDetailTab === tab.id;
-                      return (
-                        <div
-                          key={tab.id}
-                          onClick={() => setSelectedDetailTab(tab.id)}
-                          style={{
-                            background: isActive ? "linear-gradient(135deg, #1a3a5c 0%, #2b5c8f 100%)" : "#f8fafc",
-                            border: isActive ? "1px solid #1a3a5c" : "1px solid #e2e8f0",
-                            color: isActive ? "#ffffff" : "#1e293b",
-                            borderRadius: "6px",
-                            padding: "12px 15px",
-                            cursor: "pointer",
-                            transition: "all 0.2s ease",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "4px",
-                            boxShadow: isActive ? "0 4px 10px rgba(26,58,92,0.15)" : "none"
-                          }}
-                          className="tp-hover-card-tab"
-                        >
-                          <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", opacity: isActive ? 0.85 : 0.7 }}>
-                            {tab.label}
-                          </span>
-                          <div style={{ fontSize: "18px", fontWeight: "800", color: isActive ? "#ffffff" : "#1a3a5c" }}>
-                            {tab.count} {tab.unit}
-                          </div>
-                          <div style={{ fontSize: "11px", opacity: isActive ? 0.85 : 0.7, fontWeight: "500" }}>
-                            {tab.desc}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Sơ đồ quy trình & Đường theo dõi chi tiết */}
-                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px 24px", display: "flex", flexDirection: "column", gap: "20px", marginTop: "5px" }}>
-
-                    <div style={{ fontSize: "12px", color: "#475569", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.5px", display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#3b82f6" }}></span>
-                      Sơ đồ quy trình & Đường theo dõi: {
-                        selectedDetailTab === "tuyen-truyen" && "Truyền thông & Tuyên truyền" ||
-                        selectedDetailTab === "ai" && "Tương tác trợ lý ảo AI" ||
-                        selectedDetailTab === "nghe-dai" && "Phát loa nghe đài phát thanh" ||
-                        selectedDetailTab === "nong-san" && "Cổng giá nông sản Đăk Pxi" ||
-                        selectedDetailTab === "tra-cuu" && "Cổng tra cứu thông tin (BHXH, VNeID)" ||
-                        selectedDetailTab === "thu-tuc" && "Quy trình thủ tục hành chính công" ||
-                        selectedDetailTab === "tro-choi" && "Trò chơi học tập & Giải trí Quiz"
-                      }
-                    </div>
-
-                    {/* Sơ đồ Timeline ngang chuyên nghiệp */}
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", position: "relative", padding: "10px 0 20px 0", minHeight: "90px" }}>
-
-                      {/* Đường nối ngang phía sau */}
-                      <div style={{ position: "absolute", top: "25px", left: "10%", right: "10%", height: "2px", background: "#cbd5e1", zIndex: 1 }} />
-
-                      {/* Các bước quy trình */}
-                      {(() => {
-                        const stepsMap = {
-                          "tuyen-truyen": [
-                            { num: "1", title: "Biên tập", desc: "Soạn thảo bài viết & gắn kèm video tuyên truyền" },
-                            { num: "2", title: "Phê duyệt", desc: "Trưởng/Phó phòng kiểm duyệt chất lượng nội dung" },
-                            { num: "3", title: "Xuất bản", desc: "Đăng tải bài lên hệ thống, hiển thị ở trang chủ" },
-                            { num: "4", title: "Đọc & Xem", desc: "Người dân truy cập xem bài viết và video trực tuyến" }
-                          ],
-                          "ai": [
-                            { num: "1", title: "Đặt câu hỏi", desc: "Người dân gửi thắc mắc liên quan tới BHYT, VNeID" },
-                            { num: "2", title: "Phân tích NLP", desc: "Trí tuệ nhân tạo phân tích nội dung ngôn ngữ tự nhiên" },
-                            { num: "3", title: "Tra cứu CSDL", desc: "Hệ thống trích xuất dữ liệu và ghi vào Conversation" },
-                            { num: "4", title: "Trả lời", desc: "Trả về hướng dẫn chi tiết, chính xác tức thời" }
-                          ],
-                          "nghe-dai": [
-                            { num: "1", title: "Nhấp phát (🔊)", desc: "Click biểu tượng loa đọc phát thanh tại bài viết" },
-                            { num: "2", title: "Khởi tạo Speech", desc: "SpeechSynthesis kích hoạt luồng giọng đọc vi-VN" },
-                            { num: "3", title: "Phát âm thanh", desc: "Phát âm thanh đọc bài viết trực tiếp trên máy công dân" },
-                            { num: "4", title: "Ghi nhận", desc: "Gửi log lên database tăng đếm lượt nghe đài phát thanh" }
-                          ],
-                          "nong-san": [
-                            { num: "1", title: "Truy cập cổng", desc: "Bà con nông dân vào mục xem giá nông sản hôm nay" },
-                            { num: "2", title: "Đọc dữ liệu", desc: "Hệ thống truy vấn thông tin thị trường thời gian thực" },
-                            { num: "3", title: "Bảng giá", desc: "Hiển thị giá Cà phê, Cao su, Tiêu, Sắn tại địa phương" },
-                            { num: "4", title: "Định hướng", desc: "Hỗ trợ bà con buôn bán nông sản đúng thời giá" }
-                          ],
-                          "tra-cuu": [
-                            { num: "1", title: "Nhập thông tin", desc: "Công dân nhập CCCD hoặc số điện thoại định danh" },
-                            { num: "2", title: "Đối chiếu CSDL", desc: "Hệ thống kiểm tra thông tin công dân khớp đúng" },
-                            { num: "3", title: "Đồng bộ", desc: "Trích xuất dữ liệu thẻ BHYT lưu trong cơ sở dữ liệu" },
-                            { num: "4", title: "Trả kết quả", desc: "Hiển thị thông tin thẻ BHYT & Hạn dùng lên màn hình" }
-                          ],
-                          "thu-tuc": [
-                            { num: "1", title: "Chọn dịch vụ", desc: "Chọn đăng ký mới hoặc xin cấp lại thẻ BHYT bị mất" },
-                            { num: "2", title: "Nộp hồ sơ", desc: "Nhập dữ liệu và gửi yêu cầu hành chính trực tuyến" },
-                            { num: "3", title: "Duyệt hồ sơ", desc: "Cán bộ tiếp nhận, thẩm định hồ sơ công dân" },
-                            { num: "4", title: "Cấp thẻ", desc: "Phê duyệt kích hoạt thẻ, lưu vào CSDL BHYT xã" }
-                          ],
-                          "tro-choi": [
-                            { num: "1", title: "Vào trò chơi", desc: "Bắt đầu Quiz Game trắc nghiệm luật BHYT & Pháp luật" },
-                            { num: "2", title: "Trả lời câu hỏi", desc: "Hệ thống hiển thị câu hỏi đố vui kèm giải thích" },
-                            { num: "3", title: "Tính điểm", desc: "Chấm điểm và hướng dẫn chi tiết đáp án đúng" },
-                            { num: "4", title: "Hoàn thành", desc: "Công dân ghi nhớ kiến thức phòng dịch & pháp luật" }
-                          ]
-                        };
-
-                        const steps = stepsMap[selectedDetailTab] || stepsMap["tuyen-truyen"];
-
-                        return steps.map((s, idx) => (
-                          <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "22%", zIndex: 2, textAlign: "center" }}>
-                            <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "#1a3a5c", color: "#ffffff", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "15px", fontWeight: "800", border: "4px solid #f8fafc", boxShadow: "0 2px 5px rgba(0,0,0,0.15)" }}>
-                              {s.num}
-                            </div>
-                            <div style={{ fontSize: "12px", fontWeight: "750", color: "#1a3a5c", marginTop: "8px" }}>{s.title}</div>
-                            <div style={{ fontSize: "10.5px", color: "#64748b", marginTop: "3px", lineHeight: "1.3", padding: "0 10px" }}>{s.desc}</div>
-                          </div>
-                        ));
-                      })()}
-
-                    </div>
-
-                    {/* Dữ liệu và Trạng thái chi tiết tương ứng với tab được chọn */}
-                    <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "15px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-
-                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                        <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "700", textTransform: "uppercase" }}>Chỉ số thời gian thực từ Database</div>
-                        {selectedDetailTab === "tuyen-truyen" && (
-                          <div style={{ fontSize: "14px", color: "#1e293b", fontWeight: "600" }}>
-                            Xuất bản: <strong>{visitorStats.totalArticles || 0} bài tuyên truyền</strong> | Video: <strong>{visitorStats.totalVideos || 0} clip</strong>
-                          </div>
-                        )}
-                        {selectedDetailTab === "ai" && (
-                          <div style={{ fontSize: "14px", color: "#1e293b", fontWeight: "600" }}>
-                            Tổng số yêu cầu trợ lý xử lý: <strong>{visitorStats.totalAIQueries || 0} hội thoại</strong>
-                          </div>
-                        )}
-                        {selectedDetailTab === "nghe-dai" && (
-                          <div style={{ fontSize: "14px", color: "#1e293b", fontWeight: "600" }}>
-                            Tổng lượt nghe đọc tự động: <strong>{visitorStats.categoryHits?.nghe_dai || 0} lượt nghe</strong>
-                          </div>
-                        )}
-                        {selectedDetailTab === "nong-san" && (
-                          <div style={{ fontSize: "14px", color: "#1e293b", fontWeight: "600" }}>
-                            Tổng số lượt xem bảng giá: <strong>{visitorStats.categoryHits?.nong_san || 0} lượt cập nhật</strong>
-                          </div>
-                        )}
-                        {selectedDetailTab === "tra-cuu" && (
-                          <div style={{ fontSize: "14px", color: "#1e293b", fontWeight: "600" }}>
-                            Lượt tra cứu BHYT/VNeID thành công: <strong>{visitorStats.categoryHits?.tra_cuu || 0} lượt</strong>
-                          </div>
-                        )}
-                        {selectedDetailTab === "thu-tuc" && (
-                          <div style={{ fontSize: "14px", color: "#1e293b", fontWeight: "600" }}>
-                            Hồ sơ đã nộp: <strong>{visitorStats.categoryHits?.thu_tuc || 0} lượt</strong> | Đã cấp BHYT: <strong>{citizens.filter(c => c.insuranceCard).length} thẻ</strong>
-                          </div>
-                        )}
-                        {selectedDetailTab === "tro-choi" && (
-                          <div style={{ fontSize: "14px", color: "#1e293b", fontWeight: "600" }}>
-                            Tổng lượt tham gia Quiz Game: <strong>{visitorStats.categoryHits?.tro_choi || 0} lượt chơi</strong>
-                          </div>
-                        )}
-                      </div>
-
-                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                        <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "700", textTransform: "uppercase" }}>Trạng thái vận hành kênh</div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: "700", color: "#16a34a" }}>
-                          <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#16a34a", display: "inline-block" }}></span>
-                          Hệ thống hoạt động bình thường (🟢 Tự động)
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-            );
-          })()}
 
           {/* ──────────────────────────────────
               TAB ĐIỀU HÀNH & GIAO VIỆC (NỘI BỘ PHÒNG VH-XH)
@@ -6572,7 +6010,7 @@ export default function TruongPhongDashboard() {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
                       <div>
                         <span style={{ background: "rgba(255,255,255,0.2)", padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", letterSpacing: "0.5px" }}>
-                          🏛️ UBND XÃ ĐĂK PXI — PHÒNG VH-XH
+                          🏛️ PHÒNG VH-XH
                         </span>
                         <h2 style={{ margin: "12px 0 6px", fontSize: "22px", fontWeight: "900", color: "#ffffff" }}>
                           🚦 Quản lý Tuyên truyền An toàn Giao thông
@@ -6806,86 +6244,7 @@ export default function TruongPhongDashboard() {
                 </div>
               )}
 
-              {activeTab === "feedback" && (
-                <div className="tp-feedback-section">
-                  <div className="tp-alert-success" style={{ background: "#f8fafc", color: "#475569", border: "1px solid #cbd5e1", borderLeft: "4px solid #1a3a5c", marginBottom: "20px" }}>
-                    💡 <strong>Hướng dẫn nghiệp vụ giải đáp góp ý công dân</strong>:
-                    <ul style={{ margin: "6px 0 0 16px", padding: 0, fontSize: "13px", lineHeight: "1.6" }}>
-                      <li>Với các câu hỏi chung, hãy khuyến khích bà con trao đổi với <strong>Trợ lý AI</strong> ở trang chủ để được hồi đáp tức thì.</li>
-                      <li>Chỉ trực tiếp phản hồi tại đây hoặc nhắn <strong>Zalo riêng</strong> khi có công việc hành chính quan trọng.</li>
-                    </ul>
-                  </div>
 
-                  <div className="tp-card">
-                    <h3>💬 Ý kiến đóng góp từ bà con nhân dân</h3>
-                    <div className="tp-notice-list" style={{ marginTop: "15px" }}>
-                      {feedbacks.map((fb) => (
-                        <div className="tp-notice-item" key={fb._id} style={{ borderLeft: "4px solid #1a3a5c" }}>
-                          <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <strong>Bà con: {fb.senderName} (SĐT: {fb.phone})</strong>
-                            <span style={{ fontSize: "11px", color: fb.status === "resolved" ? "#065f46" : "#991b1b", background: fb.status === "resolved" ? "#d1fae5" : "#fee2e2", padding: "2px 8px", borderRadius: "4px", fontWeight: "700" }}>
-                              {fb.status === "resolved" ? "✅ Đã giải đáp" : "⚡ Đang xử lý"}
-                            </span>
-                          </div>
-                          <p style={{ marginTop: "8px", color: "#334155" }}>{fb.content}</p>
-
-                          {fb.status === "resolved" ? (
-                            <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "10px 14px", borderRadius: "8px", marginTop: "10px", fontSize: "13.5px" }}>
-                              <strong style={{ color: "#15803d" }}>💬 Phản hồi:</strong> {fb.reply}
-                            </div>
-                          ) : (
-                            <div style={{ marginTop: "10px" }}>
-                              <textarea
-                                rows="2"
-                                placeholder="Nhập câu trả lời cho bà con..."
-                                style={{ width: "100%", padding: "8px 12px", border: "1px solid #cbd5e1", borderRadius: "6px", fontSize: "13.5px", fontFamily: "inherit" }}
-                                value={replyInputs[fb._id] || ""}
-                                onChange={(e) => setReplyInputs({ ...replyInputs, [fb._id]: e.target.value })}
-                              />
-                            </div>
-                          )}
-
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px" }}>
-                            <span style={{ fontSize: "11px", color: "#94a3b8" }}>Ngày gửi: {new Date(fb.createdAt).toLocaleDateString("vi-VN")}</span>
-
-                            <div style={{ display: "flex", gap: "8px" }}>
-                              {fb.status === "pending" && (
-                                <button
-                                  className="tp-edit-btn-small"
-                                  style={{ background: "#10b981", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", cursor: "pointer", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "6px" }}
-                                  onClick={() => {
-                                    const replyText = replyInputs[fb._id] || "";
-                                    if (!replyText.trim()) {
-                                      alert("Vui lòng nhập nội dung phản hồi.");
-                                      return;
-                                    }
-                                    setFeedbacks(feedbacks.map(f => f._id === fb._id ? { ...f, status: "resolved", reply: replyText } : f));
-                                    setMessage("Đã gửi phản hồi thành công!");
-                                  }}
-                                >
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
-                                  <span>Gửi phản hồi</span>
-                                </button>
-                              )}
-
-                              <a
-                                href={`https://zalo.me/${fb.phone}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="tp-edit-btn-small"
-                                style={{ background: "#0068ff", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", fontWeight: "700" }}
-                              >
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
-                                <span>Nhắn Zalo riêng</span>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {activeTab === "subscribers" && (
                 <div className="tp-panel-card" style={{ background: '#ffffff', padding: '24px', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.04)', animation: 'fadeIn 0.25s ease-out' }}>
@@ -10024,6 +9383,55 @@ function TthcManagementSection() {
     }
   ]);
 
+  // Hàm tự động phân loại chính xác 100% vào 49 Nhóm Lĩnh vực TTHC
+  const getExactFieldGroup = (code, title = "") => {
+    const t = (title || "").toLowerCase();
+    if (t.includes("khai sinh")) return "Khai sinh";
+    if (t.includes("kết hôn")) return "Kết hôn";
+    if (t.includes("khai tử")) return "Khai tử";
+    if (t.includes("giám hộ")) return "Giám hộ";
+    if (t.includes("chứng thực")) return "Chứng thực";
+    if (t.includes("nhận cha") || t.includes("nhận mẹ") || t.includes("nhận con")) return "Nhận cha, mẹ, con";
+    if (t.includes("nuôi con nuôi") || t.includes("con nuôi")) return "Nuôi con nuôi";
+    if (t.includes("hộ tịch")) return "Hộ tịch khác";
+    if (t.includes("hòa giải")) return "Hòa giải ở cơ sở";
+    if (t.includes("trường") || t.includes("mầm non") || t.includes("tiểu học") || t.includes("thcs") || t.includes("mù chữ") || t.includes("nhóm trẻ")) return "Thành lập/công nhận/giải thể trường học";
+    if (t.includes("ăn trưa") || t.includes("học bổng") || t.includes("học phí") || t.includes("chi phí học tập")) return "Hỗ trợ/chính sách giáo dục";
+    if (t.includes("tuyển sinh") || t.includes("kiểm định")) return "Tuyển sinh/kiểm định giáo dục";
+    if (t.includes("liệt sĩ") || t.includes("bà mẹ việt nam anh hùng") || t.includes("thương binh") || t.includes("bệnh binh") || t.includes("người có công")) return "Người có công với cách mạng";
+    if (t.includes("nghèo") || t.includes("cận nghèo")) return "Hộ nghèo, cận nghèo";
+    if (t.includes("khuyết tật")) return "Người khuyết tật";
+    if (t.includes("bảo trợ xã hội") || t.includes("80 tuổi") || t.includes("cứu đói") || t.includes("hỏa hoạn")) return "Bảo trợ xã hội";
+    if (t.includes("trẻ em") || t.includes("mồ côi")) return "Trẻ em";
+    if (t.includes("lao động") || t.includes("học nghề") || t.includes("lái xe")) return "Lao động";
+    if (t.includes("đường thủy") || t.includes("hàng hải") || t.includes("bến")) return "Đường thủy nội địa/hàng hải";
+    if (t.includes("giao thông") || t.includes("đấu nối") || t.includes("đường") || t.includes("vỉa hè") || t.includes("mốc lộ giới") || t.includes("xe thô sơ") || t.includes("xe máy chuyên dùng")) return "Giao thông đường bộ";
+    if (t.includes("thủy lợi") || t.includes("hồ chứa") || t.includes("đập") || t.includes("cấp nước")) return "Thủy lợi";
+    if (t.includes("thủy sản") || t.includes("cá") || t.includes("lồng bè")) return "Thủy sản";
+    if (t.includes("nông nghiệp") || t.includes("trồng") || t.includes("chăn nuôi") || t.includes("thú y") || t.includes("gia súc") || t.includes("gia cầm") || t.includes("biogas") || t.includes("ocop") || t.includes("cà phê") || t.includes("cao su") || t.includes("giống") || t.includes("vật tư nông nghiệp")) return "Nông nghiệp - chăn nuôi - thú y";
+    if (t.includes("tài nguyên nước") || t.includes("nguồn nước") || t.includes("nước sinh hoạt")) return "Tài nguyên nước";
+    if (t.includes("môi trường") || t.includes("rác") || t.includes("ô nhiễm") || t.includes("chủ nhật xanh")) return "Môi trường";
+    if (t.includes("đất") || t.includes("thửa") || t.includes("gcnqsdđ") || t.includes("quyền sử dụng đất") || t.includes("địa chính") || t.includes("trích đo") || t.includes("mốc giới")) return "Đất đai";
+    if (t.includes("rừng") || t.includes("lâm") || t.includes("lâm sản") || t.includes("gỗ")) return "Lâm nghiệp";
+    if (t.includes("nhà ở") || t.includes("nhà nông thôn") || t.includes("bão lũ")) return "Nhà ở";
+    if (t.includes("xây dựng") || t.includes("gpxd") || t.includes("giấy phép xây dựng") || t.includes("hạ tầng")) return "Xây dựng";
+    if (t.includes("quy hoạch")) return "Quy hoạch đô thị và nông thôn";
+    if (t.includes("hợp tác xã") || t.includes("htx")) return "Hợp tác xã, liên hiệp HTX";
+    if (t.includes("tổ hợp tác")) return "Tổ hợp tác";
+    if (t.includes("hộ kinh doanh") || t.includes("bán lẻ") || t.includes("thuốc lá") || t.includes("rượu") || t.includes("gian hàng") || t.includes("chợ") || t.includes("thuế khoán")) return "Hộ kinh doanh";
+    if (t.includes("chợ")) return "Chợ";
+    if (t.includes("tôn giáo") || t.includes("tín ngưỡng") || t.includes("lễ tôn giáo")) return "Tôn giáo, tín ngưỡng";
+    if (t.includes("hội")) return "Hội";
+    if (t.includes("văn hóa") || t.includes("thể thao") || t.includes("văn nghệ") || t.includes("gia đình văn hóa") || t.includes("thôn văn hóa") || t.includes("băng rôn")) return "Văn hóa - lễ hội - thể thao - xuất bản";
+    if (t.includes("bạo lực")) return "Phòng chống bạo lực gia đình";
+    if (t.includes("dân tộc")) return "Dân tộc";
+    if (t.includes("y tế") || t.includes("thực phẩm") || t.includes("khám bệnh")) return "Y tế - an toàn thực phẩm";
+    if (t.includes("công chức") || t.includes("viên chức") || t.includes("cán bộ")) return "Cán bộ, công chức, viên chức";
+    if (t.includes("khoáng sản")) return "Khoáng sản";
+    if (t.includes("khen thưởng") || t.includes("nghĩa vụ quân sự")) return "Thi đua, khen thưởng - nghệ nhân";
+    return "Khác";
+  };
+
   // State cho danh mục thủ tục hành chính
   const [catalog, setCatalog] = useState(() => {
     let deletedIds = [];
@@ -10034,15 +9442,15 @@ function TthcManagementSection() {
     let initialList = MOCK_PROCEDURES.map((p, idx) => ({
       id: p.id || idx + 1,
       code: p.code || `1.000${idx + 100}.01`,
-      name: p.title,
-      fieldGroup: p.group_name || "Đất đai",
+      name: p.title || p.name,
+      fieldGroup: getExactFieldGroup(p.code, p.title || p.name),
       group_id: p.group_id,
-      level: p.online_type === "toan-trinh" ? "Dịch vụ công Trực tuyến toàn trình (Mức 4)" : "Mức độ 3 (Nộp hồ sơ trực tuyến)",
-      levelBadge: p.online_type === "toan-trinh" ? "green" : "blue",
-      agency: p.agency || "Bộ phận Một cửa — UBND Xã Đăk Pxi",
-      duration: p.processing_time || "03 ngày làm việc",
+      level: p.online_type === "toan-trinh" || p.level?.includes("toan-trinh") || p.level?.includes("Mức 4") ? "Dịch vụ công Trực tuyến toàn trình (Mức 4)" : "Mức độ 3 (Nộp hồ sơ trực tuyến)",
+      levelBadge: p.online_type === "toan-trinh" || p.level?.includes("toan-trinh") || p.level?.includes("Mức 4") ? "green" : "blue",
+      agency: p.agency || "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
+      duration: p.processing_time || p.duration || "03 ngày làm việc",
       fee: p.fee || "Miễn phí 100%",
-      detailText: p.summary || `Thủ tục ${p.title} thuộc thẩm quyền giải quyết của UBND xã Đăk Pxi.`,
+      detailText: p.summary || p.detailText || `Thủ tục ${p.title || p.name} năm 2026.`,
       imageUrl: "",
       guideLink: p.guideLink || `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(p.code || p.id)}`
     }));
@@ -10053,11 +9461,26 @@ function TthcManagementSection() {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
           const savedMap = new Map(parsed.map(item => [String(item.id), item]));
-          initialList = initialList.map(item => savedMap.get(String(item.id)) || item);
+          initialList = initialList.map(item => {
+            const savedItem = savedMap.get(String(item.id));
+            if (savedItem) {
+              return {
+                ...item,
+                ...savedItem,
+                name: item.name || savedItem.name || savedItem.title,
+                fieldGroup: getExactFieldGroup(item.code, item.name || savedItem.name || savedItem.title)
+              };
+            }
+            return item;
+          });
           const initialIds = new Set(initialList.map(item => String(item.id)));
           parsed.forEach(item => {
             if (!initialIds.has(String(item.id))) {
-              initialList.unshift(item);
+              initialList.unshift({
+                ...item,
+                name: item.name || item.title,
+                fieldGroup: getExactFieldGroup(item.code, item.name || item.title)
+              });
             }
           });
         }
@@ -10137,7 +9560,7 @@ const TTHC_FIELD_GROUPS = [
     name: "",
     fieldGroup: "Đất đai",
     level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
-    agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
+    agency: "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
     duration: "03 ngày làm việc",
     fee: "Miễn phí",
     detailText: "",
@@ -10149,15 +9572,17 @@ const TTHC_FIELD_GROUPS = [
   const [catalogSearch, setCatalogSearch] = useState("");
   const [catalogFieldFilter, setCatalogFieldFilter] = useState("ALL");
 
-  const filteredCatalog = catalog.filter(item => {
-    const matchSearch = !catalogSearch.trim() ||
-      (item.name && item.name.toLowerCase().includes(catalogSearch.toLowerCase())) ||
-      (item.code && item.code.toLowerCase().includes(catalogSearch.toLowerCase())) ||
-      (item.detailText && item.detailText.toLowerCase().includes(catalogSearch.toLowerCase()));
+  const filteredCatalog = catalog
+    .filter(item => {
+      const matchSearch = !catalogSearch.trim() ||
+        (item.name && item.name.toLowerCase().includes(catalogSearch.toLowerCase())) ||
+        (item.code && item.code.toLowerCase().includes(catalogSearch.toLowerCase())) ||
+        (item.detailText && item.detailText.toLowerCase().includes(catalogSearch.toLowerCase()));
 
-    const matchGroup = catalogFieldFilter === "ALL" || item.fieldGroup === catalogFieldFilter;
-    return matchSearch && matchGroup;
-  });
+      const matchGroup = catalogFieldFilter === "ALL" || item.fieldGroup === catalogFieldFilter;
+      return matchSearch && matchGroup;
+    })
+    .sort((a, b) => (a.stt || 0) - (b.stt || 0));
 
   const handleSaveCatalogEdit = (e) => {
     e.preventDefault();
@@ -10221,7 +9646,7 @@ const TTHC_FIELD_GROUPS = [
       name: "",
       fieldGroup: "Đất đai",
       level: "Dịch vụ công Trực tuyến toàn trình (Mức 4)",
-      agency: "Bộ phận Một cửa — UBND Xã Đăk Pxi",
+      agency: "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
       duration: "03 ngày làm việc",
       fee: "Miễn phí",
       detailText: "",
@@ -10407,7 +9832,7 @@ const TTHC_FIELD_GROUPS = [
               NĂM 2026
             </span>
             <h2 style={{ fontSize: "20px", fontWeight: "900", color: "#003d7a", margin: "0 0 10px", lineHeight: "1.4", textTransform: "uppercase", letterSpacing: "-0.3px" }}>
-              DANH MỤC THỦ TỤC HÀNH CHÍNH THUỘC THẨM QUYỀN GIẢI QUYẾT CỦA UBND XÃ ĐĂK PXI
+              DANH MỤC THỦ TỤC HÀNH CHÍNH TẬP TRUNG
             </h2>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#f0f9ff", border: "1.5px solid #bae6fd", color: "#0284c7", padding: "8px 20px", borderRadius: "30px", fontSize: "14px", fontWeight: "800", boxShadow: "0 2px 8px rgba(2, 132, 199, 0.08)" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -10486,7 +9911,7 @@ const TTHC_FIELD_GROUPS = [
                       MÃ: {item.code}
                     </span>
                     <span style={{ background: "#f1f5f9", color: "#005baa", border: "1px solid #cbd5e1", fontSize: "12px", fontWeight: "800", padding: "3px 10px", borderRadius: "6px" }}>
-                      Lĩnh vực: {item.fieldGroup || "Đất đai"}
+                      Lĩnh vực: {item.fieldGroup || getExactFieldGroup(item.code, item.name || item.title)}
                     </span>
                     <span style={{ background: item.levelBadge === 'green' ? '#dcfce7' : '#e0f2fe', color: item.levelBadge === 'green' ? '#15803d' : '#0369a1', fontSize: "12px", fontWeight: "800", padding: "3px 12px", borderRadius: "12px" }}>
                       {item.level}
@@ -10494,7 +9919,7 @@ const TTHC_FIELD_GROUPS = [
                   </div>
 
                   <h4 style={{ margin: "0 0 6px", fontSize: "16.5px", fontWeight: "900", color: "#0f172a", lineHeight: "1.4" }}>
-                    {item.name}
+                    {item.name || item.title || item.code}
                   </h4>
 
                   <p style={{ margin: "0 0 10px", fontSize: "13.5px", color: "#475569", lineHeight: "1.5" }}>
@@ -10552,23 +9977,8 @@ const TTHC_FIELD_GROUPS = [
                   );
                 })()}
 
-                {/* CỘT 3: HÌNH ẢNH & THAO TÁC NÚT BẤM */}
+                {/* CỘT 3: THAO TÁC NÚT BẤM */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "flex-end", flexShrink: 0 }}>
-                  {item.guideLink && (
-                    <a
-                      href={item.guideLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{
-                        background: "#005baa", color: "#ffffff", padding: "8px 16px", borderRadius: "10px",
-                        fontSize: "13px", fontWeight: "800", textDecoration: "none", display: "inline-flex",
-                        alignItems: "center", gap: "6px", boxShadow: "0 4px 10px rgba(0, 91, 170, 0.2)"
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                      <span>Xem hướng dẫn DVC →</span>
-                    </a>
-                  )}
 
                   <div style={{ display: "flex", gap: "8px" }}>
                     <button

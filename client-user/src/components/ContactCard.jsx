@@ -47,23 +47,23 @@ const SvgIcons = {
 };
 
 export default function ContactCard() {
-  const mapDirectionsUrl = "https://maps.google.com/?q=UBND+Xã+Đăk+Pxi";
+  const mapDirectionsUrl = "https://maps.google.com/maps?q=UBND+x%C3%A3+%C4%90%C4%83k+Pxi%2C+%C4%90%C4%83k+H%C3%A0%2C+Kon+Tum";
 
   return (
-    <div className="contact-card">
-      <div className="contact-card-header">
-        <h3>Thông tin liên hệ UBND xã Đăk Pxi</h3>
+    <article className="contact-card">
+      <header className="contact-card-header">
+        <h3>Thông tin liên hệ & Hỗ trợ Công dân</h3>
         <p>Thường trực Bộ phận Một cửa & Văn phòng Hỗ trợ Nhân dân</p>
-      </div>
+      </header>
 
-      <div className="contact-info-list">
+      <address className="contact-info-list" style={{ fontStyle: 'normal' }}>
         <div className="contact-info-item">
           <div className="contact-icon blue">
             <SvgIcons.Building />
           </div>
           <div className="contact-text">
             <span className="label">Đơn vị quản lý:</span>
-            <strong className="val">Phòng Văn hóa - Xã hội UBND xã Đăk Pxi</strong>
+            <strong className="val">Phòng Văn hóa - Xã hội</strong>
           </div>
         </div>
 
@@ -73,7 +73,7 @@ export default function ContactCard() {
           </div>
           <div className="contact-text">
             <span className="label">Địa chỉ trụ sở:</span>
-            <strong className="val">Trụ sở UBND xã Đăk Pxi, tỉnh Quảng Ngãi</strong>
+            <strong className="val">Bộ phận Tiếp nhận và Trả kết quả TTHC</strong>
           </div>
         </div>
 
@@ -113,13 +113,13 @@ export default function ContactCard() {
           </div>
           <div className="contact-text">
             <span className="label">Người phụ trách:</span>
-            <strong className="val">Công chức Văn hóa - Xã hội UBND xã Đăk Pxi</strong>
+            <strong className="val">Bộ phận Chuyên viên Hỗ trợ Hành chính công</strong>
           </div>
         </div>
-      </div>
+      </address>
 
       {/* CỤM NÚT THAO TÁC NHANH */}
-      <div className="contact-action-btns">
+      <nav className="contact-action-btns" aria-label="Thao tác liên hệ nhanh">
         <a href="tel:0339310915" className="contact-btn btn-call">
           <SvgIcons.Phone />
           <span>Gọi ngay</span>
@@ -132,7 +132,7 @@ export default function ContactCard() {
           <SvgIcons.Navigation />
           <span>Chỉ đường</span>
         </a>
-      </div>
-    </div>
+      </nav>
+    </article>
   );
 }

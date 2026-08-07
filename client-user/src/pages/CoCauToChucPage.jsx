@@ -141,49 +141,7 @@ export default function CoCauToChucPage() {
         </div>
       </section>
 
-      {/* ── Bảng phân công nhiệm vụ ── */}
-      <section className="cocau-table-section">
-        <h2 className="cocau-section-title">Chi Tiết Thành Phần Tổ Chức &amp; Vai Trò Nhiệm Vụ</h2>
-        <p className="table-subtitle-desc">Bám sát đúng Điều 3 của Quyết định quy định cơ cấu chức danh:</p>
-        <div className="cocau-table-wrapper">
-          <table className="cocau-table">
-            <thead>
-              <tr>
-                <th style={{ width: '80px', textAlign: 'center' }}>STT</th>
-                <th style={{ width: '250px' }}>Thành phần tổ chức</th>
-                <th style={{ width: '220px', textAlign: 'center' }}>Số lượng</th>
-                <th>Vai trò, nhiệm vụ</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="text-center font-bold">1</td>
-                <td className="font-bold">Trưởng phòng</td>
-                <td className="text-center font-bold">01</td>
-                <td>Lãnh đạo, quản lý và chịu trách nhiệm toàn bộ hoạt động của Phòng Văn hóa – Xã hội.</td>
-              </tr>
-              <tr>
-                <td className="text-center font-bold">2</td>
-                <td className="font-bold">Phó Trưởng phòng</td>
-                <td className="text-center font-bold">01</td>
-                <td>Giúp Trưởng phòng chỉ đạo một số lĩnh vực công tác; được ủy quyền điều hành khi Trưởng phòng vắng mặt.</td>
-              </tr>
-              <tr>
-                <td className="text-center font-bold">3</td>
-                <td className="font-bold">Công chức chuyên môn</td>
-                <td className="text-center">Theo biên chế được giao</td>
-                <td>Thực hiện các nhiệm vụ chuyên môn thuộc các lĩnh vực được phân công; chịu trách nhiệm trước lãnh đạo phòng và trước pháp luật.</td>
-              </tr>
-              <tr>
-                <td className="text-center font-bold">4</td>
-                <td className="font-bold">Người lao động</td>
-                <td className="text-center">Theo nhu cầu công việc</td>
-                <td>Thực hiện các nhiệm vụ hỗ trợ, phục vụ hoạt động của phòng theo sự phân công của lãnh đạo.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
 
       {/* ── Footer hành động ── */}
       <div className="cocau-actions">

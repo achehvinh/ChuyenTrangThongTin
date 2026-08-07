@@ -406,7 +406,7 @@ export default function ThienTaiPage() {
               <a href={`tel:${DATA.emergencyPhone}`} className="tt-phone">
                 {DATA.emergencyPhone}
               </a>
-              <p className="tt-phone-note">UBND xã Đăk Pxi — Trực 24/7 mùa mưa bão</p>
+              <p className="tt-phone-note">Trực 24/7 mùa mưa bão</p>
             </div>
 
             {/* Cảnh báo */}
@@ -431,7 +431,7 @@ export default function ThienTaiPage() {
               <ul className="tt-place-list">
                 <li>Trường tiểu học xã Đăk Pxi</li>
                 <li>Nhà văn hóa thôn Pa Cheng</li>
-                <li>Trụ sở UBND xã Đăk Pxi</li>
+                <li>Trụ sở UBND xã</li>
               </ul>
             </div>
 

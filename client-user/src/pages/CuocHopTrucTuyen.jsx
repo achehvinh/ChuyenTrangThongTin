@@ -1363,7 +1363,7 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
                     KẾT NỐI CÁN BỘ CƠ QUAN VÀO PHÒNG HỌP THỰC TẾ
                   </h3>
                   <div style={{ fontSize: "11.5px", color: "#94a3b8" }}>
-                    Phòng Văn hóa - Xã hội UBND xã Đăk Pxi
+                    Phòng Văn hóa - Xã hội
                   </div>
                 </div>
               </div>
@@ -1479,7 +1479,7 @@ III. AI TỔNG HỢP NGHỊ QUYẾT & PHÂN CÔNG CHỈ ĐẠO CỦA TRƯỞNG P
           }}>
             <div style={{ textAlign: "center", borderBottom: "2px solid #e2e8f0", paddingBottom: "14px", marginBottom: "18px" }}>
               <span style={{ background: "#dbeafe", color: "#1d4ed8", fontSize: "11px", fontWeight: "800", padding: "3px 10px", borderRadius: "4px", border: "1px solid #93c5fd" }}>
-                UBND XÃ ĐĂK PXI — PHÒNG VĂN HÓA - XÃ HỘI
+                PHÒNG VĂN HÓA - XÃ HỘI
               </span>
               <h2 style={{ margin: "8px 0 4px", fontSize: "20px", fontWeight: "900", color: "#1e3a8a" }}>
                 BIÊN BẢN CUỘC HỌP & KẾT LUẬN NHIỆM VỤ

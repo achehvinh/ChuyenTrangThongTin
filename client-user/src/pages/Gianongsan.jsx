@@ -739,7 +739,7 @@ export default function Gianongsan() {
               </div>
               <div className="info-row">
                 <span className="info-label"><SvgIcons.Building /> Địa chỉ:</span>
-                <span className="info-val">Bộ phận Một cửa — UBND xã Đăk Pxi</span>
+                <span className="info-val">Bộ phận Tiếp nhận & Trả kết quả</span>
               </div>
               <div className="info-row">
                 <span className="info-label"><SvgIcons.Clock /> Giờ làm việc:</span>

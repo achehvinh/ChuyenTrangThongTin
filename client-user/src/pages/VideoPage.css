@@ -1,344 +1,412 @@
 /* ==========================================================================
-   📽️ GIAO DIỆN KÊNH TRUYỀN HÌNH & TUYÊN TRUYỀN XÃ ĐĂK PXI (WIDESCREEN CINEMA)
+   📽️ GIAO DIỆN KÊNH TRUYỀN HÌNH & VIDEO PHONG CÁCH YOUTUBE CHUYÊN NGHIỆP
    ========================================================================== */
 
-/* Khung ngoài trang Video */
-.video-page-wrapper {
-  max-width: 1600px;
+.yt-video-page {
+  max-width: 1720px;
   margin: 0 auto;
   padding: 24px;
+  background: #f8fafc;
+  min-height: 88vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Container chính của trang video dạng Flex */
-.video-layout-container {
-  display: flex;
-  height: calc(100vh - 160px);
-  min-height: 680px;
-  max-height: 900px;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  transition: all 0.3s ease;
+/* Bố cục 2 Cột chuẩn YouTube (72% Cột chính phát video, 28% Sidebar Playlist) */
+.yt-video-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 24px;
+}
+
+@media (max-width: 1200px) {
+  .yt-video-layout {
+    grid-template-columns: 1fr 340px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 962px) {
+  .yt-video-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ==========================================================================
-   1. CỘT TRÁI: SIDEBAR DANH SÁCH VIDEO CHỌN (PLAYLIST SIDEBAR)
+   1. CỘT CHÍNH (MAIN PLAYER COLUMN)
    ========================================================================== */
-.video-sidebar-list {
-  width: 340px;
-  background: #faf4eb;
-  border-right: 1px solid #e5d8c5;
+.yt-main-player-col {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
 }
 
-.video-list-header {
-  padding: 20px;
-  border-bottom: 1px solid #e5d8c5;
-  background: #ffffff;
-  box-shadow: 0 2px 5px rgba(90, 40, 10, 0.02);
+/* Khung phát video Cinema 16:9 */
+.yt-player-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* Tỷ lệ 16:9 chuẩn YouTube */
+  background: #0f172a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
 }
 
-.video-list-header h4 {
-  margin: 0 0 6px 0;
-  font-size: 17px;
+.yt-player-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000000;
+  outline: none;
+}
+
+/* Tiêu đề Video YouTube */
+.yt-video-title {
+  font-size: 20px;
   font-weight: 800;
-  color: #3b1606;
-  letter-spacing: -0.2px;
+  color: #0f172a;
+  margin: 16px 0 12px 0;
+  line-height: 1.35;
+  letter-spacing: -0.3px;
 }
 
-.video-list-sub {
-  font-size: 12px;
-  color: #5c4a3e;
-  display: block;
-}
-
-/* Vùng cuộn danh sách video */
-.video-items-scroll {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 16px;
+/* Thanh Thông tin Kênh & Action Buttons */
+.yt-channel-action-row {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Cụm Kênh Truyền hình */
+.yt-channel-info-group {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-/* Custom Scrollbar */
-.video-items-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-.video-items-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.video-items-scroll::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 10px;
-}
-.video-items-scroll::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* Thẻ phần tử danh sách video */
-.video-list-item {
-  display: flex;
-  gap: 14px;
-  padding: 12px;
-  border-radius: 14px;
-  cursor: pointer;
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.video-list-item:hover {
-  transform: translateY(-2px);
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.video-list-item.active {
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border-color: #3b82f6;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
-}
-
-/* Thumbnail */
-.video-item-thumb {
-  position: relative;
-  width: 96px;
-  height: 64px;
-  background: #0f172a;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.video-item-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.video-list-item:hover .video-item-thumb img {
-  transform: scale(1.05);
-}
-
-.empty-thumb {
-  width: 100%;
-  height: 100%;
+.yt-channel-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fee2e2;
+  border: 2px solid #fca5a5;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  color: #94a3b8;
-  background: #f1f5f9;
+  flex-shrink: 0;
 }
 
-.video-item-badge {
-  position: absolute;
-  bottom: 4px;
-  left: 4px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(4px);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Thông tin chi tiết của phần tử danh sách */
-.video-item-details {
+.yt-channel-meta {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-width: 0;
-  flex-grow: 1;
 }
 
-.video-item-details h5 {
+.yt-channel-meta .channel-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
   margin: 0;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #1e293b;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: color 0.2s;
-}
-
-.video-list-item.active .video-item-details h5 {
-  color: #1e3a8a;
-}
-
-.video-item-details span {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+}
+
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #eff6ff;
+  border-radius: 50%;
+}
+
+.channel-subscribers {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Nút Theo dõi Kênh (YouTube Subscribe Button) */
+.yt-subscribe-btn {
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 12px;
+  transition: all 0.2s ease;
+}
+
+.yt-subscribe-btn:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.yt-subscribe-btn.subscribed {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+/* Cụm nút Thao tác YouTube (Like, Share, Save) */
+.yt-action-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.yt-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.yt-action-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.yt-action-btn.active {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
+}
+
+/* Khung Mô tả Chi tiết (Expandable Description Box) */
+.yt-description-box {
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.yt-desc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #0f172a;
+}
+
+.yt-hashtag {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.yt-desc-content {
+  margin: 0;
+  white-space: pre-line;
 }
 
 /* ==========================================================================
-   2. CỘT PHẢI: KHUNG XEM VIDEO CHUYÊN NGHIỆP & THÔNG TIN (CINEMA WORKSPACE)
+   2. CỘT PHẢI: PLAYLIST YOUTUBE PHÁT TIẾP (UP NEXT PLAYLIST)
    ========================================================================== */
-.video-main-column {
-  flex-grow: 1;
-  background: #f8fafc;
+.yt-sidebar-playlist-col {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  height: fit-content;
 }
 
-/* Custom Scrollbar cho Main Column */
-.video-main-column::-webkit-scrollbar {
+.playlist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.playlist-header h3 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.video-count-tag {
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* Vùng cuộn danh sách Video */
+.yt-playlist-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 760px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.yt-playlist-scroll::-webkit-scrollbar {
   width: 6px;
 }
-.video-main-column::-webkit-scrollbar-track {
-  background: transparent;
-}
-.video-main-column::-webkit-scrollbar-thumb {
+.yt-playlist-scroll::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 10px;
 }
 
-/* Khung chiếu phim 16:9 cao cấp */
-.video-player-viewport {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000000;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  border-bottom: 2px solid #e2e8f0;
+/* Thẻ Video Item trong Playlist Sidebar */
+.yt-playlist-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.video-player-element {
+.yt-playlist-item:hover {
+  background: #f8fafc;
+}
+
+.yt-playlist-item.active {
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+}
+
+/* Thumbnail Video Sidebar */
+.yt-item-thumbnail {
+  position: relative;
+  width: 128px;
+  height: 72px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f172a;
+  flex-shrink: 0;
+}
+
+.yt-item-thumbnail img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  display: block;
+  object-fit: cover;
 }
 
-/* Hộp thông tin chi tiết của video bên dưới player */
-.video-details-card {
-  padding: 30px;
-  background: #ffffff;
-  margin: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-  border: 1px solid #e2e8f0;
-}
-
-.video-meta-top {
+.yt-empty-thumb {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  justify-content: center;
+  font-size: 24px;
+  background: #1e293b;
+  color: #94a3b8;
 }
 
-.video-category-tag {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+.yt-duration-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.yt-playing-badge {
+  position: absolute;
+  inset: 0;
+  background: rgba(37, 99, 235, 0.85);
+  backdrop-filter: blur(2px);
   color: #ffffff;
   font-size: 11px;
   font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 30px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
-.video-views-badge {
-  font-size: 12.5px;
-  color: #64748b;
-  font-weight: 600;
-  background: #f1f5f9;
-  padding: 4px 12px;
-  border-radius: 30px;
+/* Thông tin Video Sidebar */
+.yt-item-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  overflow: hidden;
 }
 
-.video-main-title {
-  font-size: 24px;
-  font-weight: 800;
-  color: #1e3a8a;
-  line-height: 1.4;
-  margin: 0 0 16px 0;
-  letter-spacing: -0.5px;
-}
-
-.video-divider {
-  height: 1px;
-  background: #f1f5f9;
-  margin: 20px 0;
-}
-
-/* Phần hiển thị mô tả */
-.video-description-box {
-  background: #f8fafc;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #f1f5f9;
-}
-
-.description-title {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  font-weight: 800;
-  color: #475569;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.description-text {
+.yt-item-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
   margin: 0;
-  font-size: 14px;
-  color: #334155;
-  line-height: 1.6;
-  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.35;
 }
 
-/* ==========================================================================
-   3. TRẠNG THÁI LOADING / EMPTY
-   ========================================================================== */
-.video-loading-container {
+.yt-item-channel {
+  font-size: 11.5px;
+  color: #64748b;
+}
+
+.yt-item-stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* State Loading & Empty */
+.video-loading-container,
+.video-empty-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 400px;
-  color: #64748b;
+  padding: 80px 24px;
+  text-align: center;
 }
 
 .video-loader {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3b82f6;
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #2563eb;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
   margin-bottom: 16px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.video-empty-container {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 60px 20px;

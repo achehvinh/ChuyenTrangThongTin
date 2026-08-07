@@ -398,7 +398,7 @@ export default function QuizGame({ onClose }) {
             <p className="quiz-start-desc">
               Bé hãy trả lời các câu hỏi để chứng minh kiến thức<br />
               phòng chống đuối nước và đạt điểm số vinh danh<br />
-              từ UBND Xã Đăk Pxi nhé! 🧸
+              từ Hệ thống BHYT nhé! 🧸
             </p>
           </div>
 

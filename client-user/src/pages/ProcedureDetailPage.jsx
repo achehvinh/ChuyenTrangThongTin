@@ -725,11 +725,11 @@ export default function ProcedureDetailPage() {
           <div className="tthc-gov-brand">
             <img
               src="https://inviva.vn/wp-content/uploads/2026/05/logo-chung-tay-cai-cach-thu-tuc-hanh-chinh-vector-03.png"
-              alt="Logo UBND xã Đăk Pxi"
+              alt="Logo Hệ thống TTHC"
               className="tthc-gov-logo"
             />
             <div className="tthc-gov-title">
-              <span className="tthc-gov-title-sub">ỦY BAN NHÂN DÂN XÃ ĐĂK PXI</span>
+              <span className="tthc-gov-title-sub">BỘ PHẬN TIẾP NHẬN VÀ TRẢ KẾT QUẢ TTHC</span>
               <span className="tthc-gov-title-main">HỆ THỐNG GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH</span>
             </div>
           </div>
@@ -808,7 +808,7 @@ export default function ProcedureDetailPage() {
                     <span className="pdp-info-icon"><PdpIcon type="office" /></span>
                     <div>
                       <span className="pdp-info-label">Cơ quan giải quyết</span>
-                      <span className="pdp-info-value">{procedure.agency}</span>
+                      <span className="pdp-info-value">{procedure.agency && !procedure.agency.includes("UBND xã") ? procedure.agency : "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)"}</span>
                     </div>
                   </div>
                 )}

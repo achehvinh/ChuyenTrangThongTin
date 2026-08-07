@@ -866,7 +866,7 @@ export default function HuongDanBHXHPage() {
           <span className="footer-icon">🏛️</span>
           <div>
             <strong>Vẫn chưa thực hiện được tra cứu?</strong>
-            <p>Bà con đến trực tiếp <strong>Bộ phận Một cửa — UBND xã Đăk Pxi</strong> để được cán bộ hỗ trợ miễn phí!</p>
+            <p>Bà con có thể nộp hồ sơ trực tuyến qua Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn) để được hỗ trợ!</p>
           </div>
         </div>
 

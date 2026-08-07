@@ -1,15 +1,15 @@
 import "./GoogleMap.css";
 
 export default function GoogleMap({
-  src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.7247854611!2d107.954!3d14.632!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTTCsDM3JzU1LjIiTiAxMDfCsDU3JzE0LjQiRQ!5e0!3m2!1svi!2s!4v1650000000000!5m2!1svi!2s",
-  title = "Bản đồ vị trí UBND xã Đăk Pxi"
+  src = "https://maps.google.com/maps?q=UBND%20x%C3%A3%20%C4%90%C4%83k%20Pxi%2C%20%C4%90%C4%83k%20H%C3%A0%2C%20Kon%20Tum&t=m&z=16&ie=UTF8&iwloc=&output=embed",
+  title = "Bản đồ vị trí cơ quan hành chính"
 }) {
   return (
     <section className="google-map-wrapper">
-      <div className="google-map-header">
-        <h3>📍 Bản đồ chỉ đường tới Trụ sở UBND xã Đăk Pxi</h3>
-      </div>
-      <div className="google-map-frame-container">
+      <header className="google-map-header">
+        <h3>📍 Bản đồ vị trí & chỉ đường trụ sở</h3>
+      </header>
+      <figure className="google-map-frame-container" style={{ margin: 0 }}>
         <iframe
           title={title}
           src={src}
@@ -20,7 +20,7 @@ export default function GoogleMap({
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />
-      </div>
+      </figure>
     </section>
   );
 }

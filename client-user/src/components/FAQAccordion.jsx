@@ -36,7 +36,7 @@ const DEFAULT_FAQS = [
     id: "faq-4",
     question: "Website có miễn phí không?",
     answer:
-      "Website Tra cứu & Tuyên truyền Cổng Thông tin điện tử UBND xã Đăk Pxi hoàn toàn miễn phí 100% phục vụ người dân và cử tri trên địa bàn."
+      "Website Tra cứu & Tuyên truyền hoàn toàn miễn phí 100% phục vụ người dân trên địa bàn."
   },
   {
     id: "faq-5",

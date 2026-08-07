@@ -79,7 +79,7 @@ export default function HelpPage() {
               <SvgIcons.Help />
             </div>
             <div className="help-brand-text">
-              <span className="sub-title">CỔNG THÔNG TIN ĐIỆN TỬ UBND XÃ ĐĂK PXI</span>
+              <span className="sub-title">HỆ THỐNG TRUY XUẤT THÔNG TIN & TRỢ GIÚP</span>
               <h1>Trung tâm trợ giúp</h1>
               <p>Hỗ trợ người dân tra cứu và sử dụng các chức năng trên website một cách dễ dàng và nhanh chóng.</p>
             </div>
@@ -197,7 +197,7 @@ export default function HelpPage() {
         <section className="help-support-box">
           <div className="support-content">
             <h2>🆘 Bà con vẫn cần hỗ trợ thêm?</h2>
-            <p>Nếu chưa tìm thấy câu trả lời, bà con có thể liên hệ trực tiếp cán bộ Bộ phận Một cửa UBND xã Đăk Pxi.</p>
+            <p>Nếu chưa tìm thấy câu trả lời, bà con có thể liên hệ trực tiếp cán bộ chuyên môn để được hỗ trợ.</p>
           </div>
           <Link to="/lien-he" className="support-action-btn">
             <SvgIcons.Phone />

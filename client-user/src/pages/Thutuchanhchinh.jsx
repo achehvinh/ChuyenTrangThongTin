@@ -163,7 +163,7 @@ function QuickInfoBar() {
         </div>
         <div className="tthc-top-item">
           <SvgIcons.MapPin />
-          <span>Bộ phận Một cửa: Trụ sở UBND xã Đăk Pxi</span>
+          <span>Bộ phận Tiếp nhận & Trả kết quả TTHC</span>
         </div>
         <div className="tthc-top-item">
           <SvgIcons.Phone />
@@ -190,7 +190,7 @@ function CompactGovHeader() {
             className="tthc-logo"
           />
           <div className="tthc-brand-titles">
-            <span className="tthc-sub-gov">UBND xã Đăk Pxi • PHÒNG VH-XH</span>
+            <span className="tthc-sub-gov">PHÒNG VH-XH</span>
             <span className="tthc-main-gov">Tra cứu thủ tục hành chính</span>
           </div>
         </div>
@@ -404,12 +404,12 @@ function ProcedureCard({ item, expanded, onToggleExpand, onEdit, onDelete, onAct
             <span className="tthc-meta-sep">•</span>
             <span className="tthc-meta-item">
               <SvgIcons.MapPin />
-              <span><strong>Nơi tiếp nhận:</strong> {item.agency || 'UBND xã Đăk Pxi'}</span>
+              <span><strong>Nơi xử lý:</strong> {item.agency && !item.agency.includes("UBND xã") ? item.agency : 'Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)'}</span>
             </span>
             <span className="tthc-meta-sep">•</span>
             <span className="tthc-meta-item">
               <SvgIcons.Clock />
-              <span><strong>Thời gian:</strong> {item.processing_time || 'Trong ngày'}</span>
+              <span><strong>Thời gian:</strong> {item.processing_time || 'Theo quy định hiện hành (01 – 05 ngày làm việc)'}</span>
             </span>
           </div>
         </div>
@@ -449,22 +449,9 @@ function ProcedureCard({ item, expanded, onToggleExpand, onEdit, onDelete, onAct
           </div>
         </a>
 
-        {/* CỘT 3: NÚT THAO TÁC (XEM HƯỚNG DẪN DVC, CHI SỬA/XÓA KHI LÀ CÁN BỘ) */}
-        <div className="tthc-card-actions" style={{ display: "flex", flexDirection: "column", gap: "8px", alignItems: "flex-end", flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
-          <Link
-            to={`/thu-tuc-hanh-chinh/${item.slug}`}
-            className="tthc-btn tthc-btn-detail"
-            style={{ padding: "8px 16px", fontSize: "12.5px", fontWeight: "800" }}
-            onClick={() => {
-              if (onActionToast) {
-                onActionToast("Đã chọn xem hướng dẫn DVC", `Đang chuyển sang trang hướng dẫn DVC chi tiết thủ tục [MÃ: ${item.code || `TTHC-${item.id}`}]!`, "info", "📱");
-              }
-            }}
-          >
-            <span>Xem hướng dẫn DVC →</span>
-          </Link>
-
-          {isOfficer && (
+        {/* CỘT 3: NÚT THAO TÁC (SỬA/XÓA KHI LÀ CÁN BỘ) */}
+        {isOfficer && (
+          <div className="tthc-card-actions" style={{ display: "flex", flexDirection: "column", gap: "8px", alignItems: "flex-end", flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: "flex", gap: "8px" }}>
               <button
                 type="button"
@@ -488,8 +475,8 @@ function ProcedureCard({ item, expanded, onToggleExpand, onEdit, onDelete, onAct
                 <span>Xóa</span>
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* 7. ACCORDION XEM NHANH HIỂN THỊ NGAY DƯỚI CARD */}
@@ -498,26 +485,23 @@ function ProcedureCard({ item, expanded, onToggleExpand, onEdit, onDelete, onAct
           <div className="tthc-accordion-grid">
             <div className="tthc-acc-col">
               <h4>📋 Thành phần hồ sơ cần có</h4>
-              <p>{item.required_documents || 'Giấy tờ tùy thân (CCCD) và tờ khai theo mẫu quy định.'}</p>
+              <p>{item.required_documents || 'Giấy tờ tùy thân (CCCD đính kèm VNeID) và file Tờ khai điện tử theo mẫu quy định.'}</p>
             </div>
 
             <div className="tthc-acc-col">
               <h4>💰 Lệ phí & Điều kiện</h4>
-              <p><strong>Lệ phí:</strong> {item.fee || 'Miễn phí'}</p>
-              <p className="mt-1"><strong>Đối tượng:</strong> {item.conditions_text || 'Công dân thường trú tại xã Đăk Pxi'}</p>
+              <p><strong>Lệ phí:</strong> {item.fee || 'Theo quy định hiện hành / Miễn phí 100%'}</p>
+              <p className="mt-1"><strong>Đối tượng:</strong> {item.conditions_text && !item.conditions_text.includes("xã Đăk Pxi") ? item.conditions_text : 'Công dân, cá nhân và tổ chức thực hiện trực tuyến trên toàn quốc'}</p>
             </div>
 
             <div className="tthc-acc-col">
-              <h4>🔄 Quy trình giải quyết ngắn gọn</h4>
-              {item.steps && item.steps.length > 0 ? (
-                <ol className="tthc-acc-steps-list">
-                  {item.steps.map((st, idx) => (
-                    <li key={idx}><strong>{st.title || `Bước ${idx + 1}`}:</strong> {st.content}</li>
-                  ))}
-                </ol>
-              ) : (
-                <p>Nộp hồ sơ trực tiếp tại Bộ phận Một cửa UBND xã Đăk Pxi để cán bộ kiểm tra và ký nhận kết quả.</p>
-              )}
+              <h4>🌐 Hướng dẫn nộp hồ sơ trực tuyến qua Mã QR & Link liên kết</h4>
+              <ol className="tthc-acc-steps-list" style={{ margin: 0, paddingLeft: "18px", fontSize: "12.5px", color: "#334155", lineHeight: "1.6" }}>
+                <li><strong>Bước 1 (Mở trang DVC):</strong> Quét <strong>Mã QR Code</strong> (ô nét đứt màu xanh ở trên) hoặc <strong>Click trực tiếp vào ô Mã QR</strong> để truy cập ngay trang nộp hồ sơ thực tế của thủ tục [MÃ: <strong>{item.code || 'chính thức'}</strong>] trên Cổng DVC Quốc gia.</li>
+                <li><strong>Bước 2 (Đăng nhập VNeID):</strong> Đăng nhập tài khoản bằng <strong>VNeID Định danh điện tử (Mức 2)</strong>.</li>
+                <li><strong>Bước 3 (Tải hồ sơ & Nộp):</strong> Hệ thống tự động điền Tờ khai điện tử; đính kèm file tài liệu (PDF/Ảnh) và chọn <strong>"Nộp hồ sơ"</strong>.</li>
+                <li><strong>Bước 4 (Theo dõi & Nhận KQ):</strong> Nhận Mã hồ sơ trực tuyến để tra cứu tiến trình thụ lý và nhận kết quả bản điện tử qua VNeID/Kho dữ liệu công dân hoặc qua bưu chính.</li>
+              </ol>
             </div>
           </div>
 
@@ -769,7 +753,7 @@ export default function Thutuchanhchinh() {
   const [groupId, setGroupId] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState("popular");
+  const [sortBy, setSortBy] = useState("stt");
   const [expandedId, setExpandedId] = useState(null);
   const [statFilter, setStatFilter] = useState("all");
 
@@ -843,95 +827,91 @@ export default function Thutuchanhchinh() {
     } catch {}
   }, []);
 
-  // Load danh sách thủ tục từ API hoặc từ Cán bộ đã niêm yết (localStorage)
+  // Load danh sách thủ tục từ MOCK_PROCEDURES & localStorage (Đảm bảo lưu giữ 100% dữ liệu 417 thủ tục)
   useEffect(() => {
     setLoading(true);
 
-    let officerCatalog = [];
+    let allCatalog = MOCK_PROCEDURES;
     try {
       const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
       if (saved) {
-        officerCatalog = JSON.parse(saved);
-      }
-    } catch {}
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= MOCK_PROCEDURES.length) {
+          const mockMap = new Map(MOCK_PROCEDURES.map(m => [m.code || m.id, m]));
+          const formattedOfficerList = parsed.map((item, idx) => {
+            const fresh = mockMap.get(item.code || item.id);
+            return {
+              id: item.id || `custom-${item.code}`,
+              stt: item.stt || idx + 1,
+              code: item.code,
+              title: fresh ? fresh.title : (item.name || item.title),
+              slug: (item.code || `tthc-${item.id}`).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+              group_id: item.group_id || item.group || "linh-vuc-khac",
+              group_name: item.group_name || "Bộ phận Một cửa",
+              agency: item.agency || "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
+              processing_time: item.duration || item.processing_time || "Theo quy định",
+              online_type: item.online_type || item.type || "toan-trinh",
+              summary: item.detailText || item.summary || `Thủ tục ${item.name || item.title} năm 2026.`,
+              guideLink: item.guideLink || `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(item.code || '')}`,
+              fee: item.fee || "Theo quy định",
+              view_count: fresh ? fresh.view_count : (item.view_count || 1500)
+            };
+          });
 
-    api
-      .get("/procedures", {
-        params: { keyword: keyword.trim() || undefined, groupId: groupId || undefined, page, limit: PAGE_SIZE },
-      })
-      .then((res) => {
-        const rows = filterOutDeleted(normalizeList(res.data));
-        setProcedures(rows);
-        setTotalCount(res.data?.total ?? rows.length);
-      })
-      .catch(() => {
-        const { rows: mockRows } = filterMockProcedures({
-          keyword: keyword.trim(),
-          groupId,
-          page,
-          pageSize: 50,
-        });
-
-        // Nếu Cán bộ đã niêm yết TTHC mới từ Dashboard -> Chuyển thành định dạng thực tế nhất
-        if (Array.isArray(officerCatalog) && officerCatalog.length > 0) {
-          const formattedOfficerList = officerCatalog.map(item => ({
-            id: item.id,
-            code: item.code,
-            title: item.name,
-            slug: (item.code || `tthc-${item.id}`).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-            group_name: "Bộ phận Một cửa xã Đăk Pxi",
-            agency: item.agency,
-            processing_time: item.duration,
-            online_type: item.level?.includes("Mức 4") || item.level?.includes("toàn trình") ? "toan-trinh" : "mot-phan",
-            summary: item.detailText,
-            guideLink: item.guideLink,
-            fee: item.fee,
-            view_count: 2450
-          }));
-
-          let mergedList = [...formattedOfficerList, ...mockRows];
-          // Lọc trùng ID
           const seen = new Set();
-          mergedList = mergedList.filter(item => {
+          const merged = [...formattedOfficerList, ...MOCK_PROCEDURES].filter(item => {
             const key = item.code || item.id;
             if (seen.has(key)) return false;
             seen.add(key);
             return true;
           });
-
-          if (groupId) {
-            mergedList = mergedList.filter(p => p.group_id === groupId || p.fieldGroup === groupId);
-          }
-          if (keyword) {
-            const q = keyword.toLowerCase();
-            mergedList = mergedList.filter(p => (p.title && p.title.toLowerCase().includes(q)) || (p.code && p.code.toLowerCase().includes(q)) || (p.summary && p.summary.toLowerCase().includes(q)));
-          }
-
-          const cleanList = filterOutDeleted(mergedList);
-          setProcedures(cleanList);
-          setTotalCount(cleanList.length);
+          allCatalog = merged;
         } else {
-          const cleanList = filterOutDeleted(mockRows);
-          setProcedures(cleanList);
-          setTotalCount(cleanList.length);
+          // Nâng cấp bộ dữ liệu lên 417 thủ tục mới nhất năm 2026
+          localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(MOCK_PROCEDURES));
+          allCatalog = MOCK_PROCEDURES;
         }
-      })
-      .finally(() => setLoading(false));
+      } else {
+        localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(MOCK_PROCEDURES));
+      }
+    } catch {}
+
+    const allActive = filterOutDeleted(allCatalog);
+
+    // Tính toán chính xác số lượng thủ tục cho từng Lĩnh vực (Tổng số: 417 thủ tục)
+    const counts = {};
+    let totalAll = 0;
+    FIELD_GROUPS.forEach((f) => {
+      const groupTotal = allActive.filter(
+        (p) => p.group_id === f.id || p.fieldGroup === f.id || p.fieldGroup === f.name || p.group_name === f.name
+      ).length;
+      counts[f.id] = groupTotal;
+      totalAll += groupTotal;
+    });
+    counts.all = totalAll;
+    setGroupCounts(counts);
+
+    let filteredList = allActive;
+    if (groupId) {
+      filteredList = filteredList.filter(
+        (p) => p.group_id === groupId || p.fieldGroup === groupId || p.fieldGroup === FIELD_GROUPS.find(g => g.id === groupId)?.name || p.group_name === FIELD_GROUPS.find(g => g.id === groupId)?.name
+      );
+    }
+    if (keyword.trim()) {
+      const q = keyword.trim().toLowerCase();
+      filteredList = filteredList.filter(
+        (p) => (p.title && p.title.toLowerCase().includes(q)) ||
+               (p.code && p.code.toLowerCase().includes(q)) ||
+               (p.summary && p.summary.toLowerCase().includes(q))
+      );
+    }
+
+    setProcedures(filteredList);
+    setTotalCount(filteredList.length);
+    setLoading(false);
   }, [keyword, groupId, page]);
 
-  // Load số lượng theo nhóm với số liệu niêm yết chuẩn
-  useEffect(() => {
-    const counts = {};
-    let total = 0;
-    FIELD_GROUPS.forEach((f) => {
-      const addedCount = procedures.filter(p => p.fieldGroup === f.name || p.group_id === f.id).length;
-      const countForGroup = (f.default_count || 0) + addedCount;
-      counts[f.id] = countForGroup;
-      total += countForGroup;
-    });
-    counts.all = total;
-    setGroupCounts(counts);
-  }, [procedures]);
+
 
   // 8. THỦ TỤC PHỔ BIẾN (TOP 5 THỦ TỤC THỰC TẾ TỪ CÁN BỘ NIÊM YẾT)
   const popularProcedures = useMemo(() => {
@@ -941,7 +921,7 @@ export default function Thutuchanhchinh() {
       .slice(0, 5);
   }, [procedures]);
 
-  // Sắp xếp và lọc dữ liệu danh sách thủ tục
+  // Sắp xếp và lọc dữ liệu danh sách thủ tục (Mặc định: Sắp xếp theo STT từ 1 đến 417)
   const displayedProcedures = useMemo(() => {
     let list = [...procedures];
 
@@ -954,11 +934,14 @@ export default function Thutuchanhchinh() {
     }
 
     if (sortBy === "az") {
-      list.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
+      list.sort((a, b) => (a.title || "").localeCompare(b.title || "", 'vi'));
     } else if (sortBy === "newest") {
-      list.reverse();
-    } else {
+      list.sort((a, b) => (b.stt || 0) - (a.stt || 0));
+    } else if (sortBy === "popular") {
       list.sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
+    } else {
+      // Mặc định: Thứ tự từ STT 1 đến 417
+      list.sort((a, b) => (a.stt || 0) - (b.stt || 0));
     }
 
     return list;
@@ -1001,10 +984,10 @@ export default function Thutuchanhchinh() {
         {/* HEADER CHÍNH THỨC UBND XÃ ĐĂK PXI NĂM 2026 */}
         <div style={{ textAlign: "center", background: "#ffffff", border: "1.5px solid #cbd5e1", borderRadius: "20px", padding: "22px 28px", marginBottom: "22px", boxShadow: "0 4px 16px rgba(0,0,0,0.03)" }}>
           <div style={{ fontSize: "13px", fontWeight: "900", color: "#005baa", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "4px" }}>
-            UBND XÃ ĐĂK PXI — PHÒNG VĂN HÓA – XÃ HỘI
+            PHÒNG VĂN HÓA – XÃ HỘI
           </div>
           <h2 style={{ fontSize: "20px", fontWeight: "900", color: "#003d7a", margin: "0 0 8px", lineHeight: "1.4", textTransform: "uppercase", letterSpacing: "-0.3px" }}>
-            DANH MỤC THỦ TỤC HÀNH CHÍNH THUỘC THẨM QUYỀN GIẢI QUYẾT CỦA UBND XÃ ĐĂK PXI
+            DANH MỤC THỦ TỤC HÀNH CHÍNH TẬP TRUNG
           </h2>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", flexWrap: "wrap", margin: "8px 0 12px" }}>
             <span style={{ background: "#005baa", color: "#ffffff", padding: "4px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: "900", textTransform: "uppercase" }}>
@@ -1040,7 +1023,7 @@ export default function Thutuchanhchinh() {
 
         {/* 4. THỐNG KÊ NHANH (4 CARDS) */}
         <QuickStats
-          totalCount={totalCount || MOCK_PROCEDURES.length}
+          totalCount={groupCounts.all || MOCK_PROCEDURES.length}
           popularCount={5}
           mostViewedCount={MOCK_PROCEDURES.filter(p => p.view_count > 1000).length}
           recentCount={4}
@@ -1097,8 +1080,9 @@ export default function Thutuchanhchinh() {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
+                <option value="stt">Thứ tự từ STT 1 đến 417 (Mặc định)</option>
                 <option value="popular">Phổ biến nhất</option>
-                <option value="newest">Mới nhất</option>
+                <option value="newest">Mới nhất (Từ 417 đến 1)</option>
                 <option value="az">Tên A – Z</option>
               </select>
             </div>

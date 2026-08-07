@@ -194,7 +194,7 @@ export default function HuongDanVNeIDPage() {
           <span className="emergency-icon">🚨</span>
           <div>
             <strong>Cần Công An xã hỗ trợ đăng ký VNeID?</strong>
-            <p>Đến trực tiếp <strong>UBND xã Đăk Pxi</strong> (Công an xã) hoặc gọi Tổng đài hỗ trợ: <a href="tel:1800599996">1800 599 996</a> (miễn phí cước)</p>
+            <p>Đến trực tiếp <strong>Cơ quan Công an xã</strong> hoặc gọi Tổng đài hỗ trợ: <a href="tel:1800599996">1800 599 996</a> (miễn phí cước)</p>
           </div>
         </div>
 

@@ -326,7 +326,7 @@ export default function PhongChongLuaDaoPage() {
                     <div className="pc-ld-full-meta">
                       <span>🗓️ Ngày phát hành: {activeArticle.date}</span>
                       <span className="sep">•</span>
-                      <span>🏛️ Phòng VH-XH UBND xã Đăk Pxi</span>
+                      <span>🏛️ Phòng VH-XH</span>
                     </div>
                   </div>
 

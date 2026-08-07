@@ -466,11 +466,11 @@ export default function ThuTucChiTiet() {
           <div className="tthc-brand">
             <img
               src="https://inviva.vn/wp-content/uploads/2026/05/logo-chung-tay-cai-cach-thu-tuc-hanh-chinh-vector-03.png"
-              alt="Logo UBND xã Đăk Pxi"
+              alt="Logo Cải cách thủ tục hành chính"
               className="tthc-logo"
             />
             <div className="tthc-brand-titles">
-              <span className="tthc-sub-gov">UBND xã Đăk Pxi • PHÒNG VH-XH</span>
+              <span className="tthc-sub-gov">PHÒNG VH-XH</span>
               <span className="tthc-main-gov">Chi tiết thủ tục hành chính</span>
             </div>
           </div>
@@ -517,8 +517,7 @@ export default function ThuTucChiTiet() {
           <div className="tthc-empty-box">
             <h3 className="tthc-empty-msg">{error}</h3>
             <p>
-              Bà con vui lòng quay lại danh sách để chọn thủ tục khác, hoặc đến trực tiếp
-              Bộ phận Một cửa UBND xã Đăk Pxi để được cán bộ hướng dẫn.
+              Bà con vui lòng quay lại danh sách để chọn thủ tục khác, hoặc truy cập Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn) để thực hiện.
             </p>
             <Link to="/thu-tuc-hanh-chinh" className="tthc-btn-reset" style={{ textDecoration: 'none', display: 'inline-block', marginTop: '12px' }}>
               Quay lại danh sách
@@ -606,7 +605,7 @@ export default function ThuTucChiTiet() {
                 </div>
                 <div className="info-content">
                   <span className="info-label">Nơi tiếp nhận & xử lý</span>
-                  <strong className="info-val">{procedure.agency || "UBND xã Đăk Pxi"}</strong>
+                  <strong className="info-val">{procedure.agency && !procedure.agency.includes("UBND xã") ? procedure.agency : "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)"}</strong>
                 </div>
               </div>
             </div>
