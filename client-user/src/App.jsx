@@ -47,7 +47,6 @@ import ThuTucChiTiet from "./pages/ThuTucChiTiet";
 import TruongPhongDashboard from './pages/TruongPhongDashboard';
 import VideoPage from './pages/VideoPage';
 import DakPxiTodayPage from './pages/DakPxiTodayPage';
-import OneMinutePage from './pages/OneMinutePage';
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -228,6 +227,7 @@ function AppLayout() {
           <Route path="/thu-tuc-hanh-chinh" element={<Thutuchanhchinh />} />
           <Route path="/thu-tuc-hanh-chinh/:slug" element={<ThuTucChiTiet />} />
           <Route path="/Ban-do" element={<Bando />} />
+          <Route path="/ban-do" element={<Bando />} />
           <Route path="/gia-nong-san" element={<Gianongsan />} />
           <Route path="/chuyen-muc" element={<ChuyenMucPage />} />
           <Route path="/tin-tuc" element={<ChuyenTrangThongTin />} />
@@ -242,8 +242,6 @@ function AppLayout() {
           <Route path="/an-toan-giao-thong" element={<AnToanGiaoThongPage />} />
           <Route path="/phong-chong-lua-dao" element={<PhongChongLuaDaoPage />} />
           <Route path="/dak-pxi-hom-nay" element={<DakPxiTodayPage />} />
-          <Route path="/1-phut-hom-nay" element={<OneMinutePage />} />
-          <Route path="/one-minute" element={<OneMinutePage />} />
           <Route path="/cuoc-hop-truc-tuyen/:id" element={<CuocHopTrucTuyen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

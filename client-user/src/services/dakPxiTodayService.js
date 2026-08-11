@@ -93,15 +93,6 @@ const DEFAULT_TODAY_DATA = {
       value: "Cà phê: 118.500 đ/kg",
       description: "Mì khô: 3.800 đ/kg",
       status: "normal"
-    },
-    {
-      id: "bus",
-      icon: "bus",
-      category: "transit",
-      title: "Lịch xe",
-      value: "Xe đi huyện",
-      description: "06:30 • 11:30 • 16:00",
-      status: "normal"
     }
   ],
 

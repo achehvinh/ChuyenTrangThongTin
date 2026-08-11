@@ -360,57 +360,6 @@ export default function DakPxiToday() {
               </div>
             </div>
 
-          ) : (activeModalItem.category === 'transit' || activeModalItem.id === 'bus') ? (
-            /* SUB-MODAL 2: LỊCH XE & GIAO THÔNG */
-            <div className="dkt-sub-modal-card" onClick={(e) => e.stopPropagation()}>
-              <div className="sub-modal-header header-blue">
-                <div className="sub-modal-header-title">
-                  <Bus size={22} />
-                  <span>LỊCH TRÌNH XE & GIAO THÔNG ĐĂK PXI</span>
-                </div>
-                <button className="sub-modal-close-btn" onClick={() => setActiveModalItem(null)}>
-                  <X size={18} />
-                </button>
-              </div>
-
-              <div className="sub-modal-body">
-                <div className="transit-schedule-list">
-                  <div className="transit-item">
-                    <div className="transit-icon-box">
-                      <Bus size={22} color="#1d4ed8" />
-                    </div>
-                    <div>
-                      <div className="transit-title">Tuyến Đăk Pxi ➔ Trung tâm Huyện Đăk Hà</div>
-                      <div className="transit-time"><Clock size={14} /> Khung giờ chạy: <strong>06:30 • 11:30 • 16:00</strong> (Hàng ngày)</div>
-                    </div>
-                  </div>
-
-                  <div className="transit-item">
-                    <div className="transit-icon-box">
-                      <Bus size={22} color="#1d4ed8" />
-                    </div>
-                    <div>
-                      <div className="transit-title">Tuyến Đăk Pxi ➔ Thành phố Kon Tum</div>
-                      <div className="transit-time"><Clock size={14} /> Khung giờ chạy: <strong>07:00 • 13:00</strong></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="transit-contact-card">
-                  <Phone size={18} color="#1e40af" />
-                  <div>
-                    <div><strong>Hotline Đội xe dịch vụ nông thôn:</strong></div>
-                    <div className="transit-phone-number">{transit?.phone || '0260.385.1234'}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="sub-modal-footer">
-                <button className="sub-modal-btn btn-blue" onClick={() => handleNavigateCategory('transit')}>
-                  Xem danh bạ xe & bản đồ giao thông →
-                </button>
-              </div>
-            </div>
 
           ) : (activeModalItem.category === 'health' || activeModalItem.id === 'vaccine') ? (
             /* SUB-MODAL 3: LỊCH TIÊM CHỦNG & Y TẾ */
@@ -640,18 +589,6 @@ export default function DakPxiToday() {
                   </div>
                 </div>
 
-                {/* CARD 4: LỊCH XE */}
-                <div className="dkt-img2-bottom-card card-bus" onClick={() => handleNavigateCategory('transit')} title="Nhấp để xem Lịch xe & Giao thông">
-                  <div className="bcard-header">
-                    <Bus size={18} className="bcard-icon bus-icon" />
-                    <span className="bcard-title bus-title">LỊCH XE</span>
-                  </div>
-                  <div className="bcard-main bus-main">02 <span className="bcard-unit">chuyến</span></div>
-                  <div className="bcard-sub">
-                    <span>Xe đi huyện và tỉnh</span>
-                    <Bus size={24} className="bcard-watermark" />
-                  </div>
-                </div>
 
               </div>
 

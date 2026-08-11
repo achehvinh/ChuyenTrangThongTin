@@ -7,20 +7,12 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getDakPxiToday, updateDakPxiTodayData } from '../../services/dakPxiTodayService';
-import { getAllOneMinuteLessons, saveOneMinuteLessons } from '../../services/oneMinuteService';
 import './DakPxiToday.css';
 
 export default function DakPxiTodayAdminManager() {
   const [data, setData] = useState(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
-  // 1 PHÚT HÔM NAY STATE
-  const [oneMinuteList, setOneMinuteList] = useState([]);
-  const [omTitle, setOmTitle] = useState('');
-  const [omCategory, setOmCategory] = useState('health');
-  const [omPoints, setOmPoints] = useState('');
-  const [omTip, setOmTip] = useState('');
-  const [omImage, setOmImage] = useState('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1200&q=80');
 
   // Form states for new timeline item
   const [newTitle, setNewTitle] = useState('');
@@ -32,7 +24,6 @@ export default function DakPxiTodayAdminManager() {
 
   useEffect(() => {
     getDakPxiToday().then(res => setData(res));
-    getAllOneMinuteLessons().then(list => setOneMinuteList(list));
   }, []);
 
   if (!data) return <div style={{ padding: '20px' }}>Đang tải bảng quản trị...</div>;
@@ -176,48 +167,6 @@ export default function DakPxiTodayAdminManager() {
     setNewTitle('');
     setNewDesc('');
     handleSaveAll(updated);
-  };
-
-  const handleAddOneMinute = (e) => {
-    e.preventDefault();
-    if (!omTitle.trim()) return;
-
-    const pointsArr = omPoints ? omPoints.split('\n').filter(p => p.trim()) : [
-      'Tăng cường sức khỏe & trao đổi chất',
-      'Giúp cơ thể luôn tỉnh táo khi làm việc',
-      'Áp dụng kiến thức hữu ích vào đời sống'
-    ];
-
-    const newLesson = {
-      id: 'one-minute-' + Date.now(),
-      title: omTitle,
-      category: omCategory,
-      categoryLabel: omCategory === 'health' ? 'SỨC KHỎE' : omCategory === 'agriculture' ? 'NÔNG NGHIỆP' : omCategory === 'safety' ? 'AN TOÀN' : omCategory === 'education' ? 'GIÁO DỤC' : 'ĐỜI SỐNG',
-      categoryColor: omCategory === 'health' ? '#ef4444' : omCategory === 'agriculture' ? '#15803d' : omCategory === 'safety' ? '#d97706' : omCategory === 'education' ? '#8b5cf6' : '#0284c7',
-      duration: 60,
-      date: new Date().toLocaleDateString('vi-VN'),
-      isToday: true,
-      image: omImage || 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1200&q=80',
-      audio: 'https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg',
-      points: pointsArr,
-      tip: omTip || 'Bà con hãy ghi nhớ và thực hiện mỗi ngày để nâng cao chất lượng cuộc sống.'
-    };
-
-    const updatedList = [newLesson, ...oneMinuteList.map(item => ({ ...item, isToday: false }))];
-    saveOneMinuteLessons(updatedList);
-    setOneMinuteList(updatedList);
-    setOmTitle('');
-    setOmPoints('');
-    setOmTip('');
-    alert('🎉 Đã đăng bài bài "1 PHÚT HÔM NAY" mới thành công!');
-  };
-
-  const handleDeleteOneMinute = (id) => {
-    if (window.confirm('Bà con có chắc muốn xóa bài 1 phút này?')) {
-      const updated = oneMinuteList.filter(item => item.id !== id);
-      saveOneMinuteLessons(updated);
-      setOneMinuteList(updated);
-    }
   };
 
   const handleDeleteTimelineItem = (id) => {
@@ -453,33 +402,8 @@ export default function DakPxiTodayAdminManager() {
         </div>
       </div>
 
-      {/* 4. CẬP NHẬT LỊCH XE & Y TẾ */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
-        
-        {/* LỊCH XE */}
-        <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', padding: '16px', borderRadius: '14px' }}>
-          <h3 style={{ fontSize: '14.5px', fontWeight: 800, color: '#1e40af', marginTop: 0, marginBottom: '10px' }}>
-            🚌 Cập nhật Lịch Xe & Khung giờ chạy
-          </h3>
-          <div style={{ marginBottom: '8px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 700, color: '#1e40af' }}>Các chuyến xe trong ngày:</label>
-            <input
-              type="text"
-              value={data.transit?.schedules || '06:30 • 11:30 • 16:00'}
-              onChange={(e) => handleUpdateTransit(e.target.value, data.transit?.phone)}
-              style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid #93c5fd' }}
-            />
-          </div>
-          <div>
-            <label style={{ fontSize: '12px', fontWeight: 700, color: '#1e40af' }}>SĐT Hotline Đội xe / Nhà xe:</label>
-            <input
-              type="text"
-              value={data.transit?.phone || '0260.385.1234'}
-              onChange={(e) => handleUpdateTransit(data.transit?.schedules, e.target.value)}
-              style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid #93c5fd' }}
-            />
-          </div>
-        </div>
+      {/* 4. CẬP NHẬT LỊCH Y TẾ & TIÊM CHỦNG */}
+      <div style={{ marginBottom: '24px' }}>
 
         {/* LỊCH TIÊM CHỦNG */}
         <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '16px', borderRadius: '14px' }}>
@@ -676,144 +600,7 @@ export default function DakPxiTodayAdminManager() {
         ))}
       </div>
 
-      {/* 5. QUẢN LÝ CHUYÊN MỤC "1 PHÚT HÔM NAY" */}
-      <div style={{ background: '#f0fdf4', border: '1.5px solid #86efac', padding: '20px', borderRadius: '16px', marginTop: '30px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 900, color: '#15803d', marginTop: 0, marginBottom: '12px' }}>
-          ⏱️ ĐĂNG BÀI MỚI CHO "1 PHÚT HÔM NAY"
-        </h3>
-        <p style={{ fontSize: '12.5px', color: '#475569', marginTop: 0, marginBottom: '16px' }}>
-          Tạo bài học 60 giây truyền thông cộng đồng về Sức khỏe, An toàn, Nông nghiệp, VNeID & Giáo dục.
-        </p>
 
-        <form onSubmit={handleAddOneMinute} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-          <div style={{ gridColumn: 'span 2' }}>
-            <label style={{ fontSize: '12px', fontWeight: 700, color: '#15803d' }}>Tiêu đề bài 1 phút (*):</label>
-            <input
-              type="text"
-              value={omTitle}
-              onChange={(e) => setOmTitle(e.target.value)}
-              placeholder="VD: Uống đủ 2 lít nước mỗi ngày để giữ cơ thể khỏe mạnh khi làm rẫy..."
-              required
-              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #86efac' }}
-            />
-          </div>
-
-          <div>
-            <label style={{ fontSize: '12px', fontWeight: 700, color: '#15803d' }}>Chủ đề bài học:</label>
-            <select
-              value={omCategory}
-              onChange={(e) => setOmCategory(e.target.value)}
-              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #86efac' }}
-            >
-              <option value="health">❤️ SỨC KHỎE</option>
-              <option value="safety">🛡️ AN TOÀN</option>
-              <option value="agriculture">🌱 NÔNG NGHIỆP</option>
-              <option value="life">👥 ĐỜI SỐNG & VNeID</option>
-              <option value="education">📚 GIÁO DỤC</option>
-            </select>
-          </div>
-
-          <div>
-            <label style={{ fontSize: '12px', fontWeight: 700, color: '#15803d' }}>Link ảnh đại diện bài học:</label>
-            <input
-              type="text"
-              value={omImage}
-              onChange={(e) => setOmImage(e.target.value)}
-              placeholder="URL hình ảnh..."
-              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #86efac' }}
-            />
-          </div>
-
-          <div style={{ gridColumn: 'span 2' }}>
-            <label style={{ fontSize: '12px', fontWeight: 700, color: '#15803d' }}>3-4 Ý chính bài học (Mỗi ý 1 dòng):</label>
-            <textarea
-              rows={3}
-              value={omPoints}
-              onChange={(e) => setOmPoints(e.target.value)}
-              placeholder="Tăng cường trao đổi chất&#10;Giúp cơ thể tỉnh táo khi lao động&#10;Hình thành thói quen tốt mỗi ngày..."
-              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #86efac' }}
-            />
-          </div>
-
-          <div style={{ gridColumn: 'span 2' }}>
-            <label style={{ fontSize: '12px', fontWeight: 700, color: '#15803d' }}>Lời khuyên / Mẹo ngắn cho bà con:</label>
-            <input
-              type="text"
-              value={omTip}
-              onChange={(e) => setOmTip(e.target.value)}
-              placeholder="Bà con hãy luôn mang theo bình nước sạch bên mình khi đi làm..."
-              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #86efac' }}
-            />
-          </div>
-
-          <div style={{ gridColumn: 'span 2', textAlign: 'right' }}>
-            <button
-              type="submit"
-              style={{
-                background: '#15803d',
-                color: '#ffffff',
-                border: 'none',
-                padding: '10px 22px',
-                borderRadius: '20px',
-                fontWeight: 900,
-                fontSize: '13.5px',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              <Plus size={16} /> Xuất bản bài "1 Phút Hôm Nay"
-            </button>
-          </div>
-        </form>
-
-        {/* DANH SÁCH BÀI 1 PHÚT ĐÃ ĐĂNG */}
-        <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#15803d', marginTop: '20px', marginBottom: '10px' }}>
-          📚 Các bài 1 phút đã phát hành ({oneMinuteList.length} bài):
-        </h4>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {oneMinuteList.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '10px 14px',
-                background: '#ffffff',
-                border: '1px solid #bbf7d0',
-                borderRadius: '10px'
-              }}
-            >
-              <div>
-                <span style={{ background: item.categoryColor || '#15803d', color: '#fff', fontSize: '10px', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', marginRight: '8px' }}>
-                  {item.categoryLabel || '1 PHÚT'}
-                </span>
-                <strong style={{ fontSize: '13px', color: '#1e293b' }}>{item.title}</strong>
-                <span style={{ fontSize: '11px', color: '#64748b', marginLeft: '8px' }}>({item.date})</span>
-              </div>
-
-              <button
-                onClick={() => handleDeleteOneMinute(item.id)}
-                style={{
-                  background: '#fee2e2',
-                  color: '#dc2626',
-                  border: 'none',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '11px',
-                  fontWeight: 700
-                }}
-              >
-                Xóa
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
 
     </div>
   );

@@ -11,8 +11,7 @@ import {
   Settings,
   Sliders,
   User,
-  X,
-  Timer
+  X
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -293,13 +292,6 @@ export default function Navbar() {
               </Link>
             </li>
 
-            {/* 1 PHÚT HÔM NAY */}
-            <li className="nav-item">
-              <Link to="/1-phut-hom-nay" className={`nav-link ${isActive('/1-phut-hom-nay') ? 'active' : ''}`} style={{ background: 'rgba(212, 159, 83, 0.15)', borderRadius: '6px', margin: '0 2px' }}>
-                <Timer size={17} className="nav-icon" color="#d49f53" />
-                <span style={{ color: '#fef08a', fontWeight: 800 }}>1 PHÚT HÔM NAY</span>
-              </Link>
-            </li>
 
             {/* KHÁC */}
             <li
