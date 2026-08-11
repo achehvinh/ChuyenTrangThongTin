@@ -6,6 +6,7 @@ import TaskFilters from "./TaskFilters";
 import TaskTable from "./TaskTable";
 import TaskStatusBadge from "./TaskStatusBadge";
 import TaskProgress from "./TaskProgress";
+import CreateTaskModal from "./CreateTaskModal";
 import { getBackendServerUrl } from "../../utils/apiConfig";
 import { useTaskRealtime } from "../../hooks/useTaskRealtime";
 import "./TotalTasksPage.css";
@@ -439,88 +440,17 @@ const TotalTasksPage = () => {
       </div>
 
       {/* ========================================
-          MODAL: GIAO NHIỆM VỤ MỚI
+          MODAL: GIAO NHIỆM VỤ MỚI (COMPONENTS TÁCH DỰA TRÊN MONGODB REALTIME)
       ======================================== */}
-      {showAssignModal && (
-        <div className="modal-backdrop-gov">
-          <div className="modal-content-gov">
-            <div className="modal-header-gov">
-              <h3>PHÂN CÔNG GIAO NHIỆM VỤ MỚI</h3>
-              <button onClick={() => setShowAssignModal(false)} className="btn-close-gov">
-                <X size={18} />
-              </button>
-            </div>
-            <form onSubmit={handleCreateTask} className="modal-body-gov">
-              <div className="form-group-gov">
-                <label>Tên nhiệm vụ <span style={{ color: "#DC2626" }}>*</span></label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Nhập tên nhiệm vụ cần giao..."
-                  value={newTaskForm.title}
-                  onChange={(e) => setNewTaskForm({ ...newTaskForm, title: e.target.value })}
-                />
-              </div>
-
-              <div className="form-row-gov">
-                <div className="form-group-gov">
-                  <label>Cán bộ thực hiện</label>
-                  <select
-                    value={newTaskForm.assignee}
-                    onChange={(e) => setNewTaskForm({ ...newTaskForm, assignee: e.target.value })}
-                  >
-                    <option value="Lê Ngọc Sơn">Lê Ngọc Sơn (Chuyên viên)</option>
-                    <option value="Nguyễn Văn A">Nguyễn Văn A (Chuyên viên)</option>
-                    <option value="Trần Văn B">Trần Văn B (Chuyên viên)</option>
-                    <option value="Nguyễn Thị C">Nguyễn Thị C (Chuyên viên)</option>
-                    <option value="Nguyễn Văn D">Nguyễn Văn D (Chuyên viên)</option>
-                  </select>
-                </div>
-
-                <div className="form-group-gov">
-                  <label>Mức độ ưu tiên</label>
-                  <select
-                    value={newTaskForm.priority}
-                    onChange={(e) => setNewTaskForm({ ...newTaskForm, priority: e.target.value })}
-                  >
-                    <option value="Bình thường">Bình thường</option>
-                    <option value="Khẩn">Khẩn</option>
-                    <option value="Cấp bách">Cấp bách</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-group-gov">
-                <label>Hạn hoàn thành</label>
-                <input
-                  type="date"
-                  value={newTaskForm.dueDate}
-                  onChange={(e) => setNewTaskForm({ ...newTaskForm, dueDate: e.target.value })}
-                />
-              </div>
-
-              <div className="form-group-gov">
-                <label>Nội dung chỉ đạo & Yêu cầu cụ thể</label>
-                <textarea
-                  rows={3}
-                  placeholder="Nhập ghi chú chỉ đạo của Trưởng phòng..."
-                  value={newTaskForm.description}
-                  onChange={(e) => setNewTaskForm({ ...newTaskForm, description: e.target.value })}
-                />
-              </div>
-
-              <div className="modal-footer-gov">
-                <button type="button" onClick={() => setShowAssignModal(false)} className="btn-secondary-gov">
-                  Hủy bỏ
-                </button>
-                <button type="submit" className="btn-primary-gov">
-                  Xác nhận giao nhiệm vụ
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <CreateTaskModal
+        isOpen={showAssignModal}
+        onClose={() => setShowAssignModal(false)}
+        onSuccess={(msg) => {
+          fetchDepartmentTasks();
+          fetchActivities();
+          showToast(msg);
+        }}
+      />
 
       {/* ========================================
           MODAL: CHI TIẾT NHIỆM VỤ & LỊCH SỬ TIẾN ĐỘ DB

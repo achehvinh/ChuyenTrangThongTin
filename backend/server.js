@@ -63,8 +63,13 @@ app.use("/api/visitor", visitorRoutes);
 app.use("/api/v1/subscribe", subscriberRoutes);
 app.use("/api/v1/subscribers", subscriberRoutes);
 app.use("/api/v1/quiz", quizRoutes);
+const notificationRoutes = require("./routes/notificationRoutes");
+
+app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/v1/tasks", taskRoutes);
 app.use("/api/tasks", taskRoutes);
+app.get("/api/users/staff", require("./controllers/taskController").getStaffList);
 
 app.get("/api/v1", (req, res) => {
   res.json({ message: "UBND Dak Pxi Realtime API is running" });

@@ -3,9 +3,103 @@ const TaskProgress = require("../models/TaskProgress");
 const ActivityLog = require("../models/ActivityLog");
 const Notification = require("../models/Notification");
 const Admin = require("../models/Admin");
+const notificationService = require("../services/notificationService");
 const { emitToDepartment, emitToManagers, emitToUser } = require("../services/socketService");
 
-// ── Hàm trợ giúp khởi tạo dữ liệu mẫu Task vào MongoDB nếu DB trống ──
+// ── Khởi tạo danh sách cán bộ mẫu vào Admin DB nếu chưa có ──
+const ensureStaffExists = async () => {
+  try {
+    const count = await Admin.countDocuments({ role: { $ne: "admin" } });
+    if (count === 0) {
+      const bcrypt = require("bcryptjs");
+      const defaultPassword = bcrypt.hashSync("Vhxh@2026", 10);
+      await Admin.create([
+        {
+          username: "lengocson.vhxh",
+          password: defaultPassword,
+          role: "canbo",
+          fullName: "Lê Ngọc Sơn",
+          chucVu: "Công chức chuyên môn Văn hóa - Xã hội",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          status: "active",
+        },
+        {
+          username: "nguyenvana.vhxh",
+          password: defaultPassword,
+          role: "canbo",
+          fullName: "Nguyễn Văn A",
+          chucVu: "Công chức chuyên môn BHYT",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          status: "active",
+        },
+        {
+          username: "tranvanb.vhxh",
+          password: defaultPassword,
+          role: "canbo",
+          fullName: "Trần Văn B",
+          chucVu: "Công chức chuyên môn TTHC",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          status: "active",
+        },
+        {
+          username: "nguyenthic.vhxh",
+          password: defaultPassword,
+          role: "canbo",
+          fullName: "Nguyễn Thị C",
+          chucVu: "Công chức phụ trách Bảo trợ Xã hội",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          status: "active",
+        },
+        {
+          username: "ybyen.vhxh",
+          password: defaultPassword,
+          role: "phophong",
+          fullName: "Y Byen",
+          chucVu: "Phó Trưởng phòng",
+          phongBan: "Phòng Văn hóa - Xã hội",
+          status: "active",
+        },
+      ]);
+      console.log("🌱 Created initial staff in Admin DB successfully!");
+    }
+  } catch (e) {
+    console.error("Error ensuring staff exists:", e);
+  }
+};
+
+// ── GET /api/users/staff: Lấy danh sách cán bộ ──
+exports.getStaffList = async (req, res) => {
+  try {
+    await ensureStaffExists();
+    const staffMembers = await Admin.find({ status: "active" })
+      .select("-password")
+      .sort({ fullName: 1 });
+
+    const formattedStaff = staffMembers.map((s) => ({
+      _id: s._id,
+      id: s._id,
+      name: s.fullName || s.username,
+      fullName: s.fullName || s.username,
+      username: s.username,
+      position: s.chucVu || "Công chức chuyên môn",
+      chucVu: s.chucVu || "Công chức chuyên môn",
+      phongBan: s.phongBan || "Phòng Văn hóa - Xã hội",
+      role: s.role,
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(s.fullName || s.username)}&background=E0F2FE&color=005BAC&bold=true`,
+    }));
+
+    return res.json({
+      success: true,
+      staff: formattedStaff,
+      users: formattedStaff,
+    });
+  } catch (err) {
+    console.error("Lỗi getStaffList:", err);
+    return res.status(500).json({ message: "Lỗi khi lấy danh sách cán bộ" });
+  }
+};
+
+// ── Tự động tạo Task mẫu vào MongoDB nếu DB chưa có Task ──
 const seedInitialTasksIfNeeded = async () => {
   try {
     const count = await Task.countDocuments();
@@ -15,7 +109,7 @@ const seedInitialTasksIfNeeded = async () => {
           title: "Tổng hợp báo cáo tình hình thực hiện nhiệm vụ tháng 8/2026",
           description: "Tổng hợp số liệu từ các chuyên viên, rà soát kết quả các chỉ tiêu phát triển văn hóa xã hội tháng 8 để trình UBND xã.",
           assigneeName: "Lê Ngọc Sơn",
-          assignedByName: "Lê Ngọc Sơn",
+          assignedByName: "Nguyễn Thái Huy",
           priority: "URGENT",
           status: "IN_PROGRESS",
           progress: 60,
@@ -26,7 +120,7 @@ const seedInitialTasksIfNeeded = async () => {
           title: "Rà soát, cập nhật danh sách hộ gia đình khó khăn",
           description: "Phối hợp với các Trưởng thôn để rà soát danh sách hộ nghèo, hộ cận nghèo cần hỗ trợ thẻ BHYT và chính sách an sinh.",
           assigneeName: "Nguyễn Văn A",
-          assignedByName: "Lê Ngọc Sơn",
+          assignedByName: "Nguyễn Thái Huy",
           priority: "MEDIUM",
           status: "IN_PROGRESS",
           progress: 30,
@@ -37,7 +131,7 @@ const seedInitialTasksIfNeeded = async () => {
           title: "Hoàn thiện kế hoạch tuyên truyền BHYT quý III/2026",
           description: "Xây dựng lịch phát sóng loa truyền thanh xã và bài tuyên truyền lưu động về chính sách BHYT tự nguyện.",
           assigneeName: "Trần Văn B",
-          assignedByName: "Lê Ngọc Sơn",
+          assignedByName: "Nguyễn Thái Huy",
           priority: "HIGH",
           status: "NEAR_DEADLINE",
           progress: 70,
@@ -48,7 +142,7 @@ const seedInitialTasksIfNeeded = async () => {
           title: "Báo cáo công tác văn hóa - xã hội 6 tháng đầu năm",
           description: "Đã tổng hợp 90% khối lượng văn bản, còn thiếu phụ lục thống kê hoạt động thể thao thôn làng.",
           assigneeName: "Nguyễn Thị C",
-          assignedByName: "Lê Ngọc Sơn",
+          assignedByName: "Nguyễn Thái Huy",
           priority: "URGENT",
           status: "OVERDUE",
           progress: 90,
@@ -59,7 +153,7 @@ const seedInitialTasksIfNeeded = async () => {
           title: "Tổng hợp kết quả thực hiện nhiệm vụ tuần",
           description: "Hoàn tất báo cáo giao ban tuần trình Trưởng phòng duyệt.",
           assigneeName: "Nguyễn Văn D",
-          assignedByName: "Lê Ngọc Sơn",
+          assignedByName: "Nguyễn Thái Huy",
           priority: "MEDIUM",
           status: "COMPLETED",
           progress: 100,
@@ -67,51 +161,17 @@ const seedInitialTasksIfNeeded = async () => {
           dueDate: new Date("2026-08-12"),
           completedAt: new Date("2026-08-12"),
         },
-        {
-          title: "Tuyên truyền vận động người dân tham gia BHYT hộ gia đình",
-          description: "Phối hợp với Đại lý thu BHYT xã Đăk Pxi để tư vấn trực tiếp cho các hộ dân tại Thôn 1 và Thôn 2.",
-          assigneeName: "Lê Ngọc Sơn",
-          assignedByName: "Lê Ngọc Sơn",
-          priority: "MEDIUM",
-          status: "IN_PROGRESS",
-          progress: 45,
-          startDate: new Date("2026-08-02"),
-          dueDate: new Date("2026-08-20"),
-        },
-        {
-          title: "Kiểm tra công tác cải cách thủ tục hành chính tại bộ phận 1 cửa",
-          description: "Rà soát quy trình niêm yết công khai TTHC thuộc lĩnh vực Lao động - Thương binh & Xã hội.",
-          assigneeName: "Nguyễn Văn A",
-          assignedByName: "Lê Ngọc Sơn",
-          priority: "HIGH",
-          status: "NEAR_DEADLINE",
-          progress: 80,
-          startDate: new Date("2026-08-04"),
-          dueDate: new Date("2026-08-14"),
-        },
-        {
-          title: "Phê duyệt danh sách chi trả trợ cấp xã hội tháng 8/2026",
-          description: "Danh sách 215 đối tượng bảo trợ xã hội nhận lương và trợ cấp hàng tháng qua bưu điện.",
-          assigneeName: "Nguyễn Thị C",
-          assignedByName: "Lê Ngọc Sơn",
-          priority: "URGENT",
-          status: "SUBMITTED",
-          progress: 95,
-          startDate: new Date("2026-08-09"),
-          dueDate: new Date("2026-08-11"),
-          submittedAt: new Date("2026-08-11"),
-        },
       ];
 
       await Task.insertMany(sampleTasks);
-      console.log("🌱 Seeded initial tasks into MongoDB successfully!");
+      console.log("🌱 Seeded initial tasks into MongoDB!");
     }
   } catch (err) {
-    console.error("Error seeding initial tasks:", err);
+    console.error("Error seeding tasks:", err);
   }
 };
 
-// ── Tự động cập nhật các Task quá hạn trong MongoDB ──
+// ── Tự động kiểm tra quá hạn trong MongoDB ──
 const autoCheckOverdueTasks = async () => {
   try {
     const now = new Date();
@@ -124,7 +184,6 @@ const autoCheckOverdueTasks = async () => {
       task.status = "OVERDUE";
       await task.save();
 
-      // Lưu ActivityLog
       await ActivityLog.create({
         actorName: "Hệ thống",
         action: "OVERDUE",
@@ -133,7 +192,14 @@ const autoCheckOverdueTasks = async () => {
         description: `Nhiệm vụ "${task.title}" do ${task.assigneeName} thực hiện đã quá hạn hoàn thành!`,
       });
 
-      // Phát Socket event
+      if (task.assignedTo) {
+        await notificationService.notifyTaskOverdue({
+          taskId: task._id,
+          taskTitle: task.title,
+          assigneeId: task.assignedTo,
+        });
+      }
+
       emitToDepartment("PhongVanHoaXaHoi", "task:overdue", {
         taskId: task._id,
         taskTitle: task.title,
@@ -143,11 +209,11 @@ const autoCheckOverdueTasks = async () => {
       });
     }
   } catch (err) {
-    console.error("Error auto-checking overdue tasks:", err);
+    console.error("Error checking overdue tasks:", err);
   }
 };
 
-// ── GET: Lấy danh sách nhiệm vụ toàn phòng & Thống kê KPI từ MongoDB ──
+// ── GET: Lấy danh sách nhiệm vụ toàn phòng từ MongoDB ──
 exports.getDepartmentTasks = async (req, res) => {
   try {
     await seedInitialTasksIfNeeded();
@@ -155,8 +221,8 @@ exports.getDepartmentTasks = async (req, res) => {
 
     const tasks = await Task.find({}).sort({ createdAt: -1 });
 
-    // Tính toán trực tiếp số liệu KPI từ MongoDB
     const total = await Task.countDocuments({});
+    const todo = await Task.countDocuments({ status: "TODO" });
     const inProgress = await Task.countDocuments({ status: { $in: ["IN_PROGRESS", "NEAR_DEADLINE", "TODO"] } });
     const completed = await Task.countDocuments({ status: "COMPLETED" });
     const overdue = await Task.countDocuments({ status: "OVERDUE" });
@@ -166,6 +232,7 @@ exports.getDepartmentTasks = async (req, res) => {
       success: true,
       statistics: {
         total,
+        todo,
         inProgress,
         completed,
         overdue,
@@ -173,6 +240,7 @@ exports.getDepartmentTasks = async (req, res) => {
       },
       tasks: tasks.map((t) => ({
         id: t._id,
+        _id: t._id,
         title: t.title,
         description: t.description,
         assignee: t.assigneeName,
@@ -183,7 +251,7 @@ exports.getDepartmentTasks = async (req, res) => {
         progress: t.progress,
         status: t.toVietnameseStatus(),
         rawStatus: t.status,
-        priority: t.priority === "URGENT" ? "Cấp bách" : t.priority === "HIGH" ? "Khẩn" : "Bình thường",
+        priority: t.priority === "URGENT" ? "Khẩn cấp" : t.priority === "HIGH" ? "Cao" : t.priority === "LOW" ? "Thấp" : "Bình thường",
         rawPriority: t.priority,
       })),
     });
@@ -193,22 +261,26 @@ exports.getDepartmentTasks = async (req, res) => {
   }
 };
 
-// ── GET: Lấy nhiệm vụ của cá nhân cán bộ ──
+// ── GET: Lấy nhiệm vụ cá nhân cán bộ ──
 exports.getMyTasks = async (req, res) => {
   try {
+    await seedInitialTasksIfNeeded();
+    const currentUserId = req.user?.id;
     const userName = req.user?.fullName || req.user?.username || "";
-    const tasks = await Task.find({
-      $or: [
-        { assigneeName: { $regex: userName, $options: "i" } },
-        { assignedTo: req.user?.id },
-      ],
-    }).sort({ createdAt: -1 });
+
+    const query = { $or: [] };
+    if (currentUserId) query.$or.push({ assignedTo: currentUserId });
+    if (userName) query.$or.push({ assigneeName: { $regex: userName, $options: "i" } });
+    if (query.$or.length === 0) delete query.$or;
+
+    const tasks = await Task.find(query).sort({ createdAt: -1 });
 
     return res.json({
       success: true,
       count: tasks.length,
       tasks: tasks.map((t) => ({
         id: t._id,
+        _id: t._id,
         title: t.title,
         description: t.description,
         assignee: t.assigneeName,
@@ -218,7 +290,7 @@ exports.getMyTasks = async (req, res) => {
         progress: t.progress,
         status: t.toVietnameseStatus(),
         rawStatus: t.status,
-        priority: t.priority === "URGENT" ? "Cấp bách" : t.priority === "HIGH" ? "Khẩn" : "Bình thường",
+        priority: t.priority === "URGENT" ? "Khẩn cấp" : t.priority === "HIGH" ? "Cao" : t.priority === "LOW" ? "Thấp" : "Bình thường",
       })),
     });
   } catch (err) {
@@ -227,12 +299,13 @@ exports.getMyTasks = async (req, res) => {
   }
 };
 
-// ── GET: Lấy thống kê KPI thời gian thực ──
+// ── GET: Lấy thống kê KPI ──
 exports.getStatistics = async (req, res) => {
   try {
     await autoCheckOverdueTasks();
     const total = await Task.countDocuments({});
-    const inProgress = await Task.countDocuments({ status: { $in: ["IN_PROGRESS", "NEAR_DEADLINE", "TODO"] } });
+    const todo = await Task.countDocuments({ status: "TODO" });
+    const inProgress = await Task.countDocuments({ status: { $in: ["IN_PROGRESS", "NEAR_DEADLINE"] } });
     const completed = await Task.countDocuments({ status: "COMPLETED" });
     const overdue = await Task.countDocuments({ status: "OVERDUE" });
     const submitted = await Task.countDocuments({ status: "SUBMITTED" });
@@ -240,6 +313,7 @@ exports.getStatistics = async (req, res) => {
     return res.json({
       success: true,
       total,
+      todo,
       inProgress,
       completed,
       overdue,
@@ -250,97 +324,159 @@ exports.getStatistics = async (req, res) => {
   }
 };
 
-// ── POST: Trưởng phòng Giao Nhiệm Vụ Mới ──
+// ── POST /api/tasks: Trưởng phòng GIAO NHIỆM VỤ MỚI ──
 exports.createTask = async (req, res) => {
   try {
-    const { title, description, assigneeName, dueDate, priority } = req.body;
+    const userRole = req.user?.role || "truongphong";
 
-    if (!title) {
-      return res.status(400).json({ message: "Vui lòng nhập tên nhiệm vụ" });
+    const { title, description, assignedTo, assigneeName, startDate, dueDate, priority, note } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({ message: "Tên nhiệm vụ không được để trống." });
     }
 
-    const creatorName = req.user?.fullName || req.user?.username || "Lê Ngọc Sơn";
+    if (!assignedTo && !assigneeName) {
+      return res.status(400).json({ message: "Vui lòng chọn cán bộ thực hiện." });
+    }
 
+    if (!dueDate) {
+      return res.status(400).json({ message: "Hạn hoàn thành không được để trống." });
+    }
+
+    const start = startDate ? new Date(startDate) : new Date();
+    const due = new Date(dueDate);
+
+    if (due < start) {
+      return res.status(400).json({ message: "Hạn hoàn thành phải sau ngày bắt đầu." });
+    }
+
+    // Tra cứu cán bộ thực hiện
+    let targetStaff = null;
+    if (assignedTo) {
+      targetStaff = await Admin.findById(assignedTo);
+    }
+    if (!targetStaff && assigneeName) {
+      targetStaff = await Admin.findOne({
+        $or: [
+          { fullName: { $regex: assigneeName, $options: "i" } },
+          { username: { $regex: assigneeName, $options: "i" } },
+        ],
+      });
+    }
+    if (!targetStaff) {
+      targetStaff = await Admin.findOne({ role: "canbo" });
+    }
+
+    const creatorName = req.user?.fullName || req.user?.username || "Nguyễn Thái Huy";
+    const finalAssigneeName = targetStaff ? targetStaff.fullName || targetStaff.username : (assigneeName || "Lê Ngọc Sơn");
+
+    let enumPriority = "MEDIUM";
+    if (priority === "Khẩn cấp" || priority === "URGENT") enumPriority = "URGENT";
+    else if (priority === "Cao" || priority === "HIGH") enumPriority = "HIGH";
+    else if (priority === "Thấp" || priority === "LOW") enumPriority = "LOW";
+
+    // 1. Tạo và Lưu Task vào MongoDB
     const newTask = await Task.create({
-      title,
-      description: description || "",
-      assignedBy: req.user?.id,
+      title: title.trim(),
+      description: description || note || "",
+      assignedBy: req.user?.id || req.user?._id || "6a5982689a2f05a601d3a250",
       assignedByName: creatorName,
-      assigneeName: assigneeName || "Nguyễn Văn A",
-      priority: priority === "Cấp bách" ? "URGENT" : priority === "Khẩn" ? "HIGH" : "MEDIUM",
-      status: "IN_PROGRESS",
+      assignedTo: targetStaff ? targetStaff._id : null,
+      assigneeName: finalAssigneeName,
+      departmentId: "PhongVanHoaXaHoi",
+      priority: enumPriority,
+      status: "TODO",
       progress: 0,
-      startDate: new Date(),
-      dueDate: dueDate ? new Date(dueDate) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      startDate: start,
+      dueDate: due,
     });
 
-    // 1. Tạo ActivityLog
+    // 2. Tạo ActivityLog thực tế
     const activity = await ActivityLog.create({
-      actorId: req.user?.id,
+      actorId: req.user?.id || req.user?._id,
       actorName: creatorName,
-      action: "ASSIGN",
+      action: "TASK_ASSIGNED",
       taskId: newTask._id,
       taskTitle: newTask.title,
-      description: `${creatorName} đã giao nhiệm vụ mới "${newTask.title}" cho cán bộ ${newTask.assigneeName}.`,
+      description: `${creatorName} đã giao nhiệm vụ cho ${finalAssigneeName}`,
+      targetUserId: targetStaff ? targetStaff._id : null,
+      departmentId: "PhongVanHoaXaHoi",
     });
 
-    // 2. Tạo Notification
-    const notif = await Notification.create({
-      senderId: req.user?.id,
-      senderName: creatorName,
-      title: "Nhiệm vụ mới được giao",
-      message: `${creatorName} vừa phân công cho bạn nhiệm vụ: "${newTask.title}"`,
-      taskId: newTask._id,
-      recipientRole: "canbo",
-    });
+    // 3. Tạo Notification trong MongoDB và phát Socket Realtime qua Notification Service
+    if (targetStaff) {
+      await notificationService.notifyTaskAssigned({
+        taskId: newTask._id,
+        taskTitle: newTask.title,
+        assignedTo: targetStaff._id,
+        assignedBy: req.user?.id,
+        creatorName,
+      });
+    }
 
-    // 3. Emit Realtime Events
+    const totalCount = await Task.countDocuments({});
+    const todoCount = await Task.countDocuments({ status: "TODO" });
+    const inProgressCount = await Task.countDocuments({ status: { $in: ["IN_PROGRESS", "NEAR_DEADLINE"] } });
+    const completedCount = await Task.countDocuments({ status: "COMPLETED" });
+    const overdueCount = await Task.countDocuments({ status: "OVERDUE" });
+
     emitToDepartment("PhongVanHoaXaHoi", "task:created", {
       task: {
         id: newTask._id,
+        _id: newTask._id,
         title: newTask.title,
         description: newTask.description,
         assignee: newTask.assigneeName,
         assignedBy: newTask.assignedByName,
         assignedDate: newTask.startDate.toLocaleDateString("vi-VN"),
-        dueDate: newTask.dueDate ? newTask.dueDate.toLocaleDateString("vi-VN") : "",
-        progress: newTask.progress,
-        status: newTask.toVietnameseStatus(),
-        rawStatus: newTask.status,
+        dueDate: newTask.dueDate.toLocaleDateString("vi-VN"),
+        progress: 0,
+        status: "Chưa thực hiện",
+        rawStatus: "TODO",
         priority: priority || "Bình thường",
+      },
+      stats: {
+        total: totalCount,
+        todo: todoCount,
+        inProgress: inProgressCount,
+        completed: completedCount,
+        overdue: overdueCount,
       },
     });
 
     emitToDepartment("PhongVanHoaXaHoi", "activity:new", activity);
-    emitToDepartment("PhongVanHoaXaHoi", "notification:new", notif);
 
     return res.status(201).json({
       success: true,
-      message: "Giao nhiệm vụ thành công",
+      message: "Giao nhiệm vụ thành công.",
       task: newTask,
+      statistics: {
+        total: totalCount,
+        todo: todoCount,
+        inProgress: inProgressCount,
+        completed: completedCount,
+        overdue: overdueCount,
+      },
     });
   } catch (err) {
-    console.error("Lỗi createTask:", err);
-    return res.status(500).json({ message: "Lỗi hệ thống khi giao nhiệm vụ" });
+    console.error("Lỗi khi giao nhiệm vụ:", err);
+    return res.status(500).json({ message: "Không thể giao nhiệm vụ. Vui lòng thử lại." });
   }
 };
 
-// ── PUT: Cán bộ Cập nhật Tiến độ Nhiệm vụ (Core Realtime Endpoint) ──
+// ── PUT: Cập nhật tiến độ ──
 exports.updateProgress = async (req, res) => {
   try {
     const { id } = req.params;
     const { progress, note } = req.body;
 
     const task = await Task.findById(id);
-    if (!task) {
-      return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
-    }
+    if (!task) return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
 
     const updaterName = req.user?.fullName || req.user?.username || task.assigneeName;
     const oldProgress = task.progress;
     const newProgress = Math.min(100, Math.max(0, Number(progress) || 0));
 
-    // Cập nhật MongoDB
     task.progress = newProgress;
     if (newProgress === 100 && task.status !== "COMPLETED") {
       task.status = "SUBMITTED";
@@ -350,7 +486,6 @@ exports.updateProgress = async (req, res) => {
     }
     await task.save();
 
-    // 1. Lưu lịch sử TaskProgress vào DB (Không bao giờ ghi đè)
     await TaskProgress.create({
       taskId: task._id,
       userId: req.user?.id,
@@ -360,7 +495,6 @@ exports.updateProgress = async (req, res) => {
       note: note || `Cập nhật tiến độ từ ${oldProgress}% lên ${newProgress}%`,
     });
 
-    // 2. Tạo ActivityLog
     const activity = await ActivityLog.create({
       actorId: req.user?.id,
       actorName: updaterName,
@@ -370,24 +504,25 @@ exports.updateProgress = async (req, res) => {
       description: `${updaterName} đã cập nhật tiến độ nhiệm vụ "${task.title}" từ ${oldProgress}% lên ${newProgress}%.`,
     });
 
-    // 3. Tạo Thông báo cho Trưởng phòng
-    const notif = await Notification.create({
-      senderId: req.user?.id,
-      senderName: updaterName,
-      title: "Cập nhật tiến độ nhiệm vụ",
-      message: `Cán bộ ${updaterName} đã cập nhật tiến độ nhiệm vụ "${task.title}" lên ${newProgress}%`,
+    // Tìm Trưởng phòng để gửi thông báo
+    const manager = await Admin.findOne({ role: "truongphong" });
+    const managerId = manager ? manager._id : "6a5982689a2f05a601d3a250";
+
+    await notificationService.notifyTaskProgressUpdated({
       taskId: task._id,
-      recipientRole: "truongphong",
+      taskTitle: task.title,
+      oldProgress,
+      newProgress,
+      assigneeName: updaterName,
+      managerId,
+      senderId: req.user?.id,
     });
 
-    // 4. Lấy lại stats mới nhất từ MongoDB để emit realtime KPI
     const total = await Task.countDocuments({});
     const inProgressCount = await Task.countDocuments({ status: { $in: ["IN_PROGRESS", "NEAR_DEADLINE", "TODO"] } });
     const completedCount = await Task.countDocuments({ status: "COMPLETED" });
     const overdueCount = await Task.countDocuments({ status: "OVERDUE" });
-    const submittedCount = await Task.countDocuments({ status: "SUBMITTED" });
 
-    // 5. Emit Socket.IO Event thời gian thực tới tất cả Clients
     emitToDepartment("PhongVanHoaXaHoi", "task:progress_updated", {
       taskId: task._id,
       title: task.title,
@@ -402,12 +537,10 @@ exports.updateProgress = async (req, res) => {
         inProgress: inProgressCount,
         completed: completedCount,
         overdue: overdueCount,
-        submitted: submittedCount,
       },
     });
 
     emitToDepartment("PhongVanHoaXaHoi", "activity:new", activity);
-    emitToDepartment("PhongVanHoaXaHoi", "notification:new", notif);
 
     return res.json({
       success: true,
@@ -415,21 +548,16 @@ exports.updateProgress = async (req, res) => {
       task,
     });
   } catch (err) {
-    console.error("Lỗi updateProgress:", err);
     return res.status(500).json({ message: "Lỗi khi cập nhật tiến độ nhiệm vụ" });
   }
 };
 
-// ── POST: Cán bộ Gửi Kết quả Nhiệm vụ (Submit for Approval) ──
+// ── POST: Nộp kết quả ──
 exports.submitTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const { note } = req.body;
-
     const task = await Task.findById(id);
-    if (!task) {
-      return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
-    }
+    if (!task) return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
 
     const updaterName = req.user?.fullName || req.user?.username || task.assigneeName;
 
@@ -447,13 +575,15 @@ exports.submitTask = async (req, res) => {
       description: `Cán bộ ${updaterName} đã gửi kết quả nhiệm vụ "${task.title}" chờ Trưởng phòng phê duyệt.`,
     });
 
-    const notif = await Notification.create({
-      senderId: req.user?.id,
-      senderName: updaterName,
-      title: "Gửi kết quả nhiệm vụ chờ phê duyệt",
-      message: `Cán bộ ${updaterName} đã hoàn thành và gửi kết quả nhiệm vụ "${task.title}" chờ phê duyệt.`,
+    const manager = await Admin.findOne({ role: "truongphong" });
+    const managerId = manager ? manager._id : "6a5982689a2f05a601d3a250";
+
+    await notificationService.notifyTaskSubmitted({
       taskId: task._id,
-      recipientRole: "truongphong",
+      taskTitle: task.title,
+      assigneeName: updaterName,
+      managerId,
+      senderId: req.user?.id,
     });
 
     emitToDepartment("PhongVanHoaXaHoi", "task:submitted", {
@@ -465,7 +595,6 @@ exports.submitTask = async (req, res) => {
       submittedBy: updaterName,
     });
     emitToDepartment("PhongVanHoaXaHoi", "activity:new", activity);
-    emitToDepartment("PhongVanHoaXaHoi", "notification:new", notif);
 
     return res.json({ success: true, message: "Đã gửi kết quả chờ phê duyệt", task });
   } catch (err) {
@@ -473,16 +602,14 @@ exports.submitTask = async (req, res) => {
   }
 };
 
-// ── POST: Trưởng phòng Phê duyệt Nhiệm vụ (Approve Task) ──
+// ── POST: Phê duyệt hoàn thành ──
 exports.approveTask = async (req, res) => {
   try {
     const { id } = req.params;
     const task = await Task.findById(id);
-    if (!task) {
-      return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
-    }
+    if (!task) return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
 
-    const managerName = req.user?.fullName || req.user?.username || "Trưởng phòng";
+    const managerName = req.user?.fullName || req.user?.username || "Nguyễn Thái Huy";
 
     task.status = "COMPLETED";
     task.progress = 100;
@@ -498,20 +625,15 @@ exports.approveTask = async (req, res) => {
       description: `Trưởng phòng ${managerName} đã phê duyệt hoàn thành nhiệm vụ "${task.title}".`,
     });
 
-    const notif = await Notification.create({
-      senderId: req.user?.id,
-      senderName: managerName,
-      title: "Nhiệm vụ đã được phê duyệt",
-      message: `Nhiệm vụ "${task.title}" của bạn đã được Trưởng phòng phê duyệt HOÀN THÀNH.`,
-      taskId: task._id,
-      recipientRole: "canbo",
-    });
-
-    // Lấy lại stats MongoDB
-    const total = await Task.countDocuments({});
-    const inProgressCount = await Task.countDocuments({ status: { $in: ["IN_PROGRESS", "NEAR_DEADLINE", "TODO"] } });
-    const completedCount = await Task.countDocuments({ status: "COMPLETED" });
-    const overdueCount = await Task.countDocuments({ status: "OVERDUE" });
+    if (task.assignedTo) {
+      await notificationService.notifyTaskCompleted({
+        taskId: task._id,
+        taskTitle: task.title,
+        managerName,
+        assigneeId: task.assignedTo,
+        managerId: req.user?.id,
+      });
+    }
 
     emitToDepartment("PhongVanHoaXaHoi", "task:approved", {
       taskId: task._id,
@@ -520,15 +642,8 @@ exports.approveTask = async (req, res) => {
       rawStatus: "COMPLETED",
       progress: 100,
       approvedBy: managerName,
-      stats: {
-        total,
-        inProgress: inProgressCount,
-        completed: completedCount,
-        overdue: overdueCount,
-      },
     });
     emitToDepartment("PhongVanHoaXaHoi", "activity:new", activity);
-    emitToDepartment("PhongVanHoaXaHoi", "notification:new", notif);
 
     return res.json({ success: true, message: "Đã phê duyệt nhiệm vụ hoàn thành", task });
   } catch (err) {
@@ -536,21 +651,18 @@ exports.approveTask = async (req, res) => {
   }
 };
 
-// ── POST: Trưởng phòng Yêu cầu Bổ sung Kết quả (Request Revision) ──
+// ── POST: Yêu cầu bổ sung ──
 exports.requestRevision = async (req, res) => {
   try {
     const { id } = req.params;
     const { reason } = req.body;
-
     const task = await Task.findById(id);
-    if (!task) {
-      return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
-    }
+    if (!task) return res.status(404).json({ message: "Không tìm thấy nhiệm vụ" });
 
-    const managerName = req.user?.fullName || req.user?.username || "Trưởng phòng";
+    const managerName = req.user?.fullName || req.user?.username || "Nguyễn Thái Huy";
 
     task.status = "REVISION_REQUIRED";
-    task.revisionReason = reason || "Cần bổ sung thêm hồ sơ tài liệu.";
+    task.revisionReason = reason || "Cần bổ sung thêm thông tin.";
     await task.save();
 
     const activity = await ActivityLog.create({
@@ -562,75 +674,70 @@ exports.requestRevision = async (req, res) => {
       description: `Trưởng phòng ${managerName} yêu cầu bổ sung nhiệm vụ "${task.title}": ${task.revisionReason}`,
     });
 
-    const notif = await Notification.create({
-      senderId: req.user?.id,
-      senderName: managerName,
-      title: "Yêu cầu bổ sung kết quả nhiệm vụ",
-      message: `Trưởng phòng yêu cầu bổ sung kết quả nhiệm vụ "${task.title}": ${task.revisionReason}`,
-      taskId: task._id,
-      recipientRole: "canbo",
-    });
+    if (task.assignedTo) {
+      await notificationService.notifyTaskRevisionRequired({
+        taskId: task._id,
+        taskTitle: task.title,
+        managerName,
+        assigneeId: task.assignedTo,
+        managerId: req.user?.id,
+        reason: task.revisionReason,
+      });
+    }
 
     emitToDepartment("PhongVanHoaXaHoi", "task:revision_required", {
       taskId: task._id,
       taskTitle: task.title,
       status: "Yêu cầu bổ sung",
       rawStatus: "REVISION_REQUIRED",
-      reason: task.revisionReason,
     });
     emitToDepartment("PhongVanHoaXaHoi", "activity:new", activity);
-    emitToDepartment("PhongVanHoaXaHoi", "notification:new", notif);
 
-    return res.json({ success: true, message: "Đã yêu cầu cán bộ bổ sung nhiệm vụ", task });
+    return res.json({ success: true, message: "Đã yêu cầu bổ sung nhiệm vụ", task });
   } catch (err) {
     return res.status(500).json({ message: "Lỗi khi yêu cầu bổ sung" });
   }
 };
 
-// ── GET: Lấy lịch sử tiến độ của 1 Nhiệm vụ ──
+// ── GET: Lịch sử ──
 exports.getTaskHistory = async (req, res) => {
   try {
     const { id } = req.params;
     const history = await TaskProgress.find({ taskId: id }).sort({ createdAt: -1 });
     return res.json({ success: true, history });
   } catch (err) {
-    return res.status(500).json({ message: "Lỗi khi lấy lịch sử tiến độ" });
+    return res.status(500).json({ message: "Lỗi khi lấy lịch sử" });
   }
 };
 
-// ── GET: Lấy danh sách Thông báo (Notifications) ──
+// ── GET: Notifications ──
 exports.getNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find({}).sort({ createdAt: -1 }).limit(30);
-    const unreadCount = await Notification.countDocuments({ isRead: false });
-
-    return res.json({
-      success: true,
-      unreadCount,
-      notifications,
-    });
+    const userId = req.user?.id || req.user?._id || "6a5982689a2f05a601d3a250";
+    const result = await notificationService.getUserNotifications(userId, req.query);
+    return res.json(result);
   } catch (err) {
-    return res.status(500).json({ message: "Lỗi lấy danh sách thông báo" });
+    return res.status(500).json({ message: "Lỗi lấy thông báo" });
   }
 };
 
-// ── PUT: Đánh dấu thông báo đã đọc ──
+// ── PUT/PATCH: Mark Notification Read ──
 exports.markNotificationRead = async (req, res) => {
   try {
+    const userId = req.user?.id || req.user?._id || "6a5982689a2f05a601d3a250";
     const { id } = req.params;
-    if (id === "all") {
-      await Notification.updateMany({ isRead: false }, { isRead: true });
-    } else {
-      await Notification.findByIdAndUpdate(id, { isRead: true });
+    if (id === "read-all" || id === "all") {
+      const result = await notificationService.markAllAsRead(userId);
+      return res.json(result);
     }
-    const unreadCount = await Notification.countDocuments({ isRead: false });
-    return res.json({ success: true, unreadCount });
+    const result = await notificationService.markAsRead(id, userId);
+    return res.json(result);
   } catch (err) {
     return res.status(500).json({ message: "Lỗi cập nhật thông báo" });
   }
 };
 
-// ── GET: Lấy Nhật ký Hoạt động (Activity Log) ──
+// ── GET: Activities ──
 exports.getActivities = async (req, res) => {
   try {
     const activities = await ActivityLog.find({}).sort({ createdAt: -1 }).limit(25);

@@ -23,26 +23,27 @@ export const useTaskRealtime = ({
       setIsConnected(false);
     };
 
+    // ĐỊNH NGHĨA HÀM CHÍNH TRƯỚC KHI ĐƯỢC GỌI VÀ TRUYỀN THAM CHIẾU
+    const handleTaskUpdated = (data) => {
+      if (onTaskUpdated) onTaskUpdated(data);
+    };
+
     const handleProgressUpdated = (data) => {
       if (onProgressUpdated) onProgressUpdated(data);
-      if (onTaskUpdated) onTaskUpdated(data);
+      handleTaskUpdated(data);
     };
 
     const handleTaskCreated = (data) => {
       if (onTaskCreated) onTaskCreated(data);
-      if (onTaskUpdated) onTaskUpdated(data);
+      handleTaskUpdated(data);
     };
 
     const handleTaskSubmitted = (data) => {
-      if (onTaskUpdated) onTaskUpdated(data);
+      handleTaskUpdated(data);
     };
 
     const handleTaskApproved = (data) => {
-      if (onTaskUpdated) onTaskUpdated(data);
-    };
-
-    const handleTaskUpdated = (data) => {
-      if (onTaskUpdated) onTaskUpdated(data);
+      handleTaskUpdated(data);
     };
 
     const handleActivityNew = (data) => {

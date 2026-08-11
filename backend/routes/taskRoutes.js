@@ -4,6 +4,7 @@ const taskController = require("../controllers/taskController");
 const { authAdmin } = require("../middleware/auth");
 
 // ── GET Routes ──
+router.get("/staff", taskController.getStaffList);
 router.get("/department", taskController.getDepartmentTasks);
 router.get("/my", authAdmin, taskController.getMyTasks);
 router.get("/statistics", taskController.getStatistics);

@@ -6,6 +6,7 @@ import { getBackendServerUrl } from "../utils/apiConfig";
 import { FIELD_GROUPS, MOCK_PROCEDURES } from "../utils/procedureUtils";
 import DakPxiTodayAdminManager from '../components/DakPxiToday/DakPxiTodayAdminManager';
 import TotalTasksPage from '../components/TotalTasks/TotalTasksPage';
+import NotificationBell from '../components/NotificationBell/NotificationBell';
 
 const BASE_URL = getBackendServerUrl();
 
@@ -505,9 +506,40 @@ export default function TruongPhongDashboard() {
     });
   };
 
-  // Tab: Updates & Notifications
+  // Tab: Updates & Notifications (MongoDB Realtime)
   const [notices, setNotices] = useState([]);
-  const [unreadNotifCount, setUnreadNotifCount] = useState(3);
+  const [unreadNotifCount, setUnreadNotifCount] = useState(0);
+  const [activitiesList, setActivitiesList] = useState([]);
+  const [realNoticesList, setRealNoticesList] = useState([]);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token =
+          localStorage.getItem("admin_token") ||
+          localStorage.getItem("token") ||
+          localStorage.getItem("adminToken") ||
+          "";
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        const [resAct, resNotif] = await Promise.all([
+          axios.get(`${BASE_URL}/api/v1/tasks/activities`, { headers }),
+          axios.get(`${BASE_URL}/api/v1/notifications`, { headers }),
+        ]);
+
+        if (resAct.data?.success) {
+          setActivitiesList(resAct.data.activities || []);
+        }
+        if (resNotif.data?.success) {
+          setRealNoticesList(resNotif.data.notifications || []);
+        }
+      } catch (err) {
+        console.error("Lỗi fetch dashboard data:", err);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   // ── QUẢN LÝ VĂN BẢN ĐẾN & VĂN BẢN ĐI CHUYÊN NGHIỆP CƠ QUAN NHÀ NƯỚC ──
   const defaultInitialIncomingDocs = [
@@ -2843,57 +2875,16 @@ export default function TruongPhongDashboard() {
                 </div>
               </div>
 
-              {/* Nút Chuông Thông báo */}
-              <div
-                onClick={() => {
-                  if (role === "truongphong" || role === "admin") {
-                    setActiveTab("updates");
+              {/* Nút Chuông Thông báo Realtime MongoDB */}
+              <NotificationBell
+                onNavigate={(url) => {
+                  if (url && url.includes("nhiem-vu")) {
+                    setActiveTab("dispatch");
                   } else {
-                    setActiveTab("schedule");
+                    setActiveTab("updates");
                   }
                 }}
-                style={{
-                  position: "relative",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "38px",
-                  height: "38px",
-                  borderRadius: "50%",
-                  background: "#ffffff",
-                  border: "1px solid #e2e8f0",
-                  color: "#475569",
-                  flexShrink: 0,
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
-                  transition: "all 0.15s ease"
-                }}
-                title="Xem thông báo hệ thống"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                <span style={{
-                  position: "absolute",
-                  top: "-2px",
-                  right: "-2px",
-                  background: "#ef4444",
-                  color: "#ffffff",
-                  fontSize: "11px",
-                  fontWeight: "800",
-                  borderRadius: "50%",
-                  width: "18px",
-                  height: "18px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "2px solid #ffffff",
-                  boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)"
-                }}>
-                  {unreadNotifCount}
-                </span>
-              </div>
+              />
 
               {/* User Profile Pill Widget */}
               <div style={{ position: "relative" }}>
@@ -6228,67 +6219,33 @@ export default function TruongPhongDashboard() {
                       </h3>
                     </div>
 
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0", position: "relative" }}>
-                      {/* TIMELINE ITEM 1 */}
-                      <div style={{ display: "flex", alignItems: "flex-start", gap: "16px", paddingBottom: "20px", position: "relative" }}>
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                          <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#0284c7", marginTop: "6px", boxShadow: "0 0 0 4px #e0f2fe" }} />
-                          <div style={{ width: "2px", height: "100%", background: "#f1f5f9", marginTop: "4px" }} />
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", width: "100%", flexWrap: "wrap" }}>
-                          <span style={{
-                            background: "#edf5ff", color: "#0284c7", fontWeight: "800", fontSize: "12px",
-                            padding: "4px 10px", borderRadius: "8px", border: "1px solid #c7d2fe"
-                          }}>
-                            08:05
-                          </span>
-                          <div style={{ flex: 1 }}>
-                            <strong style={{ fontSize: "14.5px", color: "#0f172a", display: "block", fontWeight: "800" }}>
-                              Đồng bộ cơ sở dữ liệu BHYT
-                            </strong>
-                            <p style={{ margin: "2px 0 0", fontSize: "13px", color: "#64748b" }}>
-                              Hệ thống hoàn tất đồng bộ danh sách thẻ BHYT toàn bộ các hộ dân xã Đăk Pxi.
-                            </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", position: "relative" }}>
+                      {activitiesList.length === 0 ? (
+                        <div style={{ padding: "16px", color: "#94a3b8", fontSize: "13px" }}>Chưa có hoạt động hệ thống nào phát sinh.</div>
+                      ) : (
+                        activitiesList.slice(0, 8).map((act, idx) => (
+                          <div key={act._id || idx} style={{ display: "flex", alignItems: "flex-start", gap: "14px", paddingBottom: "12px", borderBottom: idx < activitiesList.length - 1 ? "1px solid #f1f5f9" : "none" }}>
+                            <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "#e0f2fe", border: "1.5px solid #bae6fd", display: "flex", alignItems: "center", justifyContent: "center", color: "#005bac", flexShrink: 0, marginTop: "2px" }}>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <strong style={{ fontSize: "13.5px", color: "#0f172a", display: "block", fontWeight: "800" }}>
+                                {act.actorName || "Hệ thống"} - {act.action === "TASK_ASSIGNED" ? "Giao nhiệm vụ" : act.action === "UPDATE_PROGRESS" ? "Cập nhật tiến độ" : "Hoạt động"}
+                              </strong>
+                              <p style={{ margin: "2px 0 0", fontSize: "12.5px", color: "#64748b", lineHeight: "1.4" }}>
+                                {act.description}
+                              </p>
+                              <span style={{ fontSize: "11px", color: "#94a3b8", marginTop: "4px", display: "inline-block" }}>
+                                {act.createdAt ? new Date(act.createdAt).toLocaleString("vi-VN") : "Vừa xong"}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-
-                      {/* SEPARATOR LINE */}
-                      <div style={{ height: "1px", background: "#f1f5f9", margin: "4px 0 20px 26px" }} />
-
-                      {/* TIMELINE ITEM 2 */}
-                      <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
-                        <div style={{
-                          width: "28px", height: "28px", borderRadius: "50%", background: "#f0fdf4",
-                          border: "1.5px solid #bbf7d0", display: "flex", alignItems: "center",
-                          justifyContent: "center", color: "#16a34a", flexShrink: 0
-                        }}>
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="23 4 23 10 17 10"/>
-                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                          </svg>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: "10px" }}>
-                          <div>
-                            <strong style={{ fontSize: "14.5px", color: "#0f172a", display: "block", fontWeight: "800" }}>
-                              Truy cập hệ thống
-                            </strong>
-                            <p style={{ margin: "2px 0 0", fontSize: "13px", color: "#64748b" }}>
-                              Trưởng phòng Nguyễn Thái Huy đã truy cập bảng quản lý cán bộ trực thuộc.
-                            </p>
-                          </div>
-                          <span style={{
-                            background: "#ecfdf5", color: "#16a34a", fontWeight: "800", fontSize: "12px",
-                            padding: "4px 12px", borderRadius: "12px", border: "1px solid #a7f3d0"
-                          }}>
-                            Vừa xong
-                          </span>
-                        </div>
-                      </div>
+                        ))
+                      )}
                     </div>
                   </div>
 
-                  {/* SECTION 2: THÔNG BÁO TRỰC TUYẾN ĐÃ GỬI */}
+                  {/* SECTION 2: THÔNG BÁO TRỰC TUYẾN ĐÃ GỬI (DỮ LIỆU THẬT MONGODB) */}
                   <div style={{
                     background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "16px",
                     padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)"
@@ -6305,93 +6262,51 @@ export default function TruongPhongDashboard() {
                           </svg>
                         </div>
                         <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "900", color: "#0f172a" }}>
-                          Thông báo trực tuyến đã gửi
+                          Thông báo trực tuyến đã gửi (MongoDB Realtime)
                         </h3>
                       </div>
-                      <a href="/thong-bao" style={{ fontSize: "13px", fontWeight: "800", color: "#0284c7", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
-                        <span>Xem tất cả thông báo</span>
-                        <span>›</span>
-                      </a>
                     </div>
 
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                      {notices.length > 0 ? (
-                        notices.map((n, idx) => {
-                          // Soft icon background colors matching categories
-                          const iconStyles = [
-                            { bg: "#fee2e2", color: "#ef4444", icon: "document" },
-                            { bg: "#fef3c7", color: "#d97706", icon: "warning" },
-                            { bg: "#f3e8ff", color: "#9333ea", icon: "chat" },
-                            { bg: "#e0f2fe", color: "#0284c7", icon: "shield" }
-                          ];
-                          const styleItem = iconStyles[idx % iconStyles.length];
-
-                          return (
-                            <div
-                              key={n._id || idx}
-                              style={{
-                                display: "flex", alignItems: "center", justifyContent: "space-between",
-                                padding: "14px 16px", borderRadius: "12px", background: "#ffffff",
-                                border: "1px solid #f1f5f9", transition: "all 0.15s ease", gap: "16px"
-                              }}
-                            >
-                              {/* Left Icon + Text */}
-                              <div style={{ display: "flex", alignItems: "center", gap: "14px", flex: 1, minWidth: 0 }}>
-                                <div style={{
-                                  width: "42px", height: "42px", borderRadius: "12px", background: styleItem.bg,
-                                  color: styleItem.color, display: "flex", alignItems: "center", justifyContent: "center",
-                                  flexShrink: 0
-                                }}>
-                                  {styleItem.icon === "document" && (
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-                                    </svg>
-                                  )}
-                                  {styleItem.icon === "warning" && (
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                                    </svg>
-                                  )}
-                                  {styleItem.icon === "chat" && (
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                                    </svg>
-                                  )}
-                                  {styleItem.icon === "shield" && (
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                  )}
-                                </div>
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                  <strong style={{ fontSize: "14px", fontWeight: "800", color: "#0f172a", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                    {n.title}
-                                  </strong>
-                                  <p style={{ margin: "2px 0 0", fontSize: "12.5px", color: "#64748b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                    {n.content || "Trưởng phòng phát thông báo..."}
-                                  </p>
-                                </div>
+                      {realNoticesList.length > 0 ? (
+                        realNoticesList.map((n, idx) => (
+                          <div
+                            key={n._id || idx}
+                            style={{
+                              display: "flex", alignItems: "center", justifyContent: "space-between",
+                              padding: "14px 16px", borderRadius: "12px", background: n.isRead ? "#ffffff" : "#f0f9ff",
+                              border: "1px solid #e2e8f0", gap: "16px"
+                            }}
+                          >
+                            <div style={{ display: "flex", alignItems: "center", gap: "14px", flex: 1, minWidth: 0 }}>
+                              <div style={{
+                                width: "40px", height: "40px", borderRadius: "10px",
+                                background: n.priority === "URGENT" ? "#fee2e2" : "#e0f2fe",
+                                color: n.priority === "URGENT" ? "#dc2626" : "#005bac",
+                                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+                              }}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                                </svg>
                               </div>
-
-                              {/* Right Date & Chevron */}
-                              <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
-                                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#64748b", fontWeight: "600" }}>
-                                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                                  </svg>
-                                  <div style={{ textAlign: "right", lineHeight: "1.2" }}>
-                                    <div>{n.date || "20/07/2026"}</div>
-                                    <div style={{ fontSize: "11px", color: "#94a3b8" }}>14:00</div>
-                                  </div>
-                                </div>
-                                <span style={{ fontSize: "16px", color: "#94a3b8", fontWeight: "800" }}>›</span>
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <strong style={{ fontSize: "13.5px", fontWeight: n.isRead ? "700" : "800", color: "#172033", display: "block" }}>
+                                  {n.title}
+                                </strong>
+                                <p style={{ margin: "2px 0 0", fontSize: "12.5px", color: "#475569" }}>
+                                  {n.message}
+                                </p>
                               </div>
                             </div>
-                          );
-                        })
+
+                            <div style={{ fontSize: "11.5px", color: "#94a3b8", fontWeight: "600", flexShrink: 0, textAlign: "right" }}>
+                              {n.createdAt ? new Date(n.createdAt).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) + " " + new Date(n.createdAt).toLocaleDateString("vi-VN") : "Vừa xong"}
+                            </div>
+                          </div>
+                        ))
                       ) : (
                         <div style={{ textAlign: "center", padding: "20px", color: "#94a3b8", fontSize: "13px" }}>
-                          Chưa có thông báo trực tuyến nào được phát hành.
+                          Chưa có thông báo trực tuyến nào trong MongoDB.
                         </div>
                       )}
                     </div>
