@@ -7,6 +7,7 @@ import {
   FIELD_GROUPS,
   PAGE_SIZE,
   MOCK_PROCEDURES,
+  getCatalogProcedures,
   USE_MOCK_FALLBACK,
   normalizeList,
   formatFileSize,
@@ -831,49 +832,9 @@ export default function Thutuchanhchinh() {
   useEffect(() => {
     setLoading(true);
 
-    let allCatalog = MOCK_PROCEDURES;
+    let allCatalog = getCatalogProcedures();
     try {
-      const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length >= MOCK_PROCEDURES.length) {
-          const mockMap = new Map(MOCK_PROCEDURES.map(m => [m.code || m.id, m]));
-          const formattedOfficerList = parsed.map((item, idx) => {
-            const fresh = mockMap.get(item.code || item.id);
-            return {
-              id: item.id || `custom-${item.code}`,
-              stt: item.stt || idx + 1,
-              code: item.code,
-              title: fresh ? fresh.title : (item.name || item.title),
-              slug: (item.code || `tthc-${item.id}`).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-              group_id: item.group_id || item.group || "linh-vuc-khac",
-              group_name: item.group_name || "Bộ phận Một cửa",
-              agency: item.agency || "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
-              processing_time: item.duration || item.processing_time || "Theo quy định",
-              online_type: item.online_type || item.type || "toan-trinh",
-              summary: item.detailText || item.summary || `Thủ tục ${item.name || item.title} năm 2026.`,
-              guideLink: item.guideLink || `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(item.code || '')}`,
-              fee: item.fee || "Theo quy định",
-              view_count: fresh ? fresh.view_count : (item.view_count || 1500)
-            };
-          });
-
-          const seen = new Set();
-          const merged = [...formattedOfficerList, ...MOCK_PROCEDURES].filter(item => {
-            const key = item.code || item.id;
-            if (seen.has(key)) return false;
-            seen.add(key);
-            return true;
-          });
-          allCatalog = merged;
-        } else {
-          // Nâng cấp bộ dữ liệu lên 417 thủ tục mới nhất năm 2026
-          localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(MOCK_PROCEDURES));
-          allCatalog = MOCK_PROCEDURES;
-        }
-      } else {
-        localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(MOCK_PROCEDURES));
-      }
+      localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(allCatalog));
     } catch {}
 
     const allActive = filterOutDeleted(allCatalog);

@@ -270,9 +270,7 @@ const FAQ_DATA = [
 ];
 
 const VIDEOS_DATA = [
-  { id: 1, title: "Hướng dẫn mặc áo phao đúng cách", src: "/video/duoi_nuoc1.mp4", poster: "https://cdc.ninhbinh.gov.vn/upload/100765/20240719/Canh-bao-duoi-nuoc-mua-he-1_c06c0.jpg" },
-  { id: 2, title: "Kỹ năng tự bảo vệ khi đi bơi", src: "/video/duoi_nuoc1.mp4", poster: "https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=600&q=80" },
-  { id: 3, title: "Sơ cứu người bị đuối nước", src: "/video/duoi_nuoc1.mp4", poster: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" }
+  { id: 1, title: "Hướng dẫn mặc áo phao đúng cách", src: "/video/duoi_nuoc1.mp4", poster: "https://cdc.ninhbinh.gov.vn/upload/100765/20240719/Canh-bao-duoi-nuoc-mua-he-1_c06c0.jpg" }
 ];
 
 // ── ICON MINH HỌA SVG VECTOR CHUẨN HTML5 CHO TỪNG MỤC KIẾN THỨC ──
