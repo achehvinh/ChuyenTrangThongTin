@@ -9610,6 +9610,17 @@ const TTHC_FIELD_GROUPS = [
     setTimeout(() => setMessage(""), 5000);
   };
 
+  const handleExportCatalog = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `DAK_PXI_TTHC_CATALOG_EXPORT_${new Date().toISOString().slice(0,10)}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    alert("🎉 Đã xuất file Dữ liệu gốc thành công! Dữ liệu link và thông tin thủ tục đã được đóng gói sẵn sàng deploy.");
+  };
+
   // Xử lý Cập nhật tiến trình
   const handleSaveProgress = (e) => {
     e.preventDefault();
@@ -9885,8 +9896,17 @@ const TTHC_FIELD_GROUPS = [
 
             <button
               type="button"
+              onClick={handleExportCatalog}
+              style={{ background: "#0284c7", color: "#ffffff", border: "none", padding: "10px 16px", borderRadius: "10px", fontSize: "13.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "auto", boxShadow: "0 4px 10px rgba(2, 132, 199, 0.2)" }}
+              title="Tải toàn bộ dữ liệu thủ tục & link thật về máy để deploy"
+            >
+              📥 Xuất Dữ Liệu Deploy (JSON)
+            </button>
+
+            <button
+              type="button"
               onClick={() => setShowCatalogModal(true)}
-              style={{ background: "#16a34a", color: "#ffffff", border: "none", padding: "10px 18px", borderRadius: "10px", fontSize: "13.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "auto", boxShadow: "0 4px 10px rgba(22, 163, 74, 0.2)" }}
+              style={{ background: "#16a34a", color: "#ffffff", border: "none", padding: "10px 18px", borderRadius: "10px", fontSize: "13.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 4px 10px rgba(22, 163, 74, 0.2)" }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Tạo TTHC Mới</span>
