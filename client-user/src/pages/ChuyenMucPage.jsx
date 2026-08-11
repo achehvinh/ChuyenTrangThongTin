@@ -135,43 +135,6 @@ export default function ChuyenMucPage() {
   const navigate = useNavigate();
   const [activeCat, setActiveCat] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
-  const [emailSub, setEmailSub] = useState('');
-  const [subMessage, setSubMessage] = useState('');
-
-  // Lọc bài viết
-  const filteredArticles = ARTICLES_LIST.filter(art => {
-    const matchesCat = activeCat === 'ALL' || art.categoryKey === activeCat;
-    const matchesSearch = art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          art.desc.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCat && matchesSearch;
-  });
-
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!emailSub || !emailSub.includes('@')) {
-      setSubMessage('⚠️ Vui lòng nhập địa chỉ email hợp lệ!');
-      return;
-    }
-    const cleanEmail = emailSub.trim();
-
-    // Lưu dự phòng vĩnh viễn vào localStorage
-    try {
-      const saved = JSON.parse(localStorage.getItem('subscribed_emails') || '[]');
-      if (!saved.some(item => (typeof item === 'string' ? item : item.email) === cleanEmail)) {
-        saved.push({ email: cleanEmail, subscribedAt: new Date().toISOString() });
-        localStorage.setItem('subscribed_emails', JSON.stringify(saved));
-      }
-    } catch (e) {}
-
-    try {
-      const res = await axios.post(`${API}/subscribe`, { email: cleanEmail });
-      setSubMessage(res.data.message || '✅ Đăng ký nhận tin thành công! Cảm ơn bạn đã theo dõi.');
-    } catch (err) {
-      setSubMessage('✅ Đăng ký nhận tin thành công! Cảm ơn bạn đã theo dõi UBND xã Đăk Pxi.');
-    }
-    setEmailSub('');
-    setTimeout(() => setSubMessage(''), 5000);
-  };
 
   return (
     <div className="news-portal-page">

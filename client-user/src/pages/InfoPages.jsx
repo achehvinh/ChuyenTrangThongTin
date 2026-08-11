@@ -281,13 +281,10 @@ function NoticeDetailModal({ notice, onClose }) {
 
 // ── ThongBaoPage ──
 export function ThongBaoPage() {
-  const [categoryFilter, setCategoryFilter] = useState('ALL');
+  const [categoryFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeNotice, setActiveNotice] = useState(null);
-  const [subscribePhone, setSubscribePhone] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
 
-  // Lọc thông báo theo danh mục & từ khóa tìm kiếm
   const filteredNotices = NOTICES_DATA.filter((item) => {
     const matchesCat = categoryFilter === 'ALL' || item.category === categoryFilter;
     const q = searchQuery.toLowerCase().trim();
@@ -302,209 +299,277 @@ export function ThongBaoPage() {
 
   const urgentNotice = NOTICES_DATA.find((n) => n.isUrgent);
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (!subscribePhone.trim()) return;
-    setSubscribed(true);
-  };
-
   return (
     <div className="info-page thongbao-page-root">
-      {/* ── BANNER HERO CHUẨN CỔNG THÔNG TIN ── */}
-      <div className="info-hero">
-        <div className="info-hero-inner">
-          <div className="info-hero-badge">📢 THÔNG BÁO CHÍNH THỨC</div>
-          <h1>Thông báo <span>Hành chính Công</span></h1>
-          <p>Cập nhật văn bản chỉ đạo, thông báo khẩn cấp, lịch tiếp công dân và chính sách BHYT mới nhất dành cho người dân.</p>
+      {/* ── BANNER HERO TOÀN MAN HÌNH CHUẨN ĐỒ HỌA MẪU ── */}
+      <div className="tb-hero-banner">
+        <div className="tb-hero-inner">
+          <div className="tb-hero-badge">📢 THÔNG BÁO CHÍNH THỨC</div>
+          <h1 className="tb-hero-heading">
+            Cập nhật văn bản chỉ đạo, <span className="highlight-yellow">chính sách & lịch tiếp công dân</span>
+          </h1>
 
-          {/* Ô TÌM KIẾM THÔNG BÁO NGAY TRÊN HERO */}
-          <div className="hero-search-box">
-            <span className="search-icon">🔍</span>
-            <input
-              type="text"
-              placeholder="Nhập từ khóa, số hiệu văn bản (Ví dụ: 88/TB-UBND, BHYT, PCTT...)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button type="button" className="clear-search-btn" onClick={() => setSearchQuery('')}>✕</button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* ── THANH THỐNG KÊ NHANH ── */}
-      <div className="info-stats">
-        <div className="info-stat">
-          <strong>{NOTICES_DATA.length}</strong>
-          <span>Thông báo hoạt động</span>
-        </div>
-        <div className="info-stat">
-          <strong style={{ color: '#ef4444' }}>{NOTICES_DATA.filter(n => n.category === 'KHAN_CAP').length}</strong>
-          <span>Cảnh báo khẩn cấp</span>
-        </div>
-        <div className="info-stat">
-          <strong>Hôm nay</strong>
-          <span>Cập nhật mới nhất</span>
-        </div>
-        <div className="info-stat">
-          <strong>24/7</strong><span>Cổng thông tin trực tuyến</span>
-        </div>
-      </div>
-
-      <div className="info-content main-tb-container">
-        {/* ── BANNER CẢNH BÁO KHẨN CẤP NỔI BẬT NẾU CÓ ── */}
-        {urgentNotice && categoryFilter === 'ALL' && !searchQuery && (
-          <div className="urgent-banner-card">
-            <div className="urgent-banner-header">
-              <span className="urgent-icon-pulse">🚨</span>
-              <span className="urgent-tag">THÔNG BÁO KHẨN CẤP NỔI BẬT</span>
-              <span className="urgent-date">{urgentNotice.date}</span>
+          {/* Ô TÌM KIẾM BO TRÒN TRÊN BANNER HERO */}
+          <div className="tb-hero-search-wrap">
+            <div className="tb-search-input-box">
+              <span className="tb-search-icon">🔍</span>
+              <input
+                type="text"
+                placeholder="Nhập từ khóa, số hiệu văn bản (Ví dụ: 88/TB-UBND, BHYT, PCTT....)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button type="button" className="tb-clear-btn" onClick={() => setSearchQuery('')}>✕</button>
+              )}
             </div>
-            <h3 className="urgent-title">{urgentNotice.title}</h3>
-            <p className="urgent-desc">{urgentNotice.summary}</p>
-            <div className="urgent-actions">
-              <button type="button" className="btn-urgent-view" onClick={() => setActiveNotice(urgentNotice)}>
-                📄 Xem nội dung khẩn cấp →
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ── BỘ LỌC DANH MỤC TABS ── */}
-        <div className="tb-filter-tabs-row">
-          <button
-            type="button"
-            className={`tb-tab-btn ${categoryFilter === 'ALL' ? 'active' : ''}`}
-            onClick={() => setCategoryFilter('ALL')}
-          >
-            📋 Tất cả ({NOTICES_DATA.length})
-          </button>
-          <button
-            type="button"
-            className={`tb-tab-btn red ${categoryFilter === 'KHAN_CAP' ? 'active' : ''}`}
-            onClick={() => setCategoryFilter('KHAN_CAP')}
-          >
-            🔴 Khẩn cấp ({NOTICES_DATA.filter(n => n.category === 'KHAN_CAP').length})
-          </button>
-          <button
-            type="button"
-            className={`tb-tab-btn blue ${categoryFilter === 'HANH_CHINH' ? 'active' : ''}`}
-            onClick={() => setCategoryFilter('HANH_CHINH')}
-          >
-            🔵 Hành chính ({NOTICES_DATA.filter(n => n.category === 'HANH_CHINH').length})
-          </button>
-          <button
-            type="button"
-            className={`tb-tab-btn green ${categoryFilter === 'Y_TE' ? 'active' : ''}`}
-            onClick={() => setCategoryFilter('Y_TE')}
-          >
-            🟢 BHYT - Y tế ({NOTICES_DATA.filter(n => n.category === 'Y_TE').length})
-          </button>
-          <button
-            type="button"
-            className={`tb-tab-btn orange ${categoryFilter === 'NONG_NGHIEP' ? 'active' : ''}`}
-            onClick={() => setCategoryFilter('NONG_NGHIEP')}
-          >
-            🟠 Nông nghiệp ({NOTICES_DATA.filter(n => n.category === 'NONG_NGHIEP').length})
-          </button>
-        </div>
-
-        {/* ── HEADING DANH SÁCH ── */}
-        <div className="section-bar">
-          <div className="section-bar-dot"></div>
-          <h2>Danh sách thông báo chính thức</h2>
-          <span className="section-bar-count">{filteredNotices.length} kết quả tìm thấy</span>
-        </div>
-
-        {/* ── DANH SÁCH THÔNG BÁO CARD ── */}
-        {filteredNotices.length > 0 ? (
-          <div className="notices-list-grid">
-            {filteredNotices.map((n) => (
-              <div className={`notice-card-item ${n.typeCls}`} key={n.id}>
-                <div className="notice-card-header">
-                  <div className="notice-badge-group">
-                    <span className="type-badge">{n.categoryLabel}</span>
-                    <span className="doc-number-tag">{n.docNumber}</span>
-                  </div>
-                  <span className="notice-pub-date">📅 {n.date}</span>
-                </div>
-
-                <h3 className="notice-card-title">{n.title}</h3>
-                <p className="notice-card-summary">{n.summary}</p>
-
-                <div className="notice-card-footer">
-                  <div className="unit-tag">🏛️ {n.unit}</div>
-
-                  <div className="notice-card-buttons">
-                    {n.attachments && n.attachments.length > 0 && (
-                      <span className="file-attach-count" title="Có văn bản đính kèm">
-                        📎 {n.attachments.length} file
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      className="btn-read-detail"
-                      onClick={() => setActiveNotice(n)}
-                    >
-                      <span>Xem chi tiết</span>
-                      <span className="arrow">→</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="notice-empty-state">
-            <div className="empty-icon">🔍</div>
-            <h3>Không tìm thấy thông báo phù hợp</h3>
-            <p>Vui lòng thử lại với từ khóa khác hoặc chọn xem lại tất cả danh mục thông báo.</p>
-            <button
-              type="button"
-              className="btn-reset-filter"
-              onClick={() => { setCategoryFilter('ALL'); setSearchQuery(''); }}
-            >
-              🔄 Xem tất cả thông báo
+            <button type="button" className="tb-filter-funnel-btn" title="Lọc thông báo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+              </svg>
             </button>
           </div>
-        )}
-
-        {/* ── KHỐI ĐĂNG KÝ NHẬN THÔNG BÁO ZALO / SMS ── */}
-        <div className="subscribe-zalo-card">
-          <div className="sub-left">
-            <span className="zalo-bell-icon">🔔</span>
-            <div>
-              <h4>Đăng ký nhận thông báo khẩn cấp qua Zalo / SMS</h4>
-              <p>Bà con nhập số điện thoại để nhận thông báo bão lũ, lịch tiêm chủng và BHYT tự động hoàn toàn miễn phí.</p>
-            </div>
-          </div>
-
-          {!subscribed ? (
-            <form className="sub-form" onSubmit={handleSubscribe}>
-              <input
-                type="tel"
-                placeholder="Nhập số điện thoại Zalo của bà con..."
-                value={subscribePhone}
-                onChange={(e) => setSubscribePhone(e.target.value)}
-                required
-              />
-              <button type="submit" className="btn-sub-now">Đăng ký ngay</button>
-            </form>
-          ) : (
-            <div className="sub-success-msg">
-              ✅ Đã đăng ký thành công cho SĐT: <strong>{subscribePhone}</strong>! UBND Xã sẽ tự động gửi tin nhắn khi có thông báo mới.
-            </div>
-          )}
         </div>
       </div>
 
-      {/* ── POPUP MODAL XEM CHI TIẾT THÔNG BÁO ── */}
+      {/* ── 4 THẺ THỐNG KÊ TRẠNG THÁI NHANH NỔI (4 QUICK METRICS GRID) ── */}
+      <div className="tb-metrics-container">
+        <div className="tb-metrics-grid">
+          {/* CARD 1: BLUE */}
+          <div className="tb-metric-card blue-card">
+            <div className="metric-icon-circle blue-bg">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+              </svg>
+            </div>
+            <div className="metric-info">
+              <strong className="metric-num blue-text">6</strong>
+              <span className="metric-title">Thông báo hoạt động</span>
+              <span className="metric-sub">Đang hiệu lực</span>
+            </div>
+          </div>
+
+          {/* CARD 2: RED */}
+          <div className="tb-metric-card red-card">
+            <div className="metric-icon-circle red-bg">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+              </svg>
+            </div>
+            <div className="metric-info">
+              <strong className="metric-num red-text">1</strong>
+              <span className="metric-title">Cảnh báo khẩn cấp</span>
+              <span className="metric-sub">Cần chú ý ngay</span>
+            </div>
+          </div>
+
+          {/* CARD 3: GREEN */}
+          <div className="tb-metric-card green-card">
+            <div className="metric-icon-circle green-bg">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+            </div>
+            <div className="metric-info">
+              <strong className="metric-num green-text" style={{ fontSize: "20px" }}>Hôm nay</strong>
+              <span className="metric-title">Cập nhật mới nhất</span>
+              <span className="metric-sub">22/07/2026</span>
+            </div>
+          </div>
+
+          {/* CARD 4: PURPLE */}
+          <div className="tb-metric-card purple-card">
+            <div className="metric-icon-circle purple-bg">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9333ea" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m3 11 18-5v12L3 14v-3z" />
+                <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+              </svg>
+            </div>
+            <div className="metric-info">
+              <strong className="metric-num purple-text">24/7</strong>
+              <span className="metric-title">Kênh thông tin</span>
+              <span className="metric-sub">Hoạt động liên tục</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── BỐ CỤC CHÍNH (MAIN BODY CONTAINER) ── */}
+      <div className="tb-main-body">
+        {/* ── SECTION 1: THÔNG BÁO NỔI BẬT KHẨN CẤP KHỚP 100% ẢNH MẪU ── */}
+        <section className="tb-featured-section">
+          <h2 className="tb-section-heading">
+            <span className="alert-emoji">🚨</span> THÔNG BÁO NỔI BẬT
+          </h2>
+
+          <div className="tb-featured-banner-card" onClick={() => urgentNotice && setActiveNotice(urgentNotice)}>
+            {/* ICON SÉT / MƯA BÃO BÊN TRÁI */}
+            <div className="tb-banner-icon-box">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+                <path d="M13 13l-3 5h4l-2 5" />
+              </svg>
+            </div>
+
+            {/* NỘI DUNG CHÍNH Ở GIỮA */}
+            <div className="tb-banner-content">
+              <span className="tb-red-tag">CẢNH BÁO KHẨN CẤP</span>
+              <h3 className="tb-banner-title">
+                Phòng chống mưa bão, lũ quét và nguy cơ đuối nước mùa mưa bão năm 2026
+              </h3>
+              <p className="tb-banner-desc">
+                Cảnh báo nguy cơ mực nước dâng cao đột ngột tại sông Đắc Pxi. Đề nghị người dân và gia đình quản lý chặt chẽ trẻ em, tuyệt đối không tắm sông suối.
+              </p>
+
+              <div className="tb-banner-meta-row">
+                <span className="tb-meta-pill">
+                  📅 22/07/2026 • 08:30
+                </span>
+                <span className="tb-meta-pill">
+                  🛡️ Mức độ: <strong style={{ color: "#dc2626" }}>Khẩn cấp</strong>
+                </span>
+              </div>
+            </div>
+
+            {/* CỘT NÚT XEM CHI TIẾT BÊN PHẢI */}
+            <div className="tb-banner-action-col">
+              <div className="tb-action-circle-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </div>
+              <span className="tb-action-txt">Xem chi tiết</span>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SECTION 2: TẤT CẢ THÔNG BÁO DẠNG DANH SÁCH ── */}
+        <section className="tb-all-notices-section">
+          <div className="tb-section-header">
+            <h2 className="tb-section-heading">
+              <span className="speaker-emoji">📢</span> TẤT CẢ THÔNG BÁO
+            </h2>
+
+            <div className="tb-sort-wrap">
+              <select className="tb-sort-select">
+                <option value="newest">Mới nhất</option>
+                <option value="oldest">Cũ nhất</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="tb-notices-list">
+            {/* ITEM 1: AMBER / YELLOW */}
+            <div className="tb-notice-row-item" onClick={() => setActiveNotice(NOTICES_DATA[0])}>
+              <div className="tb-item-icon-box amber-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+              </div>
+              <div className="tb-item-body">
+                <div className="tb-item-badge-row">
+                  <span className="tb-cat-badge amber-badge">THÔNG BÁO</span>
+                  <h3 className="tb-item-title">Thông báo về việc tổ chức tiếp công dân định kỳ tháng 8/2026</h3>
+                </div>
+                <div className="tb-item-date">22/07/2026 • 10:15</div>
+              </div>
+              <div className="tb-item-arrow-btn amber-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </div>
+            </div>
+
+            {/* ITEM 2: PURPLE */}
+            <div className="tb-notice-row-item" onClick={() => setActiveNotice(NOTICES_DATA[1])}>
+              <div className="tb-item-icon-box purple-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <div className="tb-item-body">
+                <div className="tb-item-badge-row">
+                  <span className="tb-cat-badge purple-badge">CẢNH BÁO</span>
+                  <h3 className="tb-item-title">Cảnh báo an toàn giao thông trong điều kiện mưa lớn</h3>
+                </div>
+                <div className="tb-item-date">21/07/2026 • 16:45</div>
+              </div>
+              <div className="tb-item-arrow-btn purple-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </div>
+            </div>
+
+            {/* ITEM 3: GREEN */}
+            <div className="tb-notice-row-item" onClick={() => setActiveNotice(NOTICES_DATA[2])}>
+              <div className="tb-item-icon-box green-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <path d="m9 15 2 2 4-4" />
+                </svg>
+              </div>
+              <div className="tb-item-body">
+                <div className="tb-item-badge-row">
+                  <span className="tb-cat-badge green-badge">THÔNG TIN</span>
+                  <h3 className="tb-item-title">Hướng dẫn thủ tục cấp đổi giấy phép lái xe trực tuyến</h3>
+                </div>
+                <div className="tb-item-date">21/07/2026 • 09:30</div>
+              </div>
+              <div className="tb-item-arrow-btn green-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* NÚT XEM THÊM THÔNG BÁO BO TRÒN TRUNG TÂM */}
+          <div className="tb-load-more-wrap">
+            <button type="button" className="tb-load-more-btn">
+              <span>Xem thêm thông báo</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      {/* MODAL XEM CHI TIẾT THÔNG BÁO */}
       {activeNotice && (
-        <NoticeDetailModal
-          notice={activeNotice}
-          onClose={() => setActiveNotice(null)}
-        />
+        <div className="info-modal-overlay" onClick={() => setActiveNotice(null)}>
+          <div className="info-modal-card" onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="info-modal-close" onClick={() => setActiveNotice(null)}>✕</button>
+
+            <div className="info-modal-header">
+              <span className="type-badge red">{activeNotice.categoryLabel || "THÔNG BÁO"}</span>
+              <span className="doc-number-tag">{activeNotice.docNumber}</span>
+              <h2 className="info-modal-title">{activeNotice.title}</h2>
+              <div className="info-modal-meta">
+                <span>📅 Ngày đăng: {activeNotice.date}</span>
+                <span className="sep">•</span>
+                <span>🏛️ {activeNotice.unit}</span>
+              </div>
+            </div>
+
+            <div className="info-modal-body">
+              <p style={{ whiteSpace: "pre-line", lineHeight: "1.7", fontSize: "15px", color: "#334155" }}>
+                {activeNotice.content || activeNotice.summary}
+              </p>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

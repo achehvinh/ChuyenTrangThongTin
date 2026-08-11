@@ -188,8 +188,7 @@ export default function ChuyenTrangThongTin() {
   const [activeCat, setActiveCat] = useState('tat-ca');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [emailSub, setEmailSub] = useState('');
-  const [subMsg, setSubMsg] = useState('');
+
 
   // Tải dữ liệu từ API nếu khả dụng
   useEffect(() => {
@@ -212,32 +211,7 @@ export default function ChuyenTrangThongTin() {
     return matchesCat && matchesSearch;
   });
 
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!emailSub || !emailSub.includes('@')) {
-      setSubMsg('⚠️ Vui lòng nhập địa chỉ email hợp lệ!');
-      return;
-    }
-    const cleanEmail = emailSub.trim();
 
-    // Lưu dự phòng vĩnh viễn vào localStorage
-    try {
-      const saved = JSON.parse(localStorage.getItem('subscribed_emails') || '[]');
-      if (!saved.some(item => (typeof item === 'string' ? item : item.email) === cleanEmail)) {
-        saved.push({ email: cleanEmail, subscribedAt: new Date().toISOString() });
-        localStorage.setItem('subscribed_emails', JSON.stringify(saved));
-      }
-    } catch (e) {}
-
-    try {
-      const res = await axios.post(`${API}/subscribe`, { email: cleanEmail });
-      setSubMsg(res.data.message || '✅ Đăng ký nhận tin thành công! Cảm ơn bạn đã theo dõi.');
-    } catch (err) {
-      setSubMsg('✅ Đăng ký nhận tin thành công! Cảm ơn bạn đã theo dõi UBND xã Đăk Pxi.');
-    }
-    setEmailSub('');
-    setTimeout(() => setSubMsg(''), 5000);
-  };
 
   return (
     <div className="news-portal-page">
@@ -439,36 +413,7 @@ export default function ChuyenTrangThongTin() {
               </div>
             </div>
 
-            {/* WIDGET 4: ĐĂNG KÝ NHẬN TIN */}
-            <div className="sidebar-widget-card subscribe-card">
-              <h3 className="widget-card-title">Đăng ký nhận tin</h3>
-              <p className="subscribe-desc">
-                Nhận thông báo mới nhất về các hoạt động và tin tức từ UBND xã Đăk Pxi
-              </p>
 
-              <form onSubmit={handleSubscribe} className="subscribe-form">
-                <input
-                  type="email"
-                  placeholder="Nhập email của bạn..."
-                  value={emailSub}
-                  onChange={e => setEmailSub(e.target.value)}
-                  required
-                />
-                <button type="submit" className="subscribe-submit-btn">
-                  Đăng ký
-                </button>
-              </form>
-
-              {subMsg && <div className="subscribe-feedback">{subMsg}</div>}
-
-              <div className="subscribe-security-note">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                <span>Chúng tôi cam kết bảo mật thông tin của bạn</span>
-              </div>
-            </div>
 
           </aside>
 

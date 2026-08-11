@@ -1,0 +1,233 @@
+/* ── MODERN GOVERNMENT DASHBOARD: TỔNG NHIỆM VỤ TOÀN PHÒNG ── */
+
+.total-tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.25s ease-out;
+  color: #172033;
+}
+
+/* ── HEADER TITLE & ACTION BUTTONS ── */
+.total-tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.total-tasks-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+  color: #172033;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+
+.total-tasks-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 13.5px;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.total-tasks-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── BUTTON STYLES (ADMINISTRATIVE) ── */
+.btn-primary-gov {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #005BAC;
+  color: #FFFFFF;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 91, 172, 0.2);
+  transition: all 0.15s ease;
+}
+
+.btn-primary-gov:hover {
+  background-color: #004887;
+  transform: translateY(-1px);
+}
+
+.btn-secondary-gov {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #FFFFFF;
+  color: #334155;
+  border: 1px solid #CBD5E1;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.15s ease;
+}
+
+.btn-secondary-gov:hover {
+  background-color: #F8FAFC;
+  border-color: #94A3B8;
+}
+
+/* ── TOAST NOTIFICATION ── */
+.total-tasks-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #172033;
+  color: #FFFFFF;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 99999;
+  animation: slideUp 0.2s ease-out;
+}
+
+/* ── MODAL STYLES ── */
+.modal-backdrop-gov {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 16px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.modal-content-gov {
+  background-color: #FFFFFF;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.18);
+  border: 1px solid #CBD5E1;
+  overflow: hidden;
+}
+
+.modal-header-gov {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #E2E8F0;
+  background-color: #F8FAFC;
+}
+
+.modal-header-gov h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #172033;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.btn-close-gov {
+  background: transparent;
+  border: none;
+  color: #64748B;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close-gov:hover {
+  background-color: #E2E8F0;
+  color: #172033;
+}
+
+.modal-body-gov {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group-gov {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group-gov label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.form-group-gov input,
+.form-group-gov select,
+.form-group-gov textarea {
+  padding: 9px 12px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: #172033;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-group-gov input:focus,
+.form-group-gov select:focus,
+.form-group-gov textarea:focus {
+  border-color: #005BAC;
+  box-shadow: 0 0 0 3px rgba(0, 91, 172, 0.12);
+}
+
+.form-row-gov {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.modal-footer-gov {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #E2E8F0;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── RESPONSIVE BREAKPOINTS ── */
+@media (max-width: 768px) {
+  .total-tasks-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-row-gov {
+    grid-template-columns: 1fr;
+  }
+}

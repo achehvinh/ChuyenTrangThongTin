@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+const http = require("http");
 
 const result = dotenv.config({ path: path.resolve(__dirname, ".env") });
 if (result.error) {
@@ -13,6 +14,11 @@ const connectDB = require("./config/db");
 connectDB();
 
 const app = express();
+const server = http.createServer(app);
+
+// ── Socket.IO Realtime Initialization ──
+const { initSocket } = require("./services/socketService");
+const io = initSocket(server);
 
 // ── Middleware (PHẢI đặt trước tất cả routes) ──
 app.use(cors());
@@ -37,6 +43,7 @@ const visitorRoutes = require("./routes/visitorRoutes");
 const vanBanRoutes = require("./routes/vanBanRoutes");
 const subscriberRoutes = require("./routes/subscriberRoutes");
 const quizRoutes = require("./routes/quizRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
@@ -56,18 +63,19 @@ app.use("/api/visitor", visitorRoutes);
 app.use("/api/v1/subscribe", subscriberRoutes);
 app.use("/api/v1/subscribers", subscriberRoutes);
 app.use("/api/v1/quiz", quizRoutes);
+app.use("/api/v1/tasks", taskRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.get("/api/v1", (req, res) => {
-  res.json({ message: "UBND Dak Pxi API is running" });
+  res.json({ message: "UBND Dak Pxi Realtime API is running" });
 });
 
 app.get("/", (req, res) => {
-  res.send("BHYT DAK PXI API RUNNING");
+  res.send("BHYT DAK PXI REALTIME API RUNNING");
 });
 
-// ── Start ──
+// ── Start Server with Socket.IO HTTP Wrapper ──
 const PORT = process.env.PORT || 5000;
-// Middleware xử lý lỗi (đặt cuối cùng sau các routes)
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ 
@@ -77,7 +85,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`🚀 Realtime Express & Socket.IO Server running on port ${PORT}`);
 });
-// Force nodemon reload to refresh LichHop schema in memory
