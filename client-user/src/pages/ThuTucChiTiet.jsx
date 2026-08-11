@@ -546,13 +546,28 @@ export default function ThuTucChiTiet() {
 
               {/* THANH NÚT HÀNH ĐỘNG CỐT LÕI: NỘP HỒ SƠ, TRA CỨU, IN, ĐỌC GIỌNG NÓI */}
               <div className="tthc-hero-actions-row">
+                <a
+                  href={(procedure.guideLink && procedure.guideLink.startsWith("http"))
+                    ? procedure.guideLink
+                    : `https://dichvucong.gov.vn/p/home/dvc-tthc-danh-sach.html?keyword=${encodeURIComponent(procedure.code || procedure.title || procedure.id)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="tthc-hero-btn btn-submit"
+                  style={{ textDecoration: "none" }}
+                  title="Mở trực tiếp Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)"
+                >
+                  <SvgIcons.Send />
+                  <span>Nộp hồ sơ qua Cổng DVC Quốc gia (dichvucong.gov.vn) ↗</span>
+                </a>
+
                 <button
                   type="button"
                   className="tthc-hero-btn btn-submit"
                   onClick={() => setShowSubmitModal(true)}
+                  style={{ background: "#16a34a" }}
                 >
                   <SvgIcons.Send />
-                  <span>Nộp hồ sơ trực tuyến</span>
+                  <span>Khai báo mẫu trực tuyến</span>
                 </button>
 
                 <button

@@ -394,7 +394,18 @@ function ProcedureCard({ item, expanded, onToggleExpand, onEdit, onDelete, onAct
           </div>
 
           <h3 className="tthc-card-title" style={{ fontSize: "16.5px", fontWeight: "900", color: "#0f172a", margin: "0 0 8px", lineHeight: "1.4" }}>
-            {item.title}
+            <a
+              href={realDvcUrl}
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "#0f172a", textDecoration: "none", transition: "color 0.2s ease" }}
+              onMouseEnter={(e) => (e.target.style.color = "#0284c7")}
+              onMouseLeave={(e) => (e.target.style.color = "#0f172a")}
+              onClick={(e) => e.stopPropagation()}
+              title="Nhấn để nộp hồ sơ trực tuyến trên Cổng Dịch vụ công Quốc gia"
+            >
+              {item.title} <span style={{ color: "#0284c7", fontSize: "14px" }}>↗</span>
+            </a>
           </h3>
 
           <div className="tthc-card-meta-row" style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap", fontSize: "12.5px", color: "#64748b" }}>
