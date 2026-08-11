@@ -9621,6 +9621,27 @@ const TTHC_FIELD_GROUPS = [
     alert("🎉 Đã xuất file Dữ liệu gốc thành công! Dữ liệu link và thông tin thủ tục đã được đóng gói sẵn sàng deploy.");
   };
 
+  const handleImportCatalog = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const parsed = JSON.parse(event.target?.result);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setCatalog(parsed);
+          localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(parsed));
+          alert(`🎉 THÀNH CÔNG RỰC RỠ! Đã nạp thành công ${parsed.length} thủ tục với đầy đủ tất cả các link thật bạn đã gắn!`);
+        } else {
+          alert("File JSON không hợp lệ hoặc không đúng định dạng danh mục TTHC.");
+        }
+      } catch (err) {
+        alert("Lỗi đọc file JSON. Vui lòng kiểm tra lại file.");
+      }
+    };
+    reader.readAsText(file);
+  };
+
   // Xử lý Cập nhật tiến trình
   const handleSaveProgress = (e) => {
     e.preventDefault();
@@ -9894,10 +9915,27 @@ const TTHC_FIELD_GROUPS = [
               ))}
             </select>
 
+            <input
+              type="file"
+              id="catalog-import-input"
+              accept=".json"
+              onChange={handleImportCatalog}
+              style={{ display: "none" }}
+            />
+
+            <button
+              type="button"
+              onClick={() => document.getElementById("catalog-import-input")?.click()}
+              style={{ background: "#7c3aed", color: "#ffffff", border: "none", padding: "10px 16px", borderRadius: "10px", fontSize: "13.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "auto", boxShadow: "0 4px 10px rgba(124, 58, 237, 0.2)" }}
+              title="Chọn file JSON đã xuất để nạp ngay 100% link thật vào hệ thống mà không cần nhập lại"
+            >
+              📤 Nạp File Dữ Liệu 100+ Link (JSON)
+            </button>
+
             <button
               type="button"
               onClick={handleExportCatalog}
-              style={{ background: "#0284c7", color: "#ffffff", border: "none", padding: "10px 16px", borderRadius: "10px", fontSize: "13.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "auto", boxShadow: "0 4px 10px rgba(2, 132, 199, 0.2)" }}
+              style={{ background: "#0284c7", color: "#ffffff", border: "none", padding: "10px 16px", borderRadius: "10px", fontSize: "13.5px", fontWeight: "800", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", boxShadow: "0 4px 10px rgba(2, 132, 199, 0.2)" }}
               title="Tải toàn bộ dữ liệu thủ tục & link thật về máy để deploy"
             >
               📥 Xuất Dữ Liệu Deploy (JSON)
