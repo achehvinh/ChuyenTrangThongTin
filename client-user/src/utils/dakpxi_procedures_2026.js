@@ -454,7 +454,7 @@ export const DAK_PXI_PROCEDURES_2026 = RAW_PROCEDURES_2026.map((p) => ({
   processing_time: "Theo quy định hiện hành (01 - 05 ngày làm việc)",
   fee: "Theo quy định hiện hành / Miễn phí 100%",
   agency: "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
-  guideLink: `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(p.code)}`,
+  guideLink: p.guideLink || `https://dichvucong.gov.vn/p/home/dvc-tthc-danh-sach.html?keyword=${encodeURIComponent(p.code || p.title)}`,
   view_count: p.stt === 3 ? 15420 : p.stt === 2 ? 14850 : p.stt === 7 ? 12300 : p.stt === 4 ? 11600 : p.stt === 5 ? 10950 : 500 + ((p.stt * 37) % 3500),
   required_documents: "Tờ khai điện tử theo mẫu; Giấy tờ tùy thân (CCCD/VNeID); Các tài liệu chuyên ngành liên quan.",
   conditions_text: "Công dân, tổ chức, hộ gia đình thụ hưởng dịch vụ trực tuyến.",

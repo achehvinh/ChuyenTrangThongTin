@@ -372,7 +372,7 @@ function ProcedureCard({ item, expanded, onToggleExpand, onEdit, onDelete, onAct
 
   const realDvcUrl = (item.guideLink && item.guideLink.startsWith("http"))
     ? item.guideLink
-    : `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(item.code || item.id)}`;
+    : `https://dichvucong.gov.vn/p/home/dvc-tthc-danh-sach.html?keyword=${encodeURIComponent(item.code || item.title || item.id)}`;
 
   return (
     <article className={`tthc-card-item ${expanded ? "is-expanded" : ""}`}>

@@ -110,7 +110,7 @@ export function getCatalogProcedures() {
               processing_time: p.duration || p.processing_time || "Theo quy định",
               fee: p.fee || "Theo quy định",
               agency: p.agency || "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
-              guideLink: p.guideLink || p.link_dich_vu_cong || `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(p.code || '')}`,
+              guideLink: p.guideLink || p.link_dich_vu_cong || `https://dichvucong.gov.vn/p/home/dvc-tthc-danh-sach.html?keyword=${encodeURIComponent(p.code || p.title || '')}`,
               view_count: p.view_count || 1500
             });
           }

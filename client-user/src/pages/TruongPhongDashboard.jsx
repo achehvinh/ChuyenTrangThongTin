@@ -9469,7 +9469,7 @@ function TthcManagementSection() {
       fee: p.fee || "Miễn phí 100%",
       detailText: p.summary || p.detailText || `Thủ tục ${p.title || p.name} năm 2026.`,
       imageUrl: "",
-      guideLink: p.guideLink || `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(p.code || p.id)}`
+      guideLink: p.guideLink || `https://dichvucong.gov.vn/p/home/dvc-tthc-danh-sach.html?keyword=${encodeURIComponent(p.code || p.title || p.id)}`
     }));
 
     try {
@@ -9983,7 +9983,7 @@ const TTHC_FIELD_GROUPS = [
                 {(() => {
                   const realDvcUrl = (item.guideLink && item.guideLink.startsWith("http"))
                     ? item.guideLink
-                    : `https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh.html?ma_thu_tuc=${encodeURIComponent(item.code || item.id)}`;
+                    : `https://dichvucong.gov.vn/p/home/dvc-tthc-danh-sach.html?keyword=${encodeURIComponent(item.code || item.name || item.title || item.id)}`;
 
                   return (
                     <a
