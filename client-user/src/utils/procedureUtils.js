@@ -1,19 +1,36 @@
 import axios from "axios";
 import { DAK_PXI_PROCEDURES_2026, FIELD_GROUPS as DAK_PXI_FIELD_GROUPS } from "./dakpxi_procedures_2026";
+import { getApiUrl } from "./apiConfig";
 
-export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1/bai-viet";
-
+export const API_BASE_URL = getApiUrl();
 export const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 });
 
 export const USE_MOCK_FALLBACK = true;
-
 export const FIELD_GROUPS = DAK_PXI_FIELD_GROUPS;
-
 export const PAGE_SIZE = 9;
-
 export const MOCK_PROCEDURES = DAK_PXI_PROCEDURES_2026;
 
+let inMemoryCatalogCache = null;
+
+// Tải danh mục vĩnh viễn từ MongoDB Backend Server
+export async function fetchCatalogFromBackend() {
+  try {
+    const res = await axios.get(`${getApiUrl()}/tthc-catalog`);
+    if (res.data && res.data.success && Array.isArray(res.data.data) && res.data.data.length > 0) {
+      inMemoryCatalogCache = res.data.data;
+      try {
+        localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(res.data.data));
+      } catch {}
+      return res.data.data;
+    }
+  } catch (err) {
+    console.warn("Chưa thể kết nối API TTHC MongoDB backend, sử dụng cache local:", err.message);
+  }
+  return null;
+}
+
+// Nạp tự động dữ liệu từ MongoDB Atlas khi ứng dụng khởi chạy
+fetchCatalogFromBackend();
 
 /* ══════════════════════════════════════
    HELPER FUNCTIONS
@@ -65,58 +82,15 @@ export function buildSpeakText(p) {
 }
 
 export function getCatalogProcedures() {
+  if (Array.isArray(inMemoryCatalogCache) && inMemoryCatalogCache.length > 0) {
+    return inMemoryCatalogCache;
+  }
   try {
     const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
     if (saved) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const savedMap = new Map();
-        parsed.forEach(p => {
-          const key = p.code || p.id;
-          if (key) savedMap.set(String(key).toLowerCase(), p);
-        });
-
-        const merged = DAK_PXI_PROCEDURES_2026.map(m => {
-          const key = (m.code || m.id).toLowerCase();
-          const custom = savedMap.get(key);
-          if (!custom) return m;
-          return {
-            ...m,
-            title: custom.title || custom.name || m.title,
-            guideLink: custom.guideLink || custom.link_dich_vu_cong || m.guideLink,
-            link_dich_vu_cong: custom.link_dich_vu_cong || custom.guideLink || m.guideLink,
-            agency: custom.agency || m.agency,
-            processing_time: custom.duration || custom.processing_time || m.processing_time,
-            fee: custom.fee || m.fee,
-            summary: custom.detailText || custom.summary || m.summary,
-            online_type: custom.online_type || custom.type || m.online_type
-          };
-        });
-
-        const existingKeys = new Set(DAK_PXI_PROCEDURES_2026.map(m => (m.code || m.id).toLowerCase()));
-        parsed.forEach(p => {
-          const key = (p.code || p.id || '').toLowerCase();
-          if (key && !existingKeys.has(key)) {
-            merged.push({
-              id: p.id || `custom-${p.code}`,
-              stt: p.stt || merged.length + 1,
-              code: p.code,
-              slug: (p.code || `tthc-${p.id}`).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-              group_id: p.group_id || p.fieldGroup || "linh-vuc-khac",
-              group_name: p.group_name || p.fieldGroup || "Bộ phận Một cửa",
-              title: p.name || p.title,
-              online_type: p.online_type || p.type || "toan-trinh",
-              summary: p.detailText || p.summary || `Thủ tục ${p.name || p.title}.`,
-              processing_time: p.duration || p.processing_time || "Theo quy định",
-              fee: p.fee || "Theo quy định",
-              agency: p.agency || "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
-              guideLink: p.guideLink || p.link_dich_vu_cong || `https://dichvucong.gov.vn/p/home/dvc-tthc-danh-sach.html?keyword=${encodeURIComponent(p.code || p.title || '')}`,
-              view_count: p.view_count || 1500
-            });
-          }
-        });
-
-        return merged;
+        return parsed;
       }
     }
   } catch (e) {}

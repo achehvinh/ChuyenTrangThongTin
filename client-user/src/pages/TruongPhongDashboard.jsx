@@ -9974,41 +9974,21 @@ function TthcManagementSection() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const savedMap = new Map(parsed.map(item => [String(item.id), item]));
-          initialList = initialList.map(item => {
-            const savedItem = savedMap.get(String(item.id));
-            if (savedItem) {
-              return {
-                ...item,
-                ...savedItem,
-                name: item.name || savedItem.name || savedItem.title,
-                fieldGroup: getExactFieldGroup(item.code, item.name || savedItem.name || savedItem.title)
-              };
-            }
-            return item;
-          });
-          const initialIds = new Set(initialList.map(item => String(item.id)));
-          parsed.forEach(item => {
-            if (!initialIds.has(String(item.id))) {
-              initialList.unshift({
-                ...item,
-                name: item.name || item.title,
-                fieldGroup: getExactFieldGroup(item.code, item.name || item.title)
-              });
-            }
-          });
+          return parsed;
         }
       }
     } catch {}
 
-    return initialList.filter(item => !deletedIds.includes(String(item.id)));
+    return initialList;
   });
 
   // Tự động lưu localStorage mỗi khi Cán bộ Tạo/Sửa/Xóa TTHC
   useEffect(() => {
-    try {
-      localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(catalog));
-    } catch {}
+    if (Array.isArray(catalog) && catalog.length > 0) {
+      try {
+        localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(catalog));
+      } catch {}
+    }
   }, [catalog]);
 
   // Đồng bộ vĩnh viễn với MongoDB Backend Database khi mở trang

@@ -7,12 +7,28 @@ export const API_BASE_URL =
 export const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 });
 
 export const USE_MOCK_FALLBACK = true;
-
 export const FIELD_GROUPS = DAK_PXI_FIELD_GROUPS;
-
 export const PAGE_SIZE = 9;
-
 export const MOCK_PROCEDURES = DAK_PXI_PROCEDURES_2026;
+
+let inMemoryCatalogCache = null;
+
+export async function fetchCatalogFromBackend() {
+  try {
+    const backendUrl = import.meta.env.VITE_API_URL || "https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1";
+    const res = await axios.get(`${backendUrl}/tthc-catalog`);
+    if (res.data && res.data.success && Array.isArray(res.data.data) && res.data.data.length > 0) {
+      inMemoryCatalogCache = res.data.data;
+      try {
+        localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(res.data.data));
+      } catch {}
+      return res.data.data;
+    }
+  } catch (err) {}
+  return null;
+}
+
+fetchCatalogFromBackend();
 
 /* ══════════════════════════════════════
    HELPER FUNCTIONS
@@ -63,8 +79,24 @@ export function buildSpeakText(p) {
     .join(" ");
 }
 
+export function getCatalogProcedures() {
+  if (Array.isArray(inMemoryCatalogCache) && inMemoryCatalogCache.length > 0) {
+    return inMemoryCatalogCache;
+  }
+  try {
+    const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return DAK_PXI_PROCEDURES_2026;
+}
+
 export function filterMockProcedures({ keyword, groupId, page, pageSize }) {
-  let rows = MOCK_PROCEDURES;
+  let rows = getCatalogProcedures();
   if (groupId) rows = rows.filter((p) => p.group_id === groupId || p.fieldGroup === groupId);
   if (keyword) {
     const q = keyword.toLowerCase();
@@ -79,7 +111,9 @@ export function filterMockProcedures({ keyword, groupId, page, pageSize }) {
 }
 
 export function findMockProcedureBySlug(slugOrId) {
+  const catalog = getCatalogProcedures();
   return (
+    catalog.find((p) => p.slug === slugOrId || p.id === slugOrId || p.code === slugOrId) ||
     MOCK_PROCEDURES.find((p) => p.slug === slugOrId || p.id === slugOrId || p.code === slugOrId) || null
   );
 }
