@@ -44,6 +44,7 @@ const vanBanRoutes = require("./routes/vanBanRoutes");
 const subscriberRoutes = require("./routes/subscriberRoutes");
 const quizRoutes = require("./routes/quizRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+const tthcCatalogRoutes = require("./routes/tthcCatalogRoutes");
 
 app.use("/api/citizens",          citizenRoutes);
 app.use("/api/insurances",        insuranceRoutes);
@@ -52,6 +53,7 @@ app.use("/api/canh-bao",          canhBaoRoutes);
 app.use("/api/lich-hop",          lichHopRoutes);
 app.use("/api/v1/van-ban",        vanBanRoutes);
 app.use("/api/van-ban",           vanBanRoutes);
+app.use("/api/v1/tthc-catalog",   tthcCatalogRoutes);
 app.use("/api/v1",                tthcRoutes);
 app.use("/api/v1/gia-nong-san",   giaRouter);
 app.use("/api/v1/auth",           authRouter);

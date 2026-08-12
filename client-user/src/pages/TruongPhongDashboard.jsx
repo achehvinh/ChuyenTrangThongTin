@@ -2248,6 +2248,7 @@ export default function TruongPhongDashboard() {
             setTaskDispatchMenuOpen(!taskDispatchMenuOpen);
             if (activeTab !== "task-dispatch") {
               setActiveTab("task-dispatch");
+              if (role === "canbo") setTaskSubFilter("MY_TASKS");
               setMessage("");
               setError("");
             }
@@ -2276,26 +2277,28 @@ export default function TruongPhongDashboard() {
 
         {taskDispatchMenuOpen && (
           <div className="tp-task-sub-menu" style={{ paddingLeft: "14px", display: "flex", flexDirection: "column", gap: "3px", marginTop: "2px" }}>
-            {/* ├─ Tổng nhiệm vụ toàn phòng */}
-            <button
-              type="button"
-              className={`tp-nav-item tp-nav-sub ${activeTab === "task-dispatch" && taskSubFilter === "ALL" ? "active" : ""}`}
-              onClick={() => {
-                setActiveTab("task-dispatch");
-                setTaskSubFilter("ALL");
-                setFilterDispatchStatus("ALL");
-                setMessage("");
-                setError("");
-              }}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-              title="Xem tổng nhiệm vụ toàn phòng"
-            >
-              <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "12px" }}>├─</span>
-              <span style={{ flex: 1, textAlign: "left", fontSize: "13px", fontWeight: "700" }}>Tổng nhiệm vụ toàn phòng</span>
-              <span style={{ background: activeTab === "task-dispatch" && taskSubFilter === "ALL" ? "rgba(255,255,255,0.3)" : "#e2e8f0", color: activeTab === "task-dispatch" && taskSubFilter === "ALL" ? "#ffffff" : "#334155", fontSize: "11px", fontWeight: "800", padding: "1px 6px", borderRadius: "10px" }}>
-                {dispatchTasks.length}
-              </span>
-            </button>
+            {/* ├─ Tổng nhiệm vụ toàn phòng (Chỉ hiển thị cho Trưởng phòng / Lãnh đạo) */}
+            {role !== "canbo" && (
+              <button
+                type="button"
+                className={`tp-nav-item tp-nav-sub ${activeTab === "task-dispatch" && taskSubFilter === "ALL" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("task-dispatch");
+                  setTaskSubFilter("ALL");
+                  setFilterDispatchStatus("ALL");
+                  setMessage("");
+                  setError("");
+                }}
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                title="Xem tổng nhiệm vụ toàn phòng"
+              >
+                <span style={{ color: "#16a34a", fontWeight: "900", fontSize: "12px" }}>├─</span>
+                <span style={{ flex: 1, textAlign: "left", fontSize: "13px", fontWeight: "700" }}>Tổng nhiệm vụ toàn phòng</span>
+                <span style={{ background: activeTab === "task-dispatch" && taskSubFilter === "ALL" ? "rgba(255,255,255,0.3)" : "#e2e8f0", color: activeTab === "task-dispatch" && taskSubFilter === "ALL" ? "#ffffff" : "#334155", fontSize: "11px", fontWeight: "800", padding: "1px 6px", borderRadius: "10px" }}>
+                  {dispatchTasks.length}
+                </span>
+              </button>
+            )}
 
             {/* ├─ Nhiệm vụ của tôi */}
             <button
@@ -2406,97 +2409,8 @@ export default function TruongPhongDashboard() {
     );
   };
 
-  // Render Cấu trúc Menu "Văn bản" (Văn bản đến & Văn bản đi)
-  const renderDocsMenu = () => {
-    return (
-      <div className="tp-task-dispatch-container" style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-        <button
-          type="button"
-          className={`tp-nav-item tp-nav-parent ${(activeTab === "incoming-docs" || activeTab === "outgoing-docs") ? "active-parent" : ""} tp-task-dispatch-parent`}
-          onClick={() => setDocsMenuOpen(!docsMenuOpen)}
-          style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "8px", cursor: "pointer" }}
-          title="Văn bản"
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: "#005baa" }}>
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="16" y1="13" x2="8" y2="13" />
-              <line x1="16" y1="17" x2="8" y2="17" />
-            </svg>
-            <span style={{ fontWeight: "800" }}>Văn bản</span>
-          </div>
-          <span style={{ fontSize: "10px", color: "#64748b", transform: docsMenuOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease" }}>
-            ▼
-          </span>
-        </button>
-
-        {docsMenuOpen && (
-          <div className="tp-task-sub-menu" style={{ paddingLeft: "14px", display: "flex", flexDirection: "column", gap: "3px", marginTop: "2px" }}>
-            {/* ├─ Văn bản đến */}
-            <button
-              type="button"
-              className={`tp-nav-item tp-nav-sub ${activeTab === "incoming-docs" ? "active" : ""}`}
-              onClick={() => { setActiveTab("incoming-docs"); setMessage(""); setError(""); }}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-              title={`Văn bản đến (${pendingIncomingCount} cần xử lý)`}
-            >
-              <span style={{ color: "#005baa", fontWeight: "900", fontSize: "12px" }}>├─</span>
-              <span style={{ flex: 1, textAlign: "left", fontSize: "13px" }}>Văn bản đến</span>
-              {pendingIncomingCount > 0 && (
-                <span
-                  title={`${pendingIncomingCount} văn bản đến chưa xử lý`}
-                  style={{
-                    background: activeTab === "incoming-docs" ? "rgba(255,255,255,0.3)" : "#ef4444",
-                    color: "#ffffff",
-                    fontSize: "11px",
-                    fontWeight: "800",
-                    padding: "2px 6px",
-                    borderRadius: "10px",
-                    lineHeight: "1.2",
-                    boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)",
-                    border: "none"
-                  }}
-                >
-                  {pendingIncomingCount}
-                </span>
-              )}
-            </button>
-
-            {/* └─ Văn bản đi */}
-            <button
-              type="button"
-              className={`tp-nav-item tp-nav-sub ${activeTab === "outgoing-docs" ? "active" : ""}`}
-              onClick={() => { setActiveTab("outgoing-docs"); setMessage(""); setError(""); }}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-              title={`Văn bản đi (${pendingOutgoingCount} dự thảo)`}
-            >
-              <span style={{ color: "#005baa", fontWeight: "900", fontSize: "12px" }}>└─</span>
-              <span style={{ flex: 1, textAlign: "left", fontSize: "13px" }}>Văn bản đi</span>
-              {pendingOutgoingCount > 0 && (
-                <span
-                  title={`${pendingOutgoingCount} văn bản đi dự thảo`}
-                  style={{
-                    background: activeTab === "outgoing-docs" ? "rgba(255,255,255,0.3)" : "#f59e0b",
-                    color: "#ffffff",
-                    fontSize: "11px",
-                    fontWeight: "800",
-                    padding: "2px 6px",
-                    borderRadius: "10px",
-                    lineHeight: "1.2",
-                    boxShadow: "0 2px 4px rgba(245, 158, 11, 0.4)",
-                    border: "none"
-                  }}
-                >
-                  {pendingOutgoingCount}
-                </span>
-              )}
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  };
+  // Menu "Văn bản" đã được ẩn theo yêu cầu người dùng
+  const renderDocsMenu = () => null;
 
   return (
     <div className="tp-workspace-layout">
@@ -2572,7 +2486,6 @@ export default function TruongPhongDashboard() {
                 <span>Quản lý cán bộ</span>
               </button>
 
-              {renderDocsMenu()}
 
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
@@ -2664,7 +2577,6 @@ export default function TruongPhongDashboard() {
               </button>
 
               {renderTaskDispatchMenu()}
-              {renderDocsMenu()}
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
                 onClick={() => { setActiveTab("schedule"); setMessage(""); setError(""); }}
@@ -2725,7 +2637,6 @@ export default function TruongPhongDashboard() {
               </button>
 
               {renderTaskDispatchMenu()}
-              {renderDocsMenu()}
               <button
                 className={`tp-nav-item ${activeTab === "schedule" ? "active" : ""}`}
                 onClick={() => { setActiveTab("schedule"); setMessage(""); setError(""); }}
@@ -10100,6 +10011,24 @@ function TthcManagementSection() {
     } catch {}
   }, [catalog]);
 
+  // Đồng bộ vĩnh viễn với MongoDB Backend Database khi mở trang
+  useEffect(() => {
+    const syncCatalogWithBackend = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/v1/tthc-catalog`);
+        if (res.data && res.data.success && Array.isArray(res.data.data) && res.data.data.length > 0) {
+          setCatalog(res.data.data);
+          try {
+            localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(res.data.data));
+          } catch {}
+        }
+      } catch (err) {
+        console.warn("Không thể tải danh mục TTHC từ MongoDB backend, dùng dữ liệu local:", err.message);
+      }
+    };
+    syncCatalogWithBackend();
+  }, []);
+
   // Modal cập nhật tiến trình hồ sơ
   const [editingApp, setEditingApp] = useState(null);
   const [nextStep, setNextStep] = useState(1);
@@ -10187,12 +10116,21 @@ const TTHC_FIELD_GROUPS = [
     })
     .sort((a, b) => (a.stt || 0) - (b.stt || 0));
 
-  const handleSaveCatalogEdit = (e) => {
+  const handleSaveCatalogEdit = async (e) => {
     e.preventDefault();
     if (!editingCatalogItem) return;
-    setCatalog(prev => prev.map(c => c.id === editingCatalogItem.id ? editingCatalogItem : c));
+
+    setCatalog(prev => prev.map(c => (c.id === editingCatalogItem.id || c.code === editingCatalogItem.code) ? editingCatalogItem : c));
+
+    // Lưu VĨNH VIỄN vào MongoDB Backend Database
+    try {
+      await axios.put(`${BASE_URL}/api/v1/tthc-catalog/${encodeURIComponent(editingCatalogItem.code)}`, editingCatalogItem);
+    } catch (err) {
+      console.error("Lỗi lưu vĩnh viễn thủ tục vào MongoDB:", err);
+    }
+
     setEditingCatalogItem(null);
-    setMessage(`Đã cập nhật thành công thông tin và link DVC chính xác cho thủ tục [${editingCatalogItem.name || editingCatalogItem.code}]!`);
+    setMessage(`🎉 Đã lưu VĨNH VIỄN vào Cơ sở dữ liệu thông tin và link DVC chính xác cho thủ tục [${editingCatalogItem.name || editingCatalogItem.code}]!`);
     setTimeout(() => setMessage(""), 5000);
   };
 
@@ -10256,7 +10194,7 @@ const TTHC_FIELD_GROUPS = [
   };
 
   // Xử lý tạo TTHC mới
-  const handleCreateCatalog = (e) => {
+  const handleCreateCatalog = async (e) => {
     e.preventDefault();
     if (!newCatalogForm.code.trim() || !newCatalogForm.name.trim()) return;
 
@@ -10264,6 +10202,7 @@ const TTHC_FIELD_GROUPS = [
       id: Date.now(),
       code: newCatalogForm.code.trim(),
       name: newCatalogForm.name.trim(),
+      title: newCatalogForm.name.trim(),
       fieldGroup: newCatalogForm.fieldGroup || "Đất đai",
       level: newCatalogForm.level,
       levelBadge: newCatalogForm.level.includes("Mức 4") ? "green" : "blue",
@@ -10272,10 +10211,19 @@ const TTHC_FIELD_GROUPS = [
       fee: newCatalogForm.fee,
       detailText: newCatalogForm.detailText,
       imageUrl: newCatalogForm.imageUrl,
-      guideLink: newCatalogForm.guideLink
+      guideLink: newCatalogForm.guideLink,
+      link_dich_vu_cong: newCatalogForm.guideLink
     };
 
     setCatalog(prev => [newItem, ...prev]);
+
+    // Lưu VĨNH VIỄN vào MongoDB Backend Database
+    try {
+      await axios.post(`${BASE_URL}/api/v1/tthc-catalog`, newItem);
+    } catch (err) {
+      console.error("Lỗi tạo mới thủ tục vào MongoDB:", err);
+    }
+
     setNewCatalogForm({
       code: "",
       name: "",
@@ -10289,6 +10237,8 @@ const TTHC_FIELD_GROUPS = [
       guideLink: ""
     });
     setShowCatalogModal(false);
+    setMessage(`🎉 Đã tạo mới VĨNH VIỄN thủ tục [${newItem.name}] vào Cơ sở dữ liệu!`);
+    setTimeout(() => setMessage(""), 5000);
   };
 
   // Filtered applications
@@ -10653,8 +10603,19 @@ const TTHC_FIELD_GROUPS = [
                     <button
                       type="button"
                       style={{ background: "#fee2e2", border: "none", color: "#dc2626", padding: "6px 12px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "750", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "4px" }}
-                      onClick={() => {
+                      onClick={async () => {
                         const targetId = String(item.id);
+                        const targetCode = item.code;
+
+                        // Xóa VĨNH VIỄN khỏi MongoDB Backend Database
+                        try {
+                          if (targetCode) {
+                            await axios.delete(`${BASE_URL}/api/v1/tthc-catalog/${encodeURIComponent(targetCode)}`);
+                          }
+                        } catch (err) {
+                          console.error("Lỗi xóa thủ tục khỏi MongoDB:", err);
+                        }
+
                         try {
                           const deleted = JSON.parse(localStorage.getItem("DAK_PXI_DELETED_TTHC_IDS") || "[]");
                           if (targetId && !deleted.includes(targetId)) deleted.push(targetId);
@@ -10663,12 +10624,12 @@ const TTHC_FIELD_GROUPS = [
                           const savedCatalog = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
                           if (savedCatalog) {
                             const catList = JSON.parse(savedCatalog);
-                            const nextCat = catList.filter(c => String(c.id) !== targetId);
+                            const nextCat = catList.filter(c => String(c.id) !== targetId && c.code !== targetCode);
                             localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(nextCat));
                           }
                         } catch {}
-                        setCatalog(prev => prev.filter(c => String(c.id) !== targetId));
-                        setMessage(`Đã xóa vĩnh viễn đúng 1 thủ tục [${item.name || item.code}] khỏi hệ thống!`);
+                        setCatalog(prev => prev.filter(c => String(c.id) !== targetId && c.code !== targetCode));
+                        setMessage(`Đã xóa vĩnh viễn đúng 1 thủ tục [${item.name || item.code}] khỏi Cơ sở dữ liệu!`);
                         setTimeout(() => setMessage(""), 5000);
                       }}
                     >
