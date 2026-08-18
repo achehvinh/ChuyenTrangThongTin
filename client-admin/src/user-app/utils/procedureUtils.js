@@ -17,7 +17,7 @@ export async function fetchCatalogFromBackend() {
   try {
     const backendUrl = import.meta.env.VITE_API_URL || "https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1";
     const res = await axios.get(`${backendUrl}/tthc-catalog`);
-    if (res.data && res.data.success && Array.isArray(res.data.data) && res.data.data.length > 0) {
+    if (res.data && res.data.success && Array.isArray(res.data.data) && res.data.data.length >= 417) {
       inMemoryCatalogCache = res.data.data;
       try {
         localStorage.setItem("DAK_PXI_TTHC_CATALOG", JSON.stringify(res.data.data));
@@ -80,18 +80,25 @@ export function buildSpeakText(p) {
 }
 
 export function getCatalogProcedures() {
-  if (Array.isArray(inMemoryCatalogCache) && inMemoryCatalogCache.length > 0) {
-    return inMemoryCatalogCache;
+  if (Array.isArray(inMemoryCatalogCache) && inMemoryCatalogCache.length >= 417) {
+    const p271 = inMemoryCatalogCache.find((p) => p.stt === 271);
+    if (p271 && p271.code === "1.014259.01") {
+      return inMemoryCatalogCache;
+    }
   }
   try {
     const saved = localStorage.getItem("DAK_PXI_TTHC_CATALOG");
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+      if (Array.isArray(parsed) && parsed.length >= 417) {
+        const p271 = parsed.find((p) => p.stt === 271);
+        if (p271 && p271.code === "1.014259.01") {
+          return parsed;
+        }
       }
     }
   } catch (e) {}
+  localStorage.removeItem("DAK_PXI_TTHC_CATALOG");
   return DAK_PXI_PROCEDURES_2026;
 }
 

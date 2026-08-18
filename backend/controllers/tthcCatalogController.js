@@ -34,10 +34,66 @@ function formatProcedure(p) {
   };
 }
 
+const NEW_ITEMS_271_417 = require("./new_procedures_271_417");
+
+const groupMap = {
+  "dat-dai-lam-nghiep": "Đất đai - Lâm nghiệp",
+  "ho-tich-tu-phap": "Hộ tịch - Tư pháp",
+  "giao-duc-dao-tao": "Giáo dục - Đào tạo",
+  "nguoi-co-cong": "Người có công",
+  "bao-tro-xa-hoi": "Bảo trợ xã hội",
+  "giao-thong-van-tai": "Giao thông - Vận tải",
+  "thuy-loi-moi-truong": "Thủy lợi - Môi trường",
+  "nong-nghiep-thuy-san": "Nông nghiệp - Thủy sản",
+  "kinh-te-doanh-nghiep": "Kinh tế - Doanh nghiệp",
+  "van-hoa-ton-giao": "Văn hóa - Tôn giáo",
+  "xay-dung-quy-hoach": "Xây dựng - Quy hoạch",
+  "linh-vuc-khac": "Lĩnh vực khác"
+};
+
 // 1. GET ALL PROCEDURES
 exports.getCatalog = async (req, res) => {
   try {
-    const docs = await ThuTucHanhChinh.find({ is_deleted: { $ne: true } }).sort({ stt: 1 });
+    let docs = await ThuTucHanhChinh.find({ is_deleted: { $ne: true } }).sort({ stt: 1 });
+    const p271 = docs.find(p => p.stt === 271);
+    
+    if (!p271 || p271.code !== "1.014259.01" || docs.length < 417) {
+      for (const item of NEW_ITEMS_271_417) {
+        const link = item.guideLink || "";
+        const name = item.title;
+        const gName = groupMap[item.group] || "Lĩnh vực khác";
+        await ThuTucHanhChinh.findOneAndUpdate(
+          { stt: item.stt },
+          {
+            $set: {
+              stt: item.stt,
+              code: item.code,
+              title: name,
+              name: name,
+              slug: (item.code || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+              fieldGroup: gName,
+              group_id: item.group || "linh-vuc-khac",
+              group_name: gName,
+              online_type: item.type || "toan-trinh",
+              level: item.type === "toan-trinh" ? "Dịch vụ công Trực tuyến toàn trình (Mức 4)" : "Dịch vụ công Trực tuyến một phần",
+              agency: "Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)",
+              duration: "Theo quy định hiện hành (01 - 05 ngày làm việc)",
+              processing_time: "Theo quy định hiện hành (01 - 05 ngày làm việc)",
+              fee: "Theo quy định hiện hành / Miễn phí 100%",
+              summary: `Thủ tục "${name}" theo quy định hành chính công năm 2026.`,
+              detailText: `Thủ tục "${name}" theo quy định hành chính công năm 2026.`,
+              guideLink: link,
+              link_dich_vu_cong: link,
+              is_deleted: false,
+              view_count: 500
+            }
+          },
+          { upsert: true, new: true }
+        );
+      }
+      docs = await ThuTucHanhChinh.find({ is_deleted: { $ne: true } }).sort({ stt: 1 });
+    }
+
     const formatted = docs.map(formatProcedure);
     res.json({ success: true, count: formatted.length, data: formatted });
   } catch (err) {
