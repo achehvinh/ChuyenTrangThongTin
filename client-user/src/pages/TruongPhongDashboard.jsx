@@ -5881,9 +5881,9 @@ export default function TruongPhongDashboard() {
                           <div style={{ display: "flex", alignItems: "center", width: "100%", border: "1.5px solid #cbd5e1", borderRadius: "8px", background: editingStaff ? "#f1f5f9" : "#fff", height: "42px" }}>
                             <input
                               type="text"
-                              placeholder="Ví dụ: nv-an"
+                              placeholder="Ví dụ: nv-an hoặc NV-AN"
                               value={usernamePrefix}
-                              onChange={(e) => setUsernamePrefix(e.target.value.trim().toLowerCase())}
+                              onChange={(e) => setUsernamePrefix(e.target.value.trim())}
                               required
                               disabled={!!editingStaff}
                               style={{ flex: 1, border: "none", outline: "none", boxShadow: "none", background: "transparent", padding: "0 12px", height: "100%", fontSize: "14px", fontWeight: "600", color: "#0f172a" }}

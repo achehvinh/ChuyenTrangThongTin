@@ -25,8 +25,14 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // 2. Tra cứu động trong Database
-    const user = await Admin.findOne({ username });
+    // 2. Tra cứu động trong Database (Hỗ trợ cả chữ hoa lẫn chữ thường)
+    const user = await Admin.findOne({
+      $or: [
+        { username: username },
+        { username: username.toLowerCase() },
+        { username: { $regex: new RegExp(`^${username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, "i") } }
+      ]
+    });
     if (!user) {
       return res.status(401).json({ message: "Sai tài khoản hoặc mật khẩu" });
     }
