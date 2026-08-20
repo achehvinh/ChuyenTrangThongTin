@@ -172,7 +172,7 @@ function QuickInfoBar() {
         </div>
         <div className="tthc-top-item">
           <SvgIcons.Mail />
-          <span>Email: ubnddakpxi@quangngai.gov.vn</span>
+          <span>Email: vhxh-dakpxi@quangngai.gov.vn</span>
         </div>
       </div>
     </div>

@@ -183,11 +183,6 @@ export const DETAILS = {
     images: ['link1.jpg', 'link2.jpg', 'link3.jpg', 'link4.jpg'],
     content: 'Hướng dẫn sử dụng CCCD gắn chip trong các thủ tục hành chính và dịch vụ công trực tuyến.'
   },
-  '/phap-luat': {
-    title: 'Góc pháp luật',
-    images: ['link1.jpg', 'link2.jpg', 'link3.jpg', 'link5.jpg'],
-    content: 'Phổ biến kiến thức pháp luật, các quy định mới giúp bà con sống và làm việc theo pháp luật.'
-  },
   '/thu-vien-anh': {
     title: 'Thư viện ảnh',
     images: ['link1.jpg', 'link2.jpg', 'link3.jpg', 'link4.jpg'],

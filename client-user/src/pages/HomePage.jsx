@@ -5,9 +5,9 @@ import './HomePage.css';
 import Footer from './Footer';
 import DakPxiToday from '../components/DakPxiToday/DakPxiToday';
 import {
-  FileText, Calendar, Bell, MessageSquare, BookOpen, Monitor,
+  FileText, Calendar, MessageSquare, BookOpen, Monitor,
   Users, Home as HomeIcon, UserCheck, Award, Eye, ArrowRight,
-  Vote, GraduationCap, ShieldCheck, LayoutGrid, Scale, PlayCircle
+  Vote, GraduationCap, ShieldCheck, LayoutGrid, PlayCircle
 } from 'lucide-react';
 
 const API = import.meta.env.VITE_API_BASE_URL || 'https://chuyen-trang-thong-tin-6os5.vercel.app/api/v1';
@@ -57,7 +57,7 @@ const DEFAULT_LATEST_NEWS = [
     monthYear: '07/2025',
     tieu_de: 'CẨM NANG BẦU CỬ TRƯỞNG THÔN ĐĂK PXI (2025–2030)',
     iconType: 'document',
-    link: '/phap-luat'
+    link: '/bau-cu'
   },
   {
     id: 'news-4',
@@ -297,18 +297,6 @@ export default function HomePage() {
                   <span className="qa-tile-label">Dịch vụ công</span>
                 </button>
 
-                {/* TILE 2: GÓC PHÁP LUẬT */}
-                <button
-                  type="button"
-                  className="qa-tile qa-tile--blue"
-                  onClick={() => navigate('/phap-luat')}
-                >
-                  <div className="qa-tile-icon-box blue">
-                    <Scale size={22} color="#1e88e5" />
-                  </div>
-                  <span className="qa-tile-label">Góc pháp luật</span>
-                </button>
-
                 {/* TILE 3: HƯỚNG DẪN TRA CỨU BHYT */}
                 <button
                   type="button"
@@ -319,18 +307,6 @@ export default function HomePage() {
                     <ShieldCheck size={22} color="#f57c00" />
                   </div>
                   <span className="qa-tile-label">Hướng dẫn tra cứu BHYT</span>
-                </button>
-
-                {/* TILE 4: THÔNG BÁO */}
-                <button
-                  type="button"
-                  className="qa-tile qa-tile--red"
-                  onClick={() => navigate('/thong-bao')}
-                >
-                  <div className="qa-tile-icon-box red">
-                    <Bell size={22} color="#e53935" />
-                  </div>
-                  <span className="qa-tile-label">Thông báo</span>
                 </button>
 
                 {/* TILE 5: LIÊN HỆ & HỖ TRỢ */}

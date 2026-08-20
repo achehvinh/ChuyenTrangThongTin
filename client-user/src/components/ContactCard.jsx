@@ -93,7 +93,7 @@ export default function ContactCard() {
           </div>
           <div className="contact-text">
             <span className="label">Email công vụ:</span>
-            <strong className="val"><a href="mailto:ubnddakpxi@quangngai.gov.vn">ubnddakpxi@quangngai.gov.vn</a></strong>
+            <strong className="val"><a href="mailto:vhxh-dakpxi@quangngai.gov.vn">vhxh-dakpxi@quangngai.gov.vn</a></strong>
           </div>
         </div>
 
@@ -124,7 +124,7 @@ export default function ContactCard() {
           <SvgIcons.Phone />
           <span>Gọi ngay</span>
         </a>
-        <a href="mailto:ubnddakpxi@quangngai.gov.vn" className="contact-btn btn-email">
+        <a href="mailto:vhxh-dakpxi@quangngai.gov.vn" className="contact-btn btn-email">
           <SvgIcons.Mail />
           <span>Gửi Email</span>
         </a>

@@ -9,7 +9,7 @@ export default function FeedbackPopup() {
 
   const handleSend = () => {
     if (!content.trim()) return;
-    const mailto = `mailto:ubnd.dakpxi@gmail.com?subject=Góp ý từ người dân&body=${encodeURIComponent(content)}`;
+    const mailto = `mailto:vhxh-dakpxi@quangngai.gov.vn?subject=Góp ý từ người dân&body=${encodeURIComponent(content)}`;
     window.location.href = mailto;
     setSent(true);
     setContent('');

@@ -268,14 +268,6 @@ export default function Navbar() {
               </Link>
             </li>
 
-            {/* VĂN BẢN */}
-            <li className="nav-item">
-              <Link to="/phap-luat" className={`nav-link ${isActive('/phap-luat') ? 'active' : ''}`}>
-                <FileText size={17} className="nav-icon" />
-                <span>VĂN BẢN</span>
-              </Link>
-            </li>
-
             {/* THƯ VIỆN */}
             <li className="nav-item">
               <Link to="/thu-vien-anh" className={`nav-link ${isActive('/thu-vien-anh') ? 'active' : ''}`}>
@@ -374,7 +366,7 @@ export default function Navbar() {
               <li><Link to="/chuyen-doi-so" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Settings size={16} /> <span>Chuyển đổi số</span></Link></li>
               <li><Link to="/Ban-do" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><MapPin size={16} /> <span>Bản đồ</span></Link></li>
               <li><Link to="/tin-tuc" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Newspaper size={16} /> <span>Tin tức – Sự kiện</span></Link></li>
-              <li><Link to="/phap-luat" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><FileText size={16} /> <span>Văn bản pháp luật</span></Link></li>
+
               <li><Link to="/thu-vien-anh" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><BookOpen size={16} /> <span>Thư viện tài liệu</span></Link></li>
               <li><Link to="/lien-he" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Phone size={16} /> <span>Liên hệ</span></Link></li>
 

@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
-  Home, Info, Settings, MapPin, Newspaper, FileText,
+  Home, Info, Settings, MapPin, Newspaper,
   BookOpen, Phone, ChevronDown, Search, User, Sliders
 } from 'lucide-react';
 import { useFontSize } from '../FontSizeContext';
@@ -180,14 +180,6 @@ export default function Navbar() {
               <Link to="/tin-tuc" className={`nav-link ${isActive('/tin-tuc') ? 'active' : ''}`}>
                 <Newspaper size={17} className="nav-icon" />
                 <span>TIN TỨC – SỰ KIỆN</span>
-              </Link>
-            </li>
-
-            {/* VĂN BẢN */}
-            <li className="nav-item">
-              <Link to="/phap-luat" className={`nav-link ${isActive('/phap-luat') ? 'active' : ''}`}>
-                <FileText size={17} className="nav-icon" />
-                <span>VĂN BẢN</span>
               </Link>
             </li>
 

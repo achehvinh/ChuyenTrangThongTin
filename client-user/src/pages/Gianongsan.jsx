@@ -735,7 +735,7 @@ export default function Gianongsan() {
               </div>
               <div className="info-row">
                 <span className="info-label"><SvgIcons.Mail /> Email:</span>
-                <span className="info-val">nongnghiep.dakpxi@konfum.gov.vn</span>
+                <span className="info-val">vhxh-dakpxi@quangngai.gov.vn</span>
               </div>
               <div className="info-row">
                 <span className="info-label"><SvgIcons.Building /> Địa chỉ:</span>

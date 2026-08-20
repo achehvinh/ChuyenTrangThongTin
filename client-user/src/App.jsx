@@ -38,7 +38,6 @@ import CuocHopTrucTuyen from './pages/CuocHopTrucTuyen';
 import DuoiNuocPage from './pages/DuoiNuocPage';
 import Gianongsan from './pages/Gianongsan';
 import HelpPage from './pages/HelpPage';
-import PhapLuatPage from './pages/PhapLuatPage';
 import PhongChongLuaDaoPage from './pages/PhongChongLuaDaoPage';
 import QuizGame from './pages/QuizGame';
 import TeNanXaHoiPage from './pages/TeNanXaHoiPage';
@@ -220,7 +219,6 @@ function AppLayout() {
           <Route path="/quiz/:topic" element={<QuizGame />} />
           <Route path="/bau-cu" element={<Baucu />} />
           <Route path="/te-nan" element={<TeNanXaHoiPage />} />
-          <Route path="/phap-luat" element={<PhapLuatPage />} />
           <Route path="/:category" element={<AllFeaturesPage />} />
           <Route path="/alert" element={<TTSButton />} />
           <Route path="/drag-drop" element={<DragDrop />} />

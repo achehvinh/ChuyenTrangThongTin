@@ -189,61 +189,23 @@ export default function DakPxiToday() {
         </div>
       )}
 
-      {/* HORIZONTAL BAR AS IN THE EXACT SCREENSHOT */}
+      {/* HORIZONTAL BAR — CHỈ GIỮ LẠI ĐĂK PXI HÔM NAY */}
       <div className="dkt-main-horizontal-bar">
-        
-        {/* KHỐI BÊN TRÁI: CARD ĐĂK PXI HÔM NAY (VIỀN ĐỎ ĐÔ / TERRACOTTA) */}
-        <div className="dkt-left-feature-card" onClick={() => setActiveModalItem({ isDashboardModal: true })} title="Bấm để mở Bảng Dashboard Đăk Pxi Hôm Nay">
+        <div 
+          className="dkt-left-feature-card dkt-full-width-card" 
+          onClick={() => setActiveModalItem({ isDashboardModal: true })} 
+          title="Bấm để mở Bảng Dashboard Đăk Pxi Hôm Nay"
+        >
           <WeatherGraphic3D />
           <div className="dkt-left-card-text">
             <h2 className="dkt-left-card-title">ĐĂK PXI HÔM NAY</h2>
-            <p className="dkt-left-card-sub">Những thông tin quan trọng bà con cần biết trong ngày</p>
+            <p className="dkt-left-card-sub">Cập nhật nhanh những thông tin quan trọng bà con cần biết trong ngày</p>
           </div>
+          <button className="dkt-open-dashboard-btn" type="button">
+            <span>Xem chi tiết Đăk Pxi hôm nay</span>
+            <ChevronRight size={18} />
+          </button>
         </div>
-
-        {/* CONTAINER CHỨA DẢI CÁC THẺ & NÚT ĐIỀU HƯỚNG TRƯỢT MƯỢT MA */}
-        <div className="dkt-strip-wrapper">
-
-          {canScrollLeft && (
-            <button 
-              className="dkt-nav-arrow dkt-nav-arrow-left" 
-              onClick={handleScrollLeft} 
-              title="Bấm để trượt về trước"
-              type="button"
-            >
-              <ChevronLeft size={18} />
-            </button>
-          )}
-
-          {/* KHỐI GIỮA: DẢI CÁC THẺ THÔNG TIN NẰM NGANG VỚI VẠCH NĂNG CÁCH */}
-          <div className="dkt-middle-cards-strip" ref={scrollContainerRef}>
-            {infoCards.map((card, idx) => (
-              <TodayInfoCard
-                key={card.id || idx}
-                icon={card.icon}
-                category={card.category}
-                title={card.title}
-                value={card.value}
-                description={card.description}
-                status={card.status}
-                onClick={() => setActiveModalItem(card)}
-              />
-            ))}
-          </div>
-
-          {canScrollRight && (
-            <button 
-              className="dkt-nav-arrow dkt-nav-arrow-right" 
-              onClick={handleScrollRight} 
-              title="Bấm để trượt xem thẻ bên phải"
-              type="button"
-            >
-              <ChevronRight size={18} />
-            </button>
-          )}
-
-        </div>
-
       </div>
 
       {/* DYNAMIC POPUP MODALS FOR SUB-FEATURES */}
